@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code+ Deel 4 – Hoofdstuk 6.3 | Woordenschat</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5F0E8;
+    --ink: #1A1612;
+    --ink-muted: #5C544A;
+    --ink-faint: #9C9080;
+    --accent: #2D5F4F;
+    --accent-light: #E4EDE9;
+    --accent2: #8B3A2A;
+    --accent2-light: #F5EAE6;
+    --gold: #C4922A;
+    --gold-light: #FAF2E0;
+    --border: rgba(26,22,18,0.12);
+    --tag-woord-bg: #E4EDE9;
+    --tag-woord-fg: #1A3D30;
+    --tag-verb-bg: #FAF2E0;
+    --tag-verb-fg: #5A3800;
+    --tag-idioom-bg: #F5EAE6;
+    --tag-idioom-fg: #5A1A0A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: var(--ink);
+    color: #F5F0E8;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 40px solid rgba(245,240,232,0.06);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 50px solid rgba(245,240,232,0.04);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 0.5rem;
+  }
+  .header-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: #F5F0E8;
+  }
+  .header-title strong {
+    font-weight: 600;
+    font-style: italic;
+  }
+  .header-meta {
+    margin-top: 1rem;
+    font-size: 13px;
+    color: rgba(245,240,232,0.45);
+  }
+
+  /* Nav tabs */
+  .tab-nav {
+    background: var(--ink);
+    border-top: 1px solid rgba(245,240,232,0.1);
+    display: flex;
+    gap: 0;
+    padding: 0 2rem;
+  }
+  .tab-btn {
+    padding: 0.8rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: rgba(245,240,232,0.45);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn:hover { color: rgba(245,240,232,0.75); }
+  .tab-btn.active { color: #F5F0E8; border-bottom-color: var(--gold); }
+
+  /* Content */
+  .content { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-heading:first-child { margin-top: 0; }
+
+  /* Word cards */
+  .word-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .word-card:hover { border-color: rgba(26,22,18,0.25); box-shadow: 0 2px 12px rgba(26,22,18,0.06); }
+
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .card-left { flex: 1; min-width: 0; }
+  .card-term {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .card-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 99px;
+  }
+  .tag-woord  { background: var(--tag-woord-bg);  color: var(--tag-woord-fg); }
+  .tag-verb   { background: var(--tag-verb-bg);   color: var(--tag-verb-fg); }
+  .tag-idioom { background: var(--tag-idioom-bg); color: var(--tag-idioom-fg); }
+
+  .sound-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid var(--accent-light);
+    border-radius: 99px;
+    background: var(--accent-light);
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .sound-link:hover { background: #d0e4dc; }
+  .sound-link svg { width: 11px; height: 11px; fill: var(--accent); flex-shrink: 0; }
+
+  .card-def {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.55;
+  }
+  .card-ex {
+    font-family: 'Source Serif 4', serif;
+    font-size: 13.5px;
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  /* Quiz */
+  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 13px; color: var(--ink-muted); }
+  .progress-track { height: 3px; background: var(--border); border-radius: 99px; margin-bottom: 1.5rem; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.35s ease; }
+
+  .quiz-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .quiz-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .quiz-word {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+  }
+  .options { display: grid; gap: 8px; }
+  .opt {
+    background: var(--sand);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1.45;
+  }
+  .opt:hover:not(:disabled) { background: #EDE8DF; border-color: rgba(26,22,18,0.2); }
+  .opt.correct { background: #E4EDE9; border-color: #2D5F4F; color: #1A3D30; }
+  .opt.wrong   { background: #F5EAE6; border-color: #8B3A2A; color: #5A1A0A; }
+  .opt:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 1rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .feedback.ok  { background: #E4EDE9; color: #1A3D30; }
+  .feedback.err { background: #F5EAE6; color: #5A1A0A; }
+
+  .next-btn {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .next-btn:hover { background: #EDE8DF; }
+
+  .score-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .score-big {
+    font-family: 'Source Serif 4', serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .score-sub { font-size: 14px; color: var(--ink-muted); margin-top: 6px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 1.25rem; line-height: 1.5; }
+  .restart {
+    margin-top: 1.5rem;
+    padding: 10px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .restart:hover { background: #EDE8DF; }
+
+  @media (max-width: 520px) {
+    .tab-btn { padding: 0.8rem 0.8rem; font-size: 12px; }
+    .card-term { font-size: 15px; }
+    .quiz-word { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Code+ · Deel 4 · Hoofdstuk 6.3</div>
+  <h1 class="header-title">Woordenschat<br><strong>Brood op de plank</strong></h1>
+  <p class="header-meta">31 woorden &nbsp;·&nbsp; 3 verbindingen &nbsp;·&nbsp; 8 idioomuitdrukkingen</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('lijst', this)">Woordenlijst</button>
+  <button class="tab-btn" onclick="showTab('quiz', this)">Zelftest</button>
+</nav>
+
+<div class="content">
+
+  <!-- WOORDENLIJST -->
+  <div id="panel-lijst" class="panel active">
+
+    <div class="section-heading">Woordenschat</div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">adel, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/adel/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">mensen (families) van hoge afkomst met een titel zoals graaf of baron</div>
+      <div class="card-ex">"In de middeleeuwen had de adel veel macht over gewone mensen."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">calvinisme, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/calvinisme/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een strenge protestantse religie; zuinigheid en hard werken zijn belangrijk</div>
+      <div class="card-ex">"Het calvinisme heeft veel invloed gehad op de Nederlandse cultuur."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">crisis, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/crisis/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een ernstige, moeilijke situatie die snel opgelost moet worden</div>
+      <div class="card-ex">"Tijdens de financiële crisis verloren veel mensen hun baan."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">doordringen*</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/doordringen/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">ergens in doordringen; ergens aankomen of begrepen worden</div>
+      <div class="card-ex">"De boodschap van de campagne moest doordringen tot alle lagen van de bevolking."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">doorbreken*</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/doorbreken/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een patroon, gewoonte of grens openbreken en stoppen</div>
+      <div class="card-ex">"Ze wilde het patroon van armoede in haar familie doorbreken."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">dienen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/dienen/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">werken voor iemand; ook: bedoeld zijn om iets te doen</div>
+      <div class="card-ex">"Dit formulier dient om je gegevens te registreren."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">druk, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/druk/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">de kracht die iemand dwingt om iets te doen; stress</div>
+      <div class="card-ex">"Ze stond onder grote druk om het project op tijd af te maken."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">essentie, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/essentie/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het belangrijkste deel; de kern van iets</div>
+      <div class="card-ex">"De essentie van het verhaal is dat eerlijkheid loont."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">gierig</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/gierig/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">niet graag geld uitgeven; te zuinig</div>
+      <div class="card-ex">"Hij was zo gierig dat hij nooit een rondje gaf."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">hecht</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/hecht/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">sterk verbonden; een goede band hebben</div>
+      <div class="card-ex">"Ze hebben een hechte vriendschap die al twintig jaar duurt."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">heil, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/heil/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets goeds dat je zoekt; redding of oplossing</div>
+      <div class="card-ex">"Hij zocht zijn heil in een nieuwe baan in het buitenland."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">infrastructuur, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/infrastructuur/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">alles wat nodig is om een land te laten werken: wegen, water, energie</div>
+      <div class="card-ex">"De infrastructuur in dat land is slecht: veel wegen zijn kapot."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">investeren</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/investeren/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">geld of tijd stoppen in iets om er later voordeel van te hebben</div>
+      <div class="card-ex">"Het bedrijf investeert veel in de opleiding van medewerkers."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">kritiek, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/kritiek/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">negatief commentaar op iemand of iets</div>
+      <div class="card-ex">"Ze kreeg veel kritiek op haar beslissing om te stoppen."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">luxe, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/luxe/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets wat niet noodzakelijk is maar wel aangenaam en duur</div>
+      <div class="card-ex">"Een vakantie naar het buitenland is voor veel mensen een luxe."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">munt, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/munt/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">metalen geld; ook: een bepaalde valuta</div>
+      <div class="card-ex">"De euro is de munt die in veel Europese landen gebruikt wordt."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">norm, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/norm/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een regel of standaard die mensen of de samenleving stellen</div>
+      <div class="card-ex">"In Nederland is het de norm om op tijd te komen."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">opmerking, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/opmerking/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets wat je zegt als commentaar of reactie op iets</div>
+      <div class="card-ex">"De docent maakte een kritische opmerking over de kwaliteit van het werk."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">overspannen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/overspannen/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">zo gestrest dat je niet meer goed kunt functioneren; zenuwen zijn overbelast</div>
+      <div class="card-ex">"Na maanden van overwerk raakte hij overspannen en moest hij stoppen."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">pindakaas, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/pindakaas/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">pasta gemaakt van pindanoten; typisch Nederlands broodbeleg</div>
+      <div class="card-ex">"Pindakaas is een van de bekendste Nederlandse exportproducten."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">problematiek, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/problematiek/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een geheel van moeilijke problemen rond één onderwerp</div>
+      <div class="card-ex">"De problematiek rond huisvesting is complex en niet snel opgelost."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">rationeel</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/rationeel/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">op basis van logica en verstand, niet van gevoel</div>
+      <div class="card-ex">"Ze nam een rationele beslissing en liet haar emoties buiten beschouwing."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">reserve, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/reserve/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets wat je apart houdt voor later; ook: voorzichtige afstand</div>
+      <div class="card-ex">"Hij sprak met reserve over zijn plannen — hij wist het nog niet zeker."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">spreuk, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/spreuk/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een korte, bekende uitdrukking met een wijze boodschap</div>
+      <div class="card-ex">"'Wie niet waagt, wie niet wint' is een bekende Nederlandse spreuk."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">soortgelijk</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/soortgelijk/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">van hetzelfde soort; vergelijkbaar</div>
+      <div class="card-ex">"We hebben al eerder een soortgelijk probleem gehad en dat goed opgelost."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">terugdraaien</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/terugdraaien/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets ongedaan maken; een beslissing of maatregel intrekken</div>
+      <div class="card-ex">"De politiek besloot de belastingverhoging terug te draaien."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">uitvoerig</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/uitvoerig/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">heel gedetailleerd en lang; met veel uitleg</div>
+      <div class="card-ex">"Hij gaf een uitvoerige beschrijving van wat er was gebeurd."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">verworvenheid, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/verworvenheid/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets wat door inspanning of strijd verkregen is en van grote waarde is</div>
+      <div class="card-ex">"Vrouwenkiesrecht is een belangrijke verworvenheid die we moeten beschermen."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">vrijgevig</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/vrijgevig/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">graag geven aan anderen; het tegenovergestelde van gierig</div>
+      <div class="card-ex">"Ze was vrijgevig met haar tijd en hielp iedereen die dat nodig had."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">zuinig</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/zuinig/#nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            Uitspraak
+          </a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">voorzichtig met geld of spullen omgaan; niet verspillen</div>
+      <div class="card-ex">"Nederlanders staan bekend als zuinig: ze gooien weinig weg."</div>
+    </div>
+
+    <div class="section-heading">Verbindingen</div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">te rade gaan bij iemand</div></div>
+        <div class="card-right"><span class="tag tag-verb">verbinding</span></div>
+      </div>
+      <div class="card-def">iemand om advies vragen</div>
+      <div class="card-ex">"Als ik twijfel, ga ik altijd te rade bij mijn mentor."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">voorbehouden zijn aan iemand</div></div>
+        <div class="card-right"><span class="tag tag-verb">verbinding</span></div>
+      </div>
+      <div class="card-def">alleen voor een bepaalde persoon of groep beschikbaar zijn</div>
+      <div class="card-ex">"Dit parkeerterrein is voorbehouden aan medewerkers van het ziekenhuis."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">zich verkijken op iets/iemand</div></div>
+        <div class="card-right"><span class="tag tag-verb">verbinding</span></div>
+      </div>
+      <div class="card-def">iets of iemand verkeerd inschatten</div>
+      <div class="card-ex">"Ze had zich verkeken op de moeilijkheidsgraad van het examen."</div>
+    </div>
+
+    <div class="section-heading">Idioom</div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">bij wijze van spreken</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">om het eens zo te zeggen; niet letterlijk bedoeld</div>
+      <div class="card-ex">"Hij werkt dag en nacht — bij wijze van spreken slaapt hij op kantoor."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">brood op de plank</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">voldoende inkomen hebben om van te leven</div>
+      <div class="card-ex">"Ze accepteerde de baan, want ze moest brood op de plank hebben."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">buiten het bestek vallen/gaan</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">niet binnen het plan of het onderwerp vallen</div>
+      <div class="card-ex">"Die vraag valt buiten het bestek van dit gesprek."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">een stapje terug doen</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">minder gaan verdienen of minder kunnen uitgeven</div>
+      <div class="card-ex">"Na het verlies van zijn baan moest hij een stapje terug doen."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">ergens aan toe zijn</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">iets nodig hebben; ergens behoefte aan hebben</div>
+      <div class="card-ex">"Na zo'n lange vergadering ben ik echt aan een kop koffie toe."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">ergens tegen kunnen</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">goed met iets moeilijks om kunnen gaan</div>
+      <div class="card-ex">"Niet iedereen kan tegen kritiek — ze raken er snel van slag."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">gaan zitten voor iets/iemand</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">ergens tijd en aandacht aan besteden</div>
+      <div class="card-ex">"Dit weekend ga ik zitten voor mijn belastingaangifte."</div>
+    </div>
+
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">zich te buiten gaan aan iets</div></div>
+        <div class="card-right"><span class="tag tag-idioom">idioom</span></div>
+      </div>
+      <div class="card-def">zonder controle over jezelf van iets te veel gebruikmaken</div>
+      <div class="card-ex">"Met kerst ging hij zich te buiten aan chocolade en taart."</div>
+    </div>
+
+  </div><!-- /panel-lijst -->
+
+  <!-- ZELFTETS -->
+  <div id="panel-quiz" class="panel">
+    <div id="quiz-root"></div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+const ALL = [
+  { term:"adel, de",                         def:"mensen van hoge afkomst met een titel zoals graaf of baron",         wrong:["streng verbod op luxe","iets apart houden voor later","een beslissing terugdraaien"] },
+  { term:"calvinisme, het",                  def:"een strenge protestantse religie; zuinigheid en hard werken zijn belangrijk", wrong:["iemand om advies vragen","geld investeren in de toekomst","vrijgevig zijn met tijd en geld"] },
+  { term:"crisis, de",                       def:"een ernstige, moeilijke situatie die snel opgelost moet worden",     wrong:["een kleine verbetering","een typisch Nederlandse uitdrukking","geld apart houden"] },
+  { term:"doordringen*",                      def:"ergens in doordringen; ergens aankomen of begrepen worden",         wrong:["een patroon doorbreken","iets ongedaan maken","te veel van iets gebruiken"] },
+  { term:"doorbreken*",                        def:"een patroon, gewoonte of grens openbreken en stoppen",               wrong:["ergens doordringen","iemand om advies vragen","voorzichtig met geld omgaan"] },
+  { term:"dienen",                           def:"werken voor iemand; ook: bedoeld zijn om iets te doen",              wrong:["op basis van logica denken","iets ongedaan maken","een goede band hebben"] },
+  { term:"druk, de",                         def:"de kracht die iemand dwingt om iets te doen; stress",               wrong:["vrijwillig iets doen","voorzichtig met geld omgaan","mensen van hoge afkomst"] },
+  { term:"essentie, de",                     def:"het belangrijkste deel; de kern van iets",                           wrong:["een strenge religie","negatief commentaar","iets dat niet noodzakelijk is"] },
+  { term:"gierig",                           def:"niet graag geld uitgeven; te zuinig",                                wrong:["vrijgevig en gul zijn","rationeel nadenken","goed met moeilijkheden omgaan"] },
+  { term:"hecht",                            def:"sterk verbonden; een goede band hebben",                             wrong:["losjes en vrijblijvend","te zuinig zijn","buiten het plan vallen"] },
+  { term:"heil, het",                        def:"iets goeds dat je zoekt; redding of oplossing",                     wrong:["negatief commentaar geven","mensen van hoge komaf","alles tot in detail uitleggen"] },
+  { term:"infrastructuur, de",               def:"alles wat nodig is om een land te laten werken: wegen, water, energie", wrong:["een kortere uitdrukking met een boodschap","een strenge protestantse religie","iets ongedaan maken"] },
+  { term:"investeren",                       def:"geld of tijd stoppen in iets om er later voordeel van te hebben",   wrong:["iets ongedaan maken","te veel van iets gebruiken","iemand om advies vragen"] },
+  { term:"kritiek, de",                      def:"negatief commentaar op iemand of iets",                             wrong:["een goede band hebben","voldoende inkomen","een strenge religie"] },
+  { term:"luxe, de",                         def:"iets wat niet noodzakelijk is maar wel aangenaam en duur",          wrong:["de kern van iets","een goede band hebben","voorzichtig met geld omgaan"] },
+  { term:"munt, de",                         def:"metalen geld; ook: een bepaalde valuta",                            wrong:["een hoge adel","ergens behoefte aan hebben","een plan intrekken"] },
+  { term:"norm, de",                         def:"een regel of standaard die mensen of de samenleving stellen",       wrong:["mensen van hoge afkomst","geld investeren","een goede band"] },
+  { term:"opmerking, de",                    def:"iets wat je zegt als commentaar of reactie op iets",                 wrong:["een regel die iedereen volgt","iets wat door strijd verkregen is","te gestrest zijn"] },
+  { term:"overspannen",                      def:"zo gestrest dat je niet meer goed kunt functioneren; zenuwen zijn overbelast", wrong:["heel ontspannen zijn","voorzichtig met geld omgaan","van hetzelfde soort zijn"] },
+  { term:"rationeel",                        def:"op basis van logica en verstand, niet van gevoel",                  wrong:["op gevoel afgaan","te zuinig zijn","iets apart houden"] },
+  { term:"soortgelijk",                      def:"van hetzelfde soort; vergelijkbaar",                                wrong:["heel anders en uniek","iets wat door strijd verkregen is","te gestrest zijn"] },
+  { term:"spreuk, de",                       def:"een korte, bekende uitdrukking met een wijze boodschap",            wrong:["een uitgebreid betoog","geld apart houden","mensen van hoge afkomst"] },
+  { term:"terugdraaien",                     def:"iets ongedaan maken; een beslissing of maatregel intrekken",        wrong:["iets versterken","voorzichtig met geld omgaan","een goede band hebben"] },
+  { term:"uitvoerig",                        def:"heel gedetailleerd en lang; met veel uitleg",                       wrong:["kort en bondig","op gevoel afgaan","van hetzelfde soort"] },
+  { term:"verworvenheid, de",                def:"iets wat door inspanning of strijd verkregen is en van grote waarde is", wrong:["iets wat gratis wordt gegeven","een strenge religie","te gestrest zijn"] },
+  { term:"vrijgevig",                        def:"graag geven aan anderen; het tegenovergestelde van gierig",         wrong:["heel zuinig zijn","iets verkeerd inschatten","iemand om advies vragen"] },
+  { term:"zuinig",                           def:"voorzichtig met geld of spullen omgaan; niet verspillen",           wrong:["alles weggeven","snel beslissingen nemen","buiten het plan vallen"] },
+  { term:"te rade gaan bij iemand",          def:"iemand om advies vragen",                                           wrong:["iets ongedaan maken","alleen voor één groep beschikbaar zijn","iets verkeerd inschatten"] },
+  { term:"voorbehouden zijn aan iemand",     def:"alleen voor een bepaalde persoon of groep beschikbaar zijn",        wrong:["iedereen uitnodigen","te veel van iets gebruiken","om advies vragen"] },
+  { term:"zich verkijken op iets/iemand",    def:"iets of iemand verkeerd inschatten",                                wrong:["iemand om hulp vragen","heel voorzichtig zijn","geld apart zetten"] },
+  { term:"brood op de plank",                def:"voldoende inkomen hebben om van te leven",                          wrong:["te veel eten","iets ongedaan maken","buiten het plan vallen"] },
+  { term:"een stapje terug doen",            def:"minder gaan verdienen of minder kunnen uitgeven",                   wrong:["meer gaan verdienen","iemand om advies vragen","iets verkeerd inschatten"] },
+  { term:"ergens aan toe zijn",              def:"iets nodig hebben; ergens behoefte aan hebben",                     wrong:["ergens goed mee omgaan","buiten het plan vallen","geld apart houden"] },
+  { term:"ergens tegen kunnen",              def:"goed met iets moeilijks om kunnen gaan",                            wrong:["niet graag geld uitgeven","iets verkeerd inschatten","iets ongedaan maken"] },
+  { term:"zich te buiten gaan aan iets",     def:"zonder controle over jezelf van iets te veel gebruikmaken",        wrong:["zuinig met iets omgaan","iemand om advies vragen","voorzichtig afstand houden"] },
+  { term:"bij wijze van spreken",            def:"om het eens zo te zeggen; niet letterlijk bedoeld",                 wrong:["precies zoals het er staat","op basis van logica","alleen voor één groep"] },
+  { term:"buiten het bestek vallen/gaan",    def:"niet binnen het plan of het onderwerp vallen",                      wrong:["heel belangrijk zijn","iemand om advies vragen","te veel van iets gebruiken"] },
+  { term:"gaan zitten voor iets/iemand",     def:"ergens tijd en aandacht aan besteden",                              wrong:["iets snel afronden","iemand verkeerd inschatten","minder gaan verdienen"] },
+];
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+
+let questions=[], current=0, score=0;
+
+function buildQuiz(){
+  questions = shuffle(ALL);
+  current=0; score=0;
+  render();
+}
+
+function render(){
+  const root = document.getElementById('quiz-root');
+  if(current >= questions.length){ renderScore(); return; }
+  const q = questions[current];
+  const opts = shuffle([q.def, ...q.wrong.slice(0,3)]);
+  const pct = Math.round((current/questions.length)*100);
+  root.innerHTML = `
+    <div class="quiz-meta">
+      <span>Vraag ${current+1} van ${questions.length}</span>
+      <span>Score: ${score}</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-card">
+      <div class="quiz-label">Wat betekent:</div>
+      <div class="quiz-word">${q.term}</div>
+      <div class="options">
+        ${opts.map(o=>`<button class="opt" onclick="answer(this,'${esc(o)}','${esc(q.def)}')">${o}</button>`).join('')}
+      </div>
+      <div id="fb"></div>
+    </div>`;
+}
+
+function esc(s){ return s.replace(/'/g,"\\'"); }
+
+function answer(btn, chosen, correct){
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===correct) b.classList.add('correct');
+  });
+  const fb = document.getElementById('fb');
+  if(chosen===correct){
+    btn.classList.add('correct'); score++;
+    fb.innerHTML=`<div class="feedback ok">Goed! <strong>${questions[current].term}</strong> betekent: ${correct}</div>`;
+  } else {
+    btn.classList.add('wrong');
+    fb.innerHTML=`<div class="feedback err">Niet juist. Het goede antwoord: ${correct}</div>`;
+  }
+  fb.innerHTML+=`<button class="next-btn" onclick="nextQ()">${current+1<questions.length?'Volgende vraag →':'Bekijk resultaat →'}</button>`;
+}
+
+function nextQ(){ current++; render(); }
+
+function renderScore(){
+  const pct=Math.round((score/questions.length)*100);
+  const msg = pct===100?"Uitstekend! Je kent alle woorden van hoofdstuk 6.3." : pct>=70?"Goed gedaan! Herhaal de woorden die je miste nog een keer." : "Ga nog een keer door de woordenlijst en probeer daarna opnieuw.";
+  document.getElementById('quiz-root').innerHTML=`
+    <div class="score-wrap">
+      <div class="score-big">${score}/${questions.length}</div>
+      <div class="score-sub">${pct}% goed beantwoord</div>
+      <div class="score-msg">${msg}</div>
+      <button class="restart" onclick="buildQuiz()">Opnieuw proberen</button>
+    </div>`;
+}
+
+function showTab(name, btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+  if(name==='quiz' && questions.length===0) buildQuiz();
+}
+</script>
+</body>
+</html>
