@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code+ Deel 4 – Hoofdstuk 7.2 | Woordenschat</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --sand: #F5F0E8;
+    --ink: #1A1612;
+    --ink-muted: #5C544A;
+    --ink-faint: #9C9080;
+    --accent: #2D5F4F;
+    --accent-light: #E4EDE9;
+    --accent2: #8B3A2A;
+    --accent2-light: #F5EAE6;
+    --gold: #C4922A;
+    --gold-light: #FAF2E0;
+    --border: rgba(26,22,18,0.12);
+    --tag-woord-bg: #E4EDE9;
+    --tag-woord-fg: #1A3D30;
+    --tag-verb-bg: #FAF2E0;
+    --tag-verb-fg: #5A3800;
+    --tag-idioom-bg: #F5EAE6;
+    --tag-idioom-fg: #5A1A0A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: var(--ink);
+    color: #F5F0E8;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 40px solid rgba(245,240,232,0.06);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 50px solid rgba(245,240,232,0.04);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 0.5rem;
+  }
+  .header-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: #F5F0E8;
+  }
+  .header-title strong {
+    font-weight: 600;
+    font-style: italic;
+  }
+  .header-meta {
+    margin-top: 1rem;
+    font-size: 13px;
+    color: rgba(245,240,232,0.45);
+  }
+
+
+  .header-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(245,240,232,0.4);
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 2;
+  }
+  /* Nav tabs */
+  .tab-nav {
+    background: var(--ink);
+    border-top: 1px solid rgba(245,240,232,0.1);
+    display: flex;
+    gap: 0;
+    padding: 0 2rem;
+  }
+  .tab-btn {
+    padding: 0.8rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: rgba(245,240,232,0.45);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn:hover { color: rgba(245,240,232,0.75); }
+  .tab-btn.active { color: #F5F0E8; border-bottom-color: var(--gold); }
+
+  /* Content */
+  .content { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-heading:first-child { margin-top: 0; }
+
+  /* Word cards */
+  .word-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .word-card:hover { border-color: rgba(26,22,18,0.25); box-shadow: 0 2px 12px rgba(26,22,18,0.06); }
+
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .card-left { flex: 1; min-width: 0; }
+  .card-term {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .card-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 99px;
+  }
+  .tag-woord  { background: var(--tag-woord-bg);  color: var(--tag-woord-fg); }
+  .tag-verb   { background: var(--tag-verb-bg);   color: var(--tag-verb-fg); }
+  .tag-idioom { background: var(--tag-idioom-bg); color: var(--tag-idioom-fg); }
+
+  .sound-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid var(--accent-light);
+    border-radius: 99px;
+    background: var(--accent-light);
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .sound-link:hover { background: #d0e4dc; }
+  .sound-link svg { width: 11px; height: 11px; fill: var(--accent); flex-shrink: 0; }
+
+  .card-def {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.55;
+  }
+  .card-ex {
+    font-family: 'Source Serif 4', serif;
+    font-size: 13.5px;
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  /* Quiz */
+  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 13px; color: var(--ink-muted); }
+  .progress-track { height: 3px; background: var(--border); border-radius: 99px; margin-bottom: 1.5rem; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.35s ease; }
+
+  .quiz-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .quiz-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .quiz-word {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+  }
+  .options { display: grid; gap: 8px; }
+  .opt {
+    background: var(--sand);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1.45;
+  }
+  .opt:hover:not(:disabled) { background: #EDE8DF; border-color: rgba(26,22,18,0.2); }
+  .opt.correct { background: #E4EDE9; border-color: #2D5F4F; color: #1A3D30; }
+  .opt.wrong   { background: #F5EAE6; border-color: #8B3A2A; color: #5A1A0A; }
+  .opt:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 1rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .feedback.ok  { background: #E4EDE9; color: #1A3D30; }
+  .feedback.err { background: #F5EAE6; color: #5A1A0A; }
+
+  .next-btn {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .next-btn:hover { background: #EDE8DF; }
+
+  .score-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .score-big {
+    font-family: 'Source Serif 4', serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .score-sub { font-size: 14px; color: var(--ink-muted); margin-top: 6px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 1.25rem; line-height: 1.5; }
+  .restart {
+    margin-top: 1.5rem;
+    padding: 10px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .restart:hover { background: #EDE8DF; }
+
+  @media (max-width: 520px) {
+    .tab-btn { padding: 0.8rem 0.8rem; font-size: 12px; }
+    .card-term { font-size: 15px; }
+    .quiz-word { font-size: 18px; }
+  }
+
+</style>
+</head>
+<body>
+  <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
+    <a href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/overzicht_code4.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;color:#2d3a8c;border:2px solid #2d3a8c;border-radius:50px;padding:0.4rem 1rem;font-family:inherit;font-size:0.82rem;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgba(45,58,140,0.15);transition:all 0.15s;">← Hoofdmenu</a>
+  </div>
+<header>
+  <div class="header-eyebrow">Code+ · Deel 4 · Hoofdstuk 7.2</div>
+  <h1 class="header-title">Woordenschat<br><strong>De ruimte</strong></h1>
+  <p class="header-meta">38 woorden &nbsp;·&nbsp; 4 verbindingen &nbsp;·&nbsp; 5 idioomuitdrukkingen</p>
+  <img class="header-avatar" src="data:image/jpeg;base64,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" alt="docent">
+</header>
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('lijst',this)">Woordenlijst</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">Zelftest</button>
+</nav>
+<div class="content">
+  <div id="panel-lijst" class="panel active">
+    <div class="section-heading">Woordenschat</div>
+    
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">ambitieus</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/ambitieus/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">vol ambitie; iemand die graag veel wil bereiken</div>
+      <div class="card-ex">"Ze is heel ambitieus en wil ooit astronaut worden."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">arriveren</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/arriveren/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">aankomen op een bestemming</div>
+      <div class="card-ex">"De raket arriveerde na zeven maanden bij de planeet Mars."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">atmosfeer, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/atmosfeer/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">de laag van gassen rondom een planeet; ook: de sfeer op een plek</div>
+      <div class="card-ex">"De atmosfeer van de aarde beschermt ons tegen straling uit de ruimte."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">bedienen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/bedienen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets besturen of gebruiken; ook: iemand van service voorzien</div>
+      <div class="card-ex">"De astronaut moest het ingewikkelde systeem bedienen vanuit de capsule."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">beuken</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/beuken/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">hard en herhaaldelijk slaan of stoten</div>
+      <div class="card-ex">"De golven beukten hard tegen de rotsige kust."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">buitenaards</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/buitenaards/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">van buiten de aarde; niet van deze planeet afkomstig</div>
+      <div class="card-ex">"Wetenschappers zoeken naar tekens van buitenaards leven."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">fantaseren</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/fantaseren/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">dromen of nadenken over iets wat niet echt is</div>
+      <div class="card-ex">"Als kind fantaseerde hij altijd over reizen naar verre sterrenstelsels."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">gemeenschap, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/gemeenschap/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een groep mensen die samen leven of iets delen</div>
+      <div class="card-ex">"De wetenschappelijke gemeenschap reageerde enthousiast op de ontdekking."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">gewichtloosheid, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/gewichtloosheid/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">de toestand waarin je geen gewicht voelt, zoals in de ruimte</div>
+      <div class="card-ex">"In de ruimte ervaren astronauten gewichtloosheid en zweven ze rond."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">gok, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/gok/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een poging waarbij je niet zeker weet of het lukt; een risico</div>
+      <div class="card-ex">"Het was een grote gok om met zo weinig brandstof de vlucht te wagen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">instorten</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/instorten/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">plotseling invallen of ineenzakken; ook: emotioneel bezwijken</div>
+      <div class="card-ex">"Het oude gebouw stortte in na de aardbeving."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">jacht, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/jacht/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het actief zoeken en achtervolgen van iets of iemand</div>
+      <div class="card-ex">"De jacht op nieuw leven in het heelal gaat al decennia door."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">koepel, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/koepel/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een ronde, gewelfde dakconstructie; ook: een beschermende bol</div>
+      <div class="card-ex">"De koepel van het observatorium draaide langzaam mee met de telescoop."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">lancering, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/lancering/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het afvuren of opstijgen van een raket of ruimtevaartuig</div>
+      <div class="card-ex">"Miljoenen mensen keken naar de lancering van de ruimtecapsule."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">lantaarnpaal, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/lantaarnpaal/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een paal met een lamp die de openbare weg verlicht</div>
+      <div class="card-ex">"De drone vloog langs de lantaarnpalen door de donkere straat."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">leefbaar</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/leefbaar/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">geschikt om in te leven; aangenaam en veilig genoeg om te bewonen</div>
+      <div class="card-ex">"Wetenschappers onderzoeken of Mars ooit leefbaar kan worden voor mensen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">melkweg, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/melkweg/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het sterrenstelsel waar onze zon deel van uitmaakt</div>
+      <div class="card-ex">"Op een heldere nacht kun je de Melkweg zien als een lichtende band."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">misgaan*</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/misgaan/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">fout lopen; niet goed gaan zoals gepland</div>
+      <div class="card-ex">"Er ging iets mis tijdens de lancering en de missie moest worden afgebroken."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">mist, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/mist/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een dichte nevel van kleine waterdruppels die het zicht belemmert</div>
+      <div class="card-ex">"Door de dichte mist konden de astronomen niets zien."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">monster, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/monster/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een groot, angstaanjagend wezen; ook: iets enorms en gevaarlijks</div>
+      <div class="card-ex">"In oude verhalen woonden monsters in de duistere diepten van de ruimte."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">nieuwsgierig</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/nieuwsgierig/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">vol verlangen om iets te weten of te ontdekken</div>
+      <div class="card-ex">"Kinderen zijn van nature nieuwsgierig naar de sterren en planeten."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">onuitputtelijk</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/onuitputtelijk/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">zo groot dat het nooit opraakt; oneindig</div>
+      <div class="card-ex">"De energie van de zon lijkt onuitputtelijk, maar heeft ook een einde."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">opstappen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/opstappen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">vertrekken; ook: aftreden uit een functie</div>
+      <div class="card-ex">"Na het mislukken van de missie stapte de directeur op."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">opzwellen*</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/opzwellen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">groter worden door druk of vloeistof; opblazen</div>
+      <div class="card-ex">"In de ruimte kunnen lichaamsdelen opzwellen door het gebrek aan zwaartekracht."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">ruimtevaart, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/ruimtevaart/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het reizen door de ruimte met raketten en ruimtevaartuigen</div>
+      <div class="card-ex">"De ruimtevaart heeft ons veel geleerd over het ontstaan van het heelal."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">schepping, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/schepping/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets wat gemaakt of geschapen is; het universum zoals het ontstaan is</div>
+      <div class="card-ex">"Het heelal wordt ook wel de schepping genoemd in religieuze teksten."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">scherp</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/scherp/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">heel duidelijk en precies; ook: snijdend of puntig</div>
+      <div class="card-ex">"De telescoop gaf een scherp beeld van de verre planeet."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">streven</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/streven/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">je best doen om iets te bereiken; ergens naar verlangen</div>
+      <div class="card-ex">"Wetenschappers streven ernaar om leven buiten de aarde te ontdekken."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">traag</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/traag/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">langzaam; niet snel</div>
+      <div class="card-ex">"Het ruimtevaartuig bewoog traag door het donkere heelal."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">uitblinker, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/uitblinker/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iemand die ergens uitzonderlijk goed in is</div>
+      <div class="card-ex">"Ze was een uitblinker in haar klas en won een prijs voor haar onderzoek."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">universum, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/universum/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het geheel van alles wat bestaat; het heelal</div>
+      <div class="card-ex">"Het universum is zo groot dat we de grenzen ervan niet kennen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">verbeelding, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/verbeelding/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het vermogen om dingen te bedenken die niet echt zijn; fantasie</div>
+      <div class="card-ex">"De ruimtevaart spreekt tot de verbeelding van mensen over de hele wereld."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">vergiftiging, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/vergiftiging/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het ziek worden door giftige stoffen</div>
+      <div class="card-ex">"Bij een ruimtewandeling kan blootstelling aan straling leiden tot vergiftiging."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">vloeistof, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/vloeistof/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een stof die vloeit, zoals water of olie</div>
+      <div class="card-ex">"Op Mars zijn sporen gevonden van bevroren vloeistof onder het oppervlak."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">vulkaan, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/vulkaan/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een berg waaruit lava, as en gassen uitbarsten</div>
+      <div class="card-ex">"De grootste vulkaan in het zonnestelsel staat op de planeet Mars."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">wijk, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/wijk/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een deel van een stad of dorp met eigen karakter</div>
+      <div class="card-ex">"In de wijk rondom het ruimtevaartcentrum wonen veel wetenschappers."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">zoektocht, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/zoektocht/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een systematische poging om iets of iemand te vinden</div>
+      <div class="card-ex">"De zoektocht naar buitenaards leven duurt al meer dan vijftig jaar."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">zonnestelsel, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/zonnestelsel/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">de zon met alle planeten en hemellichamen die eromheen draaien</div>
+      <div class="card-ex">"Ons zonnestelsel telt acht planeten."</div>
+    </div>
+    <div class="section-heading">Verbindingen</div>
+    
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">actief zijn</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/actief+zijn/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">bezig zijn; iets doen; in beweging zijn</div>
+      <div class="card-ex">"De vulkaan was nog actief en kon elk moment uitbarsten."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">jacht maken op iets</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/jacht+maken+op/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">actief zoeken naar iets; proberen iets te vangen of te vinden</div>
+      <div class="card-ex">"Wetenschappers maken al jaren jacht op bewijs van buitenaards leven."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">tot nu toe</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/tot+nu+toe/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">tot op dit moment; in de periode die achter ons ligt</div>
+      <div class="card-ex">"Tot nu toe heeft geen enkel ruimtevaartuig leven op Mars gevonden."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">verre van</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/verre+van/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">helemaal niet; zeker niet</div>
+      <div class="card-ex">"De missie was verre van eenvoudig — er ging van alles mis."</div>
+    </div>
+    <div class="section-heading">Idioom</div>
+    
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">een vlucht nemen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/een+vlucht+nemen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">zich snel ontwikkelen; plotseling sterk groeien</div>
+      <div class="card-ex">"De ruimtevaartindustrie nam een vlucht na de eerste maanlanding."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">haarscherp</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/haarscherp/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">heel scherp en precies; zonder enige twijfel</div>
+      <div class="card-ex">"De beelden van de telescoop waren haarscherp."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">in stelling brengen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/in+stelling+brengen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">iets gebruiken of inzetten voor een bepaald doel</div>
+      <div class="card-ex">"Ze brachten de nieuwste telescoop in stelling om de ster te bestuderen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">op de drempel staan van iets</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/op+de+drempel+staan/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">aan het begin staan van iets nieuws of iets groots</div>
+      <div class="card-ex">"De mensheid staat op de drempel van een nieuw tijdperk in de ruimtevaart."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">zich als een vis in het water voelen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/als+een+vis+in+het+water/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">volkomen thuis zijn; zich volledig op zijn gemak voelen</div>
+      <div class="card-ex">"In de ruimte voelde de astronaut zich als een vis in het water."</div>
+    </div>
+  </div>
+  <div id="panel-quiz" class="panel">
+    <div id="quiz-root"></div>
+  </div>
+</div>
+<script>
+const ALL = [
+  { term:"ambitieus", def:"vol ambitie; iemand die graag veel wil bereiken", wrong:["helemaal niet; zeker niet","de toestand waarin je geen gewicht voelt, zoals in de ruimte","de laag van gassen rondom een planeet; ook: de sfeer op een plek"] },
+  { term:"arriveren", def:"aankomen op een bestemming", wrong:["een dichte nevel van kleine waterdruppels die het zicht belemmert","het sterrenstelsel waar onze zon deel van uitmaakt","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen"] },
+  { term:"atmosfeer, de", def:"de laag van gassen rondom een planeet; ook: de sfeer op een plek", wrong:["een poging waarbij je niet zeker weet of het lukt; een risico","een groep mensen die samen leven of iets delen","iets gebruiken of inzetten voor een bepaald doel"] },
+  { term:"bedienen", def:"iets besturen of gebruiken; ook: iemand van service voorzien", wrong:["een deel van een stad of dorp met eigen karakter","dromen of nadenken over iets wat niet echt is","bezig zijn; iets doen; in beweging zijn"] },
+  { term:"beuken", def:"hard en herhaaldelijk slaan of stoten", wrong:["langzaam; niet snel","de laag van gassen rondom een planeet; ook: de sfeer op een plek","aankomen op een bestemming"] },
+  { term:"buitenaards", def:"van buiten de aarde; niet van deze planeet afkomstig", wrong:["dromen of nadenken over iets wat niet echt is","een paal met een lamp die de openbare weg verlicht","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen"] },
+  { term:"fantaseren", def:"dromen of nadenken over iets wat niet echt is", wrong:["een stof die vloeit, zoals water of olie","actief zoeken naar iets; proberen iets te vangen of te vinden","aankomen op een bestemming"] },
+  { term:"gemeenschap, de", def:"een groep mensen die samen leven of iets delen", wrong:["een systematische poging om iets of iemand te vinden","het afvuren of opstijgen van een raket of ruimtevaartuig","volkomen thuis zijn; zich volledig op zijn gemak voelen"] },
+  { term:"gewichtloosheid, de", def:"de toestand waarin je geen gewicht voelt, zoals in de ruimte", wrong:["zich snel ontwikkelen; plotseling sterk groeien","aan het begin staan van iets nieuws of iets groots","een deel van een stad of dorp met eigen karakter"] },
+  { term:"gok, de", def:"een poging waarbij je niet zeker weet of het lukt; een risico", wrong:["je best doen om iets te bereiken; ergens naar verlangen","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen","iemand die ergens uitzonderlijk goed in is"] },
+  { term:"instorten", def:"plotseling invallen of ineenzakken; ook: emotioneel bezwijken", wrong:["bezig zijn; iets doen; in beweging zijn","een dichte nevel van kleine waterdruppels die het zicht belemmert","vol ambitie; iemand die graag veel wil bereiken"] },
+  { term:"jacht, de", def:"het actief zoeken en achtervolgen van iets of iemand", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","aan het begin staan van iets nieuws of iets groots","langzaam; niet snel"] },
+  { term:"koepel, de", def:"een ronde, gewelfde dakconstructie; ook: een beschermende bol", wrong:["vertrekken; ook: aftreden uit een functie","een dichte nevel van kleine waterdruppels die het zicht belemmert","een poging waarbij je niet zeker weet of het lukt; een risico"] },
+  { term:"lancering, de", def:"het afvuren of opstijgen van een raket of ruimtevaartuig", wrong:["een paal met een lamp die de openbare weg verlicht","vertrekken; ook: aftreden uit een functie","dromen of nadenken over iets wat niet echt is"] },
+  { term:"lantaarnpaal, de", def:"een paal met een lamp die de openbare weg verlicht", wrong:["van buiten de aarde; niet van deze planeet afkomstig","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","dromen of nadenken over iets wat niet echt is"] },
+  { term:"leefbaar", def:"geschikt om in te leven; aangenaam en veilig genoeg om te bewonen", wrong:["groter worden door druk of vloeistof; opblazen","actief zoeken naar iets; proberen iets te vangen of te vinden","fout lopen; niet goed gaan zoals gepland"] },
+  { term:"melkweg, de", def:"het sterrenstelsel waar onze zon deel van uitmaakt", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek","het geheel van alles wat bestaat; het heelal","een deel van een stad of dorp met eigen karakter"] },
+  { term:"misgaan*", def:"fout lopen; niet goed gaan zoals gepland", wrong:["een groep mensen die samen leven of iets delen","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","van buiten de aarde; niet van deze planeet afkomstig"] },
+  { term:"mist, de", def:"een dichte nevel van kleine waterdruppels die het zicht belemmert", wrong:["een systematische poging om iets of iemand te vinden","een groot, angstaanjagend wezen; ook: iets enorms en gevaarlijks","helemaal niet; zeker niet"] },
+  { term:"monster, het", def:"een groot, angstaanjagend wezen; ook: iets enorms en gevaarlijks", wrong:["tot op dit moment; in de periode die achter ons ligt","het reizen door de ruimte met raketten en ruimtevaartuigen","de zon met alle planeten en hemellichamen die eromheen draaien"] },
+  { term:"nieuwsgierig", def:"vol verlangen om iets te weten of te ontdekken", wrong:["een ronde, gewelfde dakconstructie; ook: een beschermende bol","volkomen thuis zijn; zich volledig op zijn gemak voelen","hard en herhaaldelijk slaan of stoten"] },
+  { term:"onuitputtelijk", def:"zo groot dat het nooit opraakt; oneindig", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek","heel scherp en precies; zonder enige twijfel","een paal met een lamp die de openbare weg verlicht"] },
+  { term:"opstappen", def:"vertrekken; ook: aftreden uit een functie", wrong:["een dichte nevel van kleine waterdruppels die het zicht belemmert","van buiten de aarde; niet van deze planeet afkomstig","een paal met een lamp die de openbare weg verlicht"] },
+  { term:"opzwellen*", def:"groter worden door druk of vloeistof; opblazen", wrong:["dromen of nadenken over iets wat niet echt is","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","fout lopen; niet goed gaan zoals gepland"] },
+  { term:"ruimtevaart, de", def:"het reizen door de ruimte met raketten en ruimtevaartuigen", wrong:["het geheel van alles wat bestaat; het heelal","helemaal niet; zeker niet","groter worden door druk of vloeistof; opblazen"] },
+  { term:"schepping, de", def:"iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","groter worden door druk of vloeistof; opblazen","vertrekken; ook: aftreden uit een functie"] },
+  { term:"scherp", def:"heel duidelijk en precies; ook: snijdend of puntig", wrong:["het afvuren of opstijgen van een raket of ruimtevaartuig","heel scherp en precies; zonder enige twijfel","fout lopen; niet goed gaan zoals gepland"] },
+  { term:"streven", def:"je best doen om iets te bereiken; ergens naar verlangen", wrong:["aan het begin staan van iets nieuws of iets groots","iets gebruiken of inzetten voor een bepaald doel","zich snel ontwikkelen; plotseling sterk groeien"] },
+  { term:"traag", def:"langzaam; niet snel", wrong:["hard en herhaaldelijk slaan of stoten","actief zoeken naar iets; proberen iets te vangen of te vinden","helemaal niet; zeker niet"] },
+  { term:"uitblinker, de", def:"iemand die ergens uitzonderlijk goed in is", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","een deel van een stad of dorp met eigen karakter","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen"] },
+  { term:"universum, het", def:"het geheel van alles wat bestaat; het heelal", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","iemand die ergens uitzonderlijk goed in is","het reizen door de ruimte met raketten en ruimtevaartuigen"] },
+  { term:"verbeelding, de", def:"het vermogen om dingen te bedenken die niet echt zijn; fantasie", wrong:["fout lopen; niet goed gaan zoals gepland","helemaal niet; zeker niet","aan het begin staan van iets nieuws of iets groots"] },
+  { term:"vergiftiging, de", def:"het ziek worden door giftige stoffen", wrong:["een systematische poging om iets of iemand te vinden","een paal met een lamp die de openbare weg verlicht","iets gebruiken of inzetten voor een bepaald doel"] },
+  { term:"vloeistof, de", def:"een stof die vloeit, zoals water of olie", wrong:["vol verlangen om iets te weten of te ontdekken","iets besturen of gebruiken; ook: iemand van service voorzien","een paal met een lamp die de openbare weg verlicht"] },
+  { term:"vulkaan, de", def:"een berg waaruit lava, as en gassen uitbarsten", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek","vol verlangen om iets te weten of te ontdekken","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is"] },
+  { term:"wijk, de", def:"een deel van een stad of dorp met eigen karakter", wrong:["fout lopen; niet goed gaan zoals gepland","hard en herhaaldelijk slaan of stoten","het afvuren of opstijgen van een raket of ruimtevaartuig"] },
+  { term:"zoektocht, de", def:"een systematische poging om iets of iemand te vinden", wrong:["de zon met alle planeten en hemellichamen die eromheen draaien","volkomen thuis zijn; zich volledig op zijn gemak voelen","vol verlangen om iets te weten of te ontdekken"] },
+  { term:"zonnestelsel, het", def:"de zon met alle planeten en hemellichamen die eromheen draaien", wrong:["het afvuren of opstijgen van een raket of ruimtevaartuig","zich snel ontwikkelen; plotseling sterk groeien","het vermogen om dingen te bedenken die niet echt zijn; fantasie"] },
+  { term:"actief zijn", def:"bezig zijn; iets doen; in beweging zijn", wrong:["iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","zich snel ontwikkelen; plotseling sterk groeien","iemand die ergens uitzonderlijk goed in is"] },
+  { term:"jacht maken op iets", def:"actief zoeken naar iets; proberen iets te vangen of te vinden", wrong:["een poging waarbij je niet zeker weet of het lukt; een risico","het sterrenstelsel waar onze zon deel van uitmaakt","de toestand waarin je geen gewicht voelt, zoals in de ruimte"] },
+  { term:"tot nu toe", def:"tot op dit moment; in de periode die achter ons ligt", wrong:["geschikt om in te leven; aangenaam en veilig genoeg om te bewonen","een deel van een stad of dorp met eigen karakter","een berg waaruit lava, as en gassen uitbarsten"] },
+  { term:"verre van", def:"helemaal niet; zeker niet", wrong:["het sterrenstelsel waar onze zon deel van uitmaakt","de zon met alle planeten en hemellichamen die eromheen draaien","je best doen om iets te bereiken; ergens naar verlangen"] },
+  { term:"een vlucht nemen", def:"zich snel ontwikkelen; plotseling sterk groeien", wrong:["de zon met alle planeten en hemellichamen die eromheen draaien","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","groter worden door druk of vloeistof; opblazen"] },
+  { term:"haarscherp", def:"heel scherp en precies; zonder enige twijfel", wrong:["een paal met een lamp die de openbare weg verlicht","de toestand waarin je geen gewicht voelt, zoals in de ruimte","het ziek worden door giftige stoffen"] },
+  { term:"in stelling brengen", def:"iets gebruiken of inzetten voor een bepaald doel", wrong:["het vermogen om dingen te bedenken die niet echt zijn; fantasie","van buiten de aarde; niet van deze planeet afkomstig","iets besturen of gebruiken; ook: iemand van service voorzien"] },
+  { term:"op de drempel staan van iets", def:"aan het begin staan van iets nieuws of iets groots", wrong:["een groep mensen die samen leven of iets delen","een poging waarbij je niet zeker weet of het lukt; een risico","tot op dit moment; in de periode die achter ons ligt"] },
+  { term:"zich als een vis in het water voelen", def:"volkomen thuis zijn; zich volledig op zijn gemak voelen", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","heel scherp en precies; zonder enige twijfel","je best doen om iets te bereiken; ergens naar verlangen"] }
+];
+function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+let questions=[], current=0, score=0;
+function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
+function render(){
+  const root=document.getElementById('quiz-root');
+  if(current>=questions.length){ renderScore(); return; }
+  const q=questions[current];
+  const opts=shuffle([q.def,...q.wrong]);
+  const pct=Math.round((current/questions.length)*100);
+  root.innerHTML=`
+    <div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="quiz-card">
+      <div class="quiz-label">Wat betekent:</div>
+      <div class="quiz-word">${q.term}</div>
+      <div class="options">${opts.map(o=>`<button class="opt" onclick="check(this,'${o.replace(/'/g,"\'")}', ${o===q.def})">${o}</button>`).join('')}</div>
+      <div class="feedback" id="fb" style="display:none"></div>
+      <button class="next-btn" id="nxt" style="display:none" onclick="next()">Volgende →</button>
+    </div>`;
+}
+function check(btn,ans,correct){
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb'), nxt=document.getElementById('nxt');
+  if(correct){ btn.classList.add('correct'); fb.className='feedback ok'; fb.textContent='✓ Correct!'; score++; }
+  else { btn.classList.add('wrong'); const rb=[...document.querySelectorAll('.opt')].find(b=>b.textContent===questions[current].def); if(rb) rb.classList.add('correct'); fb.className='feedback err'; fb.textContent='✗ Niet correct.'; }
+  fb.style.display='block'; nxt.style.display='block'; current++;
+}
+function next(){ render(); }
+function renderScore(){
+  const pct=Math.round((score/questions.length)*100);
+  const msg=pct===100?"Uitstekend! Je kent alle woorden van hoofdstuk 7.2.":pct>=70?"Goed gedaan! Herhaal de woorden die je miste nog een keer.":"Ga nog een keer door de woordenlijst en probeer daarna opnieuw.";
+  document.getElementById('quiz-root').innerHTML=`<div class="score-wrap"><div class="score-big">${score}/${questions.length}</div><div class="score-sub">${pct}% correct</div><div class="score-msg">${msg}</div><button class="restart" onclick="buildQuiz()">↺ Opnieuw</button></div>`;
+}
+function showTab(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='quiz'&&questions.length===0) buildQuiz();
+}
+</script>
+</body>
+</html>
