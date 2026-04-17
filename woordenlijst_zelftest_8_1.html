@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code+ Deel 4 – Hoofdstuk 8.1 | Woordenschat</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --sand: #F5F0E8;
+    --ink: #1A1612;
+    --ink-muted: #5C544A;
+    --ink-faint: #9C9080;
+    --accent: #2D5F4F;
+    --accent-light: #E4EDE9;
+    --accent2: #8B3A2A;
+    --accent2-light: #F5EAE6;
+    --gold: #C4922A;
+    --gold-light: #FAF2E0;
+    --border: rgba(26,22,18,0.12);
+    --tag-woord-bg: #E4EDE9;
+    --tag-woord-fg: #1A3D30;
+    --tag-verb-bg: #FAF2E0;
+    --tag-verb-fg: #5A3800;
+    --tag-idioom-bg: #F5EAE6;
+    --tag-idioom-fg: #5A1A0A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: var(--ink);
+    color: #F5F0E8;
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    border: 40px solid rgba(245,240,232,0.06);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 30%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 50px solid rgba(245,240,232,0.04);
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+    margin-bottom: 0.5rem;
+  }
+  .header-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: #F5F0E8;
+  }
+  .header-title strong {
+    font-weight: 600;
+    font-style: italic;
+  }
+  .header-meta {
+    margin-top: 1rem;
+    font-size: 13px;
+    color: rgba(245,240,232,0.45);
+  }
+
+
+  .header-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(245,240,232,0.4);
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 2;
+  }
+  /* Nav tabs */
+  .tab-nav {
+    background: var(--ink);
+    border-top: 1px solid rgba(245,240,232,0.1);
+    display: flex;
+    gap: 0;
+    padding: 0 2rem;
+  }
+  .tab-btn {
+    padding: 0.8rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: rgba(245,240,232,0.45);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn:hover { color: rgba(245,240,232,0.75); }
+  .tab-btn.active { color: #F5F0E8; border-bottom-color: var(--gold); }
+
+  /* Content */
+  .content { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Section heading */
+  .section-heading {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-heading:first-child { margin-top: 0; }
+
+  /* Word cards */
+  .word-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 10px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .word-card:hover { border-color: rgba(26,22,18,0.25); box-shadow: 0 2px 12px rgba(26,22,18,0.06); }
+
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .card-left { flex: 1; min-width: 0; }
+  .card-term {
+    font-family: 'Source Serif 4', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .card-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 99px;
+  }
+  .tag-woord  { background: var(--tag-woord-bg);  color: var(--tag-woord-fg); }
+  .tag-verb   { background: var(--tag-verb-bg);   color: var(--tag-verb-fg); }
+  .tag-idioom { background: var(--tag-idioom-bg); color: var(--tag-idioom-fg); }
+
+  .sound-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 3px 8px;
+    border: 1px solid var(--accent-light);
+    border-radius: 99px;
+    background: var(--accent-light);
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .sound-link:hover { background: #d0e4dc; }
+  .sound-link svg { width: 11px; height: 11px; fill: var(--accent); flex-shrink: 0; }
+
+  .card-def {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.55;
+  }
+  .card-ex {
+    font-family: 'Source Serif 4', serif;
+    font-size: 13.5px;
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+    line-height: 1.6;
+  }
+
+  /* Quiz */
+  .quiz-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 13px; color: var(--ink-muted); }
+  .progress-track { height: 3px; background: var(--border); border-radius: 99px; margin-bottom: 1.5rem; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.35s ease; }
+
+  .quiz-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .quiz-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px; }
+  .quiz-word {
+    font-family: 'Source Serif 4', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+  }
+  .options { display: grid; gap: 8px; }
+  .opt {
+    background: var(--sand);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1.45;
+  }
+  .opt:hover:not(:disabled) { background: #EDE8DF; border-color: rgba(26,22,18,0.2); }
+  .opt.correct { background: #E4EDE9; border-color: #2D5F4F; color: #1A3D30; }
+  .opt.wrong   { background: #F5EAE6; border-color: #8B3A2A; color: #5A1A0A; }
+  .opt:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 1rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .feedback.ok  { background: #E4EDE9; color: #1A3D30; }
+  .feedback.err { background: #F5EAE6; color: #5A1A0A; }
+
+  .next-btn {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .next-btn:hover { background: #EDE8DF; }
+
+  .score-wrap {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .score-big {
+    font-family: 'Source Serif 4', serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .score-sub { font-size: 14px; color: var(--ink-muted); margin-top: 6px; }
+  .score-msg { font-size: 15px; color: var(--ink); margin-top: 1.25rem; line-height: 1.5; }
+  .restart {
+    margin-top: 1.5rem;
+    padding: 10px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .restart:hover { background: #EDE8DF; }
+
+  @media (max-width: 520px) {
+    .tab-btn { padding: 0.8rem 0.8rem; font-size: 12px; }
+    .card-term { font-size: 15px; }
+    .quiz-word { font-size: 18px; }
+  }
+
+</style>
+</head>
+<body>
+  <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
+    <a href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/overzicht_code4.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;color:#2d3a8c;border:2px solid #2d3a8c;border-radius:50px;padding:0.4rem 1rem;font-family:inherit;font-size:0.82rem;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgba(45,58,140,0.15);transition:all 0.15s;">← Hoofdmenu</a>
+  </div>
+<header>
+  <div class="header-eyebrow">Code+ · Deel 4 · Hoofdstuk 8.1 en introductie</div>
+  <h1 class="header-title">Woordenschat<br><strong>Sinterklaas</strong></h1>
+  <p class="header-meta">32 woorden &nbsp;·&nbsp; 7 verbindingen &nbsp;·&nbsp; 6 idioomuitdrukkingen</p>
+  <img class="header-avatar" src="data:image/jpeg;base64,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" alt="docent">
+</header>
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('lijst',this)">Woordenlijst</button>
+  <button class="tab-btn" onclick="showTab('quiz',this)">Zelftest</button>
+</nav>
+<div class="content">
+  <div id="panel-lijst" class="panel active">
+    <div class="section-heading">Woordenschat</div>
+    
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">afspreken*</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/afspreken/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een tijd of afspraak met iemand vastleggen</div>
+      <div class="card-ex">"Ze spraken af om elkaar de volgende dag te ontmoeten."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">baseren op</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/baseren+op/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets op iets anders gronden of steunen</div>
+      <div class="card-ex">"Het verhaal van Sinterklaas is gebaseerd op de legende van de heilige Nicolaas."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">bezetten</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/bezetten/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een plek innemen of in bezit nemen</div>
+      <div class="card-ex">"De activisten bezetten het gebouw als protest."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">bisschop, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/bisschop/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een hoge geestelijke in de christelijke kerk</div>
+      <div class="card-ex">"De bisschop speelt een belangrijke rol in het Sinterklaasfeest."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">daad, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/daad/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een handeling of actie, vaak met een bepaald doel</div>
+      <div class="card-ex">"Het was een moedige daad om voor zijn mening uit te komen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">dimensie, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/dimensie/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een aspect of laag van iets; ook: een afmeting</div>
+      <div class="card-ex">"Het debat over Zwarte Piet heeft een belangrijke maatschappelijke dimensie."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">emmer, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/emmer/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een open bak met een handvat, gebruikt om vloeistoffen te dragen</div>
+      <div class="card-ex">"Sinterklaas gooit cadeautjes in een emmer en laat ze zakken via de schoorsteen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">financieren</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/financieren/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">geld verstrekken voor iets</div>
+      <div class="card-ex">"De overheid financiert een deel van de culturele festiviteiten."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">geheim, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/geheim/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden</div>
+      <div class="card-ex">"Het recept was een goed bewaard geheim van de bakker."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">gordijn, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/gordijn/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een lap stof voor een raam of als afsluiting</div>
+      <div class="card-ex">"Het kind keek stiekem achter het gordijn of Sinterklaas al in de straat liep."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">grijpen*</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/grijpen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">snel en stevig vastpakken</div>
+      <div class="card-ex">"De helper greep snel de zak met cadeautjes."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">koloniaal</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/koloniaal/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">wat te maken heeft met een kolonie of kolonisatie</div>
+      <div class="card-ex">"Het Sinterklaasfeest heeft koloniale wortels die nu veel discussie oproepen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">ondergeschikt</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/ondergeschikt/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">minder belangrijk; in een lagere positie</div>
+      <div class="card-ex">"In het debat werd het historische aspect ondergeschikt gemaakt aan de emoties."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">opgewonden</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/opgewonden/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">vol opwinding en enthousiasme; zeer gespannen van verwachting</div>
+      <div class="card-ex">"De kinderen waren opgewonden bij het horen van Sinterklaasnieuws."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">optocht, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/optocht/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een stoet mensen die door de straat trekt</div>
+      <div class="card-ex">"De intocht van Sinterklaas is een grote optocht die elk jaar veel mensen trekt."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">opwinding, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/opwinding/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een gevoel van spanning en enthousiasme</div>
+      <div class="card-ex">"De opwinding onder de kinderen was groot toen de boot in zicht kwam."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">paard, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/paard/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een groot dier dat gebruikt wordt om op te rijden of mee te werken</div>
+      <div class="card-ex">"Sinterklaas rijdt op een wit paard over de daken."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">particulier</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/particulier/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">van of voor een individu; niet openbaar of overheids-</div>
+      <div class="card-ex">"De intocht werd mede gefinancierd door particuliere sponsoren."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">pedagogisch</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/pedagogisch/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">wat te maken heeft met opvoeding en onderwijs</div>
+      <div class="card-ex">"Sommige ouders vragen zich af of het Sinterklaasfeest pedagogisch verantwoord is."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">pers, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/pers/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">de media; kranten, tijdschriften en journalisten</div>
+      <div class="card-ex">"De pers besteedde veel aandacht aan het debat over Zwarte Piet."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">plagen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/plagen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iemand pesterig of speels lastigvallen</div>
+      <div class="card-ex">"De Pieten plagen de kinderen tijdens het feest."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">pop, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/pop/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een speelgoedfiguur in de vorm van een mens of dier</div>
+      <div class="card-ex">"Ze had al jaren een oude pop die haar als kind was gegeven door Sinterklaas."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">rijm, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/rijm/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">woorden die op elkaar rijmen; ook: een gedichtje</div>
+      <div class="card-ex">"Bij elk cadeau hoort een grappig rijm over de ontvanger."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">roet, het</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/roet/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">zwart poeder dat achterblijft na verbranding</div>
+      <div class="card-ex">"De Pieten hebben roet op hun gezicht omdat ze door de schoorsteen komen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">schoorsteen, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/schoorsteen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een pijp in een gebouw waardoor rook naar buiten gaat</div>
+      <div class="card-ex">"Sinterklaas gooit de cadeautjes door de schoorsteen naar binnen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">sjouwen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/sjouwen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">zware dingen moeizaam dragen of slepen</div>
+      <div class="card-ex">"De helpers moesten de grote zak met cadeautjes door de straat sjouwen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">slavernij, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/slavernij/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">het systeem waarbij mensen als eigendom worden behandeld en gedwongen werken</div>
+      <div class="card-ex">"De discussie over Zwarte Piet is verbonden met het verleden van slavernij."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">stout</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/stout/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">ongehoorzaam en baldadig gedrag van een kind</div>
+      <div class="card-ex">"Stoute kinderen worden volgens de legende meegenomen in de zak van Sinterklaas."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">tak, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/tak/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een vertakking van een boom; ook: een roe of slaag</div>
+      <div class="card-ex">"Vroeger dreigde Sinterklaas stoute kinderen met de tak."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">veeg, de</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/veeg/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">een streep of vlek; ook: een klap of slag</div>
+      <div class="card-ex">"De Pieten hebben vegen roet op hun gezicht."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">wenken</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/wenken/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">iemand met een gebaar naar je toe roepen</div>
+      <div class="card-ex">"De Sint wenkde een kind naar voren om een cadeau te ontvangen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">werkelijk</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/werkelijk/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-woord">woord</span>
+        </div>
+      </div>
+      <div class="card-def">echt; in werkelijkheid; daadwerkelijk</div>
+      <div class="card-ex">"Is Sinterklaas werkelijk een kindervriend of heeft het feest een donkere kant?"</div>
+    </div>
+    <div class="section-heading">Verbindingen</div>
+    
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">aan iets komen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/aan+iets+komen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">iets in bezit krijgen; ergens bij kunnen</div>
+      <div class="card-ex">"Het is moeilijk om aan goede informatie over de geschiedenis van het feest te komen."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">de bel gaat</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/de+bel+gaat/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">er wordt aangebeld; de deurbel klinkt</div>
+      <div class="card-ex">"Opeens ging de bel en stond er een Piet voor de deur."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">de schoen zetten</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/de+schoen+zetten/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">je schoen neerzetten zodat Sinterklaas er een cadeau in kan doen</div>
+      <div class="card-ex">"De kinderen zetten hun schoen voor het haardvuur."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">in verband brengen met</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/in+verband+brengen+met/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">een verbinding leggen tussen twee dingen</div>
+      <div class="card-ex">"Critici brengen de figuur van Zwarte Piet in verband met slavernij."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">lootjes trekken</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/lootjes+trekken/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt</div>
+      <div class="card-ex">"Op kantoor trekken ze elk jaar lootjes voor de kerstpakketten."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">uit naam van iemand</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/uit+naam+van+iemand/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">namens iemand anders handelen of spreken</div>
+      <div class="card-ex">"De burgemeester sprak uit naam van de hele gemeente."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">uitgroeien tot iets/iemand</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/uitgroeien+tot/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-verb">verbinding</span>
+        </div>
+      </div>
+      <div class="card-def">langzaam iets groters of belanrijkers worden</div>
+      <div class="card-ex">"Het Sinterklaasfeest is uitgegroeid tot een nationale traditie."</div>
+    </div>
+    <div class="section-heading">Idioom</div>
+    
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">binnen de perken houden</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/binnen+de+perken+houden/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">ervoor zorgen dat iets niet te erg of te ver gaat</div>
+      <div class="card-ex">"De organisatie probeerde de discussie binnen de perken te houden."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">de deur uit (doen/zijn)</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/de+deur+uit/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">versturen of vertrekken</div>
+      <div class="card-ex">"De uitnodigingen moesten snel de deur uit zodat iedereen op tijd wist wanneer het feest was."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">het loopt storm</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/het+loopt+storm/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">er komen heel veel reacties of mensen tegelijk</div>
+      <div class="card-ex">"Het loopt storm bij de kaartverkoop voor de Sinterklaasshow."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">in het teken van iets/iemand</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/in+het+teken+van/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">het onderwerp of thema is iets of iemand</div>
+      <div class="card-ex">"De avond stond in het teken van het Sinterklaasfeest."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">onder vuur liggen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/onder+vuur+liggen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">veel kritiek of aanvallen krijgen</div>
+      <div class="card-ex">"Het feest ligt al jaren onder vuur vanwege de figuur van Zwarte Piet."</div>
+    </div>
+    <div class="word-card">
+      <div class="card-top">
+        <div class="card-left"><div class="card-term">op (een idee) komen</div></div>
+        <div class="card-right">
+          <a class="sound-link" href="https://forvo.com/word/op+een+idee+komen/#nl" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>Uitspraak</a>
+          <span class="tag tag-idioom">idioom</span>
+        </div>
+      </div>
+      <div class="card-def">iets bedenken; een inval krijgen</div>
+      <div class="card-ex">"Hoe is iemand ooit op het idee gekomen om cadeautjes door de schoorsteen te gooien?"</div>
+    </div>
+  </div>
+  <div id="panel-quiz" class="panel">
+    <div id="quiz-root"></div>
+  </div>
+</div>
+<script>
+const ALL = [
+  { term:"afspreken*", def:"een tijd of afspraak met iemand vastleggen", wrong:["er komen heel veel reacties of mensen tegelijk","iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden","een plek innemen of in bezit nemen"] },
+  { term:"baseren op", def:"iets op iets anders gronden of steunen", wrong:["wat te maken heeft met opvoeding en onderwijs","een groot dier dat gebruikt wordt om op te rijden of mee te werken","een gevoel van spanning en enthousiasme"] },
+  { term:"bezetten", def:"een plek innemen of in bezit nemen", wrong:["een lap stof voor een raam of als afsluiting","geld verstrekken voor iets","iets bedenken; een inval krijgen"] },
+  { term:"bisschop, de", def:"een hoge geestelijke in de christelijke kerk", wrong:["een verbinding leggen tussen twee dingen","een open bak met een handvat, gebruikt om vloeistoffen te dragen","langzaam iets groters of belanrijkers worden"] },
+  { term:"daad, de", def:"een handeling of actie, vaak met een bepaald doel", wrong:["een vertakking van een boom; ook: een roe of slaag","een plek innemen of in bezit nemen","iets op iets anders gronden of steunen"] },
+  { term:"dimensie, de", def:"een aspect of laag van iets; ook: een afmeting", wrong:["een open bak met een handvat, gebruikt om vloeistoffen te dragen","een stoet mensen die door de straat trekt","een gevoel van spanning en enthousiasme"] },
+  { term:"emmer, de", def:"een open bak met een handvat, gebruikt om vloeistoffen te dragen", wrong:["er wordt aangebeld; de deurbel klinkt","ervoor zorgen dat iets niet te erg of te ver gaat","iets op iets anders gronden of steunen"] },
+  { term:"financieren", def:"geld verstrekken voor iets", wrong:["namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt","vol opwinding en enthousiasme; zeer gespannen van verwachting","het onderwerp of thema is iets of iemand"] },
+  { term:"geheim, het", def:"iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden", wrong:["een verbinding leggen tussen twee dingen","ongehoorzaam en baldadig gedrag van een kind","een gevoel van spanning en enthousiasme"] },
+  { term:"gordijn, het", def:"een lap stof voor een raam of als afsluiting", wrong:["een streep of vlek; ook: een klap of slag","langzaam iets groters of belanrijkers worden","wat te maken heeft met opvoeding en onderwijs"] },
+  { term:"grijpen*", def:"snel en stevig vastpakken", wrong:["een tijd of afspraak met iemand vastleggen","wat te maken heeft met een kolonie of kolonisatie","een vertakking van een boom; ook: een roe of slaag"] },
+  { term:"koloniaal", def:"wat te maken heeft met een kolonie of kolonisatie", wrong:["woorden die op elkaar rijmen; ook: een gedichtje","wat te maken heeft met opvoeding en onderwijs","een lap stof voor een raam of als afsluiting"] },
+  { term:"ondergeschikt", def:"minder belangrijk; in een lagere positie", wrong:["een stoet mensen die door de straat trekt","woorden die op elkaar rijmen; ook: een gedichtje","een open bak met een handvat, gebruikt om vloeistoffen te dragen"] },
+  { term:"opgewonden", def:"vol opwinding en enthousiasme; zeer gespannen van verwachting", wrong:["een aspect of laag van iets; ook: een afmeting","zware dingen moeizaam dragen of slepen","een open bak met een handvat, gebruikt om vloeistoffen te dragen"] },
+  { term:"optocht, de", def:"een stoet mensen die door de straat trekt", wrong:["zwart poeder dat achterblijft na verbranding","ervoor zorgen dat iets niet te erg of te ver gaat","van of voor een individu; niet openbaar of overheids-"] },
+  { term:"opwinding, de", def:"een gevoel van spanning en enthousiasme", wrong:["een plek innemen of in bezit nemen","iemand met een gebaar naar je toe roepen","een verbinding leggen tussen twee dingen"] },
+  { term:"paard, het", def:"een groot dier dat gebruikt wordt om op te rijden of mee te werken", wrong:["geld verstrekken voor iets","zware dingen moeizaam dragen of slepen","een aspect of laag van iets; ook: een afmeting"] },
+  { term:"particulier", def:"van of voor een individu; niet openbaar of overheids-", wrong:["namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt","de media; kranten, tijdschriften en journalisten","er komen heel veel reacties of mensen tegelijk"] },
+  { term:"pedagogisch", def:"wat te maken heeft met opvoeding en onderwijs", wrong:["versturen of vertrekken","een pijp in een gebouw waardoor rook naar buiten gaat","namens iemand anders handelen of spreken"] },
+  { term:"pers, de", def:"de media; kranten, tijdschriften en journalisten", wrong:["minder belangrijk; in een lagere positie","een handeling of actie, vaak met een bepaald doel","een plek innemen of in bezit nemen"] },
+  { term:"plagen", def:"iemand pesterig of speels lastigvallen", wrong:["veel kritiek of aanvallen krijgen","een stoet mensen die door de straat trekt","wat te maken heeft met opvoeding en onderwijs"] },
+  { term:"pop, de", def:"een speelgoedfiguur in de vorm van een mens of dier", wrong:["een aspect of laag van iets; ook: een afmeting","een stoet mensen die door de straat trekt","een open bak met een handvat, gebruikt om vloeistoffen te dragen"] },
+  { term:"rijm, het", def:"woorden die op elkaar rijmen; ook: een gedichtje", wrong:["zware dingen moeizaam dragen of slepen","van of voor een individu; niet openbaar of overheids-","iemand met een gebaar naar je toe roepen"] },
+  { term:"roet, het", def:"zwart poeder dat achterblijft na verbranding", wrong:["er komen heel veel reacties of mensen tegelijk","een pijp in een gebouw waardoor rook naar buiten gaat","snel en stevig vastpakken"] },
+  { term:"schoorsteen, de", def:"een pijp in een gebouw waardoor rook naar buiten gaat", wrong:["zwart poeder dat achterblijft na verbranding","woorden die op elkaar rijmen; ook: een gedichtje","vol opwinding en enthousiasme; zeer gespannen van verwachting"] },
+  { term:"sjouwen", def:"zware dingen moeizaam dragen of slepen", wrong:["veel kritiek of aanvallen krijgen","van of voor een individu; niet openbaar of overheids-","iets bedenken; een inval krijgen"] },
+  { term:"slavernij, de", def:"het systeem waarbij mensen als eigendom worden behandeld en gedwongen werken", wrong:["het onderwerp of thema is iets of iemand","een handeling of actie, vaak met een bepaald doel","ervoor zorgen dat iets niet te erg of te ver gaat"] },
+  { term:"stout", def:"ongehoorzaam en baldadig gedrag van een kind", wrong:["er komen heel veel reacties of mensen tegelijk","snel en stevig vastpakken","een verbinding leggen tussen twee dingen"] },
+  { term:"tak, de", def:"een vertakking van een boom; ook: een roe of slaag", wrong:["een gevoel van spanning en enthousiasme","snel en stevig vastpakken","iemand met een gebaar naar je toe roepen"] },
+  { term:"veeg, de", def:"een streep of vlek; ook: een klap of slag", wrong:["een pijp in een gebouw waardoor rook naar buiten gaat","van of voor een individu; niet openbaar of overheids-","er komen heel veel reacties of mensen tegelijk"] },
+  { term:"wenken", def:"iemand met een gebaar naar je toe roepen", wrong:["namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt","een stoet mensen die door de straat trekt","iets bedenken; een inval krijgen"] },
+  { term:"werkelijk", def:"echt; in werkelijkheid; daadwerkelijk", wrong:["iemand pesterig of speels lastigvallen","een hoge geestelijke in de christelijke kerk","een stoet mensen die door de straat trekt"] },
+  { term:"aan iets komen", def:"iets in bezit krijgen; ergens bij kunnen", wrong:["een plek innemen of in bezit nemen","iemand pesterig of speels lastigvallen","zware dingen moeizaam dragen of slepen"] },
+  { term:"de bel gaat", def:"er wordt aangebeld; de deurbel klinkt", wrong:["van of voor een individu; niet openbaar of overheids-","een handeling of actie, vaak met een bepaald doel","vol opwinding en enthousiasme; zeer gespannen van verwachting"] },
+  { term:"de schoen zetten", def:"je schoen neerzetten zodat Sinterklaas er een cadeau in kan doen", wrong:["namens iemand anders handelen of spreken","iemand pesterig of speels lastigvallen","vol opwinding en enthousiasme; zeer gespannen van verwachting"] },
+  { term:"in verband brengen met", def:"een verbinding leggen tussen twee dingen", wrong:["het onderwerp of thema is iets of iemand","echt; in werkelijkheid; daadwerkelijk","zware dingen moeizaam dragen of slepen"] },
+  { term:"lootjes trekken", def:"namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt", wrong:["het onderwerp of thema is iets of iemand","een streep of vlek; ook: een klap of slag","een lap stof voor een raam of als afsluiting"] },
+  { term:"uit naam van iemand", def:"namens iemand anders handelen of spreken", wrong:["een groot dier dat gebruikt wordt om op te rijden of mee te werken","iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden","een gevoel van spanning en enthousiasme"] },
+  { term:"uitgroeien tot iets/iemand", def:"langzaam iets groters of belanrijkers worden", wrong:["een verbinding leggen tussen twee dingen","je schoen neerzetten zodat Sinterklaas er een cadeau in kan doen","een groot dier dat gebruikt wordt om op te rijden of mee te werken"] },
+  { term:"binnen de perken houden", def:"ervoor zorgen dat iets niet te erg of te ver gaat", wrong:["namens iemand anders handelen of spreken","ongehoorzaam en baldadig gedrag van een kind","zware dingen moeizaam dragen of slepen"] },
+  { term:"de deur uit (doen/zijn)", def:"versturen of vertrekken", wrong:["zwart poeder dat achterblijft na verbranding","een stoet mensen die door de straat trekt","iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden"] },
+  { term:"het loopt storm", def:"er komen heel veel reacties of mensen tegelijk", wrong:["iets in bezit krijgen; ergens bij kunnen","echt; in werkelijkheid; daadwerkelijk","een aspect of laag van iets; ook: een afmeting"] },
+  { term:"in het teken van iets/iemand", def:"het onderwerp of thema is iets of iemand", wrong:["een hoge geestelijke in de christelijke kerk","geld verstrekken voor iets","een lap stof voor een raam of als afsluiting"] },
+  { term:"onder vuur liggen", def:"veel kritiek of aanvallen krijgen", wrong:["versturen of vertrekken","snel en stevig vastpakken","iets bedenken; een inval krijgen"] },
+  { term:"op (een idee) komen", def:"iets bedenken; een inval krijgen", wrong:["ongehoorzaam en baldadig gedrag van een kind","langzaam iets groters of belanrijkers worden","een handeling of actie, vaak met een bepaald doel"] }
+];
+function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+let questions=[], current=0, score=0;
+function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
+function render(){
+  const root=document.getElementById('quiz-root');
+  if(current>=questions.length){ renderScore(); return; }
+  const q=questions[current];
+  const opts=shuffle([q.def,...q.wrong]);
+  const pct=Math.round((current/questions.length)*100);
+  root.innerHTML=`<div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="quiz-card"><div class="quiz-label">Wat betekent:</div><div class="quiz-word">${q.term}</div><div class="options">${opts.map(o=>`<button class="opt" onclick="check(this,'${o.replace(/'/g,"\'")}', ${o===q.def})">${o}</button>`).join('')}</div><div class="feedback" id="fb" style="display:none"></div><button class="next-btn" id="nxt" style="display:none" onclick="next()">Volgende →</button></div>`;
+}
+function check(btn,ans,correct){
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb'), nxt=document.getElementById('nxt');
+  if(correct){ btn.classList.add('correct'); fb.className='feedback ok'; fb.textContent='✓ Correct!'; score++; }
+  else { btn.classList.add('wrong'); const rb=[...document.querySelectorAll('.opt')].find(b=>b.textContent===questions[current].def); if(rb) rb.classList.add('correct'); fb.className='feedback err'; fb.textContent='✗ Niet correct.'; }
+  fb.style.display='block'; nxt.style.display='block'; current++;
+}
+function next(){ render(); }
+function renderScore(){
+  const pct=Math.round((score/questions.length)*100);
+  const msg=pct===100?"Uitstekend! Je kent alle woorden van hoofdstuk 8.1.":pct>=70?"Goed gedaan! Herhaal de woorden die je miste nog een keer.":"Ga nog een keer door de woordenlijst en probeer daarna opnieuw.";
+  document.getElementById('quiz-root').innerHTML=`<div class="score-wrap"><div class="score-big">${score}/${questions.length}</div><div class="score-sub">${pct}% correct</div><div class="score-msg">${msg}</div><button class="restart" onclick="buildQuiz()">↺ Opnieuw</button></div>`;
+}
+function showTab(name,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='quiz'&&questions.length===0) buildQuiz();
+}
+</script>
+</body>
+</html>
