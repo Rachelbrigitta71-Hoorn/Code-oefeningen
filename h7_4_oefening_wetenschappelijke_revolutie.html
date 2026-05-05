@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H7.4 — De wetenschappelijke revolutie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1917;
+    --paper: #faf7f2;
+    --cream: #f0ebe0;
+    --rust: #9b3a1a;
+    --gold: #b8860b;
+    --muted: #6b6560;
+    --border: #d6cfc4;
+    --correct-bg: #d1fae5;
+    --correct: #065f46;
+    --wrong-bg: #fee2e2;
+    --wrong: #991b1b;
+    --highlight: #fef3c7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0 0.8rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .header-left h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .header-left .sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.2rem;
+  }
+  .badge {
+    background: var(--rust);
+    color: white;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  /* AVATAR */
+  .avatar-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+  .avatar-row img {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+  }
+  .avatar-speech {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .avatar-speech strong { color: var(--rust); }
+
+  /* VOCAB STRIP */
+  .vocab-strip {
+    margin-bottom: 1.8rem;
+  }
+  .vocab-strip h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+  }
+  .vocab-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .vocab-chip {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.8rem;
+    color: var(--rust);
+    font-weight: 600;
+    cursor: default;
+  }
+  .vocab-chip:hover {
+    background: var(--highlight);
+    border-color: var(--gold);
+  }
+
+  /* READING TEXT */
+  .reading-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .reading-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .reading-card p {
+    font-size: 0.97rem;
+    line-height: 1.85;
+    color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+  .reading-card p:last-child { margin-bottom: 0; }
+  .reading-card mark {
+    background: var(--highlight);
+    border-radius: 2px;
+    padding: 0 2px;
+    font-style: italic;
+  }
+
+  /* QUESTIONS */
+  .questions-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .question-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.2rem;
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rust);
+    min-width: 1.8rem;
+  }
+  .q-skill {
+    font-size: 0.72rem;
+    font-style: italic;
+    color: var(--muted);
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.15rem 0.6rem;
+  }
+  .q-skill strong {
+    color: var(--ink);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .q-text {
+    font-size: 0.94rem;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 0.9rem;
+    font-weight: 600;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 0.45rem; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 5px;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .option:hover { border-color: var(--gold); background: var(--highlight); }
+  .option input[type="radio"] { display: none; }
+  .option-letter {
+    font-weight: 700;
+    color: var(--muted);
+    font-size: 0.8rem;
+    min-width: 1.1rem;
+    padding-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .option.correct { background: var(--correct-bg); border-color: var(--correct); }
+  .option.correct .option-letter { color: var(--correct); }
+  .option.wrong { background: var(--wrong-bg); border-color: var(--wrong); }
+  .option.wrong .option-letter { color: var(--wrong); }
+  .option.selected-wrong { background: var(--wrong-bg); border-color: var(--wrong); }
+
+  .feedback {
+    display: none;
+    margin-top: 0.7rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--correct-bg); color: var(--correct); }
+  .feedback.nok { background: var(--wrong-bg); color: var(--wrong); }
+
+  /* SCORE */
+  .score-bar {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.4rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .score-label {
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--rust);
+  }
+  .reset-btn {
+    background: var(--rust);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.2rem;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .reset-btn:hover { background: #7a2d13; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    padding-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  @media (max-width: 480px) {
+    .reading-card { padding: 1.2rem 1rem; }
+    .question-card { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>De wetenschappelijke revolutie</h1>
+      <div class="sub">Code+ Deel 4 — Hoofdstuk 7.4 · Leesniveau B2</div>
+    </div>
+    <div class="badge">⏱ max. 20 min</div>
+  </div>
+
+  <!-- AVATAR -->
+  <div class="avatar-row">
+    <img src="https://i.imgur.com/placeholder.png"
+         onerror="this.style.display='none'; this.nextElementSibling.style.paddingLeft='0'"
+         alt="Docent avatar">
+    <div class="avatar-speech">
+      Lees de tekst goed. De woorden in <em>cursief</em> komen uit het woordenschatprogramma van H7.4.<br>
+      Beantwoord daarna de vijf vragen. Bij elke vraag staat <strong>wat je oefent</strong>.
+    </div>
+  </div>
+
+  <!-- VOCAB CHIPS -->
+  <div class="vocab-strip">
+    <h2>Woordenschat H7.4 in deze oefening</h2>
+    <div class="vocab-grid">
+      <span class="vocab-chip">de rivaal</span>
+      <span class="vocab-chip">de formule</span>
+      <span class="vocab-chip">de werkwijze</span>
+      <span class="vocab-chip">openbaar maken</span>
+      <span class="vocab-chip">de beschikking hebben over</span>
+      <span class="vocab-chip">zich beroepen op iets</span>
+      <span class="vocab-chip">onbetrouwbaar</span>
+      <span class="vocab-chip">doorvoeren</span>
+      <span class="vocab-chip">de rechterhand</span>
+      <span class="vocab-chip">daarentegen</span>
+    </div>
+  </div>
+
+  <!-- READING TEXT -->
+  <div class="reading-card">
+    <h2>📖 Leestekst — De wetenschappelijke revolutie</h2>
+
+    <p>
+      In de zeventiende eeuw maakten wetenschappers grote veranderingen door in de manier waarop zij de wereld bestudeerden.
+      Vroeger <mark>beriepen</mark> geleerden zich op de geschriften van Aristoteles.
+      Deze oude Griekse denker gold als het hoogste gezag, en wie het met hem oneens was, liep grote risico's.
+    </p>
+
+    <p>
+      Galileo Galilei koos een andere <mark>werkwijze</mark>: hij deed zelf experimenten en <mark>maakte</mark> zijn bevindingen <mark>openbaar</mark>.
+      Zijn grote <mark>rivaal</mark>, de Kerk, accepteerde dit niet zonder protest.
+      Toch zorgde Galilei ervoor dat een nieuwe <mark>formule</mark> voor het beschrijven van beweging breed bekend werd.
+    </p>
+
+    <p>
+      Isaac Newton had later <mark>de beschikking over</mark> al dat eerdere werk.
+      Hij <mark>voerde</mark> een nieuw systeem <mark>door</mark>: de wiskunde als taal van de natuur.
+      Newton was geen <mark>onbetrouwbare</mark> twijfelaar — hij was juist precies en methodisch.
+      Zijn assistent, zijn vaste <mark>rechterhand</mark>, hielp hem zijn boeken te publiceren.
+    </p>
+
+    <p>
+      Aristoteles vertrouwde op redeneren; Newton en Galilei vertrouwden <mark>daarentegen</mark> op meten en rekenen.
+      Zo legden zij samen de basis voor de moderne wetenschap.
+    </p>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="questions-section">
+    <h2>✏️ Vragen</h2>
+
+    <!-- Q1 -->
+    <div class="question-card" id="q1">
+      <div class="q-meta">
+        <span class="q-num">1.</span>
+        <span class="q-skill">Je oefent: <strong>niet exact zoals in de tekst, wel hetzelfde betekenis</strong></span>
+      </div>
+      <div class="q-text">Galileo Galilei koos een andere aanpak dan de traditionele geleerden. Wat bedoelt de tekst hiermee?</div>
+      <div class="options">
+        <label class="option" data-q="1" data-val="a">
+          <input type="radio" name="q1" value="a">
+          <span class="option-letter">A</span>
+          <span>Hij ging anders te werk: hij testte zijn ideeën in de praktijk en deelde de resultaten.</span>
+        </label>
+        <label class="option" data-q="1" data-val="b">
+          <input type="radio" name="q1" value="b">
+          <span class="option-letter">B</span>
+          <span>Hij deed precies hetzelfde als Aristoteles, maar sneller.</span>
+        </label>
+        <label class="option" data-q="1" data-val="c">
+          <input type="radio" name="q1" value="c">
+          <span class="option-letter">C</span>
+          <span>Hij schreef zijn boeken in het Latijn, in plaats van het Grieks.</span>
+        </label>
+        <label class="option" data-q="1" data-val="d">
+          <input type="radio" name="q1" value="d">
+          <span class="option-letter">D</span>
+          <span>Hij reisde door Europa om zijn formules te presenteren.</span>
+        </label>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card" id="q2">
+      <div class="q-meta">
+        <span class="q-num">2.</span>
+        <span class="q-skill">Je oefent: <strong>wel logisch, maar niet juist</strong></span>
+      </div>
+      <div class="q-text">Wat deed Newton met het werk van zijn voorgangers?</div>
+      <div class="options">
+        <label class="option" data-q="2" data-val="a">
+          <input type="radio" name="q2" value="a">
+          <span class="option-letter">A</span>
+          <span>Hij verwierp alle eerdere ontdekkingen en begon helemaal opnieuw.</span>
+        </label>
+        <label class="option" data-q="2" data-val="b">
+          <input type="radio" name="q2" value="b">
+          <span class="option-letter">B</span>
+          <span>Hij maakte gebruik van het eerdere werk en bouwde er een nieuw systeem op.</span>
+        </label>
+        <label class="option" data-q="2" data-val="c">
+          <input type="radio" name="q2" value="c">
+          <span class="option-letter">C</span>
+          <span>Hij publiceerde het werk van Galilei opnieuw, maar onder zijn eigen naam.</span>
+        </label>
+        <label class="option" data-q="2" data-val="d">
+          <input type="radio" name="q2" value="d">
+          <span class="option-letter">D</span>
+          <span>Hij kritiseerde het werk van zijn voorgangers publiekelijk.</span>
+        </label>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card" id="q3">
+      <div class="q-meta">
+        <span class="q-num">3.</span>
+        <span class="q-skill">Je oefent: <strong>de helft klopt</strong></span>
+      </div>
+      <div class="q-text">Welke uitspraak over Newton is volledig correct?</div>
+      <div class="options">
+        <label class="option" data-q="3" data-val="a">
+          <input type="radio" name="q3" value="a">
+          <span class="option-letter">A</span>
+          <span>Newton was precies en methodisch, en hij werkte altijd volledig alleen.</span>
+        </label>
+        <label class="option" data-q="3" data-val="b">
+          <input type="radio" name="q3" value="b">
+          <span class="option-letter">B</span>
+          <span>Newton voerde wiskunde in als taal van de natuur, en hij had een assistent die hem hielp publiceren.</span>
+        </label>
+        <label class="option" data-q="3" data-val="c">
+          <input type="radio" name="q3" value="c">
+          <span class="option-letter">C</span>
+          <span>Newton was de rivaal van Galilei en beriep zich nooit op diens werk.</span>
+        </label>
+        <label class="option" data-q="3" data-val="d">
+          <input type="radio" name="q3" value="d">
+          <span class="option-letter">D</span>
+          <span>Newton voerde nieuwe formules door en maakte zich daarmee onmogelijk bij de Kerk.</span>
+        </label>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card" id="q4">
+      <div class="q-meta">
+        <span class="q-num">4.</span>
+        <span class="q-skill">Je oefent: <strong>verkeerde relatie tussen twee juiste feiten</strong></span>
+      </div>
+      <div class="q-text">Waarom liep iemand vroeger risico als hij het oneens was met Aristoteles?</div>
+      <div class="options">
+        <label class="option" data-q="4" data-val="a">
+          <input type="radio" name="q4" value="a">
+          <span class="option-letter">A</span>
+          <span>Omdat Aristoteles zelf nog leefde en zijn <em>rivalen</em> strafte.</span>
+        </label>
+        <label class="option" data-q="4" data-val="b">
+          <input type="radio" name="q4" value="b">
+          <span class="option-letter">B</span>
+          <span>Omdat Aristoteles gold als het hoogste gezag, en kritiek daarop niet werd getolereerd.</span>
+        </label>
+        <label class="option" data-q="4" data-val="c">
+          <input type="radio" name="q4" value="c">
+          <span class="option-letter">C</span>
+          <span>Omdat Newton zijn werk al had <em>openbaar gemaakt</em>, waardoor Aristoteles populairder werd.</span>
+        </label>
+        <label class="option" data-q="4" data-val="d">
+          <input type="radio" name="q4" value="d">
+          <span class="option-letter">D</span>
+          <span>Omdat Galilei de <em>werkwijze</em> van Aristoteles openlijk aanviel en anderen bang maakte.</span>
+        </label>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card" id="q5">
+      <div class="q-meta">
+        <span class="q-num">5.</span>
+        <span class="q-skill">Je oefent: <strong>het tegenovergestelde</strong></span>
+      </div>
+      <div class="q-text">Welke uitspraak is het tegenovergestelde van wat de tekst zegt over Aristoteles vergeleken met Newton en Galilei?</div>
+      <div class="options">
+        <label class="option" data-q="5" data-val="a">
+          <input type="radio" name="q5" value="a">
+          <span class="option-letter">A</span>
+          <span>Aristoteles vertrouwde — net als Newton — op meten en experimenteren.</span>
+        </label>
+        <label class="option" data-q="5" data-val="b">
+          <input type="radio" name="q5" value="b">
+          <span class="option-letter">B</span>
+          <span>Aristoteles was ook een bekende wetenschapper in de zeventiende eeuw.</span>
+        </label>
+        <label class="option" data-q="5" data-val="c">
+          <input type="radio" name="q5" value="c">
+          <span class="option-letter">C</span>
+          <span>Newton en Galilei verwierpen het idee van formules.</span>
+        </label>
+        <label class="option" data-q="5" data-val="d">
+          <input type="radio" name="q5" value="d">
+          <span class="option-letter">D</span>
+          <span>Newton en Galilei beriepen zich uitsluitend op oude Griekse geschriften, niet op experimenten.</span>
+        </label>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+
+  </div><!-- /questions -->
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div>
+      <div class="score-label">Jouw score</div>
+      <div class="score-num" id="scoreDisplay">–</div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">↺ Opnieuw beginnen</button>
+  </div>
+
+  <div class="footer">
+    <span>Code+ Deel 4 · H7.4 · Woordenschatoefening</span>
+    <span>© ThiemeMeulenhoff 2018</span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+const ANSWERS = { 1:'a', 2:'b', 3:'b', 4:'b', 5:'a' };
+
+const FEEDBACK = {
+  1: {
+    a: "✓ Correct! 'Een andere werkwijze' en 'experimenten doen en resultaten delen' zeggen hetzelfde, maar in andere woorden.",
+    b: "✗ Dat staat niet in de tekst. Galilei koos juist een andere methode dan de traditie.",
+    c: "✗ De taal van zijn geschriften staat niet in de tekst.",
+    d: "✗ Er staat niets over reizen door Europa."
+  },
+  2: {
+    a: "✗ Logisch, maar onjuist. De tekst zegt juist dat Newton kon beschikken over eerder werk.",
+    b: "✓ Correct! Newton had de beschikking over eerder werk en bouwde er een nieuw systeem op.",
+    c: "✗ Dat staat niet in de tekst — ook logisch denkbaar, maar het klopt niet.",
+    d: "✗ Dat staat ook niet in de tekst."
+  },
+  3: {
+    a: "✗ De helft klopt: Newton was precies en methodisch. Maar hij werkte niet alleen — hij had een assistent.",
+    b: "✓ Correct! Beide delen kloppen: wiskunde als taal + assistent die hielp publiceren.",
+    c: "✗ Newton en Galilei waren geen rivalen; Galilei en de Kerk waren dat.",
+    d: "✗ De tekst zegt dat de Kerk Galilei protesteerde, niet Newton."
+  },
+  4: {
+    a: "✗ Aristoteles leefde in de oudheid, niet in de zeventiende eeuw.",
+    b: "✓ Correct! De reden wordt direct in de tekst gegeven: hij gold als hoogste gezag.",
+    c: "✗ Verkeerde relatie: Newton leefde later dan Aristoteles; zijn werk kon Aristoteles' positie niet versterken.",
+    d: "✗ Verkeerde relatie: Galilei's aanval maakte anderen juist moediger, niet banger."
+  },
+  5: {
+    a: "✓ Correct! De tekst zegt: Aristoteles vertrouwde op redeneren, Newton en Galilei 'daarentegen' op meten. Dit is het tegenovergestelde.",
+    b: "✗ Dit is geen tegenovergestelde, maar een onjuist feit.",
+    c: "✗ Dit gaat over Newton en Galilei, niet over het contrast met Aristoteles.",
+    d: "✗ Dit is ook een tegenovergestelde, maar over Newton/Galilei, niet over het contrast in de tekst."
+  }
+};
+
+let answered = {};
+
+document.querySelectorAll('.option').forEach(opt => {
+  opt.addEventListener('click', function() {
+    const q = parseInt(this.dataset.q);
+    const val = this.dataset.val;
+    if (answered[q]) return;
+    answered[q] = val;
+
+    const correct = ANSWERS[q];
+    const fb = document.getElementById('fb' + q);
+
+    document.querySelectorAll(`[data-q="${q}"]`).forEach(o => {
+      if (o.dataset.val === correct) o.classList.add('correct');
+      else if (o.dataset.val === val && val !== correct) o.classList.add('selected-wrong');
+    });
+
+    fb.textContent = FEEDBACK[q][val];
+    fb.className = 'feedback show ' + (val === correct ? 'ok' : 'nok');
+
+    updateScore();
+  });
+});
+
+function updateScore() {
+  const total = Object.keys(ANSWERS).length;
+  const done = Object.keys(answered).length;
+  const correct = Object.entries(answered).filter(([q,v]) => ANSWERS[q] === v).length;
+  const el = document.getElementById('scoreDisplay');
+  if (done === total) {
+    el.textContent = correct + ' / ' + total;
+  } else {
+    el.textContent = correct + ' / ' + done + ' tot nu toe';
+  }
+}
+
+function resetAll() {
+  answered = {};
+  document.querySelectorAll('.option').forEach(o => {
+    o.classList.remove('correct','wrong','selected-wrong');
+  });
+  document.querySelectorAll('.feedback').forEach(f => {
+    f.className = 'feedback';
+    f.textContent = '';
+  });
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.getElementById('scoreDisplay').textContent = '–';
+}
+</script>
+</body>
+</html>
