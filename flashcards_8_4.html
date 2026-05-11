@@ -173,6 +173,24 @@ function flipCard(){isFlipped=!isFlipped;document.getElementById('cardInner').cl
 function nextCard(){if(current<cards.length-1){current++;renderCard();}else showScore();}
 function prevCard(){if(current>0){current--;renderCard();}}
 function markCard(ok){if(!reviewed.has(current)){reviewed.add(current);if(ok)known++;}nextCard();}
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do {
+    shuffled = shuffle(opts);
+    attempts++;
+  } while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 function shuffleCards(){cards=[...cards].sort(()=>Math.random()-0.5);current=0;known=0;reviewed.clear();isFlipped=false;document.getElementById('scorePanel').classList.remove('show');document.getElementById('scene').style.display='';document.querySelectorAll('.nav-row,.progress-bar-wrap').forEach(el=>el.style.display='');renderCard();}
 function showScore(){document.getElementById('scorePanel').classList.add('show');document.getElementById('scene').style.display='none';document.querySelectorAll('.nav-row,.feedback-row,.progress-bar-wrap,.fb-hint').forEach(el=>el.style.display='none');const total=cards.length;document.getElementById('scoreNum').textContent=known+'/'+total;const pct=total>0?known/total:0;let msg=pct===1?'Geweldig! Je kent alle woorden van H8.4!':pct>=0.8?'Heel goed! Nog een paar herhalen.':pct>=0.5?'Aardig op weg! Oefen de moeilijke woorden nog eens.':'Ga nog eens door de kaarten — je komt er!';document.getElementById('scoreMsg').textContent=msg;}
 function restart(){current=0;known=0;reviewed.clear();isFlipped=false;document.getElementById('scorePanel').classList.remove('show');document.getElementById('scene').style.display='';document.querySelectorAll('.nav-row,.progress-bar-wrap').forEach(el=>el.style.display='');document.getElementById('fbHint').style.display='block';renderCard();}

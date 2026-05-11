@@ -763,14 +763,31 @@ const ALL = [
   { term:"op…na", def:"behalve; uitgezonderd", wrong:["de reputatie hebben van; bekend zijn door","volop bezig zijn; op het hoogtepunt van activiteit","zich voorbereiden op iets moeilijks of onaangenaams"] },
   { term:"zich schrap zetten", def:"zich voorbereiden op iets moeilijks of onaangenaams", wrong:["iets van iemand anders gaan doen of bezitten","ergens plaatsvinden; ergens gebeuren","erg populair; waar veel mensen van houden"] }
 ];
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do {
+    shuffled = shuffle(opts);
+    attempts++;
+  } while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
 function render(){
   const root=document.getElementById('quiz-root');
   if(current>=questions.length){ renderScore(); return; }
   const q=questions[current];
-  const opts=shuffle([q.def,...q.wrong]);
+  const opts=shuffleOpts([q.def,...q.wrong], q.def);
   const pct=Math.round((current/questions.length)*100);
   root.innerHTML=`<div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="quiz-card"><div class="quiz-label">Wat betekent:</div><div class="quiz-word">${q.term}</div><div class="options">${opts.map(o=>`<button class="opt" onclick="check(this,'${o.replace(/'/g,"\'")}', ${o===q.def})">${o}</button>`).join('')}</div><div class="feedback" id="fb" style="display:none"></div><button class="next-btn" id="nxt" style="display:none" onclick="next()">Volgende →</button></div>`;
 }
