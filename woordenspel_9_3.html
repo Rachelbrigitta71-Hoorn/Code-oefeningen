@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenspel – Code+ Deel 4 Hoofdstuk 9.3</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --ink: #1a1209;
+    --paper: #f5efe0;
+    --aged: #e8dcc8;
+    --accent: #8b3a1a;
+    --accent2: #2d5a3d;
+    --faint: #c9b99a;
+    --correct: #2d5a3d;
+    --wrong: #8b3a1a;
+    --shadow: rgba(26,18,9,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(139,58,26,0.06) 28px),
+      url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    padding: 2.5rem 2rem 2rem;
+    border-bottom: 2px solid var(--faint);
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  header::before, header::after {
+    content: '❧';
+    font-size: 1.4rem;
+    color: var(--faint);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  header::before { left: 0; }
+  header::after { right: 0; transform: translateY(-50%) scaleX(-1); }
+
+  .chapter-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .subtitle {
+    margin-top: 0.6rem;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1rem;
+    color: var(--accent);
+  }
+
+  /* SCORE BAR */
+  .score-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--aged);
+    border: 1px solid var(--faint);
+    border-radius: 4px;
+    padding: 0.7rem 1.2rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+  }
+  .score-bar span { color: var(--accent); font-weight: 600; }
+
+  /* INSTRUCTIONS */
+  .instructions {
+    background: var(--aged);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    font-style: italic;
+    color: #3a2a18;
+  }
+
+  /* SECTION HEADERS */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--accent);
+    border-bottom: 1px solid var(--faint);
+    padding-bottom: 0.4rem;
+    margin: 2.5rem 0 1.2rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* TEXT CARDS */
+  .text-card {
+    background: white;
+    border: 1px solid var(--faint);
+    border-radius: 4px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.9;
+    font-size: 1rem;
+    box-shadow: 2px 3px 10px var(--shadow);
+    position: relative;
+  }
+
+  .text-card .q-num {
+    position: absolute;
+    top: -0.6rem;
+    left: 1rem;
+    background: var(--accent);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  /* UNDERLINED SIMPLE WORDS to replace */
+  .orig {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-style: dotted;
+    color: var(--accent);
+    font-style: italic;
+    cursor: default;
+  }
+
+  /* ANSWER INPUT */
+  .answer-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .answer-row label {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    white-space: nowrap;
+  }
+
+  .answer-input {
+    flex: 1;
+    min-width: 180px;
+    border: none;
+    border-bottom: 2px solid var(--faint);
+    background: transparent;
+    font-family: 'Source Serif 4', serif;
+    font-size: 1rem;
+    color: var(--ink);
+    padding: 0.2rem 0.4rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .answer-input:focus { border-color: var(--accent); }
+  .answer-input.correct { border-color: var(--correct); color: var(--correct); }
+  .answer-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+
+  .check-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .check-btn:hover { background: var(--accent); }
+  .check-btn:disabled { opacity: 0.4; cursor: default; background: var(--ink); }
+
+  .feedback {
+    font-size: 0.88rem;
+    margin-top: 0.4rem;
+    min-height: 1.2rem;
+    font-style: italic;
+  }
+  .feedback.correct { color: var(--correct); }
+  .feedback.wrong { color: var(--wrong); }
+
+  /* HINT TOGGLE */
+  .hint-link {
+    font-size: 0.8rem;
+    color: var(--faint);
+    cursor: pointer;
+    text-decoration: underline;
+    margin-left: auto;
+  }
+  .hint-link:hover { color: var(--accent); }
+  .hint-box {
+    display: none;
+    background: #fdf8f0;
+    border: 1px dashed var(--faint);
+    border-radius: 3px;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    color: #5a4030;
+    font-style: italic;
+  }
+
+  /* WORDBANK */
+  .wordbank {
+    background: var(--aged);
+    border: 1px solid var(--faint);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 2rem;
+    line-height: 1.9;
+    font-size: 0.9rem;
+  }
+  .wordbank-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .wb-word {
+    display: inline-block;
+    background: white;
+    border: 1px solid var(--faint);
+    border-radius: 2px;
+    padding: 0.1rem 0.5rem;
+    margin: 0.15rem;
+    font-style: italic;
+    cursor: default;
+  }
+  .wb-word.used {
+    opacity: 0.35;
+    text-decoration: line-through;
+  }
+
+  /* RESULT PANEL */
+  .result-panel {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    background: var(--aged);
+    border: 2px solid var(--faint);
+    border-radius: 4px;
+    margin-top: 2rem;
+  }
+  .result-panel.show { display: block; }
+  .result-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--accent);
+    font-weight: 900;
+  }
+  .result-msg {
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+  }
+  .restart-btn {
+    margin-top: 1.2rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.95rem;
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  /* CHECK ALL BTN */
+  .check-all-wrap {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .check-all-btn {
+    background: var(--accent2);
+    color: white;
+    border: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s;
+  }
+  .check-all-btn:hover { opacity: 0.85; }
+
+  /* DIVIDER */
+  .ornament {
+    text-align: center;
+    color: var(--faint);
+    font-size: 1.2rem;
+    margin: 1.5rem 0;
+    letter-spacing: 0.5em;
+  }
+
+  .header-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--faint);
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+  }
+
+</style>
+</head>
+<body>
+  <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
+    <a href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/overzicht_code4.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;color:#2d3a8c;border:2px solid #2d3a8c;border-radius:50px;padding:0.4rem 1rem;font-family:inherit;font-size:0.82rem;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgba(45,58,140,0.15);transition:all 0.15s;">← Hoofdmenu</a>
+  </div>
+<div class="page-wrap">
+  <header>
+    <p class="chapter-label">Code+ Deel 4 &nbsp;·&nbsp; Hoofdstuk 9.3</p>
+    <h1>Vervang het gewone woord</h1>
+    <p class="subtitle">Herschrijf de teksten met woorden en uitdrukkingen uit de woordenlijst</p>
+    <img class="header-avatar" src="data:image/jpeg;base64,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" alt="docent">
+  </header>
+  <div class="score-bar">
+    <div>Score: <span id="score-display">0</span> / <span id="total-display">0</span></div>
+    <div>Correct: <span id="correct-display">0</span> &nbsp;|&nbsp; Fout: <span id="wrong-display">0</span></div>
+  </div>
+  <div class="instructions">
+    Elke zin bevat een <span style="text-decoration:underline dotted var(--accent);color:var(--accent);font-style:italic">onderstreept woord of zinsdeel</span>. Vervang dat door het juiste woord, de verbinding of de idioomuitdrukking uit hoofdstuk 9.3.
+  </div>
+  <div class="wordbank" id="wordbank">
+    <div class="wordbank-title">🗂 Woordbank (selectie uit H9.3)</div>
+    <span class="wb-word" id="wb-1">hardnekkig</span>
+    <span class="wb-word" id="wb-2">meeslepend</span>
+    <span class="wb-word" id="wb-3">menens</span>
+    <span class="wb-word" id="wb-4">volwaardig</span>
+    <span class="wb-word" id="wb-5">enigszins</span>
+    <span class="wb-word" id="wb-6">spoedig</span>
+    <span class="wb-word" id="wb-7">dwarsbomen</span>
+    <span class="wb-word" id="wb-8">gelijkstellen</span>
+    <span class="wb-word" id="wb-9">verrichten</span>
+    <span class="wb-word" id="wb-10">raken</span>
+    <span class="wb-word" id="wb-11">buiten medeweten van</span>
+    <span class="wb-word" id="wb-12">in veilige handen zijn</span>
+    <span class="wb-word" id="wb-13">aan het hart gaan</span>
+    <span class="wb-word" id="wb-14">bij vlagen</span>
+    <span class="wb-word" id="wb-15">iets hoog in het vaandel hebben staan</span>
+    <span class="wb-word" id="wb-16">zich in zijn graf omdraaien</span>
+  </div>
+  <button onclick="toggleWordbank()" style="font-size:0.8rem;background:none;border:1px solid var(--faint);padding:0.3rem 0.8rem;cursor:pointer;color:var(--faint);border-radius:2px;margin-bottom:2rem;font-family:inherit;">👁 Verberg/toon woordbank</button>
+  <div class="section-title">Deel 1 — Woorden</div>
+  <div class="text-card" id="card-1">
+    <span class="q-num">Zin 1</span>
+    <p>De strijd voor kiesrecht was een <span class="orig">vasthoudende strijd die niet opgaf</span> en decennia duurde.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-1" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(1)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(1)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-1">Bijvoeglijk naamwoord: vasthoudend en niet opgeven.</div>
+    <div class="feedback" id="fb-1"></div>
+  </div>
+  <div class="text-card" id="card-2">
+    <span class="q-num">Zin 2</span>
+    <p>Het was een <span class="orig">zo boeiend betoog dat je meegesleurd werd</span> en het publiek diep raakte.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-2" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(2)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(2)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-2">Bijvoeglijk naamwoord: zo boeiend dat je meegesleurd wordt; fascinerend.</div>
+    <div class="feedback" id="fb-2"></div>
+  </div>
+  <div class="text-card" id="card-3">
+    <span class="q-num">Zin 3</span>
+    <p>Het was <span class="orig">serieus gemeend en echt</span> — de vrouwen waren vastbesloten hun doel te bereiken.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-3" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(3)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(3)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-3">Bijvoeglijk naamwoord: serieus gemeend; echt en zonder grapjes.</div>
+    <div class="feedback" id="fb-3"></div>
+  </div>
+  <div class="text-card" id="card-4">
+    <span class="q-num">Zin 4</span>
+    <p>Vrouwen eisten <span class="orig">volledig gelijkwaardige</span> deelname aan het democratische proces.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-4" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(4)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(4)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-4">Bijvoeglijk naamwoord: volledig gelijkwaardig; met alle rechten en plichten.</div>
+    <div class="feedback" id="fb-4"></div>
+  </div>
+  <div class="text-card" id="card-5">
+    <span class="q-num">Zin 5</span>
+    <p>De situatie was <span class="orig">een beetje en in zekere mate</span> verbeterd, maar volledige gelijkheid was er nog niet.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-5" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(5)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(5)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-5">Bijwoord: een beetje; in zekere mate.</div>
+    <div class="feedback" id="fb-5"></div>
+  </div>
+  <div class="text-card" id="card-6">
+    <span class="q-num">Zin 6</span>
+    <p>Ze hoopten dat de wet <span class="orig">snel en binnen korte tijd</span> zou worden aangepast.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-6" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(6)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(6)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-6">Bijwoord: snel; binnen korte tijd.</div>
+    <div class="feedback" id="fb-6"></div>
+  </div>
+  <div class="text-card" id="card-7">
+    <span class="q-num">Zin 7</span>
+    <p>Tegenstanders probeerden de stemrechtbeweging te <span class="orig">verhinderen en tegenwerken</span>.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-7" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(7)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(7)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-7">Werkwoord: iemands plannen of daden verhinderen of tegenwerken.</div>
+    <div class="feedback" id="fb-7"></div>
+  </div>
+  <div class="text-card" id="card-8">
+    <span class="q-num">Zin 8</span>
+    <p>De wet <span class="orig">behandelde vrouwen als gelijkwaardig aan</span> mannen voor het stemrecht.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-8" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(8)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(8)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-8">Werkwoord: iets of iemand als gelijkwaardig behandelen.</div>
+    <div class="feedback" id="fb-8"></div>
+  </div>
+  <div class="text-card" id="card-9">
+    <span class="q-num">Zin 9</span>
+    <p>Ze <span class="orig">voerden uit en deden</span> belangrijk werk voor de emancipatie van vrouwen.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-9" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(9)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(9)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-9">Werkwoord: iets uitvoeren of doen; een taak afhandelen.</div>
+    <div class="feedback" id="fb-9"></div>
+  </div>
+  <div class="text-card" id="card-10">
+    <span class="q-num">Zin 10</span>
+    <p>Het verhaal van de strijdsters <span class="orig">trof emotioneel</span> veel mensen diep.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-10" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(10)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(10)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-10">Werkwoord: iemand emotioneel treffen.</div>
+    <div class="feedback" id="fb-10"></div>
+  </div>
+  <div class="ornament">✦ ✦ ✦</div>
+  <div class="section-title">Deel 2 — Verbindingen</div>
+  <div class="text-card" id="card-11">
+    <span class="q-num">Zin 11</span>
+    <p><span class="orig">Zonder dat haar man het wist</span> sloot ze zich aan bij de beweging.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-11" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(11)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(11)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-11">Verbinding: zonder dat iemand het weet; zonder iemands medeweten.</div>
+    <div class="feedback" id="fb-11"></div>
+  </div>
+  <div class="text-card" id="card-12">
+    <span class="q-num">Zin 12</span>
+    <p>De documenten van de beweging waren <span class="orig">goed verzorgd en bij betrouwbare mensen</span> bij de secretaris.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-12" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(12)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(12)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-12">Verbinding: goed verzorgd worden; bij betrouwbare mensen zijn.</div>
+    <div class="feedback" id="fb-12"></div>
+  </div>
+  <div class="ornament">✦ ✦ ✦</div>
+  <div class="section-title">Deel 3 — Idioom</div>
+  <div class="text-card" id="card-13">
+    <span class="q-num">Zin 13</span>
+    <p>Het verhaal van de gevangen gezette suffragettes <span class="orig">raakte velen diep en deed pijn</span>.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-13" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(13)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(13)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-13">Idioom: iemand diep raken; pijn doen of jammer vinden.</div>
+    <div class="feedback" id="fb-13"></div>
+  </div>
+  <div class="text-card" id="card-14">
+    <span class="q-num">Zin 14</span>
+    <p><span class="orig">Af en toe en zo nu en dan</span> was er vooruitgang, maar echte verandering bleef lang uit.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-14" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(14)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(14)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-14">Idioom: af en toe; zo nu en dan; niet constant.</div>
+    <div class="feedback" id="fb-14"></div>
+  </div>
+  <div class="text-card" id="card-15">
+    <span class="q-num">Zin 15</span>
+    <p>De beweging had gelijkheid <span class="orig">heel belangrijk gevonden en dat laten weten</span>.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-15" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(15)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(15)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-15">Idioom: iets heel belangrijk vinden en dat laten weten.</div>
+    <div class="feedback" id="fb-15"></div>
+  </div>
+  <div class="text-card" id="card-16">
+    <span class="q-num">Zin 16</span>
+    <p>De vroege feministen zouden <span class="orig">zich er in hoge mate aan ergeren</span> als ze wisten hoeveel rechten nog ontbreken.</p>
+    <div class="answer-row">
+      <label>Antwoord:</label>
+      <input class="answer-input" id="ans-16" type="text" placeholder="typ hier..." autocomplete="off" spellcheck="false">
+      <button class="check-btn" onclick="checkAnswer(16)">Controleer</button>
+      <span class="hint-link" onclick="toggleHint(16)">hint</span>
+    </div>
+    <div class="hint-box" id="hint-16">Idioom: zich er in hoge mate aan ergeren (over een overledene gezegd).</div>
+    <div class="feedback" id="fb-16"></div>
+  </div>
+  <div class="check-all-wrap">
+    <button class="check-all-btn" onclick="checkAll()">✓ Controleer alle antwoorden</button>
+  </div>
+  <div class="result-panel" id="result-panel">
+    <div class="result-score" id="result-score">0/16</div>
+    <div class="result-msg" id="result-msg"></div>
+    <button class="restart-btn" onclick="resetAll()">↺ Opnieuw beginnen</button>
+  </div>
+</div>
+<script>
+  function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+  const answers = {
+    1: ["hardnekkig"],
+    2: ["meeslepend"],
+    3: ["menens"],
+    4: ["volwaardig"],
+    5: ["enigszins"],
+    6: ["spoedig"],
+    7: ["dwarsbomen"],
+    8: ["gelijkstellen"],
+    9: ["verrichten"],
+    10: ["raken"],
+    11: ["buiten medeweten van"],
+    12: ["in veilige handen zijn"],
+    13: ["aan het hart gaan"],
+    14: ["bij vlagen"],
+    15: ["iets hoog in het vaandel hebben staan"],
+    16: ["zich in zijn graf omdraaien"]
+  };
+  const total = Object.keys(answers).length;
+  document.getElementById('total-display').textContent = total;
+  let scores={}, attempts={};
+  function normalize(str){ return str.toLowerCase().trim().replace(/\s+/g,' '); }
+  function checkAnswer(n){
+    const input=document.getElementById('ans-'+n), fb=document.getElementById('fb-'+n), btn=document.querySelector('#card-'+n+' .check-btn');
+    const val=normalize(input.value), correct=answers[n];
+    if(!val){ fb.textContent='Typ eerst een antwoord.'; fb.className='feedback wrong'; return; }
+    const isCorrect=correct.some(c=>normalize(c)===val||val.includes(normalize(c))||normalize(c).includes(val));
+    if(isCorrect){ input.classList.add('correct'); input.classList.remove('wrong'); fb.textContent='✓ Correct!'; fb.className='feedback correct'; btn.disabled=true; if(!scores[n]){ scores[n]=true; updateScore(); } markWordbank(n); }
+    else{ input.classList.add('wrong'); input.classList.remove('correct'); attempts[n]=(attempts[n]||0)+1; if(attempts[n]>=2) fb.innerHTML='✗ Het antwoord is: <strong>'+correct[0]+'</strong>'; else fb.textContent='✗ Probeer het nog eens. Kijk naar de hint!'; fb.className='feedback wrong'; if(!scores['wrong'+n]){ scores['wrong'+n]=true; updateScore(); } }
+  }
+  function updateScore(){ const c=Object.keys(scores).filter(k=>!k.startsWith('wrong')).length, w=Object.keys(scores).filter(k=>k.startsWith('wrong')).length; document.getElementById('score-display').textContent=c; document.getElementById('correct-display').textContent=c; document.getElementById('wrong-display').textContent=w; }
+  function toggleHint(n){ const h=document.getElementById('hint-'+n); h.style.display=h.style.display==='block'?'none':'block'; }
+  function toggleWordbank(){ const wb=document.getElementById('wordbank'); wb.style.display=wb.style.display==='none'?'block':'none'; }
+  function markWordbank(n){ const map={1: "wb-1", 2: "wb-2", 3: "wb-3", 4: "wb-4", 5: "wb-5", 6: "wb-6", 7: "wb-7", 8: "wb-8", 9: "wb-9", 10: "wb-10", 11: "wb-11", 12: "wb-12", 13: "wb-13", 14: "wb-14", 15: "wb-15", 16: "wb-16"}; const el=document.getElementById(map[n]); if(el) el.classList.add('used'); }
+  function checkAll(){ for(let i=1;i<=total;i++){ const btn=document.querySelector('#card-'+i+' .check-btn'); if(!btn.disabled) checkAnswer(i); } showResult(); }
+  function showResult(){
+    const correct=Object.keys(scores).filter(k=>!k.startsWith('wrong')).length;
+    document.getElementById('result-score').textContent=correct+'/'+total;
+    let msg; if(correct===total) msg='Uitstekend! Je beheerst alle woorden van hoofdstuk 9.3 perfect.'; else if(correct>=13) msg='Heel goed gedaan! Nog een paar woorden om in te prenten.'; else if(correct>=8) msg='Aardig op weg. Herhaal de woorden die je nog mist.'; else msg='Nog wat te leren. Bekijk de woordenlijst nog eens goed en probeer opnieuw!';
+    document.getElementById('result-msg').textContent=msg;
+    document.getElementById('result-panel').classList.add('show');
+    document.getElementById('result-panel').scrollIntoView({behavior:'smooth'});
+  }
+  function resetAll(){
+    scores={};attempts={};
+    for(let i=1;i<=total;i++){ document.getElementById('ans-'+i).value=''; document.getElementById('ans-'+i).className='answer-input'; document.getElementById('fb-'+i).textContent=''; document.getElementById('fb-'+i).className='feedback'; document.querySelector('#card-'+i+' .check-btn').disabled=false; const h=document.getElementById('hint-'+i); if(h) h.style.display='none'; }
+    document.querySelectorAll('.wb-word').forEach(el=>el.classList.remove('used'));
+    document.getElementById('result-panel').classList.remove('show');
+    document.getElementById('score-display').textContent='0'; document.getElementById('correct-display').textContent='0'; document.getElementById('wrong-display').textContent='0';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.answer-input').forEach(input=>{ input.addEventListener('keydown',function(e){ if(e.key==='Enter'){ const n=this.id.replace('ans-',''); checkAnswer(parseInt(n)); } }); });
+</script>
+</body>
+</html>
