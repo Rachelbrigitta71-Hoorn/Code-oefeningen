@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flitskaarten – Code+ Deel 4 Hoofdstuk 10.2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --card-front: #2d3a8c;
+    --card-back: #ffffff;
+    --accent: #f5a623;
+    --accent2: #e84393;
+    --text-light: #ffffff;
+    --text-dark: #1a1a2e;
+    --muted: #6b7280;
+    --shadow: rgba(45,58,140,0.18);
+    --tag-woord: #4f46e5;
+    --tag-verbinding: #0891b2;
+    --tag-idioom: #be185d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh;
+    color: var(--text-dark);
+    padding: 1.5rem 1rem 4rem;
+  }
+  .header { max-width: 680px; margin: 0 auto 2rem; display: flex; align-items: center; gap: 1rem; }
+  .avatar { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); flex-shrink: 0; }
+  .header-text h1 { font-size: 1.4rem; font-weight: 900; color: var(--card-front); line-height: 1.2; }
+  .header-text p { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+  .controls { max-width: 680px; margin: 0 auto 1.5rem; display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  .filter-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .filter-btn { border: 2px solid transparent; border-radius: 20px; padding: 0.3rem 0.9rem; font-family: 'Nunito', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .filter-btn.all { background: var(--card-front); color: white; }
+  .filter-btn.woord { background: #ede9fe; color: var(--tag-woord); border-color: var(--tag-woord); }
+  .filter-btn.verbinding { background: #e0f2fe; color: var(--tag-verbinding); border-color: var(--tag-verbinding); }
+  .filter-btn.active, .filter-btn:hover { opacity: 0.8; transform: scale(1.05); }
+  .progress-wrap { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+  .progress-wrap span { color: var(--card-front); }
+  .scene { max-width: 680px; margin: 0 auto; height: 280px; perspective: 1000px; cursor: pointer; user-select: none; }
+  .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; box-shadow: 0 8px 32px var(--shadow); }
+  .card-front { background: linear-gradient(135deg, var(--card-front) 0%, #4338ca 100%); color: white; }
+  .card-front .card-tag { position: absolute; top: 1.2rem; right: 1.2rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.6rem; border-radius: 10px; opacity: 0.85; }
+  .tag-woord-badge { background: rgba(255,255,255,0.2); }
+  .tag-verbinding-badge { background: rgba(8,145,178,0.4); }
+  .card-front .card-num { position: absolute; top: 1.2rem; left: 1.2rem; font-size: 0.75rem; opacity: 0.5; font-weight: 600; }
+  .card-front .term { font-family: 'Lora', serif; font-size: clamp(1.4rem, 5vw, 2.2rem); font-weight: 600; text-align: center; line-height: 1.3; }
+  .card-front .hint { margin-top: 0.8rem; font-size: 0.8rem; opacity: 0.6; font-style: italic; }
+  .card-back { background: white; transform: rotateY(180deg); text-align: center; }
+  .card-back .def { font-family: 'Lora', serif; font-size: clamp(1rem, 3.5vw, 1.3rem); color: var(--text-dark); line-height: 1.6; font-style: italic; margin-bottom: 0.8rem; }
+  .card-back .ex { font-size: 0.82rem; color: var(--muted); line-height: 1.5; max-width: 500px; }
+  .card-back .ex::before { content: '"'; }
+  .card-back .ex::after  { content: '"'; }
+  .nav-row { max-width: 680px; margin: 1.2rem auto 0; display: flex; gap: 0.8rem; justify-content: center; align-items: center; }
+  .nav-btn { background: var(--card-front); color: white; border: none; border-radius: 50px; padding: 0.6rem 1.6rem; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; box-shadow: 0 3px 10px var(--shadow); }
+  .nav-btn:hover { background: #3730a3; transform: translateY(-1px); }
+  .nav-btn.shuffle { background: var(--accent); color: var(--text-dark); }
+  .progress-bar-wrap { max-width: 680px; margin: 1rem auto 0; background: rgba(45,58,140,0.1); border-radius: 10px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--card-front), var(--accent2)); border-radius: 10px; transition: width 0.3s; }
+  .feedback-row { max-width: 680px; margin: 1rem auto 0; display: flex; gap: 0.8rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 200px; border: none; border-radius: 12px; padding: 0.6rem 1rem; font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
+  .fb-btn:hover { transform: translateY(-2px); }
+  .fb-btn.known { background: #d1fae5; color: #065f46; }
+  .fb-btn.unknown { background: #fee2e2; color: #991b1b; }
+  .fb-hint { text-align: center; font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+  .score-panel { display: none; max-width: 680px; margin: 0 auto; background: white; border-radius: 20px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 8px 32px var(--shadow); }
+  .score-panel.show { display: block; }
+  .score-panel .avatar-big { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid var(--accent); margin-bottom: 1rem; }
+  .score-big { font-size: 3.5rem; font-weight: 900; color: var(--card-front); }
+  .score-msg { font-size: 1.05rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+  .restart-btn { margin-top: 1.5rem; background: var(--card-front); color: white; border: none; border-radius: 50px; padding: 0.7rem 2rem; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .kbd-hint { text-align: center; font-size: 0.75rem; color: var(--muted); margin-top: 1.5rem; }
+  kbd { background: #e5e7eb; border-radius: 4px; padding: 0.1rem 0.4rem; font-family: monospace; font-size: 0.75rem; }
+</style>
+</head>
+<body>
+  <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
+    <a href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/overzicht_code4.html" style="display:inline-flex;align-items:center;gap:0.4rem;background:white;color:#2d3a8c;border:2px solid #2d3a8c;border-radius:50px;padding:0.4rem 1rem;font-family:inherit;font-size:0.82rem;font-weight:700;text-decoration:none;box-shadow:0 2px 8px rgba(45,58,140,0.15);transition:all 0.15s;">← Hoofdmenu</a>
+  </div>
+<div class="header">
+  <img class="avatar" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAB4AFsDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD7EaUKTnpTo3DrkdKzrqcjjjknmp7SYeUMilFNkOSvYuisfxZ4i07w3pM2oahMFWNCVQdWPpWruG3d7V8y/HDxO2oeJXspJf8AR4JAoTPBPU5+i/qTXLjMR9Xp3W52YSh7eduhh+OvFmp+JNQMt1JsUndDbbvkiB7t6sRyT2HHQAVxF3fX8OmvdadZyXt5NP8AZ7NfL3kALl5Sp4zggKDwM/WpvtDXLSTSZEaqTIfqMt+nFdn8O7ZVumWaMlraVxjHQsFJ/rXzLm2+aerPpKVFO0I6I8+tNZ8X6bFt1nTr2aOUfuWmgG7dn7uQOQQTwfSuw8I+KfFPhm6tru80u+iilkKwJd7ljIOeOvJ24AAIJxXtNvHbyxqWhRsYOCM/jRrun2Wr6TNpt6o+z3S7GJHKN/C4z3U4INbKS3SsxTo9Nzt/AGsjWNME+wRB0DCMOWX3Kk8gcjg9DW84+avI/gbq8sNudNvMLcW8siTJj/loDsfH4pux3B46V66/3jXtYet7Wim9+p87iKXs6rXQ4zVVz8ULB8cLaY/NLiuyt/8AUr+NcnfAH4jR8dLSP/0G4rrrcDyVr0afwI5XuZd8OS2cYJpunyEnYW3Y5qvcXe6WQMMDccZqGC8jjMsikEbCy843cdAT+VUtI3ZxSknUSRe8Qa4mi2hlkt3nVBubZLGuMc87mGP1r498Wzza54nv9SZBbrdTs6xg58tWPCj3I/qeBXqXxe8QRSSCwhu3uJV4nlic7Wc9Y4wOMerHJPr1rxnVpJJvMgWSKKKMfvZGbbHGD29ST6Dk18zjMU60+VbI+rwWGVKHM92WLYwTXUVhDIDAh33Dj7u1SCQD3Hqe56cV3fhS8ntrN7/y7ISXUjzH7VNsByeAAPavMvDE0Or3M1naiRbBNu+dhh7pvTH8KD0/OvSZfAcGr6hbaoLgt5AXZG+PLTBzwuD17+ormUIc3LN2PTgqijzwVzuPDniRL2BoruyS2nXBAil3q6/3gadqviRY71dPgjsY16SXF3OEVT/dUdWP5CuegsYNG1W3mt1RZRJuYKSF5JO0Keg54FWtQ8DaZqfiFr4mOO5ILhZDu3ox5O05HUkHjrSik5Wb0N6sXGN0tfUv+C5iPGPiOykK7rp/tERiOdhZVYEd8jOa9wsHk+wwm4G2XYAw9wK+e57CPwn8QdIGkOYY5rFAoBL7WgPln72Scoy9fSve7d557OG6kmjkDrlRGhUDP1J5r0svs3OB87mSs1Ixrwg/EJCP+fSL+VxXWQf6oVxczE+PhkdLSL+VxXY23MCmvcgrQR5F9TnNQdGvZVB+becEdxVSS0U211NKsnlpDI3lLIUWTaufmwemf8mrDqrX0ikkMHPT61n+N457vw5eRo8qoAgcR8EpvAc8cnCZOPcntUV5ctNq1zlw0eate9j5t8WX0srkW5ElyydeixAjLE+55PHsK8319LiWzlAz5MPCJ/fPUk+5xXp/xA0p9O8V3OmrnyyqvFu4JiZVYA/TGD7D3rir3yxDPIeUSeLGe6nKn+hr5WHuSt1PtVacU1sSeA9T0m6As7KTbcxxiRo+cqM47+5PHOBXpUviK50rTC4kSCMcPcSA+XCMA5P514b9kl8O+MYLu05gY8ZPBR+Np/z2Fey+G9agmQIxADqI5o3HPorEd/7p9QaWIhFSU47M7sJVk4OL3Q8MdQHm2V3rDmQgtLHZySCQjncTt9+1beo3soextbh9bGsShpbFriydEcIBuxnouCuSfUVStfD11b3fnaPqWuWSvysVlqUsKjPXaASuPbFaeovbeD9KvNd1mS9uL2XbFGtzdPPNM+PljVnORnGTjAAGalqFvdbuaOVSOsrW+d/usUb/AFG5vfHlhFMGEtjaRJIvXEsp8xh+AVRX0ZovlvolkyNkGFT16HaAR+lfMHgVbyS8XXdQZTcXV2JJW7K3O0D26gewFfSOjNELNZkR4WPLR5+Qk9SPTnqP8a7srd60kux87m79xSZQmyfH/QZNrEP0uK1NL1W6vLMXFtLp0cLO4jExfeVDkAnHqBn8ayGbzvHe0Hbm3iUH6i45qfwY5TwzZQyX0MckCtBIkoG5XRijA5HYqRXt1pVYJezVzx6KjO7ZZuIzFeSOwwwkOR+NUdXe8ltmk09pl2qSzRlBsOOSfMIUrj8RitTVvluJCTgeYd3sM1zvjO+tLDSFkfYYmR5ZUL5R9oG0MO4LMDjviqxTUaTbZzYWLdblSPCPGsc97f315fXrSmNljdy2WYDnbn057cEsOtec+JJjta1QonmndKSflQDj9OPxrrPFF5MkgiCSSyGQlUB+eSRjk5x1Yk9B0/CtTw18OrKeVp9Z1GN73bH/AKOi/uk3dU46kYHtXykJw5uackvVn2MrwhZK/oeZ3ga/lhdbeUW3liNJGXoVP3m9M8V1WhQRTobYnyrhMFAW5GRyAe4z0Pvit3xb4WttOu82ZZMbHhkjt8JKMlXR8Z5GR16g1m2mixzSyixlSI2ytOFeTblVBLBT64HH0pyqRlpB3RpQqOPvSVjrvDsusWFtK73XlpbRvI3mrkqqqSf0Feb6h4u1bxnrVlLqixRwWy5hgjzgFurEnq2AB7DpXsMGk6jqOk2y3MNw0M0TwSSBCWZGTAfjrw2KwbX4b2WiX8MerRMktxbm4iaJyskQDY+YHjqAcY7+xxnCShGUpfkaYirdpXNT4e6Zd67Pb6XbKoSPFxKxOACVGGI74U8KPX0r3Dw/C1rDPA7sYTKwh38naAABnv3rxG10e/0CO2uIr2GZVyIZkOyTavIR1zg4GcEehr2DwrdTalpdre3N0ZZzD8sSoFCg9WOOSTjHOK9HKnFVeRpqX6Hh5rzOnzxacf1I7UlvHDEngQwgf983Fdauk6ZPmabTbWSRyWZmjGWOeprjxPDa+J7i5nJEccELMR1xicYHuSQB7mrukM13YLdXQczSu7thzgZc8D2HT8K93E4iNFqL3Z5WDw8qtPm6I6DUhtuZWIUBfmJP05rzL4o+bP4cuEN1aR29q6y+SoDMrHhU3d2wSdoHA6k8V6NezB5ZlmSR13kEKpbIz04rybxNYXeqXt+08QeHT5TFBbyYCyTu2TLJ6j5hhec7fQGubMXeny9zXAJe05+xxvg3TNN1G8vtXmLwxRN5NoxG4k9XYZ7knH512NrpWmoDbW97EWwXjZ48HPXBb8/8io30FjDHHFNaO+0BAXI3Hvn1z17delZ9xpV5aqJ5biaBiRuZiCB7cdPqSfX1rxYQr2fspwku2v8Awx6061Ju81JP0KPifRLk6RLOZQJYplkiKMZRJnBI7cHB65rBu9BjuNLku7U+VKNrkMfleIjBPUYIB/HNajX8t7Z3l5dyILCIMsQEgJzEpO7HTbuJHrnpVvwnatqcWm2KECSaEIwkcjB8vJyQP1/lXBiK9R1ad4qFvd77+S7fedEKapwcruV9f6uXNCvdW0tmsX1O9hFuiTLHBMQksRPVd2egyfwPatmeKICW2mupbi7kBltLmdt8ki90JPJwTjA9qx7Hw9qUUaqjSTPaKbedEAkKryCGC/MRkDk447da2dG8LarMkUb2k05jBeCWdfKQHpznnHbkA/TNdE5TnHklVik9HaLu/l93+ZzP2cXzRg7+qt993/XQq6LdaHrMlpb3cW1reMiLGVVs9VPrzgfSvUdIjit9O2Ro0MUKBWllTZk5JJx9Sf5CuY1rwabWwj1SyQ3N/alZnhcZWTbnO1egbrwOvI64rnrrxVNdWMRmla4tAwwrMQYTz36kjsTnHSurAV3QlK6berTdnpolf9ev3nNiILERSTSX6m5rN7a3d/8AZ1D28rY27yNs5XO0bh0I3NgH19cVseHX26RCryqrBnBBI4+c8VwurSQQ2Z3TRy2MzfJMTyhxkE+jAV6X8PoZrrwbp1xfxSrcSRlmztUtljhsHnkYP408K6mKxDdTe262av8Ah6G1SccLh1CC0vt1TsXL2YR3043rgSH8Oa4vxhGlxqzFPIt7dOJHlkKrPLjB4HJKg4/E1veJHe1bVJ8hZIFklQnoCASM/pXlginvHT7VNcLLIm9i548skgsx/hBIOEHzHqcV6uZVHGCikte+v3LqeTl0OacpNvTt/n0Nq6sEKK1ldWztg5MFxubI9Vft/UCuI8d63e+HLSVjL55njKxlgAyP2DD6kc/X1rqLjwg94J5G1ya0jgRpJCyeZsVRk5BOTwMYz+Oa5nXdF0+7NrNq91d6mLX5oIpyqgHHV9v3vpnH1r5+Sop3qRV11Ss/w0PoaEKtS6g2/XVW9dxzaHYS6LsuNRt7W2+yLDEoU5V8D5ie/JJI756ipvDmrWOiXxlt0klns4yBJJIAjnZtPy9vz/nWFfXrBWluIk8qI9W4QDoMn9KLKW1vZI7W0A85/wC8AsUY5JxnjPucmuXWVr97/M9OVKnFXnba3yR6F4R8U+KtX8Wafb8iAsZJhkAOncnjsMD8QO9exRMjYAPHGPcHp/hXlfhKTS/DVk8cU3nXEjJ5sjscnvhfRRnp+JrQPi/dtWPAGAMk4/iyK7YOUVZ6ng4udKrO8LJI9CmuIoxy2PTn6f5/CvDfGUttp3i+6tIYt0Uk63CxKBt+fBYf+hV0174olKbumeh/z+H515z4KsdT+Ies3d9a6jbWqi8ldjMrFhEm1QFA6khhkHH1p805OyWrul80yKUYK7b21/E67wrpX9v+IxosqebpdvsuLliM5CMSqn0Lgge4zXudsq+SMEY56D3rlfD+n2WjWH2C0XBLb5pH+/M/dmPc+3QdBWnoNx9p0xJmnlBZ5BhWAAAdgO3oK+hw9NUo26vf1PLq1fay8kZHjC0e9n1Sxdgv2iJow3oGXArxr+1pbLXWt75Jo5YZow8b9SF+U8+gz+XPevbvFDFdXkYcYwP0Fcf4g8N6X4guPOu1eC6VNouIGw+PQjow+v5iqxOEdflmvs/5GOFxiw85xls/0dzibHxDFFeahZalOfs85ltnkB6qf4/5E+mc9KydTtb+J2e5ZZrdRuW4jdfLdf72Sfl/H9a2tY+H2srbO0V5p5S1DOlzvKs0ag/Kybev0J+tec3lnNa3lvFdkTTA72h27VUA9xnk/wD668PEYCak7K/X/O3ke/hMdFLSS7eXl53LT2eo3l7BczJst0bMULIdmOzFiRknqD+HFa1gHLOzqFk+1fwndwcd/wAa2dH1qMQTvMo4UALIByRzngYzn39DmqlqbRvEUFzcShI7i7RXYfdwO+Pw/WvNxM6MnBRg4zTS6/1c6rVrTc5KUWn/AF6G/pml3l6n2gQs64znOOTwK3rezjto3b7BGCm45ck9Fx37ZrWht4GgWayuoYvl6rINrAH07HFGrS3YtVDeUVkuEQuh7Fgf6CumrU5ISn2Vzy6dPmko9zJ1DTJtRsZIo9Oe3u3RlhlEZCZxjJz055rm/hF4Q8ReB9YdbmKW5Xq7IirbtuXaQJHcEn7p+7/DVjwJ43vPEeqa5ZS6bfabJpdx5WZZCfMBLDngYb5c454I5rWsvHVjJ41fwpJNJLewoJWWWEGM8AkBv7wUg187PNcdCo48i92z9Nne+p6awcVG8Zb6HXTa7aRar9kZZZ51AkdbWN5gF+oXH4ZzWx4ZtruDQ7aKa3lWQBiwIHUsT6+9cndeJdMsPFUPhK3c211cxyXMcMEIRMAkksVx8xwx98V3ei25Olws0hyQSe/c17GB4gxNapyOHS+ul9bHmVsBThHmuLrejXl3fPLCIjGwH3mwc4x6VlReGdWWbeWtwMY4c/4UUV9yptKx48sPCUrsh1zwzrs2lXMFl9lMsqhBvlKjG4E849B+tcTN8KfEdzqMlxONOGVCq6zsW45B6UUVyVcMqlRTu012OyjU9lTdNJNPuJdfCLXpkAWa0xtGVaUk5HbJB4/CotE+EnimO/gbVX02W2jLHCTNk5GP7vuaKKzrYKnWcXNvQqFaUFJR6nX2nw/ms4gtvaWRcJgGSUsAfyqzf+FNcngEYNqf36SEmTHAxnAxxRRWdTLKM4uLvqOGInBproYXjDwb47OisPC7aQupGRcNeSEoE/i6Dr0FT2Hw81E3MGsXenaTHrBt1jnnifJHA3KGIyVz074oorzVwxglDlV15319Ntjr/tSu3d2Nx/BbvrA1drOyN8sZhS4P+sEZOSucdK39P02+gtEicplc9G46miiqw/DWDoS5ouW1tX0+4wnjak1Z2P/Z" alt="docent">
+  <div class="header-text">
+    <h1>Flitskaarten H10.2</h1>
+    <p>Code+ Deel 4 · Klik op de kaart om te draaien</p>
+  </div>
+</div>
+<div class="controls">
+  <div class="filter-btns">
+    <button class="filter-btn all active" onclick="setFilter('all',this)">Alles</button>
+    <button class="filter-btn woord" onclick="setFilter('woord',this)">Woorden</button>
+    <button class="filter-btn verbinding" onclick="setFilter('verbinding',this)">Verbindingen</button>
+    <button class="filter-btn idioom" onclick="setFilter('idioom',this)">Idioom</button>
+  </div>
+  <div class="progress-wrap">Kaart <span id="cur">1</span> / <span id="tot">38</span></div>
+</div>
+<div class="scene" id="scene" onclick="flipCard()">
+  <div class="card-inner" id="cardInner">
+    <div class="card-face card-front">
+      <span class="card-num" id="cardNum">1/38</span>
+      <span class="card-tag" id="cardTag"></span>
+      <div class="term" id="cardTerm">…</div>
+      <div class="hint">Klik om de betekenis te zien</div>
+    </div>
+    <div class="card-face card-back">
+      <div class="def" id="cardDef">…</div>
+      <div class="ex" id="cardEx">…</div>
+    </div>
+  </div>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+<div class="feedback-row" id="feedbackRow" style="display:none">
+  <button class="fb-btn unknown" onclick="markCard(false)">✗ Nog oefenen</button>
+  <button class="fb-btn known" onclick="markCard(true)">✓ Ken ik!</button>
+</div>
+<div class="fb-hint" id="fbHint" style="display:none">Draai de kaart eerst om</div>
+<div class="nav-row">
+  <button class="nav-btn" onclick="prevCard()">← Vorige</button>
+  <button class="nav-btn shuffle" onclick="shuffleCards()">🔀 Schudden</button>
+  <button class="nav-btn" onclick="nextCard()">Volgende →</button>
+</div>
+<p class="kbd-hint"><kbd>←</kbd> vorige &nbsp; <kbd>spatie</kbd> draaien &nbsp; <kbd>→</kbd> volgende &nbsp; <kbd>k</kbd> ken ik &nbsp; <kbd>o</kbd> nog oefenen</p>
+<div class="score-panel" id="scorePanel">
+  <img class="avatar-big" src="data:image/jpeg;base64,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" alt="avatar">
+  <div class="score-big" id="scoreNum">0/38</div>
+  <div class="score-msg" id="scoreMsg"></div>
+  <button class="restart-btn" onclick="restart()">↺ Opnieuw</button>
+</div>
+<script>
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+const ALL_CARDS=[{ type:"woord", term:"affaire, de", def:"een schandaal of lastige kwestie die veel aandacht trekt", ex:"De affaire rond de minister leidde tot zijn aftreden." },
+  { type:"woord", term:"benaderen", def:"contact opnemen met iemand; ook: ergens op een bepaalde manier tegenaan kijken", ex:"De journalist benaderde de premier voor een interview over de affaire." },
+  { type:"woord", term:"bevinden, zich*", def:"ergens zijn of zich in een bepaalde situatie verkeren", ex:"Het land bevond zich in een diepe politieke crisis." },
+  { type:"woord", term:"bijeen", def:"samen op één plek; verzameld", ex:"De volksvertegenwoordigers kwamen bijeen voor een spoeddebat." },
+  { type:"woord", term:"democraat, de", def:"iemand die gelooft in de democratie als staatsvorm", ex:"Hij beschouwde zichzelf als een overtuigd democraat." },
+  { type:"woord", term:"erfelijk", def:"wat van ouder op kind wordt overgedragen; door geboorte verkregen", ex:"In een monarchie is de macht erfelijk." },
+  { type:"woord", term:"erven", def:"iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen", ex:"De kroonprins erfde de troon na de dood van zijn vader." },
+  { type:"woord", term:"feitelijk", def:"in werkelijkheid; gebaseerd op feiten", ex:"Feitelijk had de premier al maanden geen meerderheid meer." },
+  { type:"woord", term:"instemming, de", def:"het akkoord gaan met iets; goedkeuring", ex:"Het wetsvoorstel kreeg de instemming van een ruime meerderheid." },
+  { type:"woord", term:"intellectueel, de", def:"iemand die zich bezighoudt met wetenschap, cultuur en ideeën", ex:"Intellectuelen uit het hele land tekenden protest aan tegen de wet." },
+  { type:"woord", term:"juichen", def:"luid uitdrukking geven aan vreugde; toejuichen", ex:"De menigte juichte toen de uitslag van de verkiezingen bekend was." },
+  { type:"woord", term:"krampachtig", def:"met te veel moeite en spanning; geforceerd", ex:"De minister probeerde krampachtig zijn positie te verdedigen." },
+  { type:"woord", term:"leven", def:"het bestaan; ook: levendigheid of drukte", ex:"Er zat veel leven in de campagne van de nieuwe partij." },
+  { type:"woord", term:"mythe, de", def:"een verhaal of geloof dat niet op feiten is gebaseerd", ex:"Het is een mythe dat koningen altijd meer macht hebben dan premiers." },
+  { type:"woord", term:"naast", def:"naast iemand of iets; ook: behalve of bovendien", ex:"Naast zijn functie als minister schreef hij ook columns." },
+  { type:"woord", term:"nogmaals", def:"een keer meer; opnieuw", ex:"De minister legde zijn standpunt nogmaals duidelijk uit." },
+  { type:"woord", term:"opmerkelijk", def:"opvallend en de moeite waard om te noteren", ex:"Het was opmerkelijk dat beide partijen het eens waren." },
+  { type:"woord", term:"paradox, de", def:"een schijnbare tegenstrijdigheid die toch waar is", ex:"Het is een paradox: meer democratie kan soms minder efficiëntie betekenen." },
+  { type:"woord", term:"parlementair", def:"wat te maken heeft met het parlement", ex:"In een parlementaire democratie heeft het parlement de meeste macht." },
+  { type:"woord", term:"republikeins", def:"wat te maken heeft met een republiek; geen monarchie", ex:"Republikeinse bewegingen pleiten voor afschaffing van de monarchie." },
+  { type:"woord", term:"rijkdom, de", def:"grote welvaart en bezit; ook: overvloed aan iets", ex:"De rijkdom van de koninklijke familie staat vaak ter discussie." },
+  { type:"woord", term:"samenhang, de", def:"de verbinding tussen dingen; coherentie", ex:"Er is duidelijke samenhang tussen armoede en politieke instabiliteit." },
+  { type:"woord", term:"staat, de", def:"een zelfstandig land met eigen bestuur en wetten", ex:"De staat heeft de plicht zijn burgers te beschermen." },
+  { type:"woord", term:"vorst, de", def:"een monarch; een koning of koningin", ex:"De vorst opende het nieuwe parlementaire jaar met een toespraak." },
+  { type:"verbinding", term:"deel uitmaken van iets", def:"onderdeel zijn van een groter geheel", ex:"De minister maakt deel uit van het kabinet." },
+  { type:"verbinding", term:"een beslissing nemen", def:"een keuze maken; iets besluiten", ex:"Het parlement nam de beslissing om nieuwe verkiezingen uit te schrijven." },
+  { type:"verbinding", term:"erdoor komen", def:"ergens doorheen komen; een moeilijke situatie overleven", ex:"Het land kwam er uiteindelijk doorheen na de lange politieke crisis." },
+  { type:"verbinding", term:"gebrek aan iets", def:"te weinig hebben van iets; iets missen", ex:"Er was een duidelijk gebrek aan vertrouwen tussen de coalitiepartners." },
+  { type:"verbinding", term:"gek genoeg", def:"opmerkelijk genoeg; verrassend", ex:"Gek genoeg waren de oppositiepartijen het eens met het kabinetsvoorstel." },
+  { type:"verbinding", term:"in principe", def:"in theorie; als uitgangspunt; eigenlijk wel", ex:"In principe steunt de partij het voorstel, maar er zijn nog bezwaren." },
+  { type:"verbinding", term:"in tegenspraak met iets", def:"iets dat strijdig is met iets anders", ex:"Zijn uitspraken waren in tegenspraak met het regeerakkoord." },
+  { type:"verbinding", term:"in wezen", def:"eigenlijk; in de kern van de zaak", ex:"In wezen gaat het debat over de vraag wie de macht heeft." },
+  { type:"verbinding", term:"waarde hechten aan", def:"iets belangrijk vinden; iets waarderen", ex:"De premier hechtte grote waarde aan de samenwerking met Europa." },
+  { type:"idioom", term:"achter de schermen", def:"buiten het zicht van het publiek; niet openbaar", ex:"Achter de schermen werd druk onderhandeld over de nieuwe coalitie." },
+  { type:"idioom", term:"iets rijmen met iets", def:"begrijpen hoe twee dingen samen kunnen gaan; iets in overeenstemming brengen", ex:"Het is moeilijk te rijmen hoe hij zijn principes rijmt met zijn beleid." },
+  { type:"idioom", term:"iets staat of valt met", def:"iets is volledig afhankelijk van iets anders", ex:"Het akkoord staat of valt met de steun van de kleine coalitiepartner." },
+  { type:"idioom", term:"lijnrecht tegenover iets/iemand staan", def:"totaal anders denken dan iemand; volledig tegengesteld zijn", ex:"De oppositie staat lijnrecht tegenover het kabinetsbeleid." },
+  { type:"idioom", term:"vanuit … oogpunt", def:"vanuit een bepaalde manier van denken of perspectief", ex:"Vanuit economisch oogpunt is dit besluit begrijpelijk." }];
+let cards=[...ALL_CARDS],current=0,isFlipped=false,known=0,filter='all',reviewed=new Set();
+function setFilter(f,btn){filter=f;document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');cards=f==='all'?[...ALL_CARDS]:ALL_CARDS.filter(c=>c.type===f);current=0;known=0;reviewed.clear();isFlipped=false;document.getElementById('scorePanel').classList.remove('show');document.getElementById('scene').style.display='';document.querySelectorAll('.nav-row,.feedback-row,.progress-bar-wrap').forEach(el=>el.style.display='');document.getElementById('fbHint').style.display='none';renderCard();}
+function renderCard(){if(!cards.length)return;const c=cards[current];document.getElementById('cardInner').classList.remove('flipped');isFlipped=false;document.getElementById('cardNum').textContent=(current+1)+'/'+cards.length;document.getElementById('cur').textContent=current+1;document.getElementById('tot').textContent=cards.length;document.getElementById('cardTerm').textContent=c.term;document.getElementById('cardDef').textContent=c.def;document.getElementById('cardEx').textContent=c.ex;const badges={woord:'tag-woord-badge',verbinding:'tag-verbinding-badge',idioom:'tag-idioom-badge'};const tag=document.getElementById('cardTag');tag.textContent=c.type;tag.className='card-tag '+(badges[c.type]||'');document.getElementById('progressBar').style.width=(current/cards.length*100)+'%';document.getElementById('feedbackRow').style.display='none';document.getElementById('fbHint').style.display='block';}
+function flipCard(){isFlipped=!isFlipped;document.getElementById('cardInner').classList.toggle('flipped',isFlipped);document.getElementById('feedbackRow').style.display=isFlipped?'flex':'none';document.getElementById('fbHint').style.display=isFlipped?'none':'block';}
+function nextCard(){if(current<cards.length-1){current++;renderCard();}else showScore();}
+function prevCard(){if(current>0){current--;renderCard();}}
+function markCard(ok){if(!reviewed.has(current)){reviewed.add(current);if(ok)known++;}nextCard();}
+function shuffleCards(){cards=shuffle([...cards]);current=0;known=0;reviewed.clear();isFlipped=false;document.getElementById('scorePanel').classList.remove('show');document.getElementById('scene').style.display='';document.querySelectorAll('.nav-row,.progress-bar-wrap').forEach(el=>el.style.display='');renderCard();}
+function showScore(){document.getElementById('scorePanel').classList.add('show');document.getElementById('scene').style.display='none';document.querySelectorAll('.nav-row,.feedback-row,.progress-bar-wrap,.fb-hint').forEach(el=>el.style.display='none');const total=cards.length;document.getElementById('scoreNum').textContent=known+'/'+total;const pct=total>0?known/total:0;let msg=pct===1?'Geweldig! Je kent alle woorden van H10.2!':pct>=0.8?'Heel goed! Nog een paar herhalen.':pct>=0.5?'Aardig op weg! Oefen de moeilijke woorden nog eens.':'Ga nog eens door de kaarten — je komt er!';document.getElementById('scoreMsg').textContent=msg;}
+function restart(){current=0;known=0;reviewed.clear();isFlipped=false;document.getElementById('scorePanel').classList.remove('show');document.getElementById('scene').style.display='';document.querySelectorAll('.nav-row,.progress-bar-wrap').forEach(el=>el.style.display='');document.getElementById('fbHint').style.display='block';renderCard();}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')nextCard();else if(e.key==='ArrowLeft')prevCard();else if(e.key===' '){e.preventDefault();flipCard();}else if((e.key==='k'||e.key==='K')&&isFlipped)markCard(true);else if((e.key==='o'||e.key==='O')&&isFlipped)markCard(false);});
+renderCard();
+</script>
+</body>
+</html>
