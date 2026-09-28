@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 5 – We zijn onderweg! – Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --blue: #2d3a8c;
+    --blue2: #4338ca;
+    --accent: #f5a623;
+    --pink: #e84393;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5;
+    --bad: #dc2626; --bad-bg: #fee2e2;
+    --shadow: rgba(45,58,140,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(45,58,140,.15); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .6rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.5rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .75rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(45,58,140,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--pink)); border-radius: 10px; transition: width .3s; }
+
+  .big-emoji { font-size: 4rem; text-align: center; line-height: 1.1; min-height: 4.4rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.15rem, 4.5vw, 1.45rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+  .speak:hover { transform: translateY(-1px); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .opts.three { grid-template-columns: 1fr 1fr; } }
+  .opt { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.05rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; }
+  .opt .oe { font-size: 1.5rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+  .tip { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .3rem; font-style: italic; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  /* woordenlijst */
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin: 1.1rem 0 .5rem; }
+  .wl-head:first-child { margin-top: 0; }
+  .wl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .wcard { border: 1px solid #e3e8ff; border-radius: 12px; padding: .5rem .6rem; display: flex; align-items: center; gap: .5rem; cursor: pointer; background: #fbfcff; transition: all .12s; }
+  .wcard:hover { border-color: var(--blue); background: white; }
+  .wcard .we { font-size: 1.4rem; width: 1.8rem; text-align: center; flex-shrink: 0; }
+  .wcard .ww { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+  .wcard .ww small { color: var(--muted); font-weight: 600; }
+  .wcard .sp { margin-left: auto; font-size: .9rem; opacity: .5; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+  /* ---------- MIJN TAAL (flitskaarten) ---------- */
+  .tabs { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .55rem; }
+  .lang-btn { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .7rem .5rem; cursor: pointer; font-family: inherit; text-align: center; transition: all .12s; }
+  .lang-btn:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .lang-btn .nat { display: block; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .lang-btn .nl { display: block; font-size: .75rem; color: var(--muted); font-weight: 700; margin-top: .1rem; }
+  .lang-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; font-weight: 700; }
+  .lang-bar .cur { font-size: 1.05rem; color: var(--blue); }
+  .linkbtn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; }
+  .fc-scene { height: 250px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #dbe2ff; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--blue); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .fc-word.long { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef2ff; }
+  [lang="ar"], [lang="fa"], [lang="prs"] { font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif; }
+  [lang="ti"] { font-family: 'Noto Sans Ethiopic', 'Nunito', sans-serif; }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+</style>
+
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/overzicht_code1.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">🚲</div>
+    <div>
+      <h1>Thema 5 · We zijn onderweg!</h1>
+      <p>Code+ Deel 1 · woordenschat · 99 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b>: klik op een woord en luister.<br>
+    Daarna: <b>🎧 Luisteren</b>, <b>de of het</b>, <b>🧺 Sorteren</b> en <b>✏️ Zinnen</b>.<br>
+    Bij <b>🌍 Mijn taal</b> oefen je met flitskaarten in je eigen taal.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten NT2 · Code+ Deel 1</footer>
+</div>
+
+<script>
+/* ---------- WOORDEN (Code+ Deel 1, Thema 5) ----------
+   [woord, lidwoord, emoji, taak, categorie, meervoud]
+   taak 1 = intro + taak 1 · taak 2 = taak 2 + taak 3
+   categorie: ri richting · ov openbaar vervoer · ge gebouwen en plekken · st op straat */
+const RAW = [
+  ['fiets','de','🚲',1,'st'], ['fietsen','','🚴',1,''], ['lopen','','🚶',1,''], ['manier','de','',1,''], ['meegaan','','',1,''],
+  ['nog (nog verder)','','',1,''], ['onderweg','','🛣️',1,''], ['richting','de','🧭',1,''], ['tram','de','🚊',1,'ov'],
+  ['trein','de','🚆',1,'ov'], ['uitstappen','','',1,''], ['vol','','',1,''], ['vreselijk','','😖',1,''],
+
+  ['automaat','de','🏧',1,''], ['bekend','','',1,''], ['bibliotheek','de','📚',1,'ge'], ['binnengaan','','🚪',1,''],
+  ['kaart (plattegrond)','de','🗺️',1,''], ['kantine','de','🍽️',1,'ge'], ['klinken (dat klinkt goed)','','👂',1,''], ['lift','de','🛗',1,''],
+  ['nodig hebben','','',1,''], ['plein','het','⛲',1,'st'], ['probleem','het','⚠️',1,''], ['rechts','','➡️',1,'ri'], ['regenen','','🌧️',1,''],
+  ['reisgids','de','📘',1,''], ['universiteit','de','🎓',1,'ge'], ['vlakbij','','📍',1,''], ['weg (de weg vragen)','de','🛣️',1,'st'],
+
+  ['alsmaar (alsmaar rechtdoor)','','',2,''], ['benieuwd','','🤔',2,''], ['brug','de','🌉',2,'st'], ['daarna','','',2,''],
+  ['ingang','de','🚪',2,''], ['kaart (toegangskaart)','de','🎟️',2,''], ['kassa','de','🧾',2,''], ['kerk','de','⛪',2,'ge'],
+  ['kilometer','de','',2,''], ['langs (langs de supermarkt)','','',2,''], ['langs (langs het water)','','',2,''], ['linkerkant','de','⬅️',2,'ri'],
+  ['links','','⬅️',2,'ri'], ['linksaf','','↰',2,'ri'], ['meer','','',2,''], ['na','','',2,''], ['naast','','',2,''], ['ouder','de','👪',2,''],
+  ['over (de brug over)','','',2,''], ['oversteken','','🚸',2,''], ['pad (fietspad)','het','🚴',2,'st'], ['pad (in de supermarkt)','het','🛒',2,''],
+  ['parkeren','','🅿️',2,''], ['plattegrond','de','🗺️',2,''], ['rechtdoor','','⬆️',2,'ri'], ['rechterkant','de','➡️',2,'ri'],
+  ['rechtsaf gaan','','↱',2,'ri'], ['volgens','','',2,''], ['winkelmandje','het','🧺',2,''], ['zebrapad','het','🦓',2,'st'],
+  ['moskee','de','🕌',2,'ge'], ['wijzen (de weg)','','👉',2,''],
+
+  ['aankomen (reizen)','','🛬',4,''], ['abonnement','het','📇',4,'ov'], ['advies','het','💡',4,''], ['bestemming','de','🎯',4,''],
+  ['conducteur','de','🧑‍✈️',4,'ov'], ['dagelijks','','',4,''], ['elk','','',4,''], ['herhalen','','🔁',4,''], ['hoeven','','',4,''],
+  ['inchecken','','',4,''], ['instappen','','',4,''], ['klas (openbaar vervoer)','de','1️⃣',4,''], ['mededeling','de','📢',4,''],
+  ['metro','de','🚇',4,'ov'], ['naartoe','','',4,''], ['openbaar vervoer','het','🚌',4,'ov'], ['overstappen','','🔄',4,''],
+  ['pas (bankpas)','de','💳',4,''], ['perron','het','🚉',4,'ov'], ['reis (enkele reis)','de','',4,'ov'], ['reiziger','de','🧳',4,'ov'],
+  ['reizen','','✈️',4,''], ['retour','het','↩️',4,'ov'], ['rond (rond half drie)','','🕝',4,''], ['saldo','het','💶',4,''],
+  ['spoor','het','🛤️',4,'ov'], ['tijdens','','',4,''], ['tot slot','','',4,''], ['uitchecken','','',4,''], ['vergeten','','🤦',4,''],
+  ['verschillend','','',4,''], ['vertrekken','','',4,''], ['vervoersbewijs','het','🎫',4,'ov'], ['voordeel','het','👍',4,''],
+  ['wegens','','',4,''], ['werkzaamheden','de','🚧',4,'',1], ['vertraging','de','⏳',4,'ov']
+];
+const W = RAW.map(r => ({ w: r[0], a: r[1], e: r[2], t: r[3], c: r[4], m: !!r[5] }));
+
+const CATS = {
+  ri: '🧭 Richting', ov: '🚆 Openbaar vervoer', ge: '🏛️ Gebouwen', st: '🚲 Op straat'
+};
+
+/* [zin, [goed antwoord, fout, fout, fout], taak] */
+const ZINNEN = [
+  ['Ik ga met de ___ naar school. Ik fiets.', ['fiets','trein','tram','richting'], 1],
+  ['De ___ rijdt op het spoor. Hij gaat naar Amsterdam.', ['trein','fiets','lift','weg'], 1],
+  ['De tram is ___. Er is geen plaats.', ['vol','vreselijk','bekend','rechts'], 1],
+  ['Ik ga niet met de bus. Ik ___.', ['loop','regen','klink','fiets mee'], 1],
+  ['Het ___. Neem een paraplu mee!', ['regent','loopt','klinkt','fietst'], 1],
+  ['Ik haal een boek in de ___.', ['bibliotheek','kantine','lift','reisgids'], 1],
+  ['In de ___ eten we tussen de middag.', ['kantine','bibliotheek','universiteit','lift'], 1],
+  ['Ik neem de ___ naar de vijfde verdieping.', ['lift','fiets','kantine','weg'], 1],
+  ['Ik weet de weg niet. Ik kijk op de ___.', ['kaart','lift','kantine','richting'], 1],
+  ['Mag ik iets vragen? Ik weet de ___ niet.', ['weg','lift','fiets','kantine'], 1],
+  ['Het station is ___. Het is maar twee minuten lopen.', ['vlakbij','vol','vreselijk','bekend'], 1],
+  ['Waar is de uitgang? – Hier ___.', ['rechts','vol','bekend','onderweg'], 1],
+  ['Geen ___! Ik help je.', ['probleem','richting','manier','lift'], 1],
+  ['Ik ben ___. Ik ben er over tien minuten.', ['onderweg','vol','vlakbij','bekend'], 1],
+
+  ['Ga ___ en dan de tweede straat links.', ['rechtdoor','benieuwd','daarna','meer'], 2],
+  ['Ga over de ___. Dan zie je de kerk.', ['brug','kassa','ingang','kilometer'], 2],
+  ['Je betaalt bij de ___.', ['kassa','brug','kerk','ingang'], 2],
+  ['De ___ is aan de voorkant van het gebouw.', ['ingang','kassa','brug','kilometer'], 2],
+  ['Ik steek over bij het ___.', ['zebrapad','winkelmandje','ouder','linkerkant'], 2],
+  ['In de supermarkt doe ik alles in een ___.', ['winkelmandje','zebrapad','plattegrond','ingang'], 2],
+  ['Waar kan ik mijn auto ___?', ['parkeren','oversteken','wijzen','benieuwd'], 2],
+  ['Eerst naar links, ___ naar rechts.', ['daarna','naast','meer','volgens'], 2],
+  ['De bakker is ___ de supermarkt.', ['naast','daarna','meer','volgens'], 2],
+  ['Mijn ___ wonen in Syrië. Mijn vader en mijn moeder.', ['ouders','kilometers','kerken','bruggen'], 2],
+  ['___ de kaart is het hier.', ['Volgens','Daarna','Naast','Meer'], 2],
+  ['Wat is het antwoord? Ik ben ___!', ['benieuwd','naast','links','meer'], 2],
+  ['Het is vijf ___ fietsen.', ['kilometer','kassa','kerk','ingang'], 2],
+  ['Op vrijdag gaat hij naar de ___.', ['moskee','kassa','ingang','brug'], 2],
+  ['Kunt u mij de weg ___?', ['wijzen','parkeren','oversteken','benieuwd'], 2],
+
+  ['Ik moet ___ in Utrecht. Van de trein naar de bus.', ['overstappen','vertrekken','herhalen','hoeven'], 4],
+  ['In de bus moet je ___ met je kaart.', ['inchecken','vergeten','herhalen','vertrekken'], 4],
+  ['De trein ___ om 10.15 uur.', ['vertrekt','herhaalt','vergeet','hoeft'], 4],
+  ['De trein heeft tien minuten ___.', ['vertraging','saldo','advies','voordeel'], 4],
+  ['De trein komt op ___ 5.', ['spoor','saldo','klas','advies'], 4],
+  ['Ik wacht op het ___ op de trein.', ['perron','abonnement','saldo','advies'], 4],
+  ['Een kaartje voor heen en terug is een ___.', ['retour','saldo','advies','perron'], 4],
+  ['Ik heb een ___. Ik reis elke dag met korting.', ['abonnement','perron','spoor','advies'], 4],
+  ['Er staat niet genoeg ___ op mijn kaart.', ['saldo','perron','spoor','advies'], 4],
+  ['De ___ controleert de kaartjes in de trein.', ['conducteur','reiziger','metro','bestemming'], 4],
+  ['Waar ga je ___? – Naar Rotterdam.', ['naartoe','tijdens','wegens','elk'], 4],
+  ['Er rijden geen treinen ___ werkzaamheden.', ['wegens','tijdens','naartoe','elk'], 4],
+  ['Oh nee, ik ben mijn kaart ___!', ['vergeten','herhaald','vertrokken','overgestapt'], 4],
+  ['Kunt u dat ___? Ik begrijp het niet.', ['herhalen','vergeten','vertrekken','overstappen'], 4],
+  ['Ik reis ___ met de trein. Elke dag.', ['dagelijks','verschillend','tijdens','wegens'], 4],
+  ['Ik kom ___ half drie aan. Misschien iets later.', ['rond','tijdens','wegens','naartoe'], 4],
+  ['Waar gaat u naartoe? Wat is uw ___?', ['bestemming','reiziger','conducteur','mededeling'], 4],
+  ['U ___ niet te betalen. Het is gratis.', ['hoeft','vergeet','vertrekt','herhaalt'], 4]
+];
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2 + 3'],[4,'Taak 4']];
+const TMAP = {0: 1, 3: 2};
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['luister','🎧','Luisteren'], ['dehet','🔤','De of het'],
+  ['sorteer','🧺','Sorteren'], ['zinnen','✏️','Zinnen'], ['taal','🌍','Mijn taal']
+];
+
+const TRANS = {"ar":[[0,"fiets, de","الدراجة"],[0,"fietsen","يركب الدراجة"],[0,"lopen","يمشي، يسير"],[0,"manier, de","طريقة / أسلوب"],[0,"meegaan","يذهب مع أحد"],[0,"nog (nog verder)","واحد/ واحدة أخرى/ المزيد من"],[0,"onderweg","على/ في الطريق"],[0,"richting, de","الإتجاه، التوجه"],[0,"tram, de","الترام"],[0,"trein, de","القطار"],[0,"uitstappen","ينزل من وسيلة نقل"],[0,"vol","مزدحم، ممتلئ"],[0,"vreselijk","فظيع / شنيع"],[1,"automaat, de","ماكينة التذاكر"],[1,"bekend","شيء أو شخص مألوف"],[1,"bibliotheek, de","مكتبة"],[1,"binnengaan","يدخل"],[1,"kaart, de (plattegrond, de)","الخريطة"],[1,"kantine, de","مقصف / كافيتريا"],[1,"klinken (dat klinkt goed)","يبدو (هذا يبدو جيدا)"],[1,"lift, de","المصعد"],[1,"nodig hebben","يحتاج"],[1,"plein, het","الميدان"],[1,"probleem, het","المشكلة"],[1,"rechts","على اليمين"],[1,"regenen","تمطر"],[1,"reisgids, de","دليل سفر"],[1,"universiteit, de","الجامعة"],[1,"vlakbij","قريب من"],[1,"weg, de (de weg vragen)","طريق (يسأل عن الطريق)"],[2,"alsmaar (alsmaar rechtdoor)","المواصلة (يستمر في نفس الاتجاه)"],[2,"benieuwd","لديه فضول"],[2,"brug, de","الجسر/الكوبري"],[2,"daarna","بعد ذلك"],[2,"ingang, de","الدخول/المدخل"],[2,"kaart, de (toegangskaart, de)","تذكرة الدخول"],[2,"kassa, de","الكاشير، خزينة الدفع"],[2,"kerk, de","الكنيسة"],[2,"kilometer, de","الكيلومتر"],[2,"langs (langs het water)","عبر، عن طريق، بمحاذاة"],[2,"langs (langs de supermarkt)","بمحاذاة (المرور بمحاذاة السوبر ماركت)"],[2,"linkerkant, de","الجانب الأيسر"],[2,"links","يسار"],[2,"linksaf","انعطف يسارا"],[2,"meer","أكثر / المزيد"],[2,"na","بعد"],[2,"naast","بجانب، بجوار"],[2,"ouder, de","الأب أو الأم"],[2,"over (de brug over)","عبر (عبر الجسر)"],[2,"oversteken","يعبر"],[2,"pad, het (fietspad)","مسار (مسار الدراجات)"],[2,"pad, het (in de supermarkt)","الممر (في السوبر ماركت)"],[2,"parkeren","يركن السيارة"],[2,"plattegrond, de","الخريطة"],[2,"rechtdoor","للأمام بشكل مستقيم"],[2,"rechterkant, de","الجانب الأيمن"],[2,"rechtsaf gaan","الانعطاف يمينا"],[2,"volgens","وفقا لـ"],[2,"winkelmandje, het","سلة التسوق"],[2,"zebrapad, het","منطقة الزيبرا"],[3,"moskee, de","مسجد"],[3,"wijzen (de weg)","يشير إلى، يبين (الطريق)"],[4,"aankomen (reizen)","يوصل إلى مكان بعد سفر"],[4,"abonnement, het","الإشتراك"],[4,"bestemming, de","وجهة / مقصد"],[4,"conducteur, de","مفتش التذاكر"],[4,"dagelijks","يوميا"],[4,"elk","كل (فرد، يوم)"],[4,"herhalen","يعيد / يكرر"],[4,"hoeven","يحتاج"],[4,"inchecken","تسجيل الوصول"],[4,"instappen","يركب/ركوب طائرة، باص، سيارة"],[4,"klas, de (openbaar vervoer)","الدرجة في المواصلات"],[4,"mededeling, de","إخطار / إبلاغ"],[4,"metro, de","المترو"],[4,"naartoe (waar ga je naartoe?)","إلى أين"],[4,"openbaar vervoer, het","النقل/المواصلات العام(ة)"],[4,"overstappen","يغير، يبدل"],[4,"pas, de (de bankpas)","بطاقة (بطاقة مصرفية)"],[4,"perron, het","رصيف القطار أو المترو"],[4,"reis, de (enkele reis)","الرحلة (مفردة، ذهاب فقط)"],[4,"reizen","يسافر"],[4,"reiziger, de","مسافر"],[4,"retour, het (trein)","تذكرة ذهاب و عودة"],[4,"rond (tijd: rond half drie)","حوالي / تقريبا (حوالي الساعة الثانية والنصف)"],[4,"saldo, het","الرصيد"],[4,"spoor, het","مسار القطار، منصة القطار"],[4,"tijdens","أثناء"],[4,"tot slot","في الختام / أخيرا"],[4,"uitchecken","يسجل الخروج"],[4,"vergeten","ينسى"],[4,"verschillend","مختلف / متنوع / متعدد"],[4,"vertrekken","فعل يغادر"],[4,"vervoersbewijs, het","تذكرة / بطاقة سفر"],[4,"voordeel, het","ميزة، فائدة"],[4,"wegens","بسبب"],[4,"werkzaamheden, de","أعمال"],[4,"advies, het","النصيحة"],[4,"vertraging, de","تأخير"]],"en":[[0,"fiets, de","bicycle"],[0,"fietsen","to cycle"],[0,"lopen","to walk"],[0,"manier, de","way"],[0,"meegaan","to go along / go with / accompany"],[0,"nog (nog verder)","even / still (even / still further)"],[0,"onderweg","on the way"],[0,"richting, de","direction"],[0,"tram, de","tram"],[0,"trein, de","train"],[0,"uitstappen","to get off"],[0,"vol","full"],[0,"vreselijk","terrible / awful"],[1,"automaat, de","machine"],[1,"bekend","familiar"],[1,"bibliotheek, de","library"],[1,"binnengaan","to go in(to)"],[1,"kaart, de (plattegrond, de)","(street) map"],[1,"kantine, de","canteen, cafeteria"],[1,"klinken (dat klinkt goed)","to sound (that sounds good)"],[1,"lift, de","lift"],[1,"nodig hebben","to need"],[1,"plein, het","square"],[1,"probleem, het","problem"],[1,"rechts","(on / to the) right"],[1,"regenen","to rain"],[1,"reisgids, de","guidebook"],[1,"universiteit, de","university"],[1,"vlakbij","close by / nearby"],[1,"weg, de (de weg vragen)","road (to ask for directions)"],[2,"alsmaar (alsmaar rechtdoor)","continuously (keep on going straight)"],[2,"benieuwd","curious"],[2,"brug, de","bridge"],[2,"daarna","after that / afterwards"],[2,"ingang, de","entrance / entry"],[2,"kaart, de (toegangskaart, de)","ticket"],[2,"kassa, de","checkout"],[2,"kerk, de","church"],[2,"kilometer, de","kilometer"],[2,"langs (langs het water)","along the water's edge"],[2,"langs (langs de supermarkt)","pass (you pass the supermarket)"],[2,"linkerkant, de","left side"],[2,"links","left"],[2,"linksaf","(to the) left"],[2,"meer","more"],[2,"na","after"],[2,"naast","next to"],[2,"ouder, de","parent"],[2,"over (de brug over)","across (across the bridge)"],[2,"oversteken","to cross the street"],[2,"pad, het (fietspad)","(bi)cycle track / path"],[2,"pad, het (in de supermarkt)","aisle (in the supermarket)"],[2,"parkeren","to park"],[2,"plattegrond, de","(street) map"],[2,"rechtdoor","straight ahead"],[2,"rechterkant, de","right(-hand) side"],[2,"rechtsaf gaan","to turn right"],[2,"volgens","according to"],[2,"winkelmandje, het","shopping basket"],[2,"zebrapad, het","pedestrian crossing / zebra crossing"],[3,"moskee, de","mosque"],[3,"wijzen (de weg)","to give directions"],[4,"aankomen (reizen)","to arrive"],[4,"abonnement, het","season ticket"],[4,"bestemming, de","destination"],[4,"conducteur, de","conductor (ticket collector)"],[4,"dagelijks","daily / every day"],[4,"elk","every / each"],[4,"herhalen","to repeat"],[4,"hoeven","to need (to)"],[4,"inchecken","to check in"],[4,"instappen","to get in / to get on"],[4,"klas, de (openbaar vervoer)","class"],[4,"mededeling, de","announcement"],[4,"metro, de","subway / tube / underground"],[4,"naartoe (waar ga je naartoe?)","to (where are you going to)?"],[4,"openbaar vervoer, het","public transport"],[4,"overstappen","to change / to transfer"],[4,"pas, de (de bankpas)","pass (the bank card)"],[4,"perron, het","platform"],[4,"reis, de (enkele reis)","trip (one-way trip / ticket)"],[4,"reizen","to travel"],[4,"reiziger, de","traveller"],[4,"retour, het (trein)","return trip / ticket"],[4,"rond (tijd: rond half drie)","around (around half past two)"],[4,"saldo, het","balance / credit"],[4,"spoor, het","track / platform"],[4,"tijdens","during"],[4,"tot slot","finally"],[4,"uitchecken","to check out"],[4,"vergeten","to forget"],[4,"verschillend","different / several"],[4,"vertrekken","to leave"],[4,"vervoersbewijs, het","ticket / card"],[4,"voordeel, het","advantage / discount"],[4,"wegens","because of"],[4,"werkzaamheden, de","maintenance"],[4,"advies, het","advice"],[4,"vertraging, de","delay"]],"fa":[[0,"fiets, de","دوچرخه"],[0,"fietsen","دوچرخهسواری کردن"],[0,"lopen","راه رفتن"],[0,"manier, de","راه"],[0,"meegaan","همراه شدن با"],[0,"nog","هنوز"],[0,"onderweg","در راه"],[0,"richting, de","جهت"],[0,"tram, de","تراموا"],[0,"trein, de","قطار"],[0,"uitstappen","پیاده شدن"],[0,"vol","کامل"],[0,"vreselijk","به طرز وحشتناکی"],[1,"automaat, de","دستگاه"],[1,"bekend","آشنا"],[1,"bibliotheek, de","کتابخانه"],[1,"binnengaan","داخل شدن، رفتن به داخل"],[1,"kaart, de (plattegrond)","نقشه (نقشه)"],[1,"kantine, de","غذاخوری"],[1,"klinken (dat klinkt goed)","به نظر رسیدن (به نظر خوب میاد)"],[1,"lift, de","بالابر"],[1,"nodig hebben","نیاز داشتن"],[1,"plein, het","مربع"],[1,"probleem, het","مشکل"],[1,"rechts","در سمت راست"],[1,"regenen","باران ببارد"],[1,"reisgids, de","کتاب راهنما"],[1,"universiteit, de","دانشگاه"],[1,"vlakbij","در نزدیکی"],[1,"weg, de (de weg vragen)","جاده (برای پرسیدن مسیر)"],[2,"alsmaar (alsmaar rechtdoor)","پیوسته (مستقیم به راه خود ادامه دهید)"],[2,"benieuwd","کنجکاو"],[2,"brug, de","پل"],[2,"daarna","بعدا"],[2,"ingang, de","ورودی"],[2,"kaart, de (toegangskaart)","بلیط ورودی"],[2,"kassa, de","تسویه حساب"],[2,"kerk, de","کلیسا"],[2,"kilometer, de","کیلومتر"],[2,"langs","در کنار"],[2,"langs (langs de supermarkt)","رد شدن (از کنار سوپرمارکت رد میشوید)"],[2,"linkerkant, de","سمت چپ"],[2,"links","چپ"],[2,"linksaf","(به) سمت چپ"],[2,"meer","بیشتر"],[2,"na","بعد از"],[2,"naast","در کنار"],[2,"ouder, de","والدین"],[2,"over (de brug over)","روی (از روی پل)"],[2,"oversteken","برای عبور از خیابان"],[2,"pad, het (fietspad)","مسیر دوچرخهسواری"],[2,"pad, het (in de supermarkt)","راهرو (در سوپرمارکت)"],[2,"parkeren","پارک کردن"],[2,"plattegrond, de","نقشه"],[2,"rechtdoor","مستقیم به جلو"],[2,"rechterkant, de","سمت راست"],[2,"rechtsaf gaan","به راست پیچیدن"],[2,"volgens","طبق"],[2,"winkelmandje, het","سبد خرید"],[2,"zebrapad, het","گذرگاه عابر پیاده"],[3,"moskee, de","مسجد"],[3,"wijzen (de weg)","برای دادن آدرس"],[4,"aankomen (reizen)","رسیدن (سفر)"],[4,"abonnement, het","اشتراک"],[4,"advies, het","توصیه"],[4,"bestemming, de","مقصد"],[4,"conducteur, de","رهبر ارکستر، مسئول بلیط"],[4,"dagelijks","روزانه / هر روز"],[4,"elk","هر"],[4,"herhalen","تکرار کردن"],[4,"hoeven","نیاز داشتن به"],[4,"inchecken","برای ورود"],[4,"instappen","برای ورود"],[4,"klas, de (openbaar vervoer)","کلاس (حمل و نقل عمومی)"],[4,"mededeling, de","اطلاعیه"],[4,"metro, de","زیرزمینی"],[4,"naartoe","کجا میری؟"],[4,"openbaar vervoer, het","حمل و نقل عمومی"],[4,"overstappen","تغییر دادن"],[4,"pas, de (de bankpas)","کارت (کارت بانکی)"],[4,"perron, het","پلتفرم"],[4,"reis, de (enkele)","سفر (سفر یک طرفه)"],[4,"reizen","سفر کردن"],[4,"reiziger, de","مسافر"],[4,"retour, het","بازگشت"],[4,"rond (tijd: rond half drie)","حدود (حدود ساعت دو و نیم)"],[4,"saldo, het","تعادل"],[4,"spoor, het","پلتفرم"],[4,"tijdens","در طول"],[4,"tot slot","بالاخره"],[4,"uitchecken","برای بررسی"],[4,"vergeten","فراموش کردن"],[4,"verschillend","چندین"],[4,"vertraging, de","تأخیر"],[4,"vertrekken","ترک کردن"],[4,"vervoersbewijs, het","بلیت"],[4,"voordeel, het","مزیت"],[4,"wegens","به دلیل"],[4,"werkzaamheden, de","تعمیر و نگهداری"]],"fr":[[0,"fiets, de","vélo"],[0,"fietsen","faire du vélo"],[0,"lopen","marcher"],[0,"manier, de","manière"],[0,"meegaan","accompagner"],[0,"nog (nog verder)","encore"],[0,"onderweg","en chemin"],[0,"richting, de","direction"],[0,"tram, de","tram"],[0,"trein, de","train"],[0,"uitstappen","descendre"],[0,"vol","plein"],[0,"vreselijk","terrible"],[1,"automaat, de","distributeur automatique"],[1,"bekend","familier"],[1,"bibliotheek, de","bibliothèque"],[1,"binnengaan","entrer"],[1,"kaart, de (plattegrond, de)","carte"],[1,"kantine, de","cantine"],[1,"klinken (dat klinkt goed)","sembler (cela me semble bien)"],[1,"lift, de","ascenseur"],[1,"nodig hebben","avoir besoin"],[1,"plein, het","place"],[1,"probleem, het","problème"],[1,"rechts","droite"],[1,"regenen","pleuvoir"],[1,"reisgids, de","guide de voyage"],[1,"universiteit, de","université"],[1,"vlakbij","proche"],[1,"weg, de (de weg vragen)","chemin (demander son chemin)"],[2,"alsmaar (alsmaar rechtdoor)","toujours (toujours tout droit)"],[2,"benieuwd","curieux"],[2,"brug, de","pont"],[2,"daarna","ensuite"],[2,"ingang, de","entrée"],[2,"kaart, de (toegangskaart, de)","carte"],[2,"kassa, de","caisse"],[2,"kerk, de","église"],[2,"kilometer, de","kilomètre"],[2,"langs (langs het water)","par"],[2,"langs (langs de supermarkt)","passe (passe au supermarché)"],[2,"linkerkant, de","côté gauche"],[2,"links","gauche"],[2,"linksaf","à gauche"],[2,"meer","plus"],[2,"na","après"],[2,"naast","à côté de"],[2,"ouder, de","parent"],[2,"over (de brug over)","traverser (traverser le pont)"],[2,"oversteken","traverser"],[2,"pad, het (fietspad)","piste (piste cyclable)"],[2,"pad, het (in de supermarkt)","cheminement (dans le supermarché)"],[2,"parkeren","stationner"],[2,"plattegrond, de","plan"],[2,"rechtdoor","tout droit"],[2,"rechterkant, de","du côté droit"],[2,"rechtsaf gaan","tourner à droite"],[2,"volgens","selon"],[2,"winkelmandje, het","panier"],[2,"zebrapad, het","passage piéton"],[3,"moskee, de","mosquée"],[3,"wijzen (de weg)","montrer (le chemin)"],[4,"aankomen (reizen)","arriver"],[4,"abonnement, het","abonnement"],[4,"bestemming, de","destination"],[4,"conducteur, de","contrôleur"],[4,"dagelijks","tous les jours"],[4,"elk","chaque"],[4,"herhalen","répéter"],[4,"hoeven","devoir"],[4,"inchecken","enregistrer"],[4,"instappen","monter"],[4,"klas, de (openbaar vervoer)","classe"],[4,"mededeling, de","annonce"],[4,"metro, de","métro"],[4,"naartoe (waar ga je naartoe?)","où"],[4,"openbaar vervoer, het","transports en commun"],[4,"overstappen","changer"],[4,"pas, de (de bankpas)","carte (la carte bancaire)"],[4,"perron, het","quai"],[4,"reis, de (enkele reis)","aller (simple)"],[4,"reizen","voyager"],[4,"reiziger, de","voyageur"],[4,"retour, het (trein)","retour"],[4,"rond (tijd: rond half drie)","vers (heure : vers deux heures et demie)"],[4,"saldo, het","solde"],[4,"spoor, het","voie"],[4,"tijdens","pendant"],[4,"tot slot","enfin"],[4,"uitchecken","enregistrer la sortie"],[4,"vergeten","oublier"],[4,"verschillend","plusieurs"],[4,"vertrekken","partir"],[4,"vervoersbewijs, het","titre de transport"],[4,"voordeel, het","avantage"],[4,"wegens","à cause de"],[4,"werkzaamheden, de","maintenance"],[4,"advies, het","conseil"],[4,"vertraging, de","retard"]],"kmr":[[0,"fiets, de","bisiklêt"],[0,"fietsen","bisiklêt ajotin"],[0,"lopen","meşandin"],[0,"manier, de","rê"],[0,"meegaan","çûna pê re"],[0,"nog","hêj"],[0,"onderweg","li ser rê"],[0,"richting, de","bergeh"],[0,"tram, de","trêna nav bajar"],[0,"trein, de","trên"],[0,"uitstappen","daketin"],[0,"vol","tije"],[0,"vreselijk","bi awayekî berbat"],[1,"automaat, de","makîne"],[1,"bekend","nas"],[1,"bibliotheek, de","pirtûkxane"],[1,"binnengaan","çûna hundir"],[1,"kaart, de (plattegrond)","nexşe (nexşe)"],[1,"kantine, de","kantîn"],[1,"klinken (dat klinkt goed)","deng dan (ew xweş deng dide)"],[1,"lift, de","asansor"],[1,"nodig hebben","hewce bûn"],[1,"plein, het","meydan"],[1,"probleem, het","pirsegirêk"],[1,"rechts","li rastê"],[1,"regenen","baran barîn"],[1,"reisgids, de","rêber"],[1,"universiteit, de","zanko"],[1,"vlakbij","nêzîk"],[1,"weg, de (de weg vragen)","rê (pirsîna rêyê)"],[2,"alsmaar (alsmaar rechtdoor)","bi berdewamî (bi berdewamî rasterast biçe)"],[2,"benieuwd","miraqker"],[2,"brug, de","pir"],[2,"daarna","piştre"],[2,"ingang, de","têketin"],[2,"kaart, de (toegangskaart)","bilêta ketinê"],[2,"kassa, de","lêkolîn"],[2,"kerk, de","dêr"],[2,"kilometer, de","kîlometr"],[2,"langs","lê kêleka"],[2,"langs (langs de supermarkt)","derbasbûn (hûn ji supermarketê derbas dibin)"],[2,"linkerkant, de","aliyê çepê"],[2,"links","çep"],[2,"linksaf","(ber bi) çepê ve"],[2,"meer","zêde"],[2,"na","piştî"],[2,"naast","lê kêleka"],[2,"ouder, de","dêûbav"],[2,"over (de brug over)","li ser (li ser pirê)"],[2,"oversteken","derbaskirina kolanê"],[2,"pad, het (fietspad)","rêya bisiklêtê"],[2,"pad, het (in de supermarkt)","korîdor (di supermarketê de)"],[2,"parkeren","parkkirin"],[2,"plattegrond, de","nexşe"],[2,"rechtdoor","rasterast li pêş"],[2,"rechterkant, de","aliyê rastê"],[2,"rechtsaf gaan","ber bi rastê ve bizivirin"],[2,"volgens","li gor"],[2,"winkelmandje, het","selika kirînê"],[2,"zebrapad, het","derbasbûna peyayan"],[3,"moskee, de","camî"],[3,"wijzen (de weg)","dayîna rêwerzan"],[4,"aankomen (reizen)","gihîştin (sefer)"],[4,"abonnement, het","abonetî"],[4,"bestemming, de","şûngeha seyahatê"],[4,"conducteur, de","serek"],[4,"dagelijks","rojane / her roj"],[4,"elk","herkes"],[4,"herhalen","dubarekirin"],[4,"hoeven","pêdivî pê bûn"],[4,"inchecken","qeydkirin"],[4,"instappen","ketina hundir"],[4,"klas, de (openbaar vervoer)","sinif (veguhestina giştî)"],[4,"mededeling, de","daxûyanî"],[4,"metro, de","binerdî"],[4,"naartoe","tu diçî ku derê"],[4,"openbaar vervoer, het","veguhestina giştî"],[4,"overstappen","guhartin"],[4,"pas, de (de bankpas)","kart (karta bankê)"],[4,"perron, het","platform"],[4,"reis, de (enkele)","rêwîtî (rêwîtiyek yekalî)"],[4,"reizen","gerîyan"],[4,"reiziger, de","gerrok"],[4,"retour, het","veger"],[4,"rond (tijd: rond half drie)","li dora (dora du û nîvan)"],[4,"saldo, het","bîlanço"],[4,"spoor, het","platform"],[4,"tijdens","heyama"],[4,"tot slot","di dawiyê de"],[4,"uitchecken","jê derketin"],[4,"vergeten","ji bîr kirin"],[4,"verschillend","çendîn"],[4,"vertrekken","derketin"],[4,"vervoersbewijs, het","bilêt"],[4,"voordeel, het","berjewendî"],[4,"wegens","ji ber"],[4,"werkzaamheden, de","debar"]],"uk":[[0,"fiets, de","велосипед"],[0,"fietsen","їзда на велосипеді"],[0,"lopen","бігти"],[0,"manier, de","спосіб"],[0,"meegaan","приєднуватися"],[0,"nog (nog verder)","рівномірно"],[0,"onderweg","на моєму шляху"],[0,"richting, de","напрямок"],[0,"tram, de","візок"],[0,"trein, de","поїзд"],[0,"uitstappen","вийти"],[0,"vol","повний"],[0,"vreselijk","жахливий"],[1,"automaat, de","торговельний автомат"],[1,"bekend","даних"],[1,"bibliotheek, de","бібліотека"],[1,"binnengaan","входити"],[1,"kaart, de (plattegrond, de)","карта"],[1,"kantine, de","їдальня"],[1,"klinken (dat klinkt goed)","звучати (це звучить добре)"],[1,"lift, de","ліфт"],[1,"nodig hebben","потребувати"],[1,"plein, het","площа"],[1,"probleem, het","проблема"],[1,"rechts","справа"],[1,"regenen","дощ"],[1,"reisgids, de","путівник"],[1,"universiteit, de","університет"],[1,"vlakbij","поряд"],[1,"weg, de (de weg vragen)","дорога (запитати дорогу)"],[2,"alsmaar (alsmaar rechtdoor)","постійно / весь час (постійно / весь час прямо)"],[2,"benieuwd","допитливий"],[2,"brug, de","міст"],[2,"daarna","тоді"],[2,"ingang, de","вхід"],[2,"kaart, de (toegangskaart, de)","квиток"],[2,"kassa, de","звільнити номер у готелі"],[2,"kerk, de","церква"],[2,"kilometer, de","кілометр"],[2,"langs (langs het water)","вздовж"],[2,"langs (langs de supermarkt)","повз (повз супермаркет)"],[2,"linkerkant, de","ліва сторона"],[2,"links","ліворуч"],[2,"linksaf","ліворуч"],[2,"meer","більше"],[2,"na","після"],[2,"naast","далі"],[2,"ouder, de","старший"],[2,"over (de brug over)","через (через міст)"],[2,"oversteken","перетинати"],[2,"pad, het (fietspad)","велосипедна доріжка (велодоріжка)"],[2,"pad, het (in de supermarkt)","прохід (в супермаркеті)"],[2,"parkeren","парк"],[2,"plattegrond, de","карта"],[2,"rechtdoor","прямий"],[2,"rechterkant, de","права сторона"],[2,"rechtsaf gaan","повернути праворуч"],[2,"volgens","відповідно"],[2,"winkelmandje, het","кошик для покупок"],[2,"zebrapad, het","пішохідний перехід"],[3,"moskee, de","мечеть"],[3,"wijzen (de weg)","покажи (шлях)"],[4,"aankomen (reizen)","прибути"],[4,"abonnement, het","підписка"],[4,"bestemming, de","призначення"],[4,"conducteur, de","провідник"],[4,"dagelijks","щодня"],[4,"elk","кожен"],[4,"herhalen","повторювати"],[4,"hoeven","потрібно"],[4,"inchecken","зареєструватися"],[4,"instappen","залазь"],[4,"klas, de (openbaar vervoer)","клас"],[4,"mededeling, de","повідомлення"],[4,"metro, de","метро"],[4,"naartoe (waar ga je naartoe?)","до"],[4,"openbaar vervoer, het","громадський транспорт"],[4,"overstappen","переміщення"],[4,"pas, de (de bankpas)","картка (банківська картка)"],[4,"perron, het","перон"],[4,"reis, de (enkele reis)","в одну сторону (односторонній)"],[4,"reizen","подорож"],[4,"reiziger, de","мандрівник / пасажир"],[4,"retour, het (trein)","повернення"],[4,"rond (tijd: rond half drie)","приблизно (час: приблизно о пів на третю)"],[4,"saldo, het","баланс"],[4,"spoor, het","рейка"],[4,"tijdens","за"],[4,"tot slot","нарешті"],[4,"uitchecken","виписувати"],[4,"vergeten","забути"],[4,"verschillend","різний / відмінний"],[4,"vertrekken","відходити"],[4,"vervoersbewijs, het","проїзний квиток"],[4,"voordeel, het","перевага"],[4,"wegens","через"],[4,"werkzaamheden, de","роботи"],[4,"advies, het","порада"],[4,"vertraging, de","затримка / запізнення"]],"prs":[[0,"fiets, de","بایسکل"],[0,"fietsen","بایسکل رانی کردن"],[0,"lopen","راه رفتن"],[0,"manier, de","راه"],[0,"meegaan","همراه برو، برو با، شرکت"],[0,"nog (nog verder)","کمی بیشتر"],[0,"onderweg","در راه"],[0,"richting, de","جهت"],[0,"tram, de","سرویس برقی"],[0,"trein, de","ریل"],[0,"uitstappen","پائین آمدن"],[0,"vol","پر"],[0,"vreselijk","وحشتناک / وحشتناک"],[1,"automaat, de","ماشین تکت"],[1,"bekend","آشنا شدن"],[1,"bibliotheek, de","کتابخانه"],[1,"binnengaan","داخل چیزی رفتن"],[1,"kaart, de (plattegrond, de)","(سرک) نقشه"],[1,"kantine, de","کانتین، کافه تریا"],[1,"klinken (dat klinkt goed)","صدا کردن (که خوب به نظر میرسد)"],[1,"lift, de","آسانسور"],[1,"nodig hebben","ضرورت داشتن"],[1,"plein, het","چهار راهی"],[1,"probleem, het","پرابلم"],[1,"rechts","(بالا/ طرف) راست"],[1,"regenen","باران باریدن"],[1,"reisgids, de","کتاب راهنما"],[1,"universiteit, de","دانشگاه"],[1,"vlakbij","در نزدیکی، نزدیک به"],[1,"weg, de (de weg vragen)","سرک (برای پرسیدن مسیر)"],[2,"alsmaar (alsmaar rechtdoor)","بشکل دوامدار (مستقیم ادامه دهید)"],[2,"benieuwd","کنجکاو"],[2,"brug, de","پل"],[2,"daarna","پس از آن، بعدا"],[2,"ingang, de","راه دخولی، دخولی"],[2,"kaart, de (toegangskaart, de)","تکت"],[2,"kassa, de","ببینید/ بررسی کنید"],[2,"kerk, de","کلیسا"],[2,"kilometer, de","کیلومتر"],[2,"langs (langs het water)","همراه، گذشته"],[2,"langs (langs de supermarkt)","تیر شدن (شما از سوپر مارکیت تیر می شوئید)"],[2,"linkerkant, de","طرف چپ"],[2,"links","چپ"],[2,"linksaf","(در طرف) چپ"],[2,"meer","بیشتر"],[2,"na","پس از"],[2,"naast","در پهلوی"],[2,"ouder, de","یکی از والدین"],[2,"over (de brug over)","در آنسوی (آنسوی پل)"],[2,"oversteken","از سرک عبور کردن"],[2,"pad, het (fietspad)","راه/ مسیر بایسکل"],[2,"pad, het (in de supermarkt)","راهرو (در سوپرمارکت ها)"],[2,"parkeren","پارک کردن"],[2,"plattegrond, de","نقشه (کوچه)"],[2,"rechtdoor","مستقیم به جلو"],[2,"rechterkant, de","طرف (دست) راست"],[2,"rechtsaf gaan","به راست چرخیدن"],[2,"volgens","مطابق با"],[2,"winkelmandje, het","سبد خرید"],[2,"zebrapad, het","افراد پیاده رو عبور می کنند، خطکشی عابر پیاده"],[3,"moskee, de","مسجد"],[3,"wijzen (de weg)","راه را نشان دادن"],[4,"aankomen (reizen)","رسیدن"],[4,"abonnement, het","اشتراک"],[4,"bestemming, de","مقصد/ منزل"],[4,"conducteur, de","نگران (جمع کننده تکت)"],[4,"dagelijks","همه روزه، هر روز"],[4,"elk","هر یک/ هر کدام"],[4,"herhalen","تکرار کردن"],[4,"hoeven","نیاز به (به)"],[4,"inchecken","چک/ بررسی کردن"],[4,"instappen","داخل/ بالا شدن"],[4,"klas, de (openbaar vervoer)","صنف"],[4,"mededeling, de","اعلامیه"],[4,"metro, de","مترو، تیوب، زیر زمین"],[4,"naartoe (waar ga je naartoe?)","به (به کجا میروی)؟"],[4,"openbaar vervoer, het","ترانسپورت عمومی"],[4,"overstappen","تبدیل کردن/ انتقال دادن"],[4,"pas, de (de bankpas)","پاس (کارت بانکی)"],[4,"perron, het","پلت فورم"],[4,"reis, de (enkele reis)","دوره (تکت تکی/ یک طرفه)"],[4,"reizen","سفر کردن"],[4,"reiziger, de","مسافر"],[4,"retour, het (trein)","تکت بازگشت"],[4,"rond (tijd: rond half drie)","در حدود (حدود ساعت دو و نیم)"],[4,"saldo, het","تعادل/ موجودی (اینجا: سفر با پرداخت)"],[4,"spoor, het","مسیر، پلت فرم"],[4,"tijdens","در جریان"],[4,"tot slot","بالاخره"],[4,"uitchecken","دیدن/ بررسی کردن"],[4,"vergeten","فراموش کردن"],[4,"verschillend","مختلف / چند تا"],[4,"vertrekken","ایلا کردن"],[4,"vervoersbewijs, het","تکت / کارت"],[4,"voordeel, het","فایده"],[4,"wegens","به دلیل"],[4,"werkzaamheden, de","نگهداری"],[4,"advies, het","توصیه"],[4,"vertraging, de","تعویق"]],"ru":[[0,"fiets, de","велосипед"],[0,"fietsen","ездить на велосипеде"],[0,"lopen","идти"],[0,"manier, de","способ"],[0,"meegaan","идти вместе"],[0,"nog (nog verder)","еще (один)"],[0,"onderweg","по пути"],[0,"richting, de","направление"],[0,"tram, de","трамвай"],[0,"trein, de","поезд"],[0,"uitstappen","выходить"],[0,"vol","полный"],[0,"vreselijk","ужасный"],[1,"automaat, de","билетный автомат"],[1,"bekend","известный"],[1,"bibliotheek, de","библиотека"],[1,"binnengaan","входить"],[1,"kaart, de (plattegrond, de)","карта"],[1,"kantine, de","столовая"],[1,"klinken (dat klinkt goed)","звучать * (это звучит хорошо)"],[1,"lift, de","лифт"],[1,"nodig hebben","нуждаться *"],[1,"plein, het","площадь"],[1,"probleem, het","проблема"],[1,"rechts","справа"],[1,"regenen","идет дождь"],[1,"reisgids, de","путеводитель"],[1,"universiteit, de","университет"],[1,"vlakbij","поблизости"],[1,"weg, de (de weg vragen)","дорога (спросить дорогу)"],[2,"alsmaar (alsmaar rechtdoor)","постоянно / все время (постоянно / все время прямо)"],[2,"benieuwd","любопытный"],[2,"brug, de","мост"],[2,"daarna","потом"],[2,"ingang, de","вход"],[2,"kaart, de (toegangskaart, de)","билет"],[2,"kassa, de","касса"],[2,"kerk, de","церковь"],[2,"kilometer, de","километр"],[2,"langs (langs het water)","вдоль"],[2,"langs (langs de supermarkt)","мимо (мимо супермаркета)"],[2,"linkerkant, de","левая сторона"],[2,"links","левый"],[2,"linksaf","влево, налево"],[2,"meer","больше"],[2,"na","после"],[2,"naast","рядом (с...)"],[2,"ouder, de","родитель"],[2,"over (de brug over)","через (через мост)"],[2,"oversteken","перейти"],[2,"pad, het (fietspad)","велосипедная дорожка (велосипедная дорожка)"],[2,"pad, het (in de supermarkt)","ряд (в супермаркете)"],[2,"parkeren","парковать"],[2,"plattegrond, de","карта"],[2,"rechtdoor","прямо"],[2,"rechterkant, de","правая сторона"],[2,"rechtsaf gaan","повернуть направо"],[2,"volgens","в соответствии с"],[2,"winkelmandje, het","корзина для покупок"],[2,"zebrapad, het","пешеходный переход"],[3,"moskee, de","мечеть"],[3,"wijzen (de weg)","показывать (дорогу)"],[4,"aankomen (reizen)","приезжать"],[4,"abonnement, het","абонемент, сезонный билет"],[4,"bestemming, de","назначение"],[4,"conducteur, de","проводник"],[4,"dagelijks","ежедневно"],[4,"elk","каждый"],[4,"herhalen","повторять"],[4,"hoeven","нужно"],[4,"inchecken","зарегистрироваться"],[4,"instappen","входить, заходить"],[4,"klas, de (openbaar vervoer)","класс"],[4,"mededeling, de","сообщение"],[4,"metro, de","метро"],[4,"naartoe (waar ga je naartoe?)","туда, куда"],[4,"openbaar vervoer, het","общественный транспорт"],[4,"overstappen","изменить, сменить"],[4,"pas, de (de bankpas)","карта (банковская карта)"],[4,"perron, het","перрон"],[4,"reis, de (enkele reis)","поездка (в одну сторону)"],[4,"reizen","ездить, путешествовать"],[4,"reiziger, de","путешественник / пассажир"],[4,"retour, het (trein)","поездка туда и обратно, обратный билет"],[4,"rond (tijd: rond half drie)","около / примерно (время: около половины третьего)"],[4,"saldo, het","баланс, остаток"],[4,"spoor, het","путь, платформа"],[4,"tijdens","во время, втечение"],[4,"tot slot","наконец"],[4,"uitchecken","выезжать"],[4,"vergeten","забыть"],[4,"verschillend","различный"],[4,"vertrekken","отправляться"],[4,"vervoersbewijs, het","проездной билет"],[4,"voordeel, het","выгода"],[4,"wegens","из-за"],[4,"werkzaamheden, de","работы"],[4,"advies, het","совет, рекомендация"],[4,"vertraging, de","задержка / опоздание"]],"so":[[0,"fiets, de","baaskiil"],[0,"fietsen","inaad waddo baaskiil"],[0,"lopen","inaad lugayso"],[0,"manier, de","waddo"],[0,"meegaan","inaad weheliso"],[0,"nog","weli"],[0,"onderweg","jidka ku jira"],[0,"richting, de","jihada"],[0,"tram, de","taraam"],[0,"trein, de","tareen"],[0,"uitstappen","inaad ka degto"],[0,"vol","buuxa"],[0,"vreselijk","si xun"],[1,"automaat, de","mashiin"],[1,"bekend","yaqaan"],[1,"bibliotheek, de","laybareeriga"],[1,"binnengaan","inaad gasho"],[1,"kaart, de (plattegrond)","khariidad (khariidad)"],[1,"kantine, de","makhaayad"],[1,"klinken (dat klinkt goed)","inay u ekaato (taasi waxay u egtahay mid fiican)"],[1,"lift, de","qaadid"],[1,"nodig hebben","inaad u baahato"],[1,"plein, het","laba-jibbaarane"],[1,"probleem, het","dhibaato"],[1,"rechts","dhanka midig"],[1,"regenen","roob di'id"],[1,"reisgids, de","buug tilmaameed"],[1,"universiteit, de","jaamacad"],[1,"vlakbij","u dhow"],[1,"weg, de (de weg vragen)","waddo (inaad weydiiso jihooyin)"],[2,"alsmaar (alsmaar rechtdoor)","si joogto ah (si toos ah u soco)"],[2,"benieuwd","xiiso qabo"],[2,"brug, de","buundo"],[2,"daarna","intaa kadib"],[2,"ingang, de","irrid"],[2,"kaart, de (toegangskaart)","tigidh gelitaan"],[2,"kassa, de","bixinta lacagta"],[2,"kerk, de","kiniisad"],[2,"kilometer, de","kiiloomitir"],[2,"langs","ku xiga"],[2,"langs (langs de supermarkt)","dhaafid (waad dhaaftaa suuq-yaraha)"],[2,"linkerkant, de","dhinaca bidix"],[2,"links","bidix"],[2,"linksaf","(dhinaca) bidix"],[2,"meer","ka badan"],[2,"na","ka dib"],[2,"naast","ku xiga"],[2,"ouder, de","waalid"],[2,"over (de brug over)","dul (buundada dusheeda)"],[2,"oversteken","inaad jidka ka tallawdo"],[2,"pad, het (fietspad)","waddada baaskiilka"],[2,"pad, het (in de supermarkt)","marin (suuq-yaraha)"],[2,"parkeren","inaad baarkin garayso"],[2,"plattegrond, de","khariidad"],[2,"rechtdoor","tooska ku beegan"],[2,"rechterkant, de","dhinaca midig"],[2,"rechtsaf gaan","inaad u leexato midig"],[2,"volgens","sida laga soo xigtay"],[2,"winkelmandje, het","salladda tukaamaysiga"],[2,"zebrapad, het","meesha dadku ka gudbaan jidka"],[3,"moskee, de","masaajid"],[3,"wijzen (de weg)","inaad jihooyinka siiso"],[4,"aankomen (reizen)","inaad u timaado (safar)"],[4,"abonnement, het","rukunsi"],[4,"bestemming, de","meesha loo socdo"],[4,"conducteur, de","kaashatoor"],[4,"dagelijks","maalin walba / maalin kasta"],[4,"elk","kasta"],[4,"herhalen","inaad ku celiso"],[4,"hoeven","inaad u baahato in"],[4,"inchecken","inaad timaad"],[4,"instappen","inaad gasho"],[4,"klas, de (openbaar vervoer)","fasal (gaadiidka dadweynaha)"],[4,"mededeling, de","ogeysiis"],[4,"metro, de","dhulka hoostiisa"],[4,"naartoe","xaggee u socotaa?"],[4,"openbaar vervoer, het","gaadiidka dadweynaha"],[4,"overstappen","inaad beddesho"],[4,"pas, de (de bankpas)","kaar (kaarka bangiga)"],[4,"perron, het","madal"],[4,"reis, de (enkele)","safar (safar hal dhinac ah)"],[4,"reizen","inaad safarto"],[4,"reiziger, de","musaafir"],[4,"retour, het","soo celin"],[4,"rond (tijd: rond half drie)","qiyaastii (qiyaastii laba iyo badhkii)"],[4,"saldo, het","baaqi"],[4,"spoor, het","madal"],[4,"tijdens","inta lagu jiro"],[4,"tot slot","ugu dambeyntii"],[4,"uitchecken","inaad bixiso lacagta"],[4,"vergeten","inaad illowdo"],[4,"verschillend","dhowr"],[4,"vertrekken","inaad tagto"],[4,"vervoersbewijs, het","tigidh"],[4,"voordeel, het","faa'iido"],[4,"wegens","sababtoo ah"],[4,"werkzaamheden, de","dayactir"]],"es":[[0,"fiets, de","bicicleta"],[0,"fietsen","ir en bicicleta"],[0,"lopen","caminar, andar"],[0,"manier, de","manera/forma"],[0,"meegaan","acompañar"],[0,"nog (nog verder)","otro/a, un poco más"],[0,"onderweg","en camino"],[0,"richting, de","dirección"],[0,"tram, de","tranvía"],[0,"trein, de","tren"],[0,"uitstappen","bajarse de un vehículo"],[0,"vol","lleno/a"],[0,"vreselijk","terrible/horrible"],[1,"automaat, de","máquina expendedora"],[1,"bekend","conocido/a"],[1,"bibliotheek, de","biblioteca"],[1,"binnengaan","entrar"],[1,"kaart, de (plattegrond, de)","mapa, plano"],[1,"kantine, de","cantina/cafetería"],[1,"klinken (dat klinkt goed)","sonar * (suena bien)"],[1,"lift, de","ascensor"],[1,"nodig hebben","necesitar/precisar de *"],[1,"plein, het","plaza"],[1,"probleem, het","problema"],[1,"rechts","a la derecha"],[1,"regenen","llover"],[1,"reisgids, de","guía de viaje"],[1,"universiteit, de","universidad"],[1,"vlakbij","cerca"],[1,"weg, de (de weg vragen)","camino (preguntar por el camino)"],[2,"alsmaar (alsmaar rechtdoor)","sin parar (todo recto, sin parar)"],[2,"benieuwd","curioso/a"],[2,"brug, de","puente"],[2,"daarna","después, luego"],[2,"ingang, de","entrada"],[2,"kaart, de (toegangskaart, de)","tarjeta de acceso"],[2,"kassa, de","caja (registradora)"],[2,"kerk, de","iglesia"],[2,"kilometer, de","kilómetro"],[2,"langs (langs het water)","a lo largo de"],[2,"langs (langs de supermarkt)","por (por el supermercado)"],[2,"linkerkant, de","lado izquierdo"],[2,"links","izquierda"],[2,"linksaf","a la izquierda"],[2,"meer","más"],[2,"na","después de, tras"],[2,"naast","junto a, al lado de"],[2,"ouder, de","padre o madre, progenitor"],[2,"over (de brug over)","cruzar (el puente)"],[2,"oversteken","cruzar (la calle)"],[2,"pad, het (fietspad)","carril (carril bici)"],[2,"pad, het (in de supermarkt)","pasillo (de supermercado)"],[2,"parkeren","aparcar, estacionar"],[2,"plattegrond, de","plano, callejero"],[2,"rechtdoor","todo recto"],[2,"rechterkant, de","lado derecho"],[2,"rechtsaf gaan","girar a la derecha"],[2,"volgens","según"],[2,"winkelmandje, het","cesta de la compra"],[2,"zebrapad, het","paso de cebra"],[3,"moskee, de","mezquita"],[3,"wijzen (de weg)","indicar (el camino)"],[4,"aankomen (reizen)","llegar"],[4,"abonnement, het","suscripción"],[4,"bestemming, de","destino"],[4,"conducteur, de","revisor"],[4,"dagelijks","(a) diario"],[4,"elk","cada"],[4,"herhalen","repetir"],[4,"hoeven","necesitar"],[4,"inchecken","registrarse"],[4,"instappen","subir (a un vehículo)"],[4,"klas, de (openbaar vervoer)","clase"],[4,"mededeling, de","anuncio"],[4,"metro, de","metro (transporte)"],[4,"naartoe (waar ga je naartoe?)","hacia allá, a dónde"],[4,"openbaar vervoer, het","transporte público"],[4,"overstappen","hacer transbordo"],[4,"pas, de (de bankpas)","tarjeta (bancaria)"],[4,"perron, het","andén"],[4,"reis, de (enkele reis)","viaje (de ida)"],[4,"reizen","viajar"],[4,"reiziger, de","viajero/viajera"],[4,"retour, het (trein)","ida y vuelta"],[4,"rond (tijd: rond half drie)","alrededor de/sobre (hora: alrededor de/sobre las tres y media)"],[4,"saldo, het","saldo"],[4,"spoor, het","pista, vía"],[4,"tijdens","durante"],[4,"tot slot","por último"],[4,"uitchecken","salida (registrar la salida)"],[4,"vergeten","olvidar *"],[4,"verschillend","diferente"],[4,"vertrekken","salir, partir"],[4,"vervoersbewijs, het","billete"],[4,"voordeel, het","ventaja"],[4,"wegens","debido a/por"],[4,"werkzaamheden, de","trabajos"],[4,"advies, het","consejo"],[4,"vertraging, de","retraso/demora"]],"ti":[[0,"fiets, de","ብሽክሌታ"],[0,"fietsen","ብሽክለታ ምዝዋር"],[0,"lopen","ጉያ"],[0,"manier, de","መንገዲ"],[0,"meegaan","ተፀምበሩ"],[0,"nog (nog verder)","ዋላ"],[0,"onderweg","ኣብ መገደይ"],[0,"richting, de","ኣንፈት"],[0,"tram, de","ትራም"],[0,"trein, de","ባቡር"],[0,"uitstappen","ውፃ"],[0,"vol","ሙሉእ"],[0,"vreselijk","ዘስካሕክሕ / ኣሰቃቒ"],[1,"automaat, de","መሸጢ ማሽን"],[1,"bekend","ዝፍለጡ"],[1,"bibliotheek, de","ቤተ-መጻሕፍቲ"],[1,"binnengaan","ኣእትው"],[1,"kaart, de (plattegrond, de)","ካርታ"],[1,"kantine, de","ካንቲና፡ ካፈተርያ"],[1,"klinken (dat klinkt goed)","ምድማጽ (ጽቡቕ ድምጺ ዘለዎ)"],[1,"lift, de","ሊፍት"],[1,"nodig hebben","ምድላይ"],[1,"plein, het","ትርብዒት"],[1,"probleem, het","ፀገም"],[1,"rechts","የማን"],[1,"regenen","ዝናብ"],[1,"reisgids, de","መምርሒ-መጽሓፍ"],[1,"universiteit, de","ዩኒቨርሲቲ"],[1,"vlakbij","ኣብ"],[1,"weg, de (de weg vragen)","መንገዲ (ኣንፈታት ምሕታት)"],[2,"alsmaar (alsmaar rechtdoor)","ብቐጻሊ (ትኽ ኢልካ ምኻድ ምቕጻል)"],[2,"benieuwd","ህንጥው"],[2,"brug, de","ድልድል"],[2,"daarna","ሽዑ"],[2,"ingang, de","መእተዊ"],[2,"kaart, de (toegangskaart, de)","ትኬት"],[2,"kassa, de","ኣረጋግጽ"],[2,"kerk, de","ቤተ ክርስቲያን"],[2,"kilometer, de","ኪሎሜትር"],[2,"langs (langs het water)","ማዕረ ኣንፈት"],[2,"langs (langs de supermarkt)","ምሕላፍ (ንሱፐርማርኬት እንክትሓልፎ)"],[2,"linkerkant, de","ጸጋም"],[2,"links","ጸጋም"],[2,"linksaf","ጸጋም"],[2,"meer","ዝያዳ"],[2,"na","ድሕሪኡ"],[2,"naast","ዝቅጽል"],[2,"ouder, de","ብዕድመ ዝደፍአ"],[2,"over (de brug over)","ስግር (ስግር ድልድል)"],[2,"oversteken","መስቀላዊ"],[2,"pad, het (fietspad)","መንገዲ ብሽክለታ (መንገዲ ብሽክለታ)"],[2,"pad, het (in de supermarkt)","መንገዲ (ኣብ ሱፐር ማርኬት)"],[2,"parkeren","መናፈሻ"],[2,"plattegrond, de","ካርታ"],[2,"rechtdoor","ትኽ ኢልካ ኪድ"],[2,"rechterkant, de","የማናይ ሸነኽ"],[2,"rechtsaf gaan","ንየማን ምጥዋይ"],[2,"volgens","መሰረት"],[2,"winkelmandje, het","ናይ ዕዳጋ መሶብ"],[2,"zebrapad, het","መስቀላዊ መገዲ"],[3,"moskee, de","መስጊድ"],[3,"wijzen (de weg)","ኣርእይ (እቲ ንገዲ)"],[4,"aankomen (reizen)","ም"],[4,"abonnement, het","ምዝገባ"],[4,"bestemming, de","መዓልቦ"],[4,"conducteur, de","ተቖጻጻሪ ትኬት (ኣከቢ ትኬት)"],[4,"dagelijks","መዓልታዊ"],[4,"elk","ሕድሕድ"],[4,"herhalen","ምድጋም"],[4,"hoeven","ምድላይ (ናይ)"],[4,"inchecken","ቼክ"],[4,"instappen","ናብ ውሽጢ"],[4,"klas, de (openbaar vervoer)","ክፍሊ"],[4,"mededeling, de","ምልክታ"],[4,"metro, de","ናይባቡር"],[4,"naartoe (waar ga je naartoe?)","ናብ"],[4,"openbaar vervoer, het","ህባዝባዊ መጓዓዝያ"],[4,"overstappen","ምምሕልላፍ"],[4,"pas, de (de bankpas)","ምሕላፍ (ናይ ባንክ ካርድ)"],[4,"perron, het","ፕላትፎርም"],[4,"reis, de (enkele reis)","ሓደ መንገዲ()"],[4,"reizen","ጉዕዞ"],[4,"reiziger, de","ተጓዓዚ"],[4,"retour, het (trein)","ምምላስ"],[4,"rond (tijd: rond half drie)","ኣብ ከባቢ (ከባቢ ሰዓት ክልተን ፈረቓን)"],[4,"saldo, het","ሚዛን"],[4,"spoor, het","መገዲ ባቡር"],[4,"tijdens","ኣብ እዋን"],[4,"tot slot","ኣብ መወዳእታ"],[4,"uitchecken","ምርግጋፅ"],[4,"vergeten","ምርሳዕ"],[4,"verschillend","ዝተፈላለየ / ሓያሎ"],[4,"vertrekken","ተፈልዩ"],[4,"vervoersbewijs, het","ትኬት / ካርድ"],[4,"voordeel, het","ጥቅሚ"],[4,"wegens","ብምኽንያት"],[4,"werkzaamheden, de","ጽገና"],[4,"advies, het","ምኽሪ"],[4,"vertraging, de","ምድንጓይ"]],"tr":[[0,"fiets, de","bisiklet"],[0,"fietsen","bisiklet sürmek"],[0,"lopen","yürümek"],[0,"manier, de","yol / yöntem"],[0,"meegaan","birlikte gitmek"],[0,"nog (nog verder)","bir tane daha"],[0,"onderweg","yolda"],[0,"richting, de","yön"],[0,"tram, de","tramvay"],[0,"trein, de","tren"],[0,"uitstappen","inmek"],[0,"vol","dolu"],[0,"vreselijk","korkunç / berbat"],[1,"automaat, de","makine"],[1,"bekend","aşina"],[1,"bibliotheek, de","kütüphane"],[1,"binnengaan","içine girmek"],[1,"kaart, de (plattegrond, de)","harita"],[1,"kantine, de","kantin / yemekhane"],[1,"klinken (dat klinkt goed)","kulağa ... gelmek (kulağa hoş geliyor)"],[1,"lift, de","asansör"],[1,"nodig hebben","ihtiyaç duymak"],[1,"plein, het","meydan"],[1,"probleem, het","problem"],[1,"rechts","sağ"],[1,"regenen","yağmur yağmak"],[1,"reisgids, de","rehber kitap"],[1,"universiteit, de","üniversite"],[1,"vlakbij","yakın"],[1,"weg, de (de weg vragen)","yol (yol sormak için)"],[2,"alsmaar (alsmaar rechtdoor)","dümdüz / sürekli olarak (dosdoğru gitmek)"],[2,"benieuwd","meraklı"],[2,"brug, de","köprü"],[2,"daarna","daha sonra"],[2,"ingang, de","giriş"],[2,"kaart, de (toegangskaart, de)","kart (giriş kartı)"],[2,"kassa, de","gişe, kasa"],[2,"kerk, de","kilise"],[2,"kilometer, de","kilometre"],[2,"langs (langs het water)","boyunca, kenarında"],[2,"langs (langs de supermarkt)","geçmek (süpermarketi geçersin)"],[2,"linkerkant, de","sol taraf"],[2,"links","sol"],[2,"linksaf","sola"],[2,"meer","daha fazla"],[2,"na","sonra"],[2,"naast","yanında"],[2,"ouder, de","ebeveyn"],[2,"over (de brug over)","karşıya (köprünün karşısına)"],[2,"oversteken","karşıdan karşıya geçmek"],[2,"pad, het (fietspad)","yol (bisiklet yolu)"],[2,"pad, het (in de supermarkt)","koridor (süpermarkette)"],[2,"parkeren","park etmek"],[2,"plattegrond, de","harita"],[2,"rechtdoor","dümdüz ileri"],[2,"rechterkant, de","sağ taraf"],[2,"rechtsaf gaan","sağa dönmek"],[2,"volgens","göre"],[2,"winkelmandje, het","alışveriş sepeti"],[2,"zebrapad, het","yaya geçidi"],[3,"moskee, de","cami"],[3,"wijzen (de weg)","göstermek"],[4,"aankomen (reizen)","varmak"],[4,"abonnement, het","abonelik"],[4,"bestemming, de","varış noktası / hedef"],[4,"conducteur, de","kondüktör / bilet kontrolörü"],[4,"dagelijks","günlük"],[4,"elk","her"],[4,"herhalen","tekrarlamak"],[4,"hoeven","ihtiyacı olmak (-e / -a)"],[4,"inchecken","giriş yapmak"],[4,"instappen","binmek"],[4,"klas, de (openbaar vervoer)","sınıf (toplu taşıma)"],[4,"mededeling, de","duyuru"],[4,"metro, de","metro"],[4,"naartoe (waar ga je naartoe?)","-e/-a doğru"],[4,"openbaar vervoer, het","toplu taşıma"],[4,"overstappen","aktarma yapmak"],[4,"pas, de (de bankpas)","uzatmak (banka kartını)"],[4,"perron, het","peron"],[4,"reis, de (enkele reis)","yolculuk (tek yön)"],[4,"reizen","seyahat etmek"],[4,"reiziger, de","gezgin / yolcu"],[4,"retour, het (trein)","geri dönüş"],[4,"rond (tijd: rond half drie)","civarı / sularında (saat iki buçuğa doğru)"],[4,"saldo, het","bakiye"],[4,"spoor, het","peron"],[4,"tijdens","sırasında"],[4,"tot slot","sonunda / nihayet"],[4,"uitchecken","çıkış yapmak"],[4,"vergeten","unutmak"],[4,"verschillend","farklı / birkaç"],[4,"vertrekken","ayrılmak"],[4,"vervoersbewijs, het","bilet / kart"],[4,"voordeel, het","avantaj"],[4,"wegens","yüzünden / nedeniyle"],[4,"werkzaamheden, de","bakım"],[4,"advies, het","tavsiye"],[4,"vertraging, de","gecikme"]]};
+
+/* ---------- MIJN TAAL: flitskaarten Nederlands ↔ eigen taal ----------
+   Vertalingen letterlijk overgenomen uit de woordenlijsten van Code+ Deel 1 (ThiemeMeulenhoff). */
+const LANGS = [
+  ['ar','العربية','Arabisch',1], ['prs','دری','Dari',1], ['en','English','Engels',0], ['fa','فارسی','Farsi',1],
+  ['fr','Français','Frans',0], ['kmr','Kurmancî','Koerdisch (Kurmanji)',0], ['uk','Українська','Oekraïens',0],
+  ['ru','Русский','Russisch',0], ['so','Soomaali','Somalisch',0], ['es','Español','Spaans',0],
+  ['ti','ትግርኛ','Tigrinya',0], ['tr','Türkçe','Turks',0]
+];
+const LS_KEY = 'code1_mijntaal';
+let myLang = null, richting = 'nl', deck = [], di = 0, fcFlipped = false, fcWrong = [];
+try { myLang = localStorage.getItem(LS_KEY); } catch (e) {}
+if (!LANGS.some(l => l[0] === myLang)) myLang = null;
+function langInfo(c) { return LANGS.find(l => l[0] === c); }
+function taakOf(t) { if (typeof TMAP !== 'undefined' && t in TMAP) return TMAP[t]; return (t === 0 && !TAKEN.some(x => x[0] === 0)) ? 1 : t; }
+function taalPool() {
+  return (TRANS[myLang] || []).filter(e => taak === 'all' || taakOf(e[0]) === taak);
+}
+function setLang(c) {
+  myLang = c;
+  try { if (c) localStorage.setItem(LS_KEY, c); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  renderTaal();
+}
+function renderTaal() {
+  const p = document.getElementById('panel');
+  if (!myLang) {
+    p.innerHTML = '<h2>🌍 Mijn taal</h2><p class="how">Kies je taal. Dan oefen je met flitskaarten: Nederlands en jouw taal.</p>' +
+      '<div class="lang-grid">' + LANGS.map(l => '<button class="lang-btn" data-l="' + l[0] + '"><span class="nat" lang="' + l[0] + '" dir="' + (l[3] ? 'rtl' : 'ltr') + '">' + l[1] + '</span><span class="nl">' + l[2] + '</span></button>').join('') + '</div>';
+    p.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    return;
+  }
+  const L = langInfo(myLang), n = taalPool().length;
+  const dirs = [['nl', 'Nederlands → ' + L[2]], ['taal', L[2] + ' → Nederlands'], ['mix', 'Door elkaar']];
+  p.innerHTML = '<h2>🌍 Mijn taal</h2>' +
+    '<div class="lang-bar"><span class="cur">Jouw taal: <span lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '">' + L[1] + '</span> (' + L[2] + ')</span><button class="linkbtn" id="chg">Andere taal kiezen</button></div>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === richting ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' kaarten)</button></div>'
+       : '<p class="how">Er zijn geen kaarten voor deze taak in deze taal.</p>');
+  document.getElementById('chg').onclick = () => setLang(null);
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { richting = b.dataset.d; renderTaal(); });
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startDeck(taalPool());
+}
+function startDeck(list) {
+  deck = shuffle(list).map(e => ({ e, side: richting === 'mix' ? (Math.random() < .5 ? 'nl' : 'taal') : richting }));
+  di = 0; fcWrong = []; renderCard();
+}
+function faceHtml(isNl, e, L, tag) {
+  const txt = isNl ? e[1] : e[2];
+  const attrs = isNl ? 'lang="nl" dir="ltr"' : 'lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '"';
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-word' + (txt.length > 28 ? ' long' : '') + '" ' + attrs + '>' + esc(txt) + '</div>' +
+    (isNl ? '<button class="fc-say" data-say="1">🔊 Luister</button>' : '');
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), L = langInfo(myLang), c = deck[di], e = c.e;
+  const frontNl = c.side === 'nl';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + faceHtml(frontNl, e, L, frontNl ? 'Nederlands' : L[2]) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + faceHtml(!frontNl, e, L, frontNl ? L[2] : 'Nederlands') + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het woord eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(e[1]); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontNl) say(e[1]);
+  };
+  document.getElementById('kk').onclick = () => { di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(e); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🌍</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderTaal();
+}
+document.addEventListener('keydown', e => {
+  if (tab !== 'taal' || !document.getElementById('fcs')) return;
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+  else if (fcFlipped && (e.key === 'k' || e.key === 'K')) document.getElementById('kk').click();
+  else if (fcFlipped && (e.key === 'o' || e.key === 'O')) document.getElementById('nk').click();
+});
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds bij A staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\([^)]*\)/g, ''));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- STATUS ---------- */
+let taak = 'all', tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], lastList = [];
+
+function pool() { return W.filter(x => taak === 'all' || x.t === taak); }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  TAKEN.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => { taak = v; tk.querySelectorAll('.pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); openTab(tab); };
+    tk.appendChild(b);
+  });
+  const tb = document.getElementById('tabs');
+  TABS.forEach(([id, ic, lb]) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (id === tab ? ' active' : '');
+    b.dataset.id = id;
+    b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+    b.onclick = () => openTab(id);
+    tb.appendChild(b);
+  });
+}
+
+const INTRO = {
+  luister: ['🎧 Luisteren en kiezen', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  dehet:   ['🔤 De of het?', 'Kijk naar het woord. Is het <b>de</b> of <b>het</b>?'],
+  sorteer: ['🧺 Sorteren', 'Waar hoort het woord bij? Klik op de goede groep.'],
+  zinnen:  ['✏️ Zinnen', 'Welk woord past in de zin?']
+};
+
+function openTab(id) {
+  tab = id;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'taal') return renderTaal();
+  const p = document.getElementById('panel');
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p>' +
+    '<div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Voor deze taak zijn er geen vragen bij deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startQuiz(buildQuestions(id));
+}
+
+function checkVoice() {
+  if (tab !== 'luister' && tab !== 'woorden') return;
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet in de instellingen van je telefoon of computer de spraak op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const groups = taak === 'all' ? TAKEN.filter(t => t[0] !== 'all').map(t => t[0]) : [taak];
+  const names = Object.fromEntries(TAKEN);
+  let html = '<h2>📖 Woorden</h2><p class="how">Klik op een woord. Je hoort het woord. Zeg het hardop na.</p><div class="warn" id="warn"></div>';
+  groups.forEach(g => {
+    const list = W.filter(x => x.t === g);
+    if (groups.length > 1) html += '<div class="wl-head">' + names[g] + ' · ' + list.length + '</div>';
+    html += '<div class="wl">' + list.map(x =>
+      '<div class="wcard" data-say="' + esc(full(x)) + '"><span class="we">' + (x.e || '') + '</span>' +
+      '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + '</span><span class="sp">🔊</span></div>'
+    ).join('') + '</div>';
+  });
+  p.innerHTML = html;
+  p.querySelectorAll('.wcard').forEach(c => c.onclick = () => say(c.dataset.say));
+  checkVoice();
+}
+
+/* ---------- VRAGEN MAKEN ---------- */
+function buildQuestions(mode) {
+  const P = pool();
+  if (mode === 'luister') {
+    return shuffle(P).slice(0, 10).map(x => {
+      let others = P.filter(y => y.w !== x.w);
+      if (others.length < 3) others = W.filter(y => y.w !== x.w);
+      return { mode, x, opts: shuffleOpts([x, ...shuffle(others).slice(0, 3)]) };
+    });
+  }
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'sorteer') return shuffle(P.filter(x => x.c)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'zinnen') {
+    const Z = ZINNEN.filter(z => taak === 'all' || z[2] === taak);
+    return shuffle(Z).slice(0, 12).map(z => ({ mode, s: z[0], ans: z[1][0], opts: shuffleOpts(z[1]) }));
+  }
+  return [];
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(list) {
+  lastList = list;
+  Q = list.map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : { ...q });
+  qi = 0; score = 0; wrongs = [];
+  renderQ();
+}
+
+function head() {
+  return '<div class="progress"><div>Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' +
+            '<div class="opts">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '"><span class="oe">' + (o.e || '') + '</span>' + esc(o.w) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+            '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'sorteer') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+            '<div class="opts three">' + Object.entries(CATS).map(([k, v]) => '<button class="opt" data-v="' + k + '">' + v + '</button>').join('') + '</div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' +
+            '<div class="opts">' + q.opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister') {
+    document.getElementById('sp').onclick = () => say(full(q.x));
+    document.getElementById('spS').onclick = () => say(full(q.x), true);
+    say(full(q.x));
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].w === q.x.w, q.x.w));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (q.mode === 'sorteer') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.c, q.x.c));
+  } else if (q.mode === 'zinnen') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.textContent === q.ans, q.ans));
+  }
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  const btns = p.querySelectorAll('.opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    const val = q.mode === 'luister' ? q.opts[+b.dataset.i].w : q.mode === 'zinnen' ? b.textContent : b.dataset.v;
+    if (val === correct) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  if (ok) score++; else wrongs.push(q);
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (q.x.m) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(full(q.x));
+  } else if (q.mode === 'sorteer') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het hoort bij: ' + CATS[q.x.c];
+    say(full(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans).replace(/–/g, ','));
+  }
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  document.getElementById('nb').onclick = () => { qi++; renderQ(); };
+  document.getElementById('nb').focus();
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden. Probeer het dan opnieuw. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🚲</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe ronde</button></div></div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(wrongs);
+  document.getElementById('rn').onclick = () => startQuiz(buildQuestions(tab));
+}
+
+/* ---------- AVATAR ----------
+   De avatar wordt uit overzicht_code1.html (zelfde map op GitHub) gehaald.
+   Lukt dat niet (bijv. bestand lokaal geopend), dan blijft het emoji-plaatje staan. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code1.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>

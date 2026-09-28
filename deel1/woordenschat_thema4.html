@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 4 – We gaan verhuizen – Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --blue: #2d3a8c;
+    --blue2: #4338ca;
+    --accent: #f5a623;
+    --pink: #e84393;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5;
+    --bad: #dc2626; --bad-bg: #fee2e2;
+    --shadow: rgba(45,58,140,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(45,58,140,.15); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .6rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.5rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .75rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(45,58,140,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--pink)); border-radius: 10px; transition: width .3s; }
+
+  .big-emoji { font-size: 4rem; text-align: center; line-height: 1.1; min-height: 4.4rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.15rem, 4.5vw, 1.45rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+  .speak:hover { transform: translateY(-1px); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .opts.three { grid-template-columns: 1fr 1fr; } }
+  .opt { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.05rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; }
+  .opt .oe { font-size: 1.5rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+  .tip { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .3rem; font-style: italic; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  /* woordenlijst */
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin: 1.1rem 0 .5rem; }
+  .wl-head:first-child { margin-top: 0; }
+  .wl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .wcard { border: 1px solid #e3e8ff; border-radius: 12px; padding: .5rem .6rem; display: flex; align-items: center; gap: .5rem; cursor: pointer; background: #fbfcff; transition: all .12s; }
+  .wcard:hover { border-color: var(--blue); background: white; }
+  .wcard .we { font-size: 1.4rem; width: 1.8rem; text-align: center; flex-shrink: 0; }
+  .wcard .ww { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+  .wcard .ww small { color: var(--muted); font-weight: 600; }
+  .wcard .sp { margin-left: auto; font-size: .9rem; opacity: .5; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+  /* ---------- MIJN TAAL (flitskaarten) ---------- */
+  .tabs { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .55rem; }
+  .lang-btn { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .7rem .5rem; cursor: pointer; font-family: inherit; text-align: center; transition: all .12s; }
+  .lang-btn:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .lang-btn .nat { display: block; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .lang-btn .nl { display: block; font-size: .75rem; color: var(--muted); font-weight: 700; margin-top: .1rem; }
+  .lang-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; font-weight: 700; }
+  .lang-bar .cur { font-size: 1.05rem; color: var(--blue); }
+  .linkbtn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; }
+  .fc-scene { height: 250px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #dbe2ff; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--blue); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .fc-word.long { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef2ff; }
+  [lang="ar"], [lang="fa"], [lang="prs"] { font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif; }
+  [lang="ti"] { font-family: 'Noto Sans Ethiopic', 'Nunito', sans-serif; }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+</style>
+
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/overzicht_code1.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">🏠</div>
+    <div>
+      <h1>Thema 4 · We gaan verhuizen</h1>
+      <p>Code+ Deel 1 · woordenschat · 112 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b>: klik op een woord en luister.<br>
+    Daarna: <b>🎧 Luisteren</b>, <b>de of het</b>, <b>🧺 Sorteren</b> en <b>✏️ Zinnen</b>.<br>
+    Bij <b>🌍 Mijn taal</b> oefen je met flitskaarten in je eigen taal.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten NT2 · Code+ Deel 1</footer>
+</div>
+
+<script>
+/* ---------- WOORDEN (Code+ Deel 1, Thema 4) ----------
+   [woord, lidwoord, emoji, taak, categorie, meervoud]
+   taak 1 = intro + taak 1
+   categorie: wo soorten huizen · ka in huis · me meubels · kl kleuren · hi hoe is het huis? */
+const RAW = [
+  ['boerderij','de','🚜',1,'wo'], ['boot','de','⛵',1,'wo'], ['flat','de','🏢',1,'wo'], ['kamer','de','🚪',1,'ka'],
+  ['rijtjeshuis','het','🏘️',1,'wo'], ['villa','de','🏰',1,'wo'], ['vrijstaand huis','het','🏡',1,'wo'],
+
+  ['aantal','het','',1,''], ['alleen','','🧍',1,''], ['appartement','het','🏬',1,'wo'], ['bad','het','🛁',1,'ka'],
+  ['balkon','het','',1,'ka'], ['beetje','het','🤏',1,''], ['beneden','','⬇️',1,''], ['blij','','😀',1,''], ['boven','','⬆️',1,''],
+  ['daarom','','',1,''], ['delen','','',1,''], ['dorp','het','🌾',1,''], ['douche','de','🚿',1,'ka'], ['erg','','',1,''],
+  ['fantastisch','','🤩',1,'hi'], ['gemiddeld','','',1,''], ['gezin','het','👨‍👩‍👧',1,''], ['groot','','🐘',1,'hi'], ['hal','de','',1,'ka'],
+  ['hartstikke','','',1,''], ['kast','de','🗄️',1,'me'], ['keuken','de','🍳',1,'ka'], ['licht','','☀️',1,'hi'], ['meter','de','📏',1,''],
+  ['muziek','de','🎵',1,''], ['raam','het','🪟',1,'ka'], ['rustig','','😌',1,'hi'], ['slaapkamer','de','😴',1,'ka'], ['stad','de','🌆',1,''],
+  ['toilet','het','🚽',1,'ka'], ['trap','de','🪜',1,'ka'], ['tuin','de','🌳',1,'ka'], ['verdieping','de','',1,'ka'],
+  ['vierkante meter','de','📐',1,''], ['vrij (vrij klein)','','',1,''], ['wasmachine','de','🧺',1,'me'], ['werkkamer','de','💻',1,'ka'],
+  ['zelfs','','',1,''], ['zolder','de','🔝',1,'ka'], ['zo’n','','',1,''], ['zonder','','',1,''],
+
+  ['alle','','',2,''], ['bedoelen','','',2,''], ['begrijpen','','💡',2,''], ['bekijken','','👀',2,''], ['belangrijk','','❗',2,''],
+  ['beschrijven','','',2,''], ['bespreken','','💬',2,''], ['betalen','','💶',2,''], ['bezichtigen','','🔑',2,''], ['binnenkort','','',2,''],
+  ['echt','','',2,''], ['gegevens','de','',2,'',1], ['genoeg','','',2,''], ['helaas','','😞',2,''], ['helpen','','🤝',2,''],
+  ['hoog','','🗼',2,'hi'], ['huren','','🏷️',2,''], ['zich inschrijven','','📝',2,''], ['jammer','','😕',2,''], ['laag','','',2,'hi'],
+  ['laten weten','','📨',2,''], ['misschien','','🤔',2,''], ['prachtig','','😍',2,'hi'], ['regio','de','🗺️',2,''], ['ruim','','',2,'hi'],
+  ['salaris','het','💰',2,''], ['spijten','','',2,''], ['te koop','','🪧',2,''], ['verhuizen','','🚚',2,''], ['verkeerd','','❌',2,''],
+  ['via','','',2,''], ['woning','de','🏠',2,'wo'], ['zeker','','✅',2,''],
+
+  ['afkeuren','','👎',3,''], ['bank','de','🛋️',3,'me'], ['bed','het','🛏️',3,'me'], ['blauw','','🔵',3,'kl'], ['donker','','🌑',3,'hi'],
+  ['eigenlijk','','',3,''], ['geel','','🟡',3,'kl'], ['geld','het','💵',3,''], ['groen','','🟢',3,'kl'], ['idee','het','💡',3,''],
+  ['kleur','de','🎨',3,''], ['kussen','het','',3,'me'], ['lichtblauw','','🩵',3,'kl'], ['meubels','de','',3,'me',1],
+  ['nachtkastje','het','',3,'me'], ['paars','','🟣',3,'kl'], ['rood','','🔴',3,'kl'], ['salontafel','de','',3,'me'],
+  ['spiegel','de','🪞',3,'me'], ['stoel','de','🪑',3,'me'], ['tafel','de','',3,'me'], ['waarderen','','👏',3,''], ['zwart','','⚫',3,'kl'],
+
+  ['advertentie','de','📰',4,''], ['begane grond','de','',4,'ka'], ['eigen','','',4,''], ['langskomen','','🚶',4,''],
+  ['mogelijk','','',4,''], ['moment','het','⏱️',4,''], ['spreken','','🗣️',4,''], ['ver','','🛤️',4,'']
+];
+const W = RAW.map(r => ({ w: r[0], a: r[1], e: r[2], t: r[3], c: r[4], m: !!r[5] }));
+
+const CATS = {
+  wo: '🏠 Soorten huizen', ka: '🚪 In huis', me: '🛋️ Meubels',
+  kl: '🎨 Kleuren', hi: '✨ Hoe is het huis?'
+};
+
+/* [zin, [goed antwoord, fout, fout, fout], taak] */
+const ZINNEN = [
+  ['Een ___ is een huis op het water.', ['boot','flat','villa','boerderij'], 1],
+  ['Een boer woont op een ___.', ['boerderij','boot','flat','zolder'], 1],
+  ['Ik kook in de ___.', ['keuken','slaapkamer','zolder','tuin'], 1],
+  ['Ik slaap in de ___.', ['slaapkamer','keuken','douche','hal'], 1],
+  ['Ik ga naar boven met de ___.', ['trap','raam','kast','tuin'], 1],
+  ['Mijn kleren liggen in de ___.', ['kast','douche','trap','tuin'], 1],
+  ['Ik was mijn kleren in de ___.', ['wasmachine','zolder','balkon','hal'], 1],
+  ['In de ___ staan bloemen en bomen.', ['tuin','zolder','hal','douche'], 1],
+  ['Ik woon niet in een stad. Ik woon in een ___.', ['dorp','gezin','meter','raam'], 1],
+  ['Het huis is 100 ___.', ['vierkante meter','verdieping','beetje','aantal'], 1],
+  ['Ik woon ___. Ik heb geen man en geen kinderen.', ['alleen','zonder','zelfs','erg'], 1],
+  ['Er zijn geen auto’s. Het is heel ___.', ['rustig','groot','licht','erg'], 1],
+  ['Het huis heeft grote ramen. Het is heel ___.', ['licht','rustig','alleen','zonder'], 1],
+  ['Ik woon op de derde ___.', ['verdieping','trap','kamer','meter'], 1],
+  ['Ik ben ___! Ik heb een nieuw huis.', ['blij','erg','zonder','beneden'], 1],
+  ['De keuken is ___. De slaapkamer is boven.', ['beneden','boven','zonder','zelfs'], 1],
+
+  ['Het huis is ___. Het kost € 300.000.', ['te koop','verkeerd','helaas','genoeg'], 2],
+  ['Ik wil het huis graag ___. Mag ik kijken?', ['bezichtigen','betalen','verhuizen','helpen'], 2],
+  ['We gaan ___. We krijgen een nieuw huis.', ['verhuizen','bezichtigen','bespreken','betalen'], 2],
+  ['Ik ___ € 800 per maand voor mijn huis.', ['betaal','begrijp','bedoel','help'], 2],
+  ['Ik ___ een huis. Het is niet van mij.', ['huur','help','bedoel','bespreek'], 2],
+  ['Het huis is te duur. ___!', ['Jammer','Zeker','Genoeg','Via'], 2],
+  ['Ik ___ het niet. Kun je het nog een keer zeggen?', ['begrijp','betaal','verhuis','huur'], 2],
+  ['Komt hij morgen? – Ik weet het niet. ___.', ['Misschien','Genoeg','Verkeerd','Via'], 2],
+  ['Ik verdien € 2000 per maand. Dat is mijn ___.', ['salaris','regio','woning','gegevens'], 2],
+  ['Het huis heeft vijf kamers. Het is ___.', ['ruim','laag','verkeerd','jammer'], 2],
+  ['Het is een ___ huis! Heel mooi!', ['prachtig','verkeerd','jammer','laag'], 2],
+  ['Het ___ me. Ik kan niet komen.', ['spijt','helpt','bedoelt','begrijpt'], 2],
+  ['Wat ___ je? Ik begrijp het niet.', ['bedoel','betaal','huur','verhuis'], 2],
+
+  ['Een banaan is ___.', ['geel','blauw','rood','paars'], 3],
+  ['Een tomaat is ___.', ['rood','groen','blauw','zwart'], 3],
+  ['De lucht is ___.', ['blauw','rood','geel','zwart'], 3],
+  ['In de nacht is het ___.', ['donker','geel','rood','lichtblauw'], 3],
+  ['Ik zit op een ___.', ['stoel','spiegel','kleur','idee'], 3],
+  ['Ik kijk in de ___.', ['spiegel','stoel','bed','geld'], 3],
+  ['Ik slaap in mijn ___.', ['bed','stoel','tafel','spiegel'], 3],
+  ['Naast mijn bed staat een ___.', ['nachtkastje','salontafel','bank','geld'], 3],
+  ['Op de ___ zitten drie mensen.', ['bank','spiegel','kussen','kleur'], 3],
+  ['Welke ___ is je jas? – Zwart.', ['kleur','idee','geld','meubels'], 3],
+  ['Goed ___! Dat doen we.', ['idee','kleur','geld','bed'], 3],
+  ['Ik heb geen ___. Ik kan het niet kopen.', ['geld','idee','kleur','kussen'], 3],
+  ['Ik leg mijn hoofd op het ___.', ['kussen','stoel','tafel','geld'], 3],
+
+  ['Ik lees een ___ in de krant. Er is een huis te huur.', ['advertentie','moment','begane grond','eigen'], 4],
+  ['Ik woon op de ___. Ik heb geen trap.', ['begane grond','advertentie','moment','zolder'], 4],
+  ['Een ___, alstublieft. Ik kom zo.', ['moment','advertentie','eigen','ver'], 4],
+  ['Ik heb een ___ kamer. Ik deel hem niet.', ['eigen','ver','mogelijk','moment'], 4],
+  ['Het station is niet dichtbij. Het is ___.', ['ver','eigen','mogelijk','moment'], 4],
+  ['Mag ik ___ met meneer De Vries?', ['spreken','wonen','huren','betalen'], 4],
+  ['Kun je morgen ___? Dan drinken we koffie.', ['langskomen','spreken','verhuizen','betalen'], 4],
+  ['Is het ___ om het huis te zien? – Ja, dat kan.', ['mogelijk','eigen','ver','jammer'], 4]
+];
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4']];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['luister','🎧','Luisteren'], ['dehet','🔤','De of het'],
+  ['sorteer','🧺','Sorteren'], ['zinnen','✏️','Zinnen'], ['taal','🌍','Mijn taal']
+];
+
+const TRANS = {"ar":[[0,"boot, de","القارب/ المركب"],[0,"flat, de","شقة / بناية سكنية / المبنى السكني"],[0,"kamer, de","الغرفة"],[0,"rijtjeshuis, het","منزل متتالي/متدرج"],[0,"vrijstaande huis, het","منزل منفصل"],[1,"aantal, het","العدد"],[1,"alleen","بمفردك، لحالك/ فقط"],[1,"appartement, het","الشقة"],[1,"bad, het","البانيو"],[1,"balkon, het","الشرفة"],[1,"beetje, het","القرصة"],[1,"beneden","تحت"],[1,"blij","سعيد"],[1,"boven","الطابق العلوي/ فوق/ أعلى"],[1,"daarom","ولهذا السبب، و لذلك"],[1,"delen","يشارك"],[1,"dorp, het","القرية"],[1,"douche, de","الدش"],[1,"erg","جدا، للغاية"],[1,"fantastisch","رائع"],[1,"gemiddeld","متوسط"],[1,"gezin, het","الأسرة"],[1,"groot","كبير"],[1,"hal, de","الردهة /الصالة"],[1,"hartstikke","جدا، للغاية"],[1,"kast, de","الخزانة/الدولاب"],[1,"keuken, de","المطبخ"],[1,"licht","مضيء"],[1,"meter, de","المتر"],[1,"muziek, de","الموسيقى"],[1,"raam, het","النافذة"],[1,"rustig","هادئ"],[1,"slaapkamer, de","غرفة النوم"],[1,"stad, de","المدينة"],[1,"toilet, het","المرحاض"],[1,"trap, de","السلم/الدرج"],[1,"tuin, de","الحديقة"],[1,"verdieping, de","الطابق"],[1,"vierkante meter, de","المتر المربع"],[1,"vrij (vrij klein)","إلى حد كبير"],[1,"wasmachine, de","غسالة الملابس"],[1,"werkkamer, de","غرفة العمل"],[1,"zelfs","حتى"],[1,"zolder, de","الدور الأخير (علية المنزل)"],[1,"zo'n","حوالي"],[1,"zonder","بدون"],[2,"al(le)","كل/جميع"],[2,"bedoelen","يعني"],[2,"begrijpen","يفهم"],[2,"bekijken","ينظر إلى"],[2,"belangrijk","هام"],[2,"beschrijven","يصف"],[2,"bespreken","يناقش"],[2,"betalen","يدفع"],[2,"bezichtigen","يعاين"],[2,"binnenkort","قريبا"],[2,"echt","حقيقي / فعلي"],[2,"gegevens, de","بيانات / معلومات"],[2,"genoeg","كاف"],[2,"helaas","للأسف"],[2,"helpen","فعل يساعد"],[2,"hoog","عالي"],[2,"huren, de huur","يؤجر/ الإيجار"],[2,"inschrijven, zich","تسجيل / تسجيل نفسك"],[2,"jammer","خسارة / للأسف (شيء مؤسف بالنسبة لك)"],[2,"laag","منخفض"],[2,"laten weten","يعلم / يخبر"],[2,"misschien","ربما"],[2,"prachtig","جميل"],[2,"regio, de","منطقة / إقليم"],[2,"ruim","واسع"],[2,"salaris, het","الراتب"],[2,"spijten","فعل يندم"],[2,"te koop","للبيع"],[2,"verhuizen","ينتقل إلى منزل آخر"],[2,"verkeerd","خطأ"],[2,"via","عن طريق، عبر"],[2,"woning, de","المسكن"],[2,"zeker","بالتأكيد"],[3,"afkeuren","يرفض"],[3,"bank, de (meubel)","الأريكة/الكنبة"],[3,"bed, het","السرير"],[3,"blauw","أزرق"],[3,"donker","داكن/غامق"],[3,"eigenlijk","في الواقع"],[3,"geel","أصفر"],[3,"geld, het","المال، النقود"],[3,"groen","أخضر"],[3,"idee, het","الفكرة"],[3,"kleur, de","اللون"],[3,"kussen, het","الوسادة"],[3,"lichtblauw","أزرق فاتح"],[3,"meubels, de","الأثاث"],[3,"nachtkastje, het","منضدة السرير"],[3,"paars","أرجواني، بنفسجي"],[3,"rood","أحمر"],[3,"salontafel, de","طاولة قهوة / طاولة صالون"],[3,"spiegel, de","مرآة"],[3,"stoel, de","الكرسي/المقعد"],[3,"tafel, de","الطاولة"],[3,"waarderen","يقدر ويحترم / يثمن"],[3,"zwart","أسود"],[4,"advertentie, de","إعلان"],[4,"begane grond, de","الطابق الأرضي"],[4,"eigen","خاص بـ/ ملكية خاصة"],[4,"langskomen","يزور شخص/يمر عليه"],[4,"mogelijk","ممكن / محتمل"],[4,"moment(je), het","لحظة (صغيرة)"],[4,"spreken","فعل يتحدث"],[4,"ver","بعيد"]],"en":[[0,"boot, de","boat"],[0,"flat, de","flat / apartment building"],[0,"kamer, de","room"],[0,"rijtjeshuis, het","terraced house"],[0,"vrijstaande huis, het","detached house"],[1,"aantal, het","number"],[1,"alleen","by yourself / only"],[1,"appartement, het","apartment"],[1,"bad, het","bath"],[1,"balkon, het","balcony"],[1,"beetje, het","a little"],[1,"beneden","downstairs"],[1,"blij","happy / cheerful"],[1,"boven","upstairs"],[1,"daarom","therefore"],[1,"delen","to share"],[1,"dorp, het","village"],[1,"douche, de","shower"],[1,"erg","very"],[1,"fantastisch","fantastic"],[1,"gemiddeld","average"],[1,"gezin, het","family (parents and children)"],[1,"groot","big"],[1,"hal, de","hall"],[1,"hartstikke","terribly / awfully / very"],[1,"kast, de","cupboard"],[1,"keuken, de","kitchen"],[1,"licht","bright"],[1,"meter, de","meter"],[1,"muziek, de","music"],[1,"raam, het","window"],[1,"rustig","quiet(ly)"],[1,"slaapkamer, de","bedroom"],[1,"stad, de","town / city"],[1,"toilet, het","toilet"],[1,"trap, de","stairs"],[1,"tuin, de","garden"],[1,"verdieping, de","floor"],[1,"vierkante meter, de","square meter"],[1,"vrij (vrij klein)","rather (rather small)"],[1,"wasmachine, de","washing machine"],[1,"werkkamer, de","study room"],[1,"zelfs","even"],[1,"zolder, de","attic"],[1,"zo'n","about"],[1,"zonder","without"],[2,"al(le)","all"],[2,"bedoelen","to mean"],[2,"begrijpen","to understand"],[2,"bekijken","to look at"],[2,"belangrijk","important"],[2,"beschrijven","to describe"],[2,"bespreken","to discuss"],[2,"betalen","to pay"],[2,"bezichtigen","to view/see (a house)"],[2,"binnenkort","soon / shortly"],[2,"echt","real(ly)"],[2,"gegevens, de","data / information"],[2,"genoeg","enough"],[2,"helaas","unfortunately"],[2,"helpen","to help"],[2,"hoog","high"],[2,"huren, de huur","to rent / rent"],[2,"inschrijven, zich","to register"],[2,"jammer","a pity / too bad"],[2,"laag","low"],[2,"laten weten","to inform / to notify"],[2,"misschien","perhaps"],[2,"prachtig","beautiful / wonderful"],[2,"regio, de","region"],[2,"ruim","spacious"],[2,"salaris, het","salary"],[2,"spijten","to be sorry"],[2,"te koop","for sale"],[2,"verhuizen","to move"],[2,"verkeerd","wrong"],[2,"via","through / via"],[2,"woning, de","house"],[2,"zeker","definite(ly) / sure(ly)"],[3,"afkeuren","to disapprove / to reject"],[3,"bank, de (meubel)","couch / sofa"],[3,"bed, het","bed"],[3,"blauw","blue"],[3,"donker","dark"],[3,"eigenlijk","actually"],[3,"geel","yellow"],[3,"geld, het","money"],[3,"groen","green"],[3,"idee, het","idea"],[3,"kleur, de","colour"],[3,"kussen, het","pillow"],[3,"lichtblauw","light blue"],[3,"meubels, de","furniture"],[3,"nachtkastje, het","night stand"],[3,"paars","purple"],[3,"rood","red"],[3,"salontafel, de","coffee table"],[3,"spiegel, de","mirror"],[3,"stoel, de","chair"],[3,"tafel, de","table"],[3,"waarderen","to appreciate / to value"],[3,"zwart","black"],[4,"advertentie, de","advertisement / ad"],[4,"begane grond, de","ground floor"],[4,"eigen","own"],[4,"langskomen","to come around"],[4,"mogelijk","possible / possibly"],[4,"moment(je), het","moment (just a moment / hold on please)"],[4,"spreken","to speak / to talk"],[4,"ver","far"]],"fa":[[0,"boot, de","قایق"],[0,"flat, de","مسطح"],[0,"kamer, de","اتاق"],[0,"rijtjeshuis, het","خانه پلکانی"],[0,"vrijstaande huis, het","خانه مستقل"],[1,"aantal, het","مقدار"],[1,"alleen","به تنهایی"],[1,"appartement, het","آپارتمان"],[1,"bad, het","حمام"],[1,"balkon, het","بالکن"],[1,"beetje, het","کمی، مقدار کمی"],[1,"beneden","طبقه پایین"],[1,"blij","خوشحال"],[1,"boven","طبقه بالا"],[1,"daarom","بنابراین"],[1,"delen","به اشتراک گذاشتن"],[1,"dorp, het","روستا"],[1,"douche, de","دوش"],[1,"erg","زیاد"],[1,"fantastisch","خارق العاده"],[1,"gemiddeld","متوسط"],[1,"gezin, het","خانواده"],[1,"groot","بزرگ"],[1,"hal, de","سالن"],[1,"hartstikke","به طرز وحشتناکی"],[1,"kast, de","کمد"],[1,"keuken, de","آشپزخانه"],[1,"licht","روشن"],[1,"meter, de","متر"],[1,"muziek, de","موسیقی"],[1,"raam, het","پنجره"],[1,"rustig","ساکت"],[1,"slaapkamer, de","اتاق خواب"],[1,"stad, de","شهر"],[1,"toilet, het","دستشویی"],[1,"trap, de","پلهها"],[1,"tuin, de","باغ"],[1,"verdieping, de","کف"],[1,"vierkante meter, de","متر مربع"],[1,"vrij (vrij klein)","نسبتا (نسبتا کوچک)"],[1,"wasmachine, de","ماشین لباسشویی"],[1,"werkkamer, de","مطالعه"],[1,"zelfs","حتی"],[1,"zo'n","درباره"],[1,"zolder, de","اتاق زیر شیروانی"],[1,"zonder","بدون"],[2,"al(le)","همه"],[2,"bedoelen","معنی دادن، قصد داشتن، منظور داشتن"],[2,"begrijpen","فهمیدن"],[2,"bekijken","نگاه کردن به"],[2,"belangrijk","مهم"],[2,"beschrijven","برای توصیف کردن"],[2,"bespreken","بحث کردن"],[2,"betalen","پرداخت کردن"],[2,"bezichtigen","مشاهده کردن / دیدن"],[2,"binnenkort","بهزودی"],[2,"echt","واقعی"],[2,"gegevens, de","داده"],[2,"genoeg","کافی"],[2,"helaas","متاسفانه"],[2,"helpen","کمک کردن"],[2,"hoog","دبیرستان"],[2,"huur, de","استیجاری است"],[2,"inschrijven, zich","برای ثبت نام"],[2,"jammer (het is jammer voor u)","حیف (چه حیف)"],[2,"laag","کم"],[2,"laten weten","اطلاع رسانی"],[2,"misschien","شاید"],[2,"prachtig","زیبا"],[2,"regio, de","منطقه"],[2,"ruim","جادار"],[2,"salaris, het","حقوق و دستمزد"],[2,"spijten","متاسف بودن"],[2,"te koop","برای فروش"],[2,"verhuizen","حرکت کردن/نقل مکان کردن"],[2,"verkeerd","نادرست"],[2,"via","از طریق"],[2,"woning, de","خانه"],[2,"zeker","قطعا"],[3,"afkeuren","رد کردن"],[3,"bank, de (meubel)","مبل (کاناپه)"],[3,"bed, het","تخت"],[3,"blauw","آبی"],[3,"donker","تیره"],[3,"eigenlijk","در واقع"],[3,"geel","زرد"],[3,"geld, het","پول"],[3,"groen","سبز"],[3,"idee, het","ایده"],[3,"kleur, de","رنگ"],[3,"kussen, het","بالش"],[3,"lichtblauw","آبی روشن"],[3,"meubels, de","مبلمان"],[3,"nachtkastje, het","میز کنار تخت"],[3,"paars","بنفش"],[3,"rood","قرمز"],[3,"salontafel, de","میز قهوه"],[3,"spiegel, de","آینه"],[3,"stoel, de","صندلی"],[3,"tafel, de","میز"],[3,"waarderen","قدردانی کردن"],[3,"zwart","سیاه"],[4,"advertentie, de","تبلیغات"],[4,"begane grond, de","طبقه همکف"],[4,"eigen","داشتن / مالک بودن"],[4,"langskomen","دور انداختن"],[4,"mogelijk","ممکن است"],[4,"moment, het (je)","لحظه"],[4,"spreken","صحبت کردن"],[4,"ver","دور"]],"fr":[[0,"boot, de","bateau"],[0,"flat, de","appartement / immeuble à appartements"],[0,"kamer, de","pièce"],[0,"rijtjeshuis, het","maison mitoyenne"],[0,"vrijstaande huis, het","maison individuelle"],[1,"aantal, het","nombre"],[1,"alleen","seul"],[1,"appartement, het","appartement"],[1,"bad, het","bain"],[1,"balkon, het","balcon"],[1,"beetje, het","le peu"],[1,"beneden","en bas"],[1,"blij","heureux"],[1,"boven","en haut"],[1,"daarom","donc"],[1,"delen","partager"],[1,"dorp, het","village"],[1,"douche, de","douche"],[1,"erg","très"],[1,"fantastisch","fantastique"],[1,"gemiddeld","moyen"],[1,"gezin, het","famille"],[1,"groot","grand"],[1,"hal, de","hall"],[1,"hartstikke","très"],[1,"kast, de","armoire"],[1,"keuken, de","cuisine"],[1,"licht","lumineux"],[1,"meter, de","mètre"],[1,"muziek, de","musique"],[1,"raam, het","fenêtre"],[1,"rustig","calme"],[1,"slaapkamer, de","chambre à coucher"],[1,"stad, de","ville"],[1,"toilet, het","toilettes"],[1,"trap, de","escalier"],[1,"tuin, de","jardin"],[1,"verdieping, de","étage"],[1,"vierkante meter, de","mètre carré"],[1,"vrij (vrij klein)","assez (assez petit)"],[1,"wasmachine, de","lave-linge"],[1,"werkkamer, de","bureau"],[1,"zelfs","même"],[1,"zolder, de","grenier"],[1,"zo'n","environ"],[1,"zonder","sans"],[2,"al(le)","tous"],[2,"bedoelen","vouloir dire"],[2,"begrijpen","comprendre"],[2,"bekijken","regarder"],[2,"belangrijk","important"],[2,"beschrijven","décrire"],[2,"bespreken","discuter"],[2,"betalen","payer"],[2,"bezichtigen","voir"],[2,"binnenkort","bientôt"],[2,"echt","vrai(ment)"],[2,"gegevens, de","données"],[2,"genoeg","assez"],[2,"helaas","hélas"],[2,"helpen","aider"],[2,"hoog","haut"],[2,"huren, de huur","louer / loyer"],[2,"inschrijven, zich","s’inscrire"],[2,"jammer","dommage (c’est dommage pour toi)"],[2,"laag","bas"],[2,"laten weten","Informer"],[2,"misschien","peut-être"],[2,"prachtig","magnifique"],[2,"regio, de","région"],[2,"ruim","spacieux"],[2,"salaris, het","salaire"],[2,"spijten","regretter"],[2,"te koop","à vendre"],[2,"verhuizen","déménager"],[2,"verkeerd","incorrect"],[2,"via","sur"],[2,"woning, de","logement"],[2,"zeker","certainement"],[3,"afkeuren","rejeter"],[3,"bank, de (meubel)","canapé"],[3,"bed, het","lit"],[3,"blauw","bleu"],[3,"donker","sombre"],[3,"eigenlijk","en fait"],[3,"geel","jaune"],[3,"geld, het","argent"],[3,"groen","vert"],[3,"idee, het","idée"],[3,"kleur, de","couleur"],[3,"kussen, het","oreiller"],[3,"lichtblauw","bleu clair"],[3,"meubels, de","meubles"],[3,"nachtkastje, het","table de chevet"],[3,"paars","violet"],[3,"rood","rouge"],[3,"salontafel, de","table basse"],[3,"spiegel, de","miroir"],[3,"stoel, de","chaise"],[3,"tafel, de","table"],[3,"waarderen","apprécier"],[3,"zwart","noir"],[4,"advertentie, de","publicité"],[4,"begane grond, de","rez-de-chaussée"],[4,"eigen","propre"],[4,"langskomen","passer"],[4,"mogelijk","possible"],[4,"moment(je), het","un instant"],[4,"spreken","parler"],[4,"ver","loin"]],"kmr":[[0,"boot, de","qeyik"],[0,"flat, de","mal"],[0,"kamer, de","jûre"],[0,"rijtjeshuis, het","xaniyekî terasî"],[0,"vrijstaande huis, het","xaniyek cuda"],[1,"aantal, het","biha"],[1,"alleen","bi tena serê xwe"],[1,"appartement, het","mal"],[1,"bad, het","serşo"],[1,"balkon, het","şaneşîn"],[1,"beetje, het","hinek"],[1,"beneden","jêrzemîn"],[1,"blij","şa"],[1,"boven","jor"],[1,"daarom","ji ber vê yekê"],[1,"delen","parvekirin"],[1,"dorp, het","gund"],[1,"douche, de","serşok"],[1,"erg","gelek"],[1,"fantastisch","gelek delal"],[1,"gemiddeld","navoser"],[1,"gezin, het","malbat"],[1,"groot","mezin"],[1,"hal, de","salon"],[1,"hartstikke","bi awayekî berbat"],[1,"kast, de","dolab"],[1,"keuken, de","mitbax"],[1,"licht","ronî"],[1,"meter, de","metre"],[1,"muziek, de","mûzîk"],[1,"raam, het","pace"],[1,"rustig","rehet"],[1,"slaapkamer, de","jûra razanê"],[1,"stad, de","navçe"],[1,"toilet, het","destav"],[1,"trap, de","pêlik"],[1,"tuin, de","baxçe"],[1,"verdieping, de","erd"],[1,"vierkante meter, de","metreçargoşe"],[1,"vrij (vrij klein)","zêde (zêde biçûk)"],[1,"wasmachine, de","makîneya cilşûştinê"],[1,"werkkamer, de","xwendin"],[1,"zelfs","hetta"],[1,"zo'n","li dor"],[1,"zolder, de","banî"],[1,"zonder","bê"],[2,"al(le)","gişt"],[2,"bedoelen","qestkirin"],[2,"begrijpen","fêmkirin"],[2,"bekijken","lê nihêrîn"],[2,"belangrijk","giring"],[2,"beschrijven","pênasekirin"],[2,"bespreken","nîqaşkirin"],[2,"betalen","dayîn"],[2,"bezichtigen","nihêrîn"],[2,"binnenkort","di nêz de"],[2,"echt","rast"],[2,"gegevens, de","dane"],[2,"genoeg","bes"],[2,"helaas","mixabîn"],[2,"helpen","alîkarbûn"],[2,"hoog","bilind"],[2,"huur, de","kirê"],[2,"inschrijven, zich","qeydkirin"],[2,"jammer (het is jammer voor u)","heyf e (ev heyf e)"],[2,"laag","nizm"],[2,"laten weten","agahdarkirin"],[2,"misschien","belkî"],[2,"prachtig","bedew"],[2,"regio, de","herêm"],[2,"ruim","fireh"],[2,"salaris, het","meaş"],[2,"spijten","poşman bûn"],[2,"te koop","bo firotinê"],[2,"verhuizen","tevgerîn"],[2,"verkeerd","xelet"],[2,"via","bi rêya"],[2,"woning, de","xanî"],[2,"zeker","teqez"],[3,"afkeuren","redkirin"],[3,"bank, de (meubel)","sofa (mobîlya)"],[3,"bed, het","nivîn"],[3,"blauw","şîn"],[3,"donker","tarî"],[3,"eigenlijk","bi rastî"],[3,"geel","zer"],[3,"geld, het","dirav"],[3,"groen","kesk"],[3,"idee, het","fikir"],[3,"kleur, de","reng"],[3,"kussen, het","balif"],[3,"lichtblauw","şînê vekirî"],[3,"meubels, de","mobîlye"],[3,"nachtkastje, het","mayîna şevê"],[3,"paars","mor"],[3,"rood","sor"],[3,"salontafel, de","maseya qehweyê"],[3,"spiegel, de","neynik"],[3,"stoel, de","kursî"],[3,"tafel, de","mase"],[3,"waarderen","teqdîrkirin"],[3,"zwart","reş"],[4,"advertentie, de","reklam"],[4,"begane grond, de","qata erdê"],[4,"eigen","xwe"],[4,"langskomen","dorvegerandin"],[4,"mogelijk","derîmkan"],[4,"moment, het (je)","evdem"],[4,"spreken","axaftin"],[4,"ver","dûr"]],"uk":[[0,"boot, de","човен"],[0,"flat, de","квартира / висотна будівля"],[0,"kamer, de","кімната"],[0,"rijtjeshuis, het","таунхаус"],[0,"vrijstaande huis, het","окремий будинок"],[1,"aantal, het","кількість"],[1,"alleen","тільки"],[1,"appartement, het","кв."],[1,"bad, het","ванна"],[1,"balkon, het","балкон"],[1,"beetje, het","малий"],[1,"beneden","на нижньому поверсі"],[1,"blij","радісно"],[1,"boven","вгору"],[1,"daarom","тому"],[1,"delen","поділитися"],[1,"dorp, het","село"],[1,"douche, de","злива"],[1,"erg","поганий"],[1,"fantastisch","фантастичний"],[1,"gemiddeld","в середньому"],[1,"gezin, het","сім'я"],[1,"groot","великий"],[1,"hal, de","зал"],[1,"hartstikke","сердечно"],[1,"kast, de","шафа"],[1,"keuken, de","кухня"],[1,"licht","світлий"],[1,"meter, de","метр"],[1,"muziek, de","музика"],[1,"raam, het","вікно"],[1,"rustig","тихий"],[1,"slaapkamer, de","спальня"],[1,"stad, de","місто"],[1,"toilet, het","туалет"],[1,"trap, de","сходи"],[1,"tuin, de","сад"],[1,"verdieping, de","поверх"],[1,"vierkante meter, de","квадратний метр"],[1,"vrij (vrij klein)","дуже (дуже маленький)"],[1,"wasmachine, de","пральна машина"],[1,"werkkamer, de","вчитися"],[1,"zelfs","рівномірно"],[1,"zolder, de","горище"],[1,"zo'n","такі"],[1,"zonder","без"],[2,"al(le)","весь"],[2,"bedoelen","знезараження"],[2,"begrijpen","розуміти"],[2,"bekijken","переглянути"],[2,"belangrijk","важливо"],[2,"beschrijven","описувати"],[2,"bespreken","обговорювати"],[2,"betalen","платити"],[2,"bezichtigen","оглядати"],[2,"binnenkort","незабаром"],[2,"echt","справжній"],[2,"gegevens, de","дані"],[2,"genoeg","достатньо"],[2,"helaas","на жаль"],[2,"helpen","допомога"],[2,"hoog","високий"],[2,"huren, de huur","оре́нда"],[2,"inschrijven, zich","записати, записатися"],[2,"jammer","на жаль (це на жаль для вас)"],[2,"laag","низький"],[2,"laten weten","повідомити"],[2,"misschien","може бути"],[2,"prachtig","гарний"],[2,"regio, de","регіон"],[2,"ruim","широкий"],[2,"salaris, het","заробітна платня"],[2,"spijten","вибачте"],[2,"te koop","на продаж"],[2,"verhuizen","пересування"],[2,"verkeerd","неправильний"],[2,"via","Через"],[2,"woning, de","будинок"],[2,"zeker","безумовно / напевно"],[3,"afkeuren","відхиляти"],[3,"bank, de (meubel)","лавка"],[3,"bed, het","ліжко"],[3,"blauw","синій"],[3,"donker","темна"],[3,"eigenlijk","власне"],[3,"geel","жовтий"],[3,"geld, het","гроші"],[3,"groen","зелений"],[3,"idee, het","ідея"],[3,"kleur, de","Колір"],[3,"kussen, het","поцілунок"],[3,"lichtblauw","блакитний"],[3,"meubels, de","меблі"],[3,"nachtkastje, het","нічний столик"],[3,"paars","пурпуровий"],[3,"rood","червоний"],[3,"salontafel, de","журнальний столик"],[3,"spiegel, de","дзеркало"],[3,"stoel, de","стілець"],[3,"tafel, de","стіл"],[3,"waarderen","цінувати"],[3,"zwart","чорний"],[4,"advertentie, de","оголошення"],[4,"begane grond, de","перший поверх"],[4,"eigen","власний"],[4,"langskomen","візит"],[4,"mogelijk","можливо"],[4,"moment(je), het","момент"],[4,"spreken","говорити"],[4,"ver","далеко"]],"prs":[[0,"boot, de","کشتی"],[0,"flat, de","اپارتمان/ ساختمان / ساختمان آپارتمان"],[0,"kamer, de","اتاق"],[0,"rijtjeshuis, het","خانه برنده دار"],[0,"vrijstaande huis, het","خانه جداگانه"],[1,"aantal, het","این شماره"],[1,"alleen","خودت/ تنها"],[1,"appartement, het","آپارتمان"],[1,"bad, het","حمام"],[1,"balkon, het","بالکن/ برنده"],[1,"beetje, het","یک کمی"],[1,"beneden","طبقه پائین"],[1,"blij","شاد / خوشحال"],[1,"boven","منزل بالا"],[1,"daarom","به این خاطر"],[1,"delen","شیئر کردن/ به شتراک گذاشتن"],[1,"dorp, het","قریه/ ده"],[1,"douche, de","شاور"],[1,"erg","بسیار"],[1,"fantastisch","خارق العاده"],[1,"gemiddeld","اوسط"],[1,"gezin, het","فامیل (والدین و اطفال)"],[1,"groot","بزرگ"],[1,"hal, de","سالون"],[1,"hartstikke","بسیار"],[1,"kast, de","کابینه، الماری"],[1,"keuken, de","آشپزخانه"],[1,"licht","روشن"],[1,"meter, de","متر"],[1,"muziek, de","موسیقی"],[1,"raam, het","کلکین"],[1,"rustig","به آرامی"],[1,"slaapkamer, de","اتاق خواب"],[1,"stad, de","شهرک، شهر"],[1,"toilet, het","تشناب"],[1,"trap, de","زینه"],[1,"tuin, de","باغچه"],[1,"verdieping, de","طبقه/ زمین"],[1,"vierkante meter, de","متر مربع"],[1,"vrij (vrij klein)","بلکه (بلکه خورد)"],[1,"wasmachine, de","ماشین لباس شویی"],[1,"werkkamer, de","مطالعه"],[1,"zelfs","حتی"],[1,"zolder, de","گودام بالای بام"],[1,"zo'n","درباره/ حدود"],[1,"zonder","بدون"],[2,"al(le)","تمام/ همه"],[2,"bedoelen","معنی کردن"],[2,"begrijpen","فهمیدن"],[2,"bekijken","دیدن به چیزی"],[2,"belangrijk","مهم"],[2,"beschrijven","توصیف کردن"],[2,"bespreken","بحث کردن"],[2,"betalen","پرداختن"],[2,"bezichtigen","دیدن/بازدید (یک خانه)"],[2,"binnenkort","به زودی / بسیار زود"],[2,"echt","واقعا"],[2,"gegevens, de","دیتا / معلومات"],[2,"genoeg","به اندازه کافی"],[2,"helaas","متاسفانه"],[2,"helpen","برای کمک"],[2,"hoog","بلند"],[2,"huren, de huur","اجاره گرفتن / کرایه گرفتن"],[2,"inschrijven, zich","ثبت نام کردن"],[2,"jammer","افسوس، بسیار بد (من متاسف هستم)"],[2,"laag","پائین"],[2,"laten weten","اطلاع دادن / خبر دادن"],[2,"misschien","ممکن است، شاید"],[2,"prachtig","مقبول، عالی"],[2,"regio, de","منطقه"],[2,"ruim","فراخ/ گسترده"],[2,"salaris, het","معاش"],[2,"spijten","متاسف بودن"],[2,"te koop","برای فروش"],[2,"verhuizen","حرکت کردن"],[2,"verkeerd","غلط/ اشتباه"],[2,"via","از طریق، بوسیله"],[2,"woning, de","خانه"],[2,"zeker","قطعا/ مطمئنا"],[3,"afkeuren","تصدیق نکردن / رد کردن"],[3,"bank, de (meubel)","کوچ/ موبل"],[3,"bed, het","تخت خواب"],[3,"blauw","آبی"],[3,"donker","تیره/ تاریکی"],[3,"eigenlijk","دقیقا"],[3,"geel","زرد"],[3,"geld, het","پیسه/ پول"],[3,"groen","سبز"],[3,"idee, het","اندیشه"],[3,"kleur, de","رنگ"],[3,"kussen, het","بالشت"],[3,"lichtblauw","آبی کم رنگ"],[3,"meubels, de","موبل"],[3,"nachtkastje, het","میز شب"],[3,"paars","یاسمنی"],[3,"rood","سرخ"],[3,"salontafel, de","میز قهوه"],[3,"spiegel, de","آینه"],[3,"stoel, de","چوکی"],[3,"tafel, de","میز"],[3,"waarderen","قدردانی کردن / ارزش دادن"],[3,"zwart","سیاه"],[4,"advertentie, de","تبلیغات / اعلانات"],[4,"begane grond, de","طبقه همکف"],[4,"eigen","از خود"],[4,"langskomen","در اطراف آمدن"],[4,"mogelijk","ممکن / احتمالا"],[4,"moment(je), het","لحظه (یک لحظه، صبر کنید لطفا)"],[4,"spreken","گپ زدن، صحبت کردن"],[4,"ver","دور"]],"ru":[[0,"boot, de","лодка"],[0,"flat, de","квартира / квартирный дом"],[0,"kamer, de","комната"],[0,"rijtjeshuis, het","таунхаус"],[0,"vrijstaande huis, het","отдельно стоящий дом"],[1,"aantal, het","число, количество"],[1,"alleen","только"],[1,"appartement, het","квартира"],[1,"bad, het","ванна"],[1,"balkon, het","балкон"],[1,"beetje, het","немного"],[1,"beneden","внизу"],[1,"blij","радостно"],[1,"boven","наверху"],[1,"daarom","поэтому"],[1,"delen","поделиться"],[1,"dorp, het","деревня"],[1,"douche, de","душ"],[1,"erg","очень"],[1,"fantastisch","фантастический"],[1,"gemiddeld","в среднем"],[1,"gezin, het","семья"],[1,"groot","большой"],[1,"hal, de","зал"],[1,"hartstikke","чрезвычайно"],[1,"kast, de","шкаф"],[1,"keuken, de","кухня"],[1,"licht","светлый"],[1,"meter, de","метр"],[1,"muziek, de","музыка"],[1,"raam, het","окно"],[1,"rustig","тихий, спокойный"],[1,"slaapkamer, de","спальня"],[1,"stad, de","город"],[1,"toilet, het","туалет"],[1,"trap, de","лестница"],[1,"tuin, de","сад"],[1,"verdieping, de","этаж"],[1,"vierkante meter, de","квадратный метр"],[1,"vrij (vrij klein)","очень (очень маленький)"],[1,"wasmachine, de","стиральная машина"],[1,"werkkamer, de","рабочая комната, кабинет"],[1,"zelfs","даже"],[1,"zolder, de","чердак"],[1,"zo'n","такой"],[1,"zonder","без"],[2,"al(le)","все"],[2,"bedoelen","иметь в виду"],[2,"begrijpen","понимать"],[2,"bekijken","смотреть, просматривать"],[2,"belangrijk","важный"],[2,"beschrijven","описывать"],[2,"bespreken","обсуждать"],[2,"betalen","платить"],[2,"bezichtigen","осматривать"],[2,"binnenkort","вскоре"],[2,"echt","настоящий"],[2,"gegevens, de","данные"],[2,"genoeg","достаточно"],[2,"helaas","к сожалению"],[2,"helpen","помогать"],[2,"hoog","высокий"],[2,"huren, de huur","арендовать / аренда"],[2,"inschrijven, zich","записать, записаться"],[2,"jammer","жаль (к сожалению для вас)"],[2,"laag","низкий"],[2,"laten weten","сообщать"],[2,"misschien","возможно"],[2,"prachtig","великолепный"],[2,"regio, de","регион"],[2,"ruim","просторный"],[2,"salaris, het","зарплата"],[2,"spijten","сожалеть"],[2,"te koop","продается"],[2,"verhuizen","переезжать"],[2,"verkeerd","неверный"],[2,"via","через, в"],[2,"woning, de","дом, жилье"],[2,"zeker","безусловно / наверняка"],[3,"afkeuren","отклонять"],[3,"bank, de (meubel)","диван"],[3,"bed, het","кровать"],[3,"blauw","синий"],[3,"donker","темный"],[3,"eigenlijk","собственно"],[3,"geel","жёлтый"],[3,"geld, het","деньги"],[3,"groen","зелёный"],[3,"idee, het","идея"],[3,"kleur, de","цвет"],[3,"kussen, het","подушка"],[3,"lichtblauw","светло-синий"],[3,"meubels, de","мебель"],[3,"nachtkastje, het","ночной столик"],[3,"paars","фиолетовый"],[3,"rood","красный"],[3,"salontafel, de","журнальный столик"],[3,"spiegel, de","зеркало"],[3,"stoel, de","стул"],[3,"tafel, de","стол"],[3,"waarderen","ценить"],[3,"zwart","черный"],[4,"advertentie, de","объявление"],[4,"begane grond, de","первый этаж"],[4,"eigen","собственный"],[4,"langskomen","посетить"],[4,"mogelijk","возможно"],[4,"moment(je), het","минутку"],[4,"spreken","разговаривать"],[4,"ver","далеко"]],"so":[[0,"boot, de","dooni"],[0,"flat, de","falaat"],[0,"kamer, de","qol"],[0,"rijtjeshuis, het","guryo dhinaca isku haya"],[0,"vrijstaande huis, het","guri gooni ah"],[1,"aantal, het","xaddiga"],[1,"alleen","naftaada"],[1,"appartement, het","Abaarmen"],[1,"bad, het","qubays"],[1,"balkon, het","baalkooni"],[1,"beetje, het","xoogaa"],[1,"beneden","dabaqyada hoose"],[1,"blij","faraxsan"],[1,"boven","dabaqyada sare"],[1,"daarom","sidaas darteed"],[1,"delen","inaad wadaagto"],[1,"dorp, het","tuulo"],[1,"douche, de","qubeys"],[1,"erg","aad"],[1,"fantastisch","cajiib"],[1,"gemiddeld","celcelis"],[1,"gezin, het","qoys"],[1,"groot","weyn"],[1,"hal, de","hool"],[1,"hartstikke","si xun"],[1,"kast, de","armaajo"],[1,"keuken, de","madbakh"],[1,"licht","dhalaalaya"],[1,"meter, de","mitir"],[1,"muziek, de","muusig"],[1,"raam, het","daaqad"],[1,"rustig","deggan"],[1,"slaapkamer, de","qolka jiifka"],[1,"stad, de","magaalo"],[1,"toilet, het","musqul"],[1,"trap, de","jaranjaro"],[1,"tuin, de","beer"],[1,"verdieping, de","sagxad"],[1,"vierkante meter, de","mitir laba jibbaaran"],[1,"vrij (vrij klein)","yara (yara yar)"],[1,"wasmachine, de","mashiinka dharka lagu dhaqo"],[1,"werkkamer, de","daraasad"],[1,"zelfs","xitaa"],[1,"zo'n","ku saabsan"],[1,"zolder, de","huluusha saqafka"],[1,"zonder","iyada/isaga oo aan lahayn"],[2,"al(le)","dhammaan"],[2,"bedoelen","macne ahaan"],[2,"begrijpen","inaad fahamo"],[2,"bekijken","inaad eegto"],[2,"belangrijk","muhiim"],[2,"beschrijven","inaad sharaxo"],[2,"bespreken","inaad ka hadasho"],[2,"betalen","inaad bixiso"],[2,"bezichtigen","inaad aragto"],[2,"binnenkort","dhawaan"],[2,"echt","dhab ah"],[2,"gegevens, de","xog"],[2,"genoeg","ku filan"],[2,"helaas","nasiib darro"],[2,"helpen","inaad caawiso"],[2,"hoog","sarreeya"],[2,"huur, de","kiro"],[2,"inschrijven, zich","inaad isdiiwaangeliso"],[2,"jammer (het is jammer voor u)","nasiib xumo (taasi waa wax laga xumaado)"],[2,"laag","hoose"],[2,"laten weten","inaad sheegto"],[2,"misschien","malaha"],[2,"prachtig","qurux badan"],[2,"regio, de","mandaqad"],[2,"ruim","waasac ah"],[2,"salaris, het","Mushahar"],[2,"spijten","inaad ka xumaato"],[2,"te koop","iib ah"],[2,"verhuizen","inaad guurto"],[2,"verkeerd","khaldan"],[2,"via","dhex mara"],[2,"woning, de","guri"],[2,"zeker","hubaal"],[3,"afkeuren","in aad diiddo"],[3,"bank, de (meubel)","fadhiga (alaabada guriga)"],[3,"bed, het","sariir"],[3,"blauw","Buluug"],[3,"donker","mugdi"],[3,"eigenlijk","dhab ahaantii"],[3,"geel","huruud/jaalle"],[3,"geld, het","lacag"],[3,"groen","akhtar"],[3,"idee, het","fikrad"],[3,"kleur, de","midab"],[3,"kussen, het","barkin"],[3,"lichtblauw","buluug khafiif"],[3,"meubels, de","agabka guriga (farnijar)"],[3,"nachtkastje, het","miis-sariireed"],[3,"paars","boordoo"],[3,"rood","casaan"],[3,"salontafel, de","miiska bunka"],[3,"spiegel, de","muraayad"],[3,"stoel, de","kursi"],[3,"tafel, de","miis"],[3,"waarderen","inaad mahadiso"],[3,"zwart","madow"],[4,"advertentie, de","xayaysiis"],[4,"begane grond, de","dabaqa dhulka"],[4,"eigen","mulkiile"],[4,"langskomen","inaad iska booqato"],[4,"mogelijk","suurtagal"],[4,"moment, het (je)","wakhti kooban"],[4,"spreken","inaad hadasho"],[4,"ver","fog"]],"es":[[0,"boot, de","barco"],[0,"flat, de","apartamento/piso/edificio de apartamentos"],[0,"kamer, de","habitación"],[0,"rijtjeshuis, het","casa adosada"],[0,"vrijstaande huis, het","casa independiente"],[1,"aantal, het","cantidad, número"],[1,"alleen","solo, solamente"],[1,"appartement, het","apartamento, piso"],[1,"bad, het","bañera"],[1,"balkon, het","balcón"],[1,"beetje, het","poco / un poco"],[1,"beneden","abajo"],[1,"blij","feliz"],[1,"boven","arriba"],[1,"daarom","por eso, por lo tanto, por ello"],[1,"delen","compartir / dividir"],[1,"dorp, het","pueblo"],[1,"douche, de","ducha"],[1,"erg","muy"],[1,"fantastisch","fantástico/a"],[1,"gemiddeld","de media/promedio"],[1,"gezin, het","familia"],[1,"groot","grande"],[1,"hal, de","vestíbulo, hall"],[1,"hartstikke","muy, mucho/a"],[1,"kast, de","armario"],[1,"keuken, de","cocina"],[1,"licht","luminoso/a"],[1,"meter, de","metro (medida)"],[1,"muziek, de","música"],[1,"raam, het","ventana"],[1,"rustig","tranquilo/a"],[1,"slaapkamer, de","dormitorio"],[1,"stad, de","ciudad"],[1,"toilet, het","inodoro, servicio"],[1,"trap, de","escalera"],[1,"tuin, de","jardín"],[1,"verdieping, de","piso, planta"],[1,"vierkante meter, de","metros cuadrados"],[1,"vrij (vrij klein)","bastante (bastante pequeño)"],[1,"wasmachine, de","lavadora"],[1,"werkkamer, de","despacho, oficina"],[1,"zelfs","incluso"],[1,"zolder, de","desván"],[1,"zo'n","aproximadamente, unos/as"],[1,"zonder","sin"],[2,"al(le)","todo"],[2,"bedoelen","querer decir"],[2,"begrijpen","comprender *"],[2,"bekijken","mirar"],[2,"belangrijk","importante"],[2,"beschrijven","describir *"],[2,"bespreken","comentar *"],[2,"betalen","pagar"],[2,"bezichtigen","ver"],[2,"binnenkort","próximamente"],[2,"echt","realmente"],[2,"gegevens, de","datos"],[2,"genoeg","suficiente"],[2,"helaas","por desgracia, desafortunadamente"],[2,"helpen","ayudar"],[2,"hoog","alto/a"],[2,"huren, de huur","alquilar / alquiler"],[2,"inschrijven, zich","inscribirse/apuntarse *"],[2,"jammer","lástima (lo siento por usted)"],[2,"laag","bajo/a"],[2,"laten weten","hacer saber/informar/notificar *"],[2,"misschien","quizá(s)"],[2,"prachtig","hermoso/a"],[2,"regio, de","región"],[2,"ruim","espacioso/a, amplio/a"],[2,"salaris, het","salario"],[2,"spijten","arrepentirse"],[2,"te koop","en venta"],[2,"verhuizen","mudarse, trasladarse"],[2,"verkeerd","equivocado/a, incorrecto/a"],[2,"via","a través de"],[2,"woning, de","vivienda"],[2,"zeker","seguramente/desde luego"],[3,"afkeuren","rechazar"],[3,"bank, de (meubel)","sofá"],[3,"bed, het","cama"],[3,"blauw","azul"],[3,"donker","oscuro/a"],[3,"eigenlijk","en realidad"],[3,"geel","amarillo"],[3,"geld, het","dinero"],[3,"groen","verde"],[3,"idee, het","idea"],[3,"kleur, de","color"],[3,"kussen, het","cojín, almohada"],[3,"lichtblauw","azul claro"],[3,"meubels, de","muebles"],[3,"nachtkastje, het","mesita de noche"],[3,"paars","morado"],[3,"rood","rojo"],[3,"salontafel, de","mesa de salón"],[3,"spiegel, de","espejo"],[3,"stoel, de","silla"],[3,"tafel, de","mesa"],[3,"waarderen","apreciar/valorar"],[3,"zwart","negro"],[4,"advertentie, de","anuncio"],[4,"begane grond, de","planta baja"],[4,"eigen","propio/a"],[4,"langskomen","pasar (de visita)"],[4,"mogelijk","posible(mente)"],[4,"moment(je), het","momento, momentito"],[4,"spreken","hablar"],[4,"ver","lejos"]],"ti":[[0,"boot, de","ጃልባ"],[0,"flat, de","ፍላት / ኣፓርታማ ህንጻ / ልዑል ደርቢ"],[0,"kamer, de","ክፍ"],[0,"rijtjeshuis, het","ረድፍ"],[0,"vrijstaande huis, het","ዝተነጸለ ገዛ"],[1,"aantal, het","መጠን"],[1,"alleen","ጥራይ"],[1,"appartement, het","ኣፓርታማ"],[1,"bad, het","ነብስኻ ምሕጻብ"],[1,"balkon, het","ባርኮኒ"],[1,"beetje, het","ንእሽተይ"],[1,"beneden","ኣብ ታሕቲ"],[1,"blij","ሕጉስ / ድሱት"],[1,"boven","ሓፍ"],[1,"daarom","ስለዚ፡"],[1,"delen","ንኻልኦት ምክፋል"],[1,"dorp, het","ገጠር"],[1,"douche, de","መሕጸቢ"],[1,"erg","ሕማቅ"],[1,"fantastisch","መደነቒ"],[1,"gemiddeld","ደረጃ"],[1,"gezin, het","ስድራ"],[1,"groot","ዓቢይ"],[1,"hal, de","ኣዳራሽ"],[1,"hartstikke","ኣዝዩ"],[1,"kast, de","መ"],[1,"keuken, de","ክሽነ"],[1,"licht","ብርሃን"],[1,"meter, de","ሜትር"],[1,"muziek, de","ሙዚቃ"],[1,"raam, het","መስኮት"],[1,"rustig","ስቕ ምባል"],[1,"slaapkamer, de","መደቀሲ ክፍሊ"],[1,"stad, de","ከተማ"],[1,"toilet, het","ሽቓቕ"],[1,"trap, de","መደያየቢ"],[1,"tuin, de","ስፍራ ኣታኽልቲ"],[1,"verdieping, de","ወለል"],[1,"vierkante meter, de","ትርብዒት"],[1,"vrij (vrij klein)","ብጣእሚ (ብጣእሚ ንእሽተይ)"],[1,"wasmachine, de","ማሽን ክዳውንቲ"],[1,"werkkamer, de","መጽናዕቲ"],[1,"zelfs","ዋላ"],[1,"zolder, de","ኣቲክ"],[1,"zo'n","ከምዚ"],[1,"zonder","ብዘይ ናይ"],[2,"al(le)","ኵሉ"],[2,"bedoelen","ማለት"],[2,"begrijpen","ምርዳእ"],[2,"bekijken","ኣረኣእያ"],[2,"belangrijk","ኣገዳሲ"],[2,"beschrijven","ምግላጽ"],[2,"bespreken","ምዝርራብ"],[2,"betalen","ክፈል"],[2,"bezichtigen","ምጥማት/ምርኣይ (ገዛ)"],[2,"binnenkort","ኣብ ቀረባ እዋን / ኣብ ሓጺር እዋን"],[2,"echt","ሓቂ (ናይ ብሓቂ)"],[2,"gegevens, de","መረዳእታ / ሓበሬታ"],[2,"genoeg","እኹል"],[2,"helaas","ኣጋጣሚ"],[2,"helpen","ሃገዝ"],[2,"hoog","ላዕሊ"],[2,"huren, de huur","ዝካረ"],[2,"inschrijven, zich","ምምዝጋብ"],[2,"jammer","ሕማቕ ኣጋጣሚ ኮይኑ (ሕማቕ ኣጋጣሚ ንዓኻ እዩ)"],[2,"laag","ትሑት"],[2,"laten weten","ምሕባር / ምፍላጥ"],[2,"misschien","ምናልባት"],[2,"prachtig","ጽብቕቲ"],[2,"regio, de","ዞባ"],[2,"ruim","ሰፍሕ"],[2,"salaris, het","ዶሞዝ"],[2,"spijten","ይቅሬታ"],[2,"te koop","ንምሻጥ"],[2,"verhuizen","ተንቀሳቃሲ"],[2,"verkeerd","ስሕተት"],[2,"via","ብውሽጢ"],[2,"woning, de","ገዛ"],[2,"zeker","ዘየጠራጥር(ብዘይጥርጥር) / ርጉጽ(ብርግጽ)"],[3,"afkeuren","ንዘይምቕባል / ንምንጻግ"],[3,"bank, de (meubel)","ኮፍ መበሊ"],[3,"bed, het","ዓራት"],[3,"blauw","ሰማያዊ"],[3,"donker","ጸሊም"],[3,"eigenlijk","ብጭቡጥ"],[3,"geel","ብጫ"],[3,"geld, het","ገንዘብ"],[3,"groen","ሓምላይ"],[3,"idee, het","ሓሳብ"],[3,"kleur, de","ሕብሪ"],[3,"kussen, het","ምስ"],[3,"lichtblauw","በሪህ ሰማ"],[3,"meubels, de","ኣቕሑ"],[3,"nachtkastje, het","ኣብ ጎኒ ዓራት ንእሽቶ ጠረጴዛ"],[3,"paars","ሐምላይ"],[3,"rood","ቀይሕ"],[3,"salontafel, de","ጠረጴዛ ቡን"],[3,"spiegel, de","መስትያት"],[3,"stoel, de","መንበር"],[3,"tafel, de","ጠረቤዛ"],[3,"waarderen","ምስጋን / ዋጋ"],[3,"zwart","ፀሊም"],[4,"advertentie, de","መወዓውዒ / መወ"],[4,"begane grond, de","ታሕተዋይ ደርቢ"],[4,"eigen","ወንን"],[4,"langskomen","ጎብንይ"],[4,"mogelijk","ዝከኣል / ተኽእሎኣዊ"],[4,"moment(je), het","ቕጽበት"],[4,"spreken","ምኽሪ"],[4,"ver","ሩሑቅ"]],"tr":[[0,"boot, de","tekne"],[0,"flat, de","apartman / apartman binası"],[0,"kamer, de","oda"],[0,"rijtjeshuis, het","sıra evler"],[0,"vrijstaande huis, het","müstakil ev"],[1,"aantal, het","sayı"],[1,"alleen","sadece"],[1,"appartement, het","daire"],[1,"bad, het","banyo"],[1,"balkon, het","balkon"],[1,"beetje, het","biraz"],[1,"beneden","aşağıda"],[1,"blij","mutlu / neşeli"],[1,"boven","yukarıda"],[1,"daarom","bu nedenle"],[1,"delen","paylaşmak"],[1,"dorp, het","köy"],[1,"douche, de","duş"],[1,"erg","çok"],[1,"fantastisch","fantastik"],[1,"gemiddeld","ortalama"],[1,"gezin, het","aile"],[1,"groot","büyük"],[1,"hal, de","salon"],[1,"hartstikke","çok"],[1,"kast, de","dolap"],[1,"keuken, de","mutfak"],[1,"licht","ışık"],[1,"meter, de","metre"],[1,"muziek, de","müzik"],[1,"raam, het","pencere"],[1,"rustig","sessiz"],[1,"slaapkamer, de","yatak odası"],[1,"stad, de","şehir"],[1,"toilet, het","tuvalet"],[1,"trap, de","merdiven"],[1,"tuin, de","bahçe"],[1,"verdieping, de","kat"],[1,"vierkante meter, de","metrekare"],[1,"vrij (vrij klein)","oldukça (oldukça küçük)"],[1,"wasmachine, de","çamaşır makinesi"],[1,"werkkamer, de","çalışma odası"],[1,"zelfs","hatta"],[1,"zolder, de","çatı katı"],[1,"zo'n","civarı"],[1,"zonder","-sız/-siz"],[2,"al(le)","tümü"],[2,"bedoelen","anlamına gelmek, kastetmek"],[2,"begrijpen","anlamak"],[2,"bekijken","bakmak"],[2,"belangrijk","önemli"],[2,"beschrijven","tanımlamak / betimlemek"],[2,"bespreken","tartışmak"],[2,"betalen","ödemek"],[2,"bezichtigen","bakmak / görmek (bir evi)"],[2,"binnenkort","yakında / birazdan"],[2,"echt","gerçek(ten)"],[2,"gegevens, de","veri / bilgi"],[2,"genoeg","yeterli"],[2,"helaas","maalesef"],[2,"helpen","yardım etmek"],[2,"hoog","yüksek"],[2,"huren, de huur","kiralamak / kira"],[2,"inschrijven, zich","kaydolmak / kayıt olmak"],[2,"jammer","yazık (çok yazık)"],[2,"laag","düşük"],[2,"laten weten","bilgilendirmek / haber vermek"],[2,"misschien","belki"],[2,"prachtig","güzel, harika"],[2,"regio, de","bölge"],[2,"ruim","büyük"],[2,"salaris, het","maaş"],[2,"spijten","pişman olmak"],[2,"te koop","satılık"],[2,"verhuizen","taşınmak"],[2,"verkeerd","yanlış"],[2,"via","aracılığıyla"],[2,"woning, de","ev, konut"],[2,"zeker","kesin(likle) / elbette"],[3,"afkeuren","onaylamamak / reddetmek"],[3,"bank, de (meubel)","kanepe"],[3,"bed, het","yatak"],[3,"blauw","mavi"],[3,"donker","koyu"],[3,"eigenlijk","aslında"],[3,"geel","sarı"],[3,"geld, het","para"],[3,"groen","yeşil"],[3,"idee, het","fikir"],[3,"kleur, de","renk"],[3,"kussen, het","yastık"],[3,"lichtblauw","açık mavi"],[3,"meubels, de","mobilya"],[3,"nachtkastje, het","komodin"],[3,"paars","mor"],[3,"rood","kırmızı"],[3,"salontafel, de","sehpa"],[3,"spiegel, de","ayna"],[3,"stoel, de","sandalye"],[3,"tafel, de","masa"],[3,"waarderen","takdir etmek / değer vermek"],[3,"zwart","siyah"],[4,"advertentie, de","reklam"],[4,"begane grond, de","zemin kat"],[4,"eigen","kendi"],[4,"langskomen","uğramak"],[4,"mogelijk","mümkün / olası(lıkla)"],[4,"moment(je), het","an(lar)"],[4,"spreken","konuşmak"],[4,"ver","uzak"]]};
+
+/* ---------- MIJN TAAL: flitskaarten Nederlands ↔ eigen taal ----------
+   Vertalingen letterlijk overgenomen uit de woordenlijsten van Code+ Deel 1 (ThiemeMeulenhoff). */
+const LANGS = [
+  ['ar','العربية','Arabisch',1], ['prs','دری','Dari',1], ['en','English','Engels',0], ['fa','فارسی','Farsi',1],
+  ['fr','Français','Frans',0], ['kmr','Kurmancî','Koerdisch (Kurmanji)',0], ['uk','Українська','Oekraïens',0],
+  ['ru','Русский','Russisch',0], ['so','Soomaali','Somalisch',0], ['es','Español','Spaans',0],
+  ['ti','ትግርኛ','Tigrinya',0], ['tr','Türkçe','Turks',0]
+];
+const LS_KEY = 'code1_mijntaal';
+let myLang = null, richting = 'nl', deck = [], di = 0, fcFlipped = false, fcWrong = [];
+try { myLang = localStorage.getItem(LS_KEY); } catch (e) {}
+if (!LANGS.some(l => l[0] === myLang)) myLang = null;
+function langInfo(c) { return LANGS.find(l => l[0] === c); }
+function taakOf(t) { if (typeof TMAP !== 'undefined' && t in TMAP) return TMAP[t]; return (t === 0 && !TAKEN.some(x => x[0] === 0)) ? 1 : t; }
+function taalPool() {
+  return (TRANS[myLang] || []).filter(e => taak === 'all' || taakOf(e[0]) === taak);
+}
+function setLang(c) {
+  myLang = c;
+  try { if (c) localStorage.setItem(LS_KEY, c); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  renderTaal();
+}
+function renderTaal() {
+  const p = document.getElementById('panel');
+  if (!myLang) {
+    p.innerHTML = '<h2>🌍 Mijn taal</h2><p class="how">Kies je taal. Dan oefen je met flitskaarten: Nederlands en jouw taal.</p>' +
+      '<div class="lang-grid">' + LANGS.map(l => '<button class="lang-btn" data-l="' + l[0] + '"><span class="nat" lang="' + l[0] + '" dir="' + (l[3] ? 'rtl' : 'ltr') + '">' + l[1] + '</span><span class="nl">' + l[2] + '</span></button>').join('') + '</div>';
+    p.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    return;
+  }
+  const L = langInfo(myLang), n = taalPool().length;
+  const dirs = [['nl', 'Nederlands → ' + L[2]], ['taal', L[2] + ' → Nederlands'], ['mix', 'Door elkaar']];
+  p.innerHTML = '<h2>🌍 Mijn taal</h2>' +
+    '<div class="lang-bar"><span class="cur">Jouw taal: <span lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '">' + L[1] + '</span> (' + L[2] + ')</span><button class="linkbtn" id="chg">Andere taal kiezen</button></div>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === richting ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' kaarten)</button></div>'
+       : '<p class="how">Er zijn geen kaarten voor deze taak in deze taal.</p>');
+  document.getElementById('chg').onclick = () => setLang(null);
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { richting = b.dataset.d; renderTaal(); });
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startDeck(taalPool());
+}
+function startDeck(list) {
+  deck = shuffle(list).map(e => ({ e, side: richting === 'mix' ? (Math.random() < .5 ? 'nl' : 'taal') : richting }));
+  di = 0; fcWrong = []; renderCard();
+}
+function faceHtml(isNl, e, L, tag) {
+  const txt = isNl ? e[1] : e[2];
+  const attrs = isNl ? 'lang="nl" dir="ltr"' : 'lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '"';
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-word' + (txt.length > 28 ? ' long' : '') + '" ' + attrs + '>' + esc(txt) + '</div>' +
+    (isNl ? '<button class="fc-say" data-say="1">🔊 Luister</button>' : '');
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), L = langInfo(myLang), c = deck[di], e = c.e;
+  const frontNl = c.side === 'nl';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + faceHtml(frontNl, e, L, frontNl ? 'Nederlands' : L[2]) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + faceHtml(!frontNl, e, L, frontNl ? L[2] : 'Nederlands') + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het woord eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(e[1]); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontNl) say(e[1]);
+  };
+  document.getElementById('kk').onclick = () => { di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(e); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🌍</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderTaal();
+}
+document.addEventListener('keydown', e => {
+  if (tab !== 'taal' || !document.getElementById('fcs')) return;
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+  else if (fcFlipped && (e.key === 'k' || e.key === 'K')) document.getElementById('kk').click();
+  else if (fcFlipped && (e.key === 'o' || e.key === 'O')) document.getElementById('nk').click();
+});
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds bij A staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\([^)]*\)/g, ''));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- STATUS ---------- */
+let taak = 'all', tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], lastList = [];
+
+function pool() { return W.filter(x => taak === 'all' || x.t === taak); }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  TAKEN.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => { taak = v; tk.querySelectorAll('.pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); openTab(tab); };
+    tk.appendChild(b);
+  });
+  const tb = document.getElementById('tabs');
+  TABS.forEach(([id, ic, lb]) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (id === tab ? ' active' : '');
+    b.dataset.id = id;
+    b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+    b.onclick = () => openTab(id);
+    tb.appendChild(b);
+  });
+}
+
+const INTRO = {
+  luister: ['🎧 Luisteren en kiezen', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  dehet:   ['🔤 De of het?', 'Kijk naar het woord. Is het <b>de</b> of <b>het</b>?'],
+  sorteer: ['🧺 Sorteren', 'Waar hoort het woord bij? Klik op de goede groep.'],
+  zinnen:  ['✏️ Zinnen', 'Welk woord past in de zin?']
+};
+
+function openTab(id) {
+  tab = id;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'taal') return renderTaal();
+  const p = document.getElementById('panel');
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p>' +
+    '<div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Voor deze taak zijn er geen vragen bij deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startQuiz(buildQuestions(id));
+}
+
+function checkVoice() {
+  if (tab !== 'luister' && tab !== 'woorden') return;
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet in de instellingen van je telefoon of computer de spraak op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const groups = taak === 'all' ? TAKEN.filter(t => t[0] !== 'all').map(t => t[0]) : [taak];
+  const names = Object.fromEntries(TAKEN);
+  let html = '<h2>📖 Woorden</h2><p class="how">Klik op een woord. Je hoort het woord. Zeg het hardop na.</p><div class="warn" id="warn"></div>';
+  groups.forEach(g => {
+    const list = W.filter(x => x.t === g);
+    if (groups.length > 1) html += '<div class="wl-head">' + names[g] + ' · ' + list.length + '</div>';
+    html += '<div class="wl">' + list.map(x =>
+      '<div class="wcard" data-say="' + esc(full(x)) + '"><span class="we">' + (x.e || '') + '</span>' +
+      '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + '</span><span class="sp">🔊</span></div>'
+    ).join('') + '</div>';
+  });
+  p.innerHTML = html;
+  p.querySelectorAll('.wcard').forEach(c => c.onclick = () => say(c.dataset.say));
+  checkVoice();
+}
+
+/* ---------- VRAGEN MAKEN ---------- */
+function buildQuestions(mode) {
+  const P = pool();
+  if (mode === 'luister') {
+    return shuffle(P).slice(0, 10).map(x => {
+      let others = P.filter(y => y.w !== x.w);
+      if (others.length < 3) others = W.filter(y => y.w !== x.w);
+      return { mode, x, opts: shuffleOpts([x, ...shuffle(others).slice(0, 3)]) };
+    });
+  }
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'sorteer') return shuffle(P.filter(x => x.c)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'zinnen') {
+    const Z = ZINNEN.filter(z => taak === 'all' || z[2] === taak);
+    return shuffle(Z).slice(0, 12).map(z => ({ mode, s: z[0], ans: z[1][0], opts: shuffleOpts(z[1]) }));
+  }
+  return [];
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(list) {
+  lastList = list;
+  Q = list.map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : { ...q });
+  qi = 0; score = 0; wrongs = [];
+  renderQ();
+}
+
+function head() {
+  return '<div class="progress"><div>Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' +
+            '<div class="opts">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '"><span class="oe">' + (o.e || '') + '</span>' + esc(o.w) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+            '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'sorteer') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+            '<div class="opts three">' + Object.entries(CATS).map(([k, v]) => '<button class="opt" data-v="' + k + '">' + v + '</button>').join('') + '</div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' +
+            '<div class="opts">' + q.opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister') {
+    document.getElementById('sp').onclick = () => say(full(q.x));
+    document.getElementById('spS').onclick = () => say(full(q.x), true);
+    say(full(q.x));
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].w === q.x.w, q.x.w));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (q.mode === 'sorteer') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.c, q.x.c));
+  } else if (q.mode === 'zinnen') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.textContent === q.ans, q.ans));
+  }
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  const btns = p.querySelectorAll('.opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    const val = q.mode === 'luister' ? q.opts[+b.dataset.i].w : q.mode === 'zinnen' ? b.textContent : b.dataset.v;
+    if (val === correct) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  if (ok) score++; else wrongs.push(q);
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (q.x.m) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(full(q.x));
+  } else if (q.mode === 'sorteer') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het hoort bij: ' + CATS[q.x.c];
+    say(full(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans).replace(/–/g, ','));
+  }
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  document.getElementById('nb').onclick = () => { qi++; renderQ(); };
+  document.getElementById('nb').focus();
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden. Probeer het dan opnieuw. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🏠</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe ronde</button></div></div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(wrongs);
+  document.getElementById('rn').onclick = () => startQuiz(buildQuestions(tab));
+}
+
+/* ---------- AVATAR ----------
+   De avatar wordt uit overzicht_code1.html (zelfde map op GitHub) gehaald.
+   Lukt dat niet (bijv. bestand lokaal geopend), dan blijft het emoji-plaatje staan. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code1.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 7 – Wat gaan we doen? – Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --blue: #2d3a8c;
+    --blue2: #4338ca;
+    --accent: #f5a623;
+    --pink: #e84393;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5;
+    --bad: #dc2626; --bad-bg: #fee2e2;
+    --shadow: rgba(45,58,140,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(45,58,140,.15); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .6rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.5rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .75rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(45,58,140,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--pink)); border-radius: 10px; transition: width .3s; }
+
+  .big-emoji { font-size: 4rem; text-align: center; line-height: 1.1; min-height: 4.4rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.15rem, 4.5vw, 1.45rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+  .speak:hover { transform: translateY(-1px); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .opts.three { grid-template-columns: 1fr 1fr; } }
+  .opt { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.05rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; }
+  .opt .oe { font-size: 1.5rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+  .tip { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .3rem; font-style: italic; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  /* woordenlijst */
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin: 1.1rem 0 .5rem; }
+  .wl-head:first-child { margin-top: 0; }
+  .wl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .wcard { border: 1px solid #e3e8ff; border-radius: 12px; padding: .5rem .6rem; display: flex; align-items: center; gap: .5rem; cursor: pointer; background: #fbfcff; transition: all .12s; }
+  .wcard:hover { border-color: var(--blue); background: white; }
+  .wcard .we { font-size: 1.4rem; width: 1.8rem; text-align: center; flex-shrink: 0; }
+  .wcard .ww { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+  .wcard .ww small { color: var(--muted); font-weight: 600; }
+  .wcard .sp { margin-left: auto; font-size: .9rem; opacity: .5; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+  /* ---------- MIJN TAAL (flitskaarten) ---------- */
+  .tabs { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .55rem; }
+  .lang-btn { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .7rem .5rem; cursor: pointer; font-family: inherit; text-align: center; transition: all .12s; }
+  .lang-btn:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .lang-btn .nat { display: block; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .lang-btn .nl { display: block; font-size: .75rem; color: var(--muted); font-weight: 700; margin-top: .1rem; }
+  .lang-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; font-weight: 700; }
+  .lang-bar .cur { font-size: 1.05rem; color: var(--blue); }
+  .linkbtn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; }
+  .fc-scene { height: 250px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #dbe2ff; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--blue); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .fc-word.long { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef2ff; }
+  [lang="ar"], [lang="fa"], [lang="prs"] { font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif; }
+  [lang="ti"] { font-family: 'Noto Sans Ethiopic', 'Nunito', sans-serif; }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+</style>
+
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/overzicht_code1.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">🎉</div>
+    <div>
+      <h1>Thema 7 · Wat gaan we doen?</h1>
+      <p>Code+ Deel 1 · woordenschat · 87 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b>: klik op een woord en luister.<br>
+    Daarna: <b>🎧 Luisteren</b>, <b>de of het</b>, <b>🧺 Sorteren</b> en <b>✏️ Zinnen</b>.<br>
+    Bij <b>🌍 Mijn taal</b> oefen je met flitskaarten in je eigen taal.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten NT2 · Code+ Deel 1</footer>
+</div>
+
+<script>
+/* ---------- WOORDEN (Code+ Deel 1, Thema 7) ----------
+   [woord, lidwoord, emoji, taak, categorie, meervoud]
+   categorie: up uitgaan · re restaurant · et eten · fe feest · na buiten en natuur */
+const RAW = [
+  ['attractiepark','het','🎢',1,'up'], ['bioscoop','de','🎬',1,'up'], ['bitterbal','de','',1,'et'], ['borrel','de','🍻',1,'up'],
+  ['borrelhapje','het','🧀',1,'et'], ['ding','het','',1,''], ['eerst','','',1,''], ['gewoon','','',1,''], ['kroeg','de','🍺',1,'up'],
+  ['plan','het','📝',1,''], ['rekening','de','🧾',1,'re'], ['rondje (een rondje geven)','het','',1,''], ['voorstel','het','💡',1,''],
+  ['want','','',1,''], ['weleens','','',1,''], ['zielig','','🥺',1,''],
+
+  ['appeltaart','de','🥧',2,'et'], ['biefstuk','de','🥩',2,'et'], ['buurjongen','de','👦',2,''], ['citroen','de','🍋',2,'et'],
+  ['dessert','het','🍨',2,'re'], ['fles','de','🍾',2,''], ['garnaal','de','🦐',2,'et'], ['gast','de','🙋',2,'re'],
+  ['gebakken','','🍳',2,''], ['gegrild','','🔥',2,''], ['geloven','','',2,''], ['hoofdgerecht','het','🍽️',2,'re'],
+  ['kaart (menukaart)','de','📋',2,'re'], ['lijken','','',2,''], ['nog (nog een witte wijn)','','',2,''], ['ober','de','🤵',2,'re'],
+  ['plaats (plek)','de','',2,''], ['saus','de','🥫',2,'et'], ['sla','de','🥗',2,'et'], ['slagroom','de','',2,'et'],
+  ['taart','de','🎂',2,'et'], ['tonijn','de','🐟',2,'et'], ['voorgerecht','het','🥣',2,'re'], ['werkdag','de','💼',2,''],
+  ['zalm','de','🍣',2,'et'],
+
+  ['aanstaande','','',3,''], ['bloem','de','🌷',3,'na'], ['bruiloft','de','💒',3,'fe'], ['cadeau','het','🎁',3,'fe'],
+  ['diploma','het','📜',3,'fe'], ['gebeurtenis','de','',3,''], ['gelukkig','','😊',3,''], ['geweldig','','🤩',3,''],
+  ['hangen','','',3,''], ['hapje','het','🍢',3,'et'], ['iedereen','','👥',3,''], ['kring','de','⭕',3,''], ['lied (liedje)','het','🎵',3,''],
+  ['meest','','',3,''], ['meteen','','⚡',3,''], ['middelbare school','de','🏫',3,''], ['namelijk','','',3,''],
+  ['om een uur of (twee)','','',3,''], ['opa','de','👴',3,''], ['slecht','','👎',3,''], ['suiker','de','🍬',3,'et'],
+  ['trouwen','','💍',3,''], ['uitnodigen','','✉️',3,''], ['uitnodiging','de','💌',3,'fe'], ['vlag','de','🚩',3,'fe'],
+  ['voetbal','het','⚽',3,''], ['wedstrijd','de','🏆',3,''], ['zingen','','🎤',3,''],
+
+  ['algemeen','','',4,''], ['alles','','',4,''], ['bang (voor)','','😨',4,''], ['boom','de','🌲',4,'na'], ['buiten','','🏞️',4,''],
+  ['dier','het','🐾',4,'na'], ['minstens','','',4,''], ['openingstijden','de','🕘',4,'',1], ['opstijgen','','🛫',4,''],
+  ['park','het','🌳',4,'na'], ['praktisch','','',4,''], ['provincie','de','🗺️',4,''], ['spannend','','😲',4,''],
+  ['sprookje','het','🧚',4,''], ['toegang','de','🚪',4,''], ['toegangskaartje','het','🎟️',4,''], ['varen','','⛵',4,''], ['vliegen','','✈️',4,'']
+];
+const W = RAW.map(r => ({ w: r[0], a: r[1], e: r[2], t: r[3], c: r[4], m: !!r[5] }));
+
+const CATS = {
+  up: '🎡 Uitgaan', re: '🍽️ In het restaurant', et: '🍴 Eten', fe: '🎉 Feest', na: '🌳 Natuur'
+};
+
+/* [zin, [goed antwoord, fout, fout, fout], taak] */
+const ZINNEN = [
+  ['We gaan naar de ___. Er is een nieuwe film.', ['bioscoop','kroeg','rekening','plan'], 1],
+  ['In het ___ zijn veel attracties. Leuk voor kinderen!', ['attractiepark','voorstel','plan','ding'], 1],
+  ['Na het werk drinken we een biertje in de ___.', ['kroeg','bioscoop','rekening','plan'], 1],
+  ['Ober, mag ik de ___? Ik wil betalen.', ['rekening','borrel','voorstel','plan'], 1],
+  ['Ik heb een ___: morgen gaan we naar de bioscoop.', ['voorstel','rekening','kroeg','bitterbal'], 1],
+  ['Bij de borrel eten we ___. Ze zijn warm en rond.', ['bitterballen','rekeningen','plannen','dingen'], 1],
+  ['___ eten we, dan gaan we naar de film.', ['Eerst','Want','Weleens','Zielig'], 1],
+  ['Ik ga niet mee, ___ ik ben moe.', ['want','eerst','gewoon','weleens'], 1],
+  ['Ben je ___ in Amsterdam geweest?', ['weleens','eerst','want','zielig'], 1],
+  ['De hond is alleen en heeft honger. Wat ___!', ['zielig','gewoon','eerst','want'], 1],
+  ['Ik geef een ___! Wat willen jullie drinken?', ['rondje','plan','ding','voorstel'], 1],
+
+  ['Als ___ eet ik soep.', ['voorgerecht','dessert','gast','ober'], 2],
+  ['Als ___ neem ik een ijsje.', ['dessert','voorgerecht','fles','ober'], 2],
+  ['De ___ brengt het eten.', ['ober','gast','buurjongen','saus'], 2],
+  ['Mag ik de ___? Ik wil kiezen wat ik eet.', ['kaart','fles','citroen','saus'], 2],
+  ['Een ___ is geel.', ['citroen','garnaal','sla','zalm'], 2],
+  ['Wil je ___ op je appeltaart?', ['slagroom','sla','tonijn','garnaal'], 2],
+  ['Een ___ wijn, alstublieft. Voor vier personen.', ['fles','gast','taart','ober'], 2],
+  ['Ik eet geen vlees. Ik neem de ___.', ['zalm','biefstuk','appeltaart','slagroom'], 2],
+  ['Is deze ___ nog vrij? – Ja, ga zitten.', ['plaats','fles','ober','saus'], 2],
+  ['Ik ___ het niet. Is dat echt waar?', ['geloof','lijk','bak','zing'], 2],
+  ['Het vlees is ___ op de barbecue.', ['gegrild','gelukkig','zielig','gewoon'], 2],
+  ['Op mijn verjaardag eten we ___.', ['taart','sla','citroen','fles'], 2],
+
+  ['Mijn zus gaat ___. Ze heeft zaterdag haar bruiloft.', ['trouwen','zingen','hangen','uitnodigen'], 3],
+  ['Je bent jarig! Hier is een ___ voor jou.', ['cadeau','diploma','vlag','kring'], 3],
+  ['Hij heeft zijn ___ gehaald. Hij is klaar met school.', ['diploma','cadeau','vlag','lied'], 3],
+  ['We ___ een liedje voor oma.', ['zingen','trouwen','hangen','uitnodigen'], 3],
+  ['Bij een feest hangt de ___ uit.', ['vlag','kring','suiker','opa'], 3],
+  ['De vader van mijn moeder is mijn ___.', ['opa','kring','vlag','lied'], 3],
+  ['Kom ___! Het is belangrijk.', ['meteen','slecht','namelijk','meest'], 3],
+  ['Ik ben heel ___. Ik heb een nieuw huis en lieve kinderen.', ['gelukkig','slecht','meest','meteen'], 3],
+  ['Het weer is ___. Het regent de hele dag.', ['slecht','gelukkig','geweldig','aanstaande'], 3],
+  ['Zaterdag is er een ___ van Ajax.', ['wedstrijd','kring','vlag','suiker'], 3],
+  ['Koffie met melk en ___?', ['suiker','vlag','kring','lied'], 3],
+  ['___ is welkom! Alle mensen.', ['Iedereen','Meteen','Namelijk','Meest'], 3],
+  ['Ik stuur je een ___ voor mijn feest.', ['uitnodiging','gebeurtenis','wedstrijd','kring'], 3],
+
+  ['Een hond is een ___.', ['dier','boom','sprookje','provincie'], 4],
+  ['In het ___ staan veel bomen.', ['park','sprookje','toegang','provincie'], 4],
+  ['Noord-Holland is een ___.', ['provincie','park','dier','sprookje'], 4],
+  ['Ik ben ___ voor grote honden.', ['bang','spannend','praktisch','algemeen'], 4],
+  ['De film is heel ___. Wat gebeurt er nu?', ['spannend','bang','praktisch','algemeen'], 4],
+  ['Wat zijn de ___ van het museum? – Van 10 tot 5 uur.', ['openingstijden','toegangskaartjes','sprookjes','dieren'], 4],
+  ['Kinderen hebben gratis ___.', ['toegang','sprookje','boom','provincie'], 4],
+  ['We ___ met het vliegtuig naar Spanje.', ['vliegen','varen','hangen','zingen'], 4],
+  ['We ___ met de boot over het water.', ['varen','vliegen','zingen','hangen'], 4],
+  ['Het is mooi weer. We eten ___.', ['buiten','minstens','alles','algemeen'], 4],
+  ['Het kost ___ tien euro. Misschien meer.', ['minstens','alles','buiten','algemeen'], 4],
+  ['Ik heb ___ opgegeten. Het bord is leeg.', ['alles','minstens','buiten','praktisch'], 4],
+  ['Voor het slapen lees ik mijn dochter een ___ voor.', ['sprookje','dier','park','toegang'], 4]
+];
+
+const TAKEN = [['all','Alles'],[1,'Taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4']];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['luister','🎧','Luisteren'], ['dehet','🔤','De of het'],
+  ['sorteer','🧺','Sorteren'], ['zinnen','✏️','Zinnen'], ['taal','🌍','Mijn taal']
+];
+
+const TRANS = {"ar":[[1,"attractiepark, het","مدينة الملاهي"],[1,"bioscoop, de","السينما"],[1,"bitterbal, de","نوع من الكروكيت باللحم"],[1,"borrel, de","شراب يحتوي (غالبا) على كحول"],[1,"borrelhapje, het","مزات تقدم مع المشروبات الكحولية"],[1,"ding, het","الشيء"],[1,"eerst","أولا"],[1,"gewoon","عادي، معتاد، ببساطة"],[1,"kroeg, de","الحانة، الكافيه"],[1,"plan, het","الخطة"],[1,"rekening, de","الحساب"],[1,"rondje, het (een rondje geven)","يعزم مجموعة على مشروب (عزومة مجموعة على مشروب)"],[1,"voorstel, het","الإقتراح"],[1,"want","لأن"],[1,"weleens","بين الحين والآخر / ولو لمرة واحدة على الأقل"],[1,"zielig","مثير للشفقة"],[2,"appeltaart, de","فطيرة التفاح"],[2,"biefstuk, de","قطعة لحم ستيك"],[2,"buurjongen, de","ابن الجيران"],[2,"citroen, de","الليمون"],[2,"dessert, het","الحلو/التحلية (طعام)"],[2,"fles, de","الزجاجة"],[2,"garnaal, de","الروبيان"],[2,"gast, de","ضيف"],[2,"gebakken","مخبوز، مقلي"],[2,"gegrild","مشوي"],[2,"geloven","يعتقد"],[2,"hoofdgerecht, het","الطبق الرئيسي"],[2,"kaart, de (menukaart, de)","قائمة الطعام"],[2,"lijken","فعل يبدو"],[2,"nog (nog een witte wijn)","آخر / إضافي"],[2,"ober, de","النادل، الجرسون"],[2,"plaats, de","المكان"],[2,"saus, de","الصلصة"],[2,"sla, de","الخس"],[2,"slagroom, de","كريمة الخفق"],[2,"taart, de","الكعكة، التورتة"],[2,"tonijn, de","التونة"],[2,"voorgerecht, het","طبق المقبلات"],[2,"werkdag, de","يوم العمل"],[2,"zalm, de","سمك السلمون"],[3,"aanstaande","اليوم/ الأسبوع/ القادم"],[3,"bloem, de","الزهرة"],[3,"bruiloft, de","الزفاف، العرس"],[3,"cadeau, het","هدية"],[3,"diploma, het","الشهادة/ الدبلوم"],[3,"gebeurtenis, de","حدث"],[3,"gelukkig","فرحة لأن شيء سيحدث، لحسن الحظ"],[3,"geweldig","عظيم/رائع"],[3,"hangen","يعلق (شيء ما)"],[3,"hapje, het","الوجبة الصغيرة"],[3,"iedereen","الجميع / كل شخص"],[3,"kring, de","دائرة"],[3,"lenen","يقترض"],[3,"lied(je), het","أغنية (صغيرة)"],[3,"meest","الأكثر / الأكثرية"],[3,"meteen","فورا / مباشرة"],[3,"middelbare school, de","مدرسة ثانوية"],[3,"namelijk","ألا و هو/ على وجه التجديد"],[3,"om een uur of (twee)","في حوالي الساعة واحدة أو (اثنين)"],[3,"opa, de","جد"],[3,"pakken","بحضر/يجلب شيء"],[3,"slecht","سيئ"],[3,"suiker, de","السكر"],[3,"trouwen","يتزوج"],[3,"uitnodigen","يدعو"],[3,"uitnodiging, de","الدعوة"],[3,"vlag, de","علم / راية"],[3,"voetbal, het","كرة القدم"],[3,"wedstrijd, de","المسابقة، الماتش"],[3,"zingen","يغني"],[4,"algemeen","عام"],[4,"alles","كل شيء"],[4,"bang (voor)","خاتف من"],[4,"boom, de","شجرة"],[4,"buiten","خارج / في الخارج"],[4,"dier, het","الحيوان"],[4,"minstens","على الأقل"],[4,"opstijgen","يقلع / يصعد"],[4,"park, het","متنزه"],[4,"praktisch","عملي"],[4,"provincie, de","الإقليم"],[4,"spannend","مثير، شيق"],[4,"toegang, de","الدخول"],[4,"toegangskaartje, het","تذكرة الدخول"],[4,"varen","يبحر"],[4,"vliegen","يحلق / يسافر بالطائرة *"]],"en":[[1,"attractiepark, het","amusement park"],[1,"bioscoop, de","cinema"],[1,"bitterbal, de","type of croquette served as an appetizer"],[1,"borrel, de","alcoholic drink / get-together, a"],[1,"borrelhapje, het","snack / appetizer"],[1,"ding, het","thing"],[1,"eerst","first"],[1,"gewoon","just / simply"],[1,"kroeg, de","café / pub"],[1,"plan, het","plan"],[1,"rekening, de","bill"],[1,"rondje, het (een rondje geven)","round (to stand a round of drinks)"],[1,"voorstel, het","proposal / proposition"],[1,"want","because / for"],[1,"weleens","ever / sometimes"],[1,"zielig","pitiful / pathetic"],[2,"appeltaart, de","apple pie"],[2,"biefstuk, de","steak"],[2,"buurjongen, de","boy next door / boy living nearby"],[2,"citroen, de","lemon"],[2,"dessert, het","dessert"],[2,"fles, de","bottle"],[2,"garnaal, de","shrimp / prawn"],[2,"gast, de","guest"],[2,"gebakken","baked / fried"],[2,"gegrild","grilled"],[2,"geloven","to think / to believe"],[2,"hoofdgerecht, het","main course"],[2,"kaart, de (menukaart, de)","menu"],[2,"lijken","to seem / to appear"],[2,"nog (nog een witte wijn)","another (another white wine)"],[2,"ober, de","waiter"],[2,"plaats, de","place"],[2,"saus, de","sauce"],[2,"sla, de","lettuce"],[2,"slagroom, de","whipping / whipped cream"],[2,"taart, de","cake / pie"],[2,"tonijn, de","tuna"],[2,"voorgerecht, het","first course / starter"],[2,"werkdag, de","working day"],[2,"zalm, de","salmon"],[3,"aanstaande","next"],[3,"bloem, de","flower"],[3,"bruiloft, de","wedding"],[3,"cadeau, het","present / gift"],[3,"diploma, het","diploma / certificate"],[3,"gebeurtenis, de","event / occasion / happening"],[3,"gelukkig","happy (glad to hear it)"],[3,"geweldig","terrific / fantastic"],[3,"hangen","to hang"],[3,"hapje, het","bite"],[3,"iedereen","everyone / everybody"],[3,"kring, de","circle"],[3,"lenen","to borrow"],[3,"lied(je), het","song"],[3,"meest","most"],[3,"meteen","immediately"],[3,"middelbare school, de","middle school / high school"],[3,"namelijk","namely, because, specifically"],[3,"om een uur of (twee)","about (two) o' clock"],[3,"opa, de","grandpa"],[3,"pakken","to get"],[3,"slecht","bad"],[3,"suiker, de","sugar"],[3,"trouwen","to get married"],[3,"uitnodigen","to invite"],[3,"uitnodiging, de","invitation"],[3,"vlag, de","flag"],[3,"voetbal, het","football"],[3,"wedstrijd, de","match / game"],[3,"zingen","to sing"],[4,"algemeen","general"],[4,"alles","all / everything"],[4,"bang (voor)","to be afraid (of)"],[4,"boom, de","tree"],[4,"buiten","outside"],[4,"dier, het","animal"],[4,"minstens","at least"],[4,"opstijgen","to take off / to ascend"],[4,"park, het","park"],[4,"praktisch","practical"],[4,"provincie, de","region / province"],[4,"spannend","exciting"],[4,"toegang, de","entrance"],[4,"toegangskaartje, het","ticket"],[4,"varen","to sail"],[4,"vliegen","to fly"]],"fa":[[1,"attractiepark, het","شهربازی"],[1,"bioscoop, de","سینما"],[1,"bitterbal, de","کروکت گرد"],[1,"borrel, de","نوشیدنی الکلی"],[1,"borrelhapje, het","میان وعده"],[1,"ding, het","چیز"],[1,"eerst","اول"],[1,"gewoon","فقط"],[1,"kroeg, de","میخانه"],[1,"plan, het","طرح"],[1,"rekening, de","لایحه"],[1,"rondje, het (een rondje geven)","گرد (برای ایستادن یک دور نوشیدنی)"],[1,"voorstel, het","پیشنهاد"],[1,"want","زیرا"],[1,"weleens","گاهی اوقات"],[1,"zielig","رقت انگیز"],[2,"appeltaart, de","پای سیب"],[2,"biefstuk, de","استیک"],[2,"buurjongen, de","پسر همسایه"],[2,"citroen, de","لیمو"],[2,"dessert, het","دسر"],[2,"fles, de","بطری"],[2,"garnaal, de","میگو"],[2,"gast, de","مهمان"],[2,"gebakken","پخته شده"],[2,"gegrild","کبابی"],[2,"geloven","باور کردن"],[2,"hoofdgerecht, het","غذای اصلی"],[2,"kaart, de (menukaart)","منو (فهرست)"],[2,"lijken","ظاهر شدن/به نظر رسیدن"],[2,"nog (nog een witte wijn)","یکی دیگر (یک شراب سفید دیگر)"],[2,"ober, de","گارسون"],[2,"plaats, de","مکان"],[2,"saus, de","سس"],[2,"sla, de","کاهو"],[2,"slagroom, de","خامه زده شده"],[2,"taart, de","کیک"],[2,"tonijn, de","ماهی تن"],[2,"voorgerecht, het","استارتر"],[2,"werkdag, de","روز کاری"],[2,"zalm, de","ماهی سالمون"],[3,"aanstaande","بعدی"],[3,"bloem, de","گل"],[3,"bruiloft, de","عروسی"],[3,"cadeau, het","حاضر"],[3,"diploma, het","دیپلم"],[3,"gebeurtenis, de","رویداد"],[3,"gelukkig","خوشبختانه"],[3,"geweldig","فوق العاده"],[3,"hangen","آویزان کردن"],[3,"hapje, het","نیش زدن"],[3,"iedereen","همه کس /هر کسی"],[3,"kring, de","دایره"],[3,"lenen","قرض گرفتن"],[3,"lied, het (je)","آهنگ"],[3,"meest","عمدتا"],[3,"meteen","بلافاصله"],[3,"middelbare school, de","مدرسه متوسطه"],[3,"namelijk","می بینی ."],[3,"om een uur of (twee)","حدود ساعت (دو)"],[3,"opa, de","پدربزرگ"],[3,"pakken","برای بدست آوردن"],[3,"slecht","بد"],[3,"suiker, de","شکر"],[3,"trouwen","برای ازدواج"],[3,"uitnodigen","دعوت کردن"],[3,"uitnodiging, de","دعوتنامه"],[3,"vlag, de","پرچم"],[3,"voetbal, het","فوتبال"],[3,"wedstrijd, de","مطابقت"],[3,"zingen","آواز خواندن"],[4,"algemeen","عمومی، کلی"],[4,"alles","همه چیز"],[4,"bang voor","ترسیدن (از)"],[4,"boom, de","درخت"],[4,"buiten","بیرون"],[4,"dier, het","حیوان"],[4,"minstens","حداقل"],[4,"opstijgen","برخاستن"],[4,"park, het","پارک"],[4,"praktisch","عملی"],[4,"provincie, de","استان"],[4,"spannend","هیجان انگیز"],[4,"toegang, de","ورودی"],[4,"toegangskaartje, het","بلیط ورودی"],[4,"varen","دریانوردی کردن"],[4,"vliegen","پرواز کردن"]],"fr":[[1,"attractiepark, het","parc d’attractions"],[1,"bioscoop, de","cinéma"],[1,"bitterbal, de","croquette"],[1,"borrel, de","apéritif"],[1,"borrelhapje, het","collation"],[1,"ding, het","chose"],[1,"eerst","d’abord"],[1,"gewoon","simplement"],[1,"kroeg, de","bar"],[1,"plan, het","plan"],[1,"rekening, de","addition"],[1,"rondje, het (een rondje geven)","tournée (offrir une tournée)"],[1,"voorstel, het","proposition"],[1,"want","parce que"],[1,"weleens","parfois"],[1,"zielig","pitoyable"],[2,"appeltaart, de","tarte aux pommes"],[2,"biefstuk, de","bifteck"],[2,"buurjongen, de","voisin"],[2,"citroen, de","citron"],[2,"dessert, het","dessert"],[2,"fles, de","bouteille"],[2,"garnaal, de","crevette"],[2,"gast, de","invité"],[2,"gebakken","cuit"],[2,"gegrild","grillé"],[2,"geloven","croire"],[2,"hoofdgerecht, het","plat principal"],[2,"kaart, de (menukaart, de)","carte"],[2,"lijken","sembler"],[2,"nog (nog een witte wijn)","un autre (un autre vin blanc)"],[2,"ober, de","serveur"],[2,"plaats, de","lieu"],[2,"saus, de","sauce"],[2,"sla, de","laitue"],[2,"slagroom, de","crème chantilly"],[2,"taart, de","tarte"],[2,"tonijn, de","thon"],[2,"voorgerecht, het","entrée"],[2,"werkdag, de","journée de travail"],[2,"zalm, de","saumon"],[3,"aanstaande","prochain"],[3,"bloem, de","fleur"],[3,"bruiloft, de","mariage"],[3,"cadeau, het","cadeau"],[3,"diploma, het","diplôme"],[3,"gebeurtenis, de","événement"],[3,"gelukkig","tant mieux"],[3,"geweldig","fantastique"],[3,"hangen","accrocher"],[3,"hapje, het","en-cas"],[3,"iedereen","tout le monde"],[3,"kring, de","cercle"],[3,"lenen","emprunter"],[3,"lied(je), het","chanson"],[3,"meest","le plus"],[3,"meteen","immédiatement"],[3,"middelbare school, de","école secondaire"],[3,"namelijk","à savoir"],[3,"om een uur of (twee)","vers (deux) heures"],[3,"opa, de","grand-père"],[3,"pakken","prendre"],[3,"slecht","mauvais"],[3,"suiker, de","sucre"],[3,"trouwen","épouser"],[3,"uitnodigen","inviter"],[3,"uitnodiging, de","invitation"],[3,"vlag, de","drapeau"],[3,"voetbal, het","football"],[3,"wedstrijd, de","concours"],[3,"zingen","chanter"],[4,"algemeen","général"],[4,"alles","tout"],[4,"bang (voor)","peur de"],[4,"boom, de","arbre"],[4,"buiten","dehors"],[4,"dier, het","animal"],[4,"minstens","au moins"],[4,"opstijgen","décoller"],[4,"park, het","parc"],[4,"praktisch","pratique"],[4,"provincie, de","province"],[4,"spannend","passionnant"],[4,"toegang, de","entrée"],[4,"toegangskaartje, het","ticket d’entrée"],[4,"varen","naviguer"],[4,"vliegen","voler"]],"kmr":[[1,"attractiepark, het","parka şahiyê"],[1,"bioscoop, de","sînema"],[1,"bitterbal, de","kroketa gilover"],[1,"borrel, de","vexwarina alkolî"],[1,"borrelhapje, het","meze"],[1,"ding, het","tişt"],[1,"eerst","yekem"],[1,"gewoon","adîl"],[1,"kroeg, de","bîraxane"],[1,"plan, het","pîlan"],[1,"rekening, de","hesab"],[1,"rondje, het (een rondje geven)","dor (ji bo danîna doşekek vexwarinan)"],[1,"voorstel, het","pêşnîyar"],[1,"want","ji ber ku"],[1,"weleens","carna"],[1,"zielig","heyf"],[2,"appeltaart, de","pîteya sêvan"],[2,"biefstuk, de","steyk"],[2,"buurjongen, de","kurê cîran"],[2,"citroen, de","leymûn"],[2,"dessert, het","şîranî"],[2,"fles, de","şûşe"],[2,"garnaal, de","kevcalê derya"],[2,"gast, de","mêvan"],[2,"gebakken","pijandî"],[2,"gegrild","biraştî"],[2,"geloven","bawerkirin"],[2,"hoofdgerecht, het","xwarina sereke"],[2,"kaart, de (menukaart)","menû (menû)"],[2,"lijken","xuyabûn"],[2,"nog (nog een witte wijn)","yekî din (şerabek spî ya din)"],[2,"ober, de","sifrevan"],[2,"plaats, de","cîh"],[2,"saus, de","avdohnk"],[2,"sla, de","marûl"],[2,"slagroom, de","krema şêrîn"],[2,"taart, de","paste"],[2,"tonijn, de","masîyê ton"],[2,"voorgerecht, het","destpêker"],[2,"werkdag, de","roja kar"],[2,"zalm, de","sormasî"],[3,"aanstaande","paş"],[3,"bloem, de","kulîlk"],[3,"bruiloft, de","dîlan"],[3,"cadeau, het","amade"],[3,"diploma, het","şehade"],[3,"gebeurtenis, de","bûyer"],[3,"gelukkig","bi şens"],[3,"geweldig","xofane"],[3,"hangen","daliqandin"],[3,"hapje, het","gezkirin"],[3,"iedereen","her kes"],[3,"kring, de","çember"],[3,"lenen","deynkirin"],[3,"lied, het (je)","stran"],[3,"meest","bi piranî"],[3,"meteen","demildest"],[3,"middelbare school, de","dibistana navîn"],[3,"namelijk","tu dibînî"],[3,"om een uur of (twee)","nêzîkî saet (du)"],[3,"opa, de","bapîr"],[3,"pakken","wergirtin"],[3,"slecht","xerab"],[3,"suiker, de","şekir"],[3,"trouwen","zewicandin"],[3,"uitnodigen","vexwendin"],[3,"uitnodiging, de","vexwendname"],[3,"vlag, de","al"],[3,"voetbal, het","futbol"],[3,"wedstrijd, de","rasthatin"],[3,"zingen","stran gotin"],[4,"algemeen","giştî"],[4,"alles","hemû"],[4,"bang voor","tirsîn (ji)"],[4,"boom, de","dar"],[4,"buiten","li derve"],[4,"dier, het","ajal"],[4,"minstens","herîkêm"],[4,"opstijgen","vekişîn"],[4,"park, het","park"],[4,"praktisch","pratîkî"],[4,"provincie, de","bajar"],[4,"spannend","biheyecan"],[4,"toegang, de","têketin"],[4,"toegangskaartje, het","bilêta ketinê"],[4,"varen","seferkirin"],[4,"vliegen","firîn"]],"uk":[[1,"attractiepark, het","парк розваг"],[1,"bioscoop, de","кінотеатр"],[1,"bitterbal, de","біттербален"],[1,"borrel, de","постріл"],[1,"borrelhapje, het","закуска"],[1,"ding, het","річ"],[1,"eerst","перший"],[1,"gewoon","просто"],[1,"kroeg, de","паб"],[1,"plan, het","план"],[1,"rekening, de","рахунок"],[1,"rondje, het (een rondje geven)","заплатити за раунд (дати раунд)"],[1,"voorstel, het","пропозиція"],[1,"want","тому що"],[1,"weleens","коли-небудь"],[1,"zielig","жалюгідний"],[2,"appeltaart, de","яблучний пиріг"],[2,"biefstuk, de","стейк"],[2,"buurjongen, de","сусід"],[2,"citroen, de","лимон"],[2,"dessert, het","десерт"],[2,"fles, de","пляшка"],[2,"garnaal, de","креветка"],[2,"gast, de","гість"],[2,"gebakken","запечений"],[2,"gegrild","смажений"],[2,"geloven","вірити"],[2,"hoofdgerecht, het","основне блюдо"],[2,"kaart, de (menukaart, de)","меню"],[2,"lijken","здається"],[2,"nog (nog een witte wijn)","ще (ще білого вина)"],[2,"ober, de","офіціант"],[2,"plaats, de","Місце"],[2,"saus, de","соус"],[2,"sla, de","салат"],[2,"slagroom, de","збиті вершки"],[2,"taart, de","тістечко"],[2,"tonijn, de","тунець"],[2,"voorgerecht, het","закуска"],[2,"werkdag, de","робочий день"],[2,"zalm, de","лосось"],[3,"aanstaande","майбутні"],[3,"bloem, de","квітка"],[3,"bruiloft, de","весілля"],[3,"cadeau, het","подарунок"],[3,"diploma, het","диплом"],[3,"gebeurtenis, de","подія"],[3,"gelukkig","щасливий"],[3,"geweldig","чудовий"],[3,"hangen","висіти"],[3,"hapje, het","кусати"],[3,"iedereen","всі"],[3,"kring, de","коло"],[3,"lenen","позичати"],[3,"lied(je), het","пісня"],[3,"meest","найбільш"],[3,"meteen","відразу"],[3,"middelbare school, de","середня школа"],[3,"namelijk","а саме"],[3,"om een uur of (twee)","через годину або (дві)"],[3,"opa, de","дідусь"],[3,"pakken","костюми"],[3,"slecht","поганий"],[3,"suiker, de","цукор"],[3,"trouwen","одружитися"],[3,"uitnodigen","запросити"],[3,"uitnodiging, de","запрошення"],[3,"vlag, de","прапор"],[3,"voetbal, het","футбол"],[3,"wedstrijd, de","конкуренція"],[3,"zingen","співати"],[4,"algemeen","загальні"],[4,"alles","весь"],[4,"bang (voor)","боятися"],[4,"boom, de","дерево"],[4,"buiten","зовні"],[4,"dier, het","тварини"],[4,"minstens","принаймні"],[4,"opstijgen","підійматися / злітати"],[4,"park, het","парк"],[4,"praktisch","практичний"],[4,"provincie, de","провінція"],[4,"spannend","захоплюючий"],[4,"toegang, de","вхід"],[4,"toegangskaartje, het","допуск"],[4,"varen","вітрило"],[4,"vliegen","літати"]],"prs":[[1,"attractiepark, het","پارک تفریحی"],[1,"bioscoop, de","سینما"],[1,"bitterbal, de","تلخی (پیشغذا)"],[1,"borrel, de","نوشابه الکلی؛ یک گردهمایی"],[1,"borrelhapje, het","اسنک، پیش غذایی"],[1,"ding, het","چیز"],[1,"eerst","اول"],[1,"gewoon","به سادگی، فقط، عادی"],[1,"kroeg, de","میخانه"],[1,"plan, het","پلان"],[1,"rekening, de","بل"],[1,"rondje, het (een rondje geven)","دوره (برای ایستادن یک دور نوشیدنی)"],[1,"voorstel, het","پیشنهاد، قضیه"],[1,"want","بخاطری، برای"],[1,"weleens","همیشه / گاهی"],[1,"zielig","تاسف بار"],[2,"appeltaart, de","اپل پای"],[2,"biefstuk, de","استیک (کباب گوشت پشت مغز)"],[2,"buurjongen, de","پسری که در همسایه زندگی می کند، پسری که در نزدیکی زندگی می کند"],[2,"citroen, de","لیمو"],[2,"dessert, het","شیرینی"],[2,"fles, de","بوتل"],[2,"garnaal, de","ماهی میگو، میگوی سرخ کرده"],[2,"gast, de","مهمان"],[2,"gebakken","تباخی شده، سرخ شده"],[2,"gegrild","بریان شده"],[2,"geloven","فکر کردن، باور کردن"],[2,"hoofdgerecht, het","غذا اصلی"],[2,"kaart, de (menukaart, de)","مینو"],[2,"lijken","ظاهر شدن، معلوم شدن، نگاه کردن"],[2,"nog (nog een witte wijn)","دیگر (یک شراب سفید دیگر)"],[2,"ober, de","گارسون"],[2,"plaats, de","جای، موقعیت"],[2,"saus, de","ساس"],[2,"sla, de","کاهو، سلاد"],[2,"slagroom, de","لت زدن، خامه لت زدگی"],[2,"taart, de","کیک، پای"],[2,"tonijn, de","تونا"],[2,"voorgerecht, het","غذای اول، پیش غذایی"],[2,"werkdag, de","روز کاری"],[2,"zalm, de","ماهی سالمون"],[3,"aanstaande","آینده"],[3,"bloem, de","گل"],[3,"bruiloft, de","عروسی"],[3,"cadeau, het","تحفه/ هدیه"],[3,"diploma, het","دیپلوم"],[3,"gebeurtenis, de","رویداد / مناسبت / اتفاق"],[3,"gelukkig","خوش (خوش شدم که شنیدم)"],[3,"geweldig","عالی، فوق العاده"],[3,"hangen","آویزان کردن"],[3,"hapje, het","لقمه"],[3,"iedereen","همه / همگی"],[3,"kring, de","دایره"],[3,"lenen","قرض گرفتن"],[3,"lied(je), het","آهنگ"],[3,"meest","اکثر"],[3,"meteen","فورا"],[3,"middelbare school, de","مکتب متوسطه / لیسه"],[3,"namelijk","همچنان که جریان دارد، شما ببین"],[3,"om een uur of (twee)","حدود ساعت (دو) بجه"],[3,"opa, de","پدربزرگ"],[3,"pakken","پیدا کردن"],[3,"slecht","بد/ خراب"],[3,"suiker, de","بوره"],[3,"trouwen","ازدواج کردن"],[3,"uitnodigen","دعوت کردن"],[3,"uitnodiging, de","دعوت"],[3,"vlag, de","بیرق"],[3,"voetbal, het","فوتبال"],[3,"wedstrijd, de","مطابقت، گیم"],[3,"zingen","آواز خواندن"],[4,"algemeen","عمومی"],[4,"alles","تمام/ همه"],[4,"bang (voor)","مترسد از"],[4,"boom, de","درخت"],[4,"buiten","بیرون خانه"],[4,"dier, het","حیوان"],[4,"minstens","حد اقل"],[4,"opstijgen","بالا رفتن / صعود کردن"],[4,"park, het","پارک"],[4,"praktisch","عملی"],[4,"provincie, de","منطقه، ولایت"],[4,"spannend","هیجان انگیز"],[4,"toegang, de","ورودی"],[4,"toegangskaartje, het","تکت"],[4,"varen","دریانوردی"],[4,"vliegen","پرواز کردن"]],"ru":[[1,"attractiepark, het","парк развлечений"],[1,"bioscoop, de","кинотеатр"],[1,"bitterbal, de","шарик мясного рагу"],[1,"borrel, de","выпивка"],[1,"borrelhapje, het","закуска"],[1,"ding, het","вещь"],[1,"eerst","первый"],[1,"gewoon","обычный"],[1,"kroeg, de","паб"],[1,"plan, het","план"],[1,"rekening, de","счет"],[1,"rondje, het (een rondje geven)","заплатить за раунд (напитков)"],[1,"voorstel, het","предложение"],[1,"want","так как"],[1,"weleens","когда-либо"],[1,"zielig","жалкий"],[2,"appeltaart, de","яблочный пирог"],[2,"biefstuk, de","стейк"],[2,"buurjongen, de","соседский мальчик"],[2,"citroen, de","лимон"],[2,"dessert, het","десерт"],[2,"fles, de","бутылка"],[2,"garnaal, de","креветка"],[2,"gast, de","гость"],[2,"gebakken","печеный"],[2,"gegrild","приготовленный на гриле"],[2,"geloven","верить"],[2,"hoofdgerecht, het","основное блюдо"],[2,"kaart, de (menukaart, de)","меню"],[2,"lijken","казаться"],[2,"nog (nog een witte wijn)","еще (еще белого вина)"],[2,"ober, de","официант"],[2,"plaats, de","место"],[2,"saus, de","соус"],[2,"sla, de","салат-латук"],[2,"slagroom, de","взбитые сливки"],[2,"taart, de","торт"],[2,"tonijn, de","тунец"],[2,"voorgerecht, het","закуска"],[2,"werkdag, de","рабочий день"],[2,"zalm, de","лосось"],[3,"aanstaande","предстоящий, будущий"],[3,"bloem, de","цветок"],[3,"bruiloft, de","свадьба"],[3,"cadeau, het","подарок"],[3,"diploma, het","диплом"],[3,"gebeurtenis, de","событие"],[3,"gelukkig","слава богу / это хорошо"],[3,"geweldig","прекрасный"],[3,"hangen","висеть"],[3,"hapje, het","перекус, закуска"],[3,"iedereen","все"],[3,"kring, de","круг"],[3,"lenen","брать (на время, в кредит)"],[3,"lied(je), het","песенка"],[3,"meest","наиболее"],[3,"meteen","сразу"],[3,"middelbare school, de","средняя школа"],[3,"namelijk","а именно"],[3,"om een uur of (twee)","где-то в (два) часа, около (два)"],[3,"opa, de","дедушка"],[3,"pakken","взять"],[3,"slecht","плохой"],[3,"suiker, de","сахар"],[3,"trouwen","жениться"],[3,"uitnodigen","пригласить"],[3,"uitnodiging, de","приглашение"],[3,"vlag, de","флаг"],[3,"voetbal, het","футбол"],[3,"wedstrijd, de","матч"],[3,"zingen","петь"],[4,"algemeen","общий"],[4,"alles","всё"],[4,"bang (voor)","бояться (кого, чего)"],[4,"boom, de","дерево"],[4,"buiten","снаружи"],[4,"dier, het","животное"],[4,"minstens","по крайней мере"],[4,"opstijgen","подниматься / взлетать"],[4,"park, het","парк"],[4,"praktisch","практичный"],[4,"provincie, de","область"],[4,"spannend","захватывающий"],[4,"toegang, de","доступ"],[4,"toegangskaartje, het","билет"],[4,"varen","плыть"],[4,"vliegen","летать"]],"so":[[1,"attractiepark, het","beerta madadaalada"],[1,"bioscoop, de","shaneema"],[1,"bitterbal, de","croquette wareegsan"],[1,"borrel, de","cabitaan khamri ah"],[1,"borrelhapje, het","cunto fudud"],[1,"ding, het","shay"],[1,"eerst","kowaad"],[1,"gewoon","kaliya"],[1,"kroeg, de","mukhmaarad"],[1,"plan, het","qorshaha"],[1,"rekening, de","biil"],[1,"rondje, het (een rondje geven)","koox (inaad kooxda dhan ka bixiso cabbitaan)"],[1,"voorstel, het","soo jeedin"],[1,"want","sabab"],[1,"weleens","waqtiyada qaarkood"],[1,"zielig","naxariis keenaya"],[2,"appeltaart, de","keega tufaaxa"],[2,"biefstuk, de","isteeg"],[2,"buurjongen, de","wiilka albaabka xiga"],[2,"citroen, de","liin-dhanaan"],[2,"dessert, het","macmacaanka"],[2,"fles, de","musaasad"],[2,"garnaal, de","shrimp"],[2,"gast, de","marti"],[2,"gebakken","dubay"],[2,"gegrild","la solay"],[2,"geloven","inaad rumaysato"],[2,"hoofdgerecht, het","koorsada ugu weyn"],[2,"kaart, de (menukaart)","liis (liis)"],[2,"lijken","inaad u muuqato"],[2,"nog (nog een witte wijn)","mid kale (waayn cad oo kale)"],[2,"ober, de","muddalab"],[2,"plaats, de","kob"],[2,"saus, de","soos"],[2,"sla, de","saladh"],[2,"slagroom, de","labeenta la garaacay"],[2,"taart, de","Keeg"],[2,"tonijn, de","kalluunka tuna"],[2,"voorgerecht, het","bilaabe"],[2,"werkdag, de","maalin shaqo"],[2,"zalm, de","salmon"],[3,"aanstaande","xiga"],[3,"bloem, de","ubax"],[3,"bruiloft, de","aroos"],[3,"cadeau, het","hadda"],[3,"diploma, het","dibloomaha(shahaado)"],[3,"gebeurtenis, de","munaasabad"],[3,"gelukkig","nasiib wanaag"],[3,"geweldig","aad u fiican"],[3,"hangen","inaad surto"],[3,"hapje, het","qaniinyo"],[3,"iedereen","qof walba"],[3,"kring, de","goobaab"],[3,"lenen","inaad amaahato"],[3,"lied, het (je)","hees"],[3,"meest","inta badan"],[3,"meteen","isla markiiba"],[3,"middelbare school, de","dugsiga sare"],[3,"namelijk","waad aragtaa"],[3,"om een uur of (twee)","abbaare (laba) saac"],[3,"opa, de","awoowe"],[3,"pakken","inaad hesho"],[3,"slecht","xun"],[3,"suiker, de","sonkor"],[3,"trouwen","inaad guursato"],[3,"uitnodigen","inaad martiqaaddo"],[3,"uitnodiging, de","martiqaad"],[3,"vlag, de","calan"],[3,"voetbal, het","kubadda cagta"],[3,"wedstrijd, de","waafaji"],[3,"zingen","inaad heesto"],[4,"algemeen","guud"],[4,"alles","wax kasta"],[4,"bang voor","inaad ka baqdo"],[4,"boom, de","geed"],[4,"buiten","bannaanka"],[4,"dier, het","xayawaan"],[4,"minstens","ugu yaraan"],[4,"opstijgen","inaad iska bixiso"],[4,"park, het","baarkin"],[4,"praktisch","toos ah"],[4,"provincie, de","gobol"],[4,"spannend","faraxsan"],[4,"toegang, de","irrid"],[4,"toegangskaartje, het","tigidh gelitaan"],[4,"varen","inaad shiraacato"],[4,"vliegen","inaad duusho"]],"es":[[1,"attractiepark, het","parque de atracciones"],[1,"bioscoop, de","cine"],[1,"bitterbal, de","tipo de croqueta redonda servida con mostaza"],[1,"borrel, de","cóctel, bebida alcohólica / reunión social"],[1,"borrelhapje, het","aperitivo, canapé"],[1,"ding, het","cosa"],[1,"eerst","primero/a"],[1,"gewoon","simple, simplemente"],[1,"kroeg, de","pub, taberna"],[1,"plan, het","plan"],[1,"rekening, de","cuenta"],[1,"rondje, het (een rondje geven)","ronda (invitar a una ronda)"],[1,"voorstel, het","propuesta"],[1,"want","porque, ya que"],[1,"weleens","a veces/alguna vez"],[1,"zielig","lamentable, que evoca compasión o lástima, patético/a"],[2,"appeltaart, de","tarta de manzana"],[2,"biefstuk, de","filete, bistec"],[2,"buurjongen, de","vecino (chico), el niño de los vecinos"],[2,"citroen, de","limón"],[2,"dessert, het","postre"],[2,"fles, de","botella"],[2,"garnaal, de","gamba, camarón"],[2,"gast, de","huésped / invitado/a"],[2,"gebakken","frito/a"],[2,"gegrild","a la parrilla"],[2,"geloven","creer"],[2,"hoofdgerecht, het","plato principal"],[2,"kaart, de (menukaart, de)","carta de menú"],[2,"lijken","parecer"],[2,"nog (nog een witte wijn)","otro/otra (otro vino blanco)"],[2,"ober, de","camarero"],[2,"plaats, de","lugar"],[2,"saus, de","salsa"],[2,"sla, de","lechuga"],[2,"slagroom, de","nata montada / para montar"],[2,"taart, de","tarta"],[2,"tonijn, de","atún"],[2,"voorgerecht, het","primer plato"],[2,"werkdag, de","día laborable"],[2,"zalm, de","salmón"],[3,"aanstaande","el/la próximo/a"],[3,"bloem, de","flor"],[3,"bruiloft, de","boda"],[3,"cadeau, het","regalo/obsequio"],[3,"diploma, het","diploma, título"],[3,"gebeurtenis, de","evento/acontecimiento"],[3,"gelukkig","menos mal, qué bien"],[3,"geweldig","genial"],[3,"hangen","colgar *"],[3,"hapje, het","aperitivo, bocado"],[3,"iedereen","todos/todas/todo el mundo"],[3,"kring, de","círculo"],[3,"lenen","prestar, pedir prestado"],[3,"lied(je), het","canción"],[3,"meest","más/mayor"],[3,"meteen","inmediatamente"],[3,"middelbare school, de","escuela secundaria/colegio"],[3,"namelijk","a saber, es decir"],[3,"om een uur of (twee)","sobre (las dos)"],[3,"opa, de","abuelo"],[3,"pakken","tomar, agarrar, coger"],[3,"slecht","malo"],[3,"suiker, de","azúcar"],[3,"trouwen","casarse"],[3,"uitnodigen","invitar"],[3,"uitnodiging, de","invitación"],[3,"vlag, de","bandera"],[3,"voetbal, het","fútbol"],[3,"wedstrijd, de","partido, concurso"],[3,"zingen","cantar"],[4,"algemeen","general"],[4,"alles","todo"],[4,"bang (voor)","(tener) miedo de"],[4,"boom, de","árbol"],[4,"buiten","fuera"],[4,"dier, het","animal"],[4,"minstens","al menos"],[4,"opstijgen","despegar *"],[4,"park, het","parque"],[4,"praktisch","práctico/a"],[4,"provincie, de","provincia"],[4,"spannend","emocionante"],[4,"toegang, de","acceso"],[4,"toegangskaartje, het","(billete de) entrada"],[4,"varen","navegar"],[4,"vliegen","volar *"]],"ti":[[1,"attractiepark, het","መዘናግዒ ፓርክ"],[1,"bioscoop, de","ፊልም ትያትር"],[1,"bitterbal, de","መሪር ኩዕሶ"],[1,"borrel, de","ምትኳስ"],[1,"borrelhapje, het","ሸውሃት"],[1,"ding, het","ነገር"],[1,"eerst","መጀመርታ"],[1,"gewoon","ልክዕ"],[1,"kroeg, de","ፓብ"],[1,"plan, het","ትልሚ"],[1,"rekening, de","ቢል"],[1,"rondje, het (een rondje geven)","ንእተወሰነ እዋን ገንዘብ ከፊልካ (ከበብቲ ሃብ)"],[1,"voorstel, het","ሕቶ"],[1,"want","ምክንያት"],[1,"weleens","ኣብ ዝኾነ ግዜ / ሓድሓደ ግዜ"],[1,"zielig","ሕዝን"],[2,"appeltaart, de","ኣፕል"],[2,"biefstuk, de","ስቲክ"],[2,"buurjongen, de","ጎረቤት"],[2,"citroen, de","ሎሚን"],[2,"dessert, het","ጣዓሞት"],[2,"fles, de","ጥርሙዝ"],[2,"garnaal, de","ሽሪምፕ"],[2,"gast, de","ጋሻ"],[2,"gebakken","ተጠቢሱ"],[2,"gegrild","ዝተጠብሰ"],[2,"geloven","እመን"],[2,"hoofdgerecht, het","ቀንዲ ኮርስ"],[2,"kaart, de (menukaart, de)","ዝርዝር መግቢ"],[2,"lijken","መስል"],[2,"nog (nog een witte wijn)","ካልእ (ካልእ ጻዕዳ ወይኒ)"],[2,"ober, de","ኣስተናጋዲ"],[2,"plaats, de","ቦታ"],[2,"saus, de","ቅመም"],[2,"sla, de","ሰላጣ"],[2,"slagroom, de","ዝተጻረየ"],[2,"taart, de","ኬክ"],[2,"tonijn, de","ቱና"],[2,"voorgerecht, het","ሸውሃት"],[2,"werkdag, de","ናይስራሕ መዓልቲ"],[2,"zalm, de","ሳልሞን"],[3,"aanstaande","መጻኢ"],[3,"bloem, de","ዕንባ"],[3,"bruiloft, de","መርዓ"],[3,"cadeau, het","ውህብቶ / ህያብ"],[3,"diploma, het","ዲፕሎማ"],[3,"gebeurtenis, de","ፍጻመ / ኣጋጣሚ / ዝፍጸም"],[3,"gelukkig","ሕጉስ"],[3,"geweldig","ጽቡቕ"],[3,"hangen","ምስቃል"],[3,"hapje, het","ንክሲት"],[3,"iedereen","ነፍሲ-ወከፍ ሰብ / ኩሉ ሰብ"],[3,"kring, de","ክቢ"],[3,"lenen","ክስደድ እየ"],[3,"lied(je), het","ደርፊ"],[3,"meest","ዝዛየደ"],[3,"meteen","ብቀጥታ"],[3,"middelbare school, de","ማእከላይ ቤት ትምህርቲ / ካልኣይ ደረጃ ቤት ትምህርቲ"],[3,"namelijk","ማለት እዩ።"],[3,"om een uur of (twee)","ኣብ ሓደ ሰዓት ወይ (ክልተ)"],[3,"opa, de","ኣቦሓጎ"],[3,"pakken","ዝጥዕመካ"],[3,"slecht","ሕማቅ"],[3,"suiker, de","ሽኮር"],[3,"trouwen","ምምርዓው"],[3,"uitnodigen","ንኽትዕድም"],[3,"uitnodiging, de","ወረቐት ግብ"],[3,"vlag, de","ባንዴራ"],[3,"voetbal, het","ኹዕሶ ምፅዋት"],[3,"wedstrijd, de","ውድድር"],[3,"zingen","ምድራፍ"],[4,"algemeen","ሓፈሻዊ"],[4,"alles","ኵሉ"],[4,"bang (voor)","ዝፈርሆ"],[4,"boom, de","ገረብ"],[4,"buiten","ደገ"],[4,"dier, het","እንስሳ"],[4,"minstens","እንተወሓደ"],[4,"opstijgen","ምብጋስ / ምልዓል"],[4,"park, het","መናፈሻ"],[4,"praktisch","ብተግባር"],[4,"provincie, de","ገጸር"],[4,"spannend","ባህ ብል"],[4,"toegang, de","መእተዊ"],[4,"toegangskaartje, het","መእተዊ"],[4,"varen","ጋንጽላ"],[4,"vliegen","ምንፋር"]],"tr":[[1,"attractiepark, het","lunapark / eğlence parkı"],[1,"bioscoop, de","sinema"],[1,"bitterbal, de","bitterbal (patates püreli aperatif)"],[1,"borrel, de","içki"],[1,"borrelhapje, het","meze"],[1,"ding, het","şey"],[1,"eerst","ilk"],[1,"gewoon","sadece, basitçe"],[1,"kroeg, de","kafe, bar"],[1,"plan, het","plan"],[1,"rekening, de","hesap"],[1,"rondje, het (een rondje geven)","tur (bir tur vermek)"],[1,"voorstel, het","teklif"],[1,"want","çünkü"],[1,"weleens","hiç / bazen"],[1,"zielig","acınası"],[2,"appeltaart, de","elmalı turta"],[2,"biefstuk, de","biftek"],[2,"buurjongen, de","komşu çocuğu"],[2,"citroen, de","limon"],[2,"dessert, het","tatlı"],[2,"fles, de","şişe"],[2,"garnaal, de","karides"],[2,"gast, de","misafir"],[2,"gebakken","pişirmek (fırında)"],[2,"gegrild","ızgara"],[2,"geloven","inanmak"],[2,"hoofdgerecht, het","ana yemek"],[2,"kaart, de (menukaart, de)","menü"],[2,"lijken","görünmek"],[2,"nog (nog een witte wijn)","bir ... daha (bir beyaz şarap daha)"],[2,"ober, de","garson"],[2,"plaats, de","yer"],[2,"saus, de","sos"],[2,"sla, de","salata"],[2,"slagroom, de","çırpılmış krema"],[2,"taart, de","kek, pasta"],[2,"tonijn, de","ton balığı"],[2,"voorgerecht, het","başlangıç"],[2,"werkdag, de","çalışma günü"],[2,"zalm, de","somon"],[3,"aanstaande","gelecek, önümüzdeki"],[3,"bloem, de","çiçek"],[3,"bruiloft, de","düğün"],[3,"cadeau, het","hediye"],[3,"diploma, het","diploma"],[3,"gebeurtenis, de","etkinlik / olay"],[3,"gelukkig","mutlu"],[3,"geweldig","harika"],[3,"hangen","asmak"],[3,"hapje, het","atıştırmalık"],[3,"iedereen","herkes"],[3,"kring, de","daire / çember"],[3,"lenen","ödünç almak"],[3,"lied(je), het","şarkı(lar)"],[3,"meest","en fazla / çoğu"],[3,"meteen","hemen / derhal"],[3,"middelbare school, de","ortaokul / lise"],[3,"namelijk","yani, aslında"],[3,"om een uur of (twee)","saat (iki) civarında"],[3,"opa, de","büyükbaba / dede"],[3,"pakken","almak, erişmek"],[3,"slecht","kötü"],[3,"suiker, de","şeker"],[3,"trouwen","evlenmek"],[3,"uitnodigen","davet etmek"],[3,"uitnodiging, de","davetiye"],[3,"vlag, de","bayrak"],[3,"voetbal, het","futbol"],[3,"wedstrijd, de","maç"],[3,"zingen","şarkı söylemek"],[4,"algemeen","genel"],[4,"alles","her şey"],[4,"bang (voor)","korkmak"],[4,"boom, de","ağaç"],[4,"buiten","dışarı(sı)"],[4,"dier, het","hayvan"],[4,"minstens","en azından"],[4,"opstijgen","havalanmak / yükselmek"],[4,"park, het","park"],[4,"praktisch","pratik"],[4,"provincie, de","il"],[4,"spannend","heyecan verici"],[4,"toegang, de","giriş"],[4,"toegangskaartje, het","giriş bileti"],[4,"varen","denize açılmak, (tekne) kullanmak"],[4,"vliegen","uçmak / uçurmak"]]};
+
+/* ---------- MIJN TAAL: flitskaarten Nederlands ↔ eigen taal ----------
+   Vertalingen letterlijk overgenomen uit de woordenlijsten van Code+ Deel 1 (ThiemeMeulenhoff). */
+const LANGS = [
+  ['ar','العربية','Arabisch',1], ['prs','دری','Dari',1], ['en','English','Engels',0], ['fa','فارسی','Farsi',1],
+  ['fr','Français','Frans',0], ['kmr','Kurmancî','Koerdisch (Kurmanji)',0], ['uk','Українська','Oekraïens',0],
+  ['ru','Русский','Russisch',0], ['so','Soomaali','Somalisch',0], ['es','Español','Spaans',0],
+  ['ti','ትግርኛ','Tigrinya',0], ['tr','Türkçe','Turks',0]
+];
+const LS_KEY = 'code1_mijntaal';
+let myLang = null, richting = 'nl', deck = [], di = 0, fcFlipped = false, fcWrong = [];
+try { myLang = localStorage.getItem(LS_KEY); } catch (e) {}
+if (!LANGS.some(l => l[0] === myLang)) myLang = null;
+function langInfo(c) { return LANGS.find(l => l[0] === c); }
+function taakOf(t) { if (typeof TMAP !== 'undefined' && t in TMAP) return TMAP[t]; return (t === 0 && !TAKEN.some(x => x[0] === 0)) ? 1 : t; }
+function taalPool() {
+  return (TRANS[myLang] || []).filter(e => taak === 'all' || taakOf(e[0]) === taak);
+}
+function setLang(c) {
+  myLang = c;
+  try { if (c) localStorage.setItem(LS_KEY, c); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  renderTaal();
+}
+function renderTaal() {
+  const p = document.getElementById('panel');
+  if (!myLang) {
+    p.innerHTML = '<h2>🌍 Mijn taal</h2><p class="how">Kies je taal. Dan oefen je met flitskaarten: Nederlands en jouw taal.</p>' +
+      '<div class="lang-grid">' + LANGS.map(l => '<button class="lang-btn" data-l="' + l[0] + '"><span class="nat" lang="' + l[0] + '" dir="' + (l[3] ? 'rtl' : 'ltr') + '">' + l[1] + '</span><span class="nl">' + l[2] + '</span></button>').join('') + '</div>';
+    p.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    return;
+  }
+  const L = langInfo(myLang), n = taalPool().length;
+  const dirs = [['nl', 'Nederlands → ' + L[2]], ['taal', L[2] + ' → Nederlands'], ['mix', 'Door elkaar']];
+  p.innerHTML = '<h2>🌍 Mijn taal</h2>' +
+    '<div class="lang-bar"><span class="cur">Jouw taal: <span lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '">' + L[1] + '</span> (' + L[2] + ')</span><button class="linkbtn" id="chg">Andere taal kiezen</button></div>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === richting ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' kaarten)</button></div>'
+       : '<p class="how">Er zijn geen kaarten voor deze taak in deze taal.</p>');
+  document.getElementById('chg').onclick = () => setLang(null);
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { richting = b.dataset.d; renderTaal(); });
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startDeck(taalPool());
+}
+function startDeck(list) {
+  deck = shuffle(list).map(e => ({ e, side: richting === 'mix' ? (Math.random() < .5 ? 'nl' : 'taal') : richting }));
+  di = 0; fcWrong = []; renderCard();
+}
+function faceHtml(isNl, e, L, tag) {
+  const txt = isNl ? e[1] : e[2];
+  const attrs = isNl ? 'lang="nl" dir="ltr"' : 'lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '"';
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-word' + (txt.length > 28 ? ' long' : '') + '" ' + attrs + '>' + esc(txt) + '</div>' +
+    (isNl ? '<button class="fc-say" data-say="1">🔊 Luister</button>' : '');
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), L = langInfo(myLang), c = deck[di], e = c.e;
+  const frontNl = c.side === 'nl';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + faceHtml(frontNl, e, L, frontNl ? 'Nederlands' : L[2]) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + faceHtml(!frontNl, e, L, frontNl ? L[2] : 'Nederlands') + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het woord eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(e[1]); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontNl) say(e[1]);
+  };
+  document.getElementById('kk').onclick = () => { di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(e); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🌍</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderTaal();
+}
+document.addEventListener('keydown', e => {
+  if (tab !== 'taal' || !document.getElementById('fcs')) return;
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+  else if (fcFlipped && (e.key === 'k' || e.key === 'K')) document.getElementById('kk').click();
+  else if (fcFlipped && (e.key === 'o' || e.key === 'O')) document.getElementById('nk').click();
+});
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds bij A staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\([^)]*\)/g, ''));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- STATUS ---------- */
+let taak = 'all', tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], lastList = [];
+
+function pool() { return W.filter(x => taak === 'all' || x.t === taak); }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  TAKEN.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => { taak = v; tk.querySelectorAll('.pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); openTab(tab); };
+    tk.appendChild(b);
+  });
+  const tb = document.getElementById('tabs');
+  TABS.forEach(([id, ic, lb]) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (id === tab ? ' active' : '');
+    b.dataset.id = id;
+    b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+    b.onclick = () => openTab(id);
+    tb.appendChild(b);
+  });
+}
+
+const INTRO = {
+  luister: ['🎧 Luisteren en kiezen', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  dehet:   ['🔤 De of het?', 'Kijk naar het woord. Is het <b>de</b> of <b>het</b>?'],
+  sorteer: ['🧺 Sorteren', 'Waar hoort het woord bij? Klik op de goede groep.'],
+  zinnen:  ['✏️ Zinnen', 'Welk woord past in de zin?']
+};
+
+function openTab(id) {
+  tab = id;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'taal') return renderTaal();
+  const p = document.getElementById('panel');
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p>' +
+    '<div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Voor deze taak zijn er geen vragen bij deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startQuiz(buildQuestions(id));
+}
+
+function checkVoice() {
+  if (tab !== 'luister' && tab !== 'woorden') return;
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet in de instellingen van je telefoon of computer de spraak op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const groups = taak === 'all' ? TAKEN.filter(t => t[0] !== 'all').map(t => t[0]) : [taak];
+  const names = Object.fromEntries(TAKEN);
+  let html = '<h2>📖 Woorden</h2><p class="how">Klik op een woord. Je hoort het woord. Zeg het hardop na.</p><div class="warn" id="warn"></div>';
+  groups.forEach(g => {
+    const list = W.filter(x => x.t === g);
+    if (groups.length > 1) html += '<div class="wl-head">' + names[g] + ' · ' + list.length + '</div>';
+    html += '<div class="wl">' + list.map(x =>
+      '<div class="wcard" data-say="' + esc(full(x)) + '"><span class="we">' + (x.e || '') + '</span>' +
+      '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + '</span><span class="sp">🔊</span></div>'
+    ).join('') + '</div>';
+  });
+  p.innerHTML = html;
+  p.querySelectorAll('.wcard').forEach(c => c.onclick = () => say(c.dataset.say));
+  checkVoice();
+}
+
+/* ---------- VRAGEN MAKEN ---------- */
+function buildQuestions(mode) {
+  const P = pool();
+  if (mode === 'luister') {
+    return shuffle(P).slice(0, 10).map(x => {
+      let others = P.filter(y => y.w !== x.w);
+      if (others.length < 3) others = W.filter(y => y.w !== x.w);
+      return { mode, x, opts: shuffleOpts([x, ...shuffle(others).slice(0, 3)]) };
+    });
+  }
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'sorteer') return shuffle(P.filter(x => x.c)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'zinnen') {
+    const Z = ZINNEN.filter(z => taak === 'all' || z[2] === taak);
+    return shuffle(Z).slice(0, 12).map(z => ({ mode, s: z[0], ans: z[1][0], opts: shuffleOpts(z[1]) }));
+  }
+  return [];
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(list) {
+  lastList = list;
+  Q = list.map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : { ...q });
+  qi = 0; score = 0; wrongs = [];
+  renderQ();
+}
+
+function head() {
+  return '<div class="progress"><div>Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' +
+            '<div class="opts">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '"><span class="oe">' + (o.e || '') + '</span>' + esc(o.w) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+            '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'sorteer') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+            '<div class="opts three">' + Object.entries(CATS).map(([k, v]) => '<button class="opt" data-v="' + k + '">' + v + '</button>').join('') + '</div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' +
+            '<div class="opts">' + q.opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister') {
+    document.getElementById('sp').onclick = () => say(full(q.x));
+    document.getElementById('spS').onclick = () => say(full(q.x), true);
+    say(full(q.x));
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].w === q.x.w, q.x.w));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (q.mode === 'sorteer') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.c, q.x.c));
+  } else if (q.mode === 'zinnen') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.textContent === q.ans, q.ans));
+  }
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  const btns = p.querySelectorAll('.opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    const val = q.mode === 'luister' ? q.opts[+b.dataset.i].w : q.mode === 'zinnen' ? b.textContent : b.dataset.v;
+    if (val === correct) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  if (ok) score++; else wrongs.push(q);
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (q.x.m) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(full(q.x));
+  } else if (q.mode === 'sorteer') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het hoort bij: ' + CATS[q.x.c];
+    say(full(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans).replace(/–/g, ','));
+  }
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  document.getElementById('nb').onclick = () => { qi++; renderQ(); };
+  document.getElementById('nb').focus();
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden. Probeer het dan opnieuw. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🎉</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe ronde</button></div></div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(wrongs);
+  document.getElementById('rn').onclick = () => startQuiz(buildQuestions(tab));
+}
+
+/* ---------- AVATAR ----------
+   De avatar wordt uit overzicht_code1.html (zelfde map op GitHub) gehaald.
+   Lukt dat niet (bijv. bestand lokaal geopend), dan blijft het emoji-plaatje staan. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code1.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 2 – Even in mijn agenda kijken – Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --blue: #2d3a8c;
+    --blue2: #4338ca;
+    --accent: #f5a623;
+    --pink: #e84393;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5;
+    --bad: #dc2626; --bad-bg: #fee2e2;
+    --shadow: rgba(45,58,140,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(45,58,140,.15); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .6rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.5rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .75rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(45,58,140,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--pink)); border-radius: 10px; transition: width .3s; }
+
+  .big-emoji { font-size: 4rem; text-align: center; line-height: 1.1; min-height: 4.4rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.15rem, 4.5vw, 1.45rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+  .speak:hover { transform: translateY(-1px); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .opts.three { grid-template-columns: 1fr 1fr; } }
+  .opt { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.05rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; }
+  .opt .oe { font-size: 1.5rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+  .tip { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .3rem; font-style: italic; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  /* woordenlijst */
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin: 1.1rem 0 .5rem; }
+  .wl-head:first-child { margin-top: 0; }
+  .wl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .wcard { border: 1px solid #e3e8ff; border-radius: 12px; padding: .5rem .6rem; display: flex; align-items: center; gap: .5rem; cursor: pointer; background: #fbfcff; transition: all .12s; }
+  .wcard:hover { border-color: var(--blue); background: white; }
+  .wcard .we { font-size: 1.4rem; width: 1.8rem; text-align: center; flex-shrink: 0; }
+  .wcard .ww { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+  .wcard .ww small { color: var(--muted); font-weight: 600; }
+  .wcard .sp { margin-left: auto; font-size: .9rem; opacity: .5; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+  /* ---------- MIJN TAAL (flitskaarten) ---------- */
+  .tabs { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .55rem; }
+  .lang-btn { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .7rem .5rem; cursor: pointer; font-family: inherit; text-align: center; transition: all .12s; }
+  .lang-btn:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .lang-btn .nat { display: block; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .lang-btn .nl { display: block; font-size: .75rem; color: var(--muted); font-weight: 700; margin-top: .1rem; }
+  .lang-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; font-weight: 700; }
+  .lang-bar .cur { font-size: 1.05rem; color: var(--blue); }
+  .linkbtn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; }
+  .fc-scene { height: 250px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #dbe2ff; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--blue); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .fc-word.long { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef2ff; }
+  [lang="ar"], [lang="fa"], [lang="prs"] { font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif; }
+  [lang="ti"] { font-family: 'Noto Sans Ethiopic', 'Nunito', sans-serif; }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+</style>
+
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/overzicht_code1.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">📒</div>
+    <div>
+      <h1>Thema 2 · Even in mijn agenda kijken</h1>
+      <p>Code+ Deel 1 · woordenschat · 115 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b>: klik op een woord en luister.<br>
+    Daarna: <b>🎧 Luisteren</b>, <b>de of het</b>, <b>🧺 Sorteren</b> en <b>✏️ Zinnen</b>.<br>
+    Bij <b>🌍 Mijn taal</b> oefen je met flitskaarten in je eigen taal.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten NT2 · Code+ Deel 1</footer>
+</div>
+
+<script>
+/* ---------- WOORDEN (Code+ Deel 1, Thema 2) ----------
+   [woord, lidwoord, emoji, taak, categorie, meervoud]
+   categorie: dg dagen · dd deel van de dag · wa wanneer · kl klok · fe feest · bu bus en trein */
+const RAW = [
+  ['afspraak','de','🤝',1,''], ['agenda','de','📒',1,''], ['al','','',1,''], ['avond','de','🌆',1,'dd'], ['dag','de','☀️',1,''],
+  ['dinsdag','','',1,'dg'], ['deze','','',1,''], ['donderdag','','',1,'dg'], ['door de week','','',1,''], ['gisteren','','⏪',1,'wa'],
+  ['leren','','📚',1,''], ['les','de','🧑‍🏫',1,''], ['maand','de','🗓️',1,''], ['maandag','','',1,'dg'], ['middag','de','🌤️',1,'dd'],
+  ['morgen','','⏩',1,'wa'], ['morgen','de','🌅',1,'dd'], ['nacht','de','🌙',1,'dd'], ['ochtend','de','🌄',1,'dd'], ['of','','',1,''],
+  ['restaurant','het','🍽️',1,''], ['rijden','','🚗',1,''], ['school','de','🏫',1,''], ['slapen','','😴',1,''], ['sorry','','🙇',1,''],
+  ['sporten','','🏃',1,''], ['thuis','','🏠',1,''], ['tussen de middag','','🥪',1,''], ['vanavond','','',1,'wa'], ['vanmiddag','','',1,'wa'],
+  ['vanmorgen','','',1,'wa'], ['vannacht','','',1,'wa'], ['vanochtend','','',1,'wa'], ['volgend','','⏭️',1,''], ['vorig','','⏮️',1,''],
+  ['vrij','','🆓',1,''], ['vrijdag','','',1,'dg'], ['wanneer','','',1,''], ['week','de','',1,''], ['weekend','het','🛋️',1,'dg'],
+  ['woensdag','','',1,'dg'], ['zaterdag','','',1,'dg'], ['zondag','','',1,'dg'],
+
+  ['alweer','','🔁',2,''], ['bijna','','',2,''], ['eten','','🍴',2,''], ['feest','het','🎈',2,'fe'], ['gelijk hebben','','👍',2,''],
+  ['half','','🕤',2,'kl'], ['heel','','',2,''], ['hoe laat','','🕐',2,'kl'], ['jarig','','🥳',2,'fe'], ['klaar','','✅',2,''],
+  ['kwart','het','🕒',2,'kl'], ['kwartier','het','⏱️',2,'kl'], ['laat','','🐌',2,''], ['land','het','🌍',2,''], ['minuut','de','',2,'kl'],
+  ['net','','',2,''], ['ontbijt','het','🥐',2,''], ['opschieten','','🏃‍♀️',2,''], ['over (kwart over vier)','','',2,'kl'],
+  ['over (over 20 minuten)','','',2,''], ['precies','','🎯',2,''], ['te (te laat)','','',2,''], ['tijd','de','⌛',2,''],
+  ['uur','het','🕘',2,'kl'], ['vanaf','','',2,''], ['veel','','',2,''], ['verjaardag','de','🎂',2,'fe'], ['vriendin','de','👭',2,''],
+  ['voor (vijf voor elf)','','',2,'kl'], ['wakker','','⏰',2,''],
+
+  ['anderhalf','','',3,''], ['bus','de','🚌',3,'bu'], ['centrum','het','🏙️',3,''], ['dansen','','💃',3,''], ['dienstregeling','de','📋',3,'bu'],
+  ['duren','','⏳',3,''], ['dus','','',3,''], ['feestdag','de','🎊',3,'fe'], ['halte','de','🚏',3,'bu'], ['hoeveel','','',3,''],
+  ['keer','de','',3,''], ['kiezen','','',3,''], ['lang','','',3,''], ['nemen','','',3,''], ['per','','',3,''],
+  ['programma','het','📺',3,''], ['rooster','het','🗒️',3,''], ['rit','de','🛣️',3,'bu'], ['station','het','🚉',3,'bu'],
+  ['tot (van … tot)','','',3,''], ['vakantie','de','🏖️',3,''], ['vieren','','🥂',3,'fe'],
+
+  ['bericht','het','💬',4,''], ['beste (beste mevrouw)','','✉️',4,''], ['bezoeken','','🏡',4,''], ['feliciteren','','💐',4,'fe'],
+  ['geboren','','👶',4,''], ['hartelijk gefeliciteerd','','🎉',4,'fe'], ['hartelijke groeten','','👋',4,''], ['jong','','🧒',4,''],
+  ['kalender','de','📅',4,''], ['leeftijd','de','',4,''], ['lief','','🥰',4,''], ['meenemen','','🎒',4,''], ['mooi','','🌸',4,''],
+  ['pas (pas 25)','','',4,''], ['sterk','','💪',4,''], ['toch','','',4,''], ['tot (tot zaterdag)','','',4,''], ['wc','de','🚽',4,''],
+  ['wensen','','🌠',4,''], ['worden','','',4,'']
+];
+const W = RAW.map(r => ({ w: r[0], a: r[1], e: r[2], t: r[3], c: r[4], m: !!r[5] }));
+
+const CATS = {
+  dg: '📅 Dagen van de week', dd: '🌓 Deel van de dag', wa: '📆 Wanneer?',
+  kl: '🕐 De klok', fe: '🎉 Feest', bu: '🚌 Bus en trein'
+};
+
+/* [zin, [goed antwoord, fout, fout, fout], taak] */
+const ZINNEN = [
+  ['Vandaag is het maandag. Morgen is het ___.', ['dinsdag','zondag','vrijdag','donderdag'], 1],
+  ['Zaterdag en zondag zijn het ___.', ['weekend','agenda','restaurant','school'], 1],
+  ['Ik kijk in mijn ___. Ik heb dinsdag een afspraak.', ['agenda','les','nacht','week'], 1],
+  ['Ik heb om 10 uur een ___ bij de huisarts.', ['afspraak','agenda','school','maand'], 1],
+  ['In de ___ slaap ik.', ['nacht','middag','ochtend','les'], 1],
+  ['Vandaag is het vrijdag. ___ was het donderdag.', ['Gisteren','Morgen','Vanavond','Volgend'], 1],
+  ['Januari is een ___.', ['maand','week','dag','nacht'], 1],
+  ['___ eet ik een boterham. Om half één.', ['Tussen de middag','Door de week','Vannacht','Vorig'], 1],
+  ['Ik ben te laat. ___!', ['Sorry','Wanneer','Deze','Al'], 1],
+  ['___ ga je naar school? – Op maandag.', ['Wanneer','Sorry','Of','Deze'], 1],
+  ['Ik ga naar ___. Ik leer Nederlands.', ['school','restaurant','weekend','nacht'], 1],
+  ['Wil je koffie ___ thee?', ['of','al','deze','vrij'], 1],
+
+  ['Het is 9.30 uur. Het is ___ tien.', ['half','kwart','over','voor'], 2],
+  ['Een ___ is 15 minuten.', ['kwartier','uur','minuut','half'], 2],
+  ['___ is het? – Het is drie uur.', ['Hoe laat','Vanaf','Precies','Bijna'], 2],
+  ['Het is 16.15 uur. Het is kwart ___ vier.', ['over','voor','half','te'], 2],
+  ['Het is 10.55 uur. Het is vijf ___ elf.', ['voor','over','half','kwart'], 2],
+  ['Ik ben vandaag ___! Ik word 30.', ['jarig','wakker','klaar','laat'], 2],
+  ['Het is 7 uur. Ik ben ___. Ik sta op.', ['wakker','jarig','net','veel'], 2],
+  ['De les begint om 9 uur. Het is 9.20 uur. Je bent te ___!', ['laat','klaar','wakker','precies'], 2],
+  ['___! De bus gaat zo.', ['Schiet op','Gelijk','Precies','Alweer'], 2],
+  ['Om 8 uur eet ik mijn ___.', ['ontbijt','feest','land','vriendin'], 2],
+  ['Het is ___ 12 uur. Nog één minuut!', ['bijna','alweer','veel','vanaf'], 2],
+  ['Je hebt ___. Het is waar.', ['gelijk','klaar','laat','tijd'], 2],
+  ['Ik heb geen ___. Ik moet werken.', ['tijd','feest','land','uur'], 2],
+
+  ['Ik wacht op de bus bij de ___.', ['halte','rit','dienstregeling','keer'], 3],
+  ['De trein gaat van het ___.', ['station','centrum','rooster','programma'], 3],
+  ['Ik sport twee ___ per week.', ['keer','rit','halte','dus'], 3],
+  ['In de zomer heb ik ___. Ik ga naar Spanje.', ['vakantie','halte','rooster','station'], 3],
+  ['De film ___ twee uur.', ['duurt','neemt','kiest','viert'], 3],
+  ['Ik ___ de bus naar school.', ['neem','kies','vier','dans'], 3],
+  ['___ kost een kaartje? – Drie euro.', ['Hoeveel','Dus','Per','Lang'], 3],
+  ['Kerst is een ___.', ['feestdag','halte','rooster','rit'], 3],
+  ['Op mijn verjaardag gaan we ___. Er is muziek.', ['dansen','duren','kiezen','nemen'], 3],
+  ['De winkel is open van 9 uur ___ 18 uur.', ['tot','per','dus','lang'], 3],
+  ['90 minuten is ___ uur.', ['anderhalf','half','lang','per'], 3],
+
+  ['___ gefeliciteerd met je verjaardag!', ['Hartelijk','Beste','Lief','Sterk'], 4],
+  ['___ mevrouw Jansen,', ['Beste','Lief','Jong','Mooi'], 4],
+  ['Ik ben ___ in 1990.', ['geboren','jong','sterk','mooi'], 4],
+  ['Wat is je ___? – Ik ben 25 jaar.', ['leeftijd','kalender','bericht','wc'], 4],
+  ['Ik stuur je een ___ op WhatsApp.', ['bericht','kalender','leeftijd','wc'], 4],
+  ['Waar is de ___? – De tweede deur links.', ['wc','kalender','leeftijd','bericht'], 4],
+  ['Hij is ___ 20. Hij is nog jong.', ['pas','toch','mooi','sterk'], 4],
+  ['Ik zie je zaterdag. ___ zaterdag!', ['Tot','Pas','Toch','Beste'], 4],
+  ['De bloemen zijn ___.', ['mooi','jong','geboren','pas'], 4],
+  ['Ik ___ je een fijne verjaardag.', ['wens','word','bezoek','neem'], 4],
+  ['Ik ___ morgen 40 jaar.', ['word','wens','bezoek','feliciteer'], 4],
+  ['Veertig jaar is ___ niet oud!', ['toch','pas','lief','sterk'], 4]
+];
+
+const TAKEN = [['all','Alles'],[1,'Taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4']];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['luister','🎧','Luisteren'], ['dehet','🔤','De of het'],
+  ['sorteer','🧺','Sorteren'], ['zinnen','✏️','Zinnen'], ['taal','🌍','Mijn taal']
+];
+
+const TRANS = {"ar":[[1,"agenda, de","مفكرة"],[1,"al","تم بالفعل"],[1,"avond, de ('s avonds)","المساء"],[1,"dag, de","اليوم"],[1,"deze","هذا / هذه / هؤلاء (للمذكر والمؤنث والجمع القريب)"],[1,"door de week","خلال الأسبوع"],[1,"gisteren","أمس"],[1,"les, de","الدرس"],[1,"maand, de","الشهر"],[1,"middag, de ('s middags)","بعد الظهر"],[1,"morgen","غدا"],[1,"morgen, de ('s morgens)","صباح الغد / صباحا"],[1,"nacht, de ('s nachts)","الليل (في الليل)"],[1,"ochtend, de ('s ochtends)","في الصباح"],[1,"of","أو"],[1,"restaurant, het","المطعم"],[1,"rijden","يقود"],[1,"school, de","المدرسة"],[1,"slapen","فعل ينام"],[1,"sorry","عذرا، آسف"],[1,"sporten","يمارس الرياضة"],[1,"thuis","في المنزل"],[1,"tussen de middag","خلال وقت الظهيرة"],[1,"vanavond","الليلة"],[1,"vanmiddag","عصر اليوم"],[1,"vanmorgen","هذا الصباح"],[1,"vannacht","هذه الليلة"],[1,"vanochtend","هذا الصباح"],[1,"volgend","التالي"],[1,"vorig","السابق"],[1,"vrij","فارغة، خالية"],[1,"wanneer","متى"],[1,"week, de","الأسبوع"],[1,"weekend, het","عطلة نهاية الأسبوع"],[2,"afspraak, de","الموعد/الإتفاق"],[2,"alweer","بالفعل"],[2,"bijna","تقريبا"],[2,"dinsdag","الثلاثاء"],[2,"donderdag","الخميس"],[2,"eten (eet)","فعل يأكل"],[2,"feest, het","الحفلة"],[2,"gelijk hebben","أن يكون على حق"],[2,"half","نصف"],[2,"heel (de hele dag)","كامل (طوال اليوم)"],[2,"hoe laat","متى، في أي ساعة/ سؤال عن وقت؟"],[2,"jarig (ik ben jarig)","عيد ميلاد شخص (عيد ميلادي)"],[2,"klaar","انتهى"],[2,"kwart, het (het is kwart voor tien)","ربع الساعة (الوقت)"],[2,"kwartier, het","15 دقيقة"],[2,"laat","متأخر"],[2,"land, het","البلد/الدولة"],[2,"maandag","الاثنين"],[2,"minuut, de","الدقيقة"],[2,"net","بالضبط / تماما / للتو"],[2,"ontbijt, het","الإفطار"],[2,"opschieten (schiet op)","يسرع"],[2,"over (kwart over twee)","بعد (الساعة 2 و ربع)"],[2,"over (over 10 minuten)","بعد (10 دقائق)"],[2,"precies","بالضبط"],[2,"te (te laat)","جدا (متأخر جدا)"],[2,"tijd, de","الوقت"],[2,"uur, het (om 3 uur)","الساعة (في الساعة 3)"],[2,"vanaf","اعتبارا/ بدء من"],[2,"veel","الكثير"],[2,"verjaardag, de","عيد الميلاد"],[2,"voor (vijf voor acht)","إلا (ثمانية إلا خمس دقائق)"],[2,"vriendin, de","صديقة/صديقة شخصية"],[2,"vrijdag","الجمعة"],[2,"wakker","مستيقظ"],[2,"woensdag","الأربعاء"],[2,"zaterdag","السبت"],[2,"zondag","الأحد"],[3,"anderhalf","واحد ونصف"],[3,"bus, de","الباص/الأتوبيس"],[3,"centrum, het","المركز، وسط المدينة"],[3,"dansen","يرقص"],[3,"dienstregeling, de","جدول الرحلات (القطارات، الحافلات، الطائرات، وغيرها)"],[3,"duren","يستغرق"],[3,"dus","وبالتالي"],[3,"feestdag, de","العطلة الرسمية"],[3,"halte, de","المحطة (محطة الباص)"],[3,"hoeveel","كم"],[3,"keer, de (twee keer per week)","مرة أخرى"],[3,"kiezen","فعل يختار"],[3,"lang","طويل"],[3,"nemen","يأخذ"],[3,"per (twee keer per week)","لكل"],[3,"programma, het","البرنامج"],[3,"rit, de","رحلة / جولة / توصيلة"],[3,"rooster, het","جدول زمني"],[3,"station, het","المحطة"],[3,"tot (van … tot)","إلى/حتى (من... إلى)"],[3,"vakantie, de","الأجازة"],[3,"vieren","يحتفل"],[4,"bericht(je), het","الرسالة"],[4,"beste (beste mevrouw X)","عزيزي/عزيزتي"],[4,"bezoeken","يزور"],[4,"feliciteren","يهنئ"],[4,"geboren","ولد"],[4,"hartelijk gefeliciteerd","تهانينا القلبية"],[4,"hartelijke groeten, de","تحياتي القلبية"],[4,"jong","صغير"],[4,"kalender, de","نتيجة الأشهر/السنة"],[4,"leeftijd, de","العمر"],[4,"lief (lieve)","عزيز / حبيب"],[4,"meenemen","يأخذ شيء أو أحد معه"],[4,"mooi","جميل"],[4,"pas (pas 19)","لم تتعدى، فقط"],[4,"sterk","قوي / متين / شديد"],[4,"toch (dat is toch niet oud)","كلمة للتأكيد بمعنى أليس كذلك (إن هذا ليس قديما أليس كذلك)"],[4,"tot (tot zaterdag)","إلى/حتى (إلى أن نلتقي يوم السبت)"],[4,"wc, de","دورة المياه"],[4,"wensen","يتمنى"],[4,"worden","يصبح"]],"en":[[1,"agenda, de","calendar"],[1,"al","already"],[1,"avond, de ('s avonds)","evening (in the evening)"],[1,"dag, de","day"],[1,"deze","this"],[1,"door de week","on weekdays"],[1,"gisteren","yesterday"],[1,"les, de","lesson / class"],[1,"maand, de","month"],[1,"middag, de ('s middags)","afternoon (in the afternoon)"],[1,"morgen","tomorrow"],[1,"morgen, de ('s morgens)","morning (in the morning)"],[1,"nacht, de ('s nachts)","night (at night)"],[1,"ochtend, de ('s ochtends)","morning (in the morning)"],[1,"of","or"],[1,"restaurant, het","restaurant"],[1,"rijden","to drive"],[1,"school, de","school"],[1,"slapen","to sleep"],[1,"sorry","sorry"],[1,"sporten","to exercise / to work out"],[1,"thuis","at home"],[1,"tussen de middag","at lunch time"],[1,"vanavond","tonight"],[1,"vanmiddag","this afternoon"],[1,"vanmorgen","this morning"],[1,"vannacht","tonight, last night"],[1,"vanochtend","this morning"],[1,"volgend","next"],[1,"vorig","last"],[1,"vrij","free / a day off"],[1,"wanneer","when"],[1,"week, de","week"],[1,"weekend, het","weekend"],[2,"afspraak, de","appointment / engagement"],[2,"alweer","already"],[2,"bijna","nearly / almost"],[2,"dinsdag","Tuesday"],[2,"donderdag","Thursday"],[2,"eten (eet)","to eat / to have dinner, lunch etc."],[2,"feest, het","party"],[2,"gelijk hebben","to be right"],[2,"half","half"],[2,"heel (de hele dag)","the whole day"],[2,"hoe laat","(at) what time"],[2,"jarig (ik ben jarig)","it's my birthday"],[2,"klaar","ready"],[2,"kwart, het (het is kwart voor tien)","quarter (it's a quarter to ten)"],[2,"kwartier, het","quarter of an hour"],[2,"laat","late"],[2,"land, het","land / country"],[2,"maandag","Monday"],[2,"minuut, de","minute"],[2,"net","just"],[2,"ontbijt, het","breakfast"],[2,"opschieten (schiet op)","to hurry up"],[2,"over (kwart over twee)","past (a quarter past two)"],[2,"over (over 10 minuten)","in (in 10 minutes)"],[2,"precies","precise / right on time"],[2,"te (te laat)","too (too late)"],[2,"tijd, de","time"],[2,"uur, het (om 3 uur)","hour (at three o' clock)"],[2,"vanaf","from"],[2,"veel","much / many"],[2,"verjaardag, de","birthday"],[2,"voor (vijf voor acht)","to (five minutes to eight)"],[2,"vriendin, de","female friend / girlfriend"],[2,"vrijdag","Friday"],[2,"wakker","awake"],[2,"woensdag","Wednesday"],[2,"zaterdag","Saturday"],[2,"zondag","Sunday"],[3,"anderhalf","one and a half"],[3,"bus, de","bus"],[3,"centrum, het","(town, city) center"],[3,"dansen","to dance"],[3,"dienstregeling, de","timetable (for bus, train etc.)"],[3,"duren","to last"],[3,"dus","so"],[3,"feestdag, de","public holiday"],[3,"halte, de","(bus) stop"],[3,"hoeveel","how much / how many"],[3,"keer, de (twee keer per week)","time (two times a week)"],[3,"kiezen","to choose"],[3,"lang","long"],[3,"nemen","to take"],[3,"per (twee keer per week)","per (two times a week)"],[3,"programma, het","program"],[3,"rit, de","ride"],[3,"rooster, het","timetable"],[3,"station, het","station"],[3,"tot (van … tot)","from … to"],[3,"vakantie, de","holiday(s)"],[3,"vieren","to celebrate"],[4,"bericht(je), het","(text)message"],[4,"beste (beste mevrouw X)","dear (dear Mrs. X)"],[4,"bezoeken","to visit"],[4,"feliciteren","to congratulate"],[4,"geboren","born"],[4,"hartelijk gefeliciteerd","congratulations / sincere best wishes"],[4,"hartelijke groeten, de","best regards"],[4,"jong","young"],[4,"kalender, de","calendar"],[4,"leeftijd, de","age"],[4,"lief (lieve)","dear"],[4,"meenemen","to bring / take along"],[4,"mooi","beautiful / nice"],[4,"pas (pas 19)","only (19)"],[4,"sterk","strong"],[4,"toch (dat is toch niet oud)","that's not old, is it?"],[4,"tot (tot zaterdag)","to (see you on / until Saturday)"],[4,"wc, de","toilet"],[4,"wensen","to wish"],[4,"worden","to become / to get"]],"fa":[[1,"agenda, de","تقویم"],[1,"al","از قبل"],[1,"avond, de","عصر"],[1,"dag, de","روز"],[1,"deze","این"],[1,"door de week","در روزهای هفته"],[1,"gisteren","دیروز"],[1,"les, de","درس"],[1,"maand, de","ماه"],[1,"middag","بعد از ظهر"],[1,"morgen","فردا"],[1,"morgen, de ('s morgens)","صبح (صبح)"],[1,"nacht, de","شب"],[1,"ochtend, de ('s ochtends)","صبح (صبح)"],[1,"of","یا"],[1,"restaurant, het","رستوران"],[1,"rijden","رانندگی کردن"],[1,"school, de","مدرسه"],[1,"slapen","خوابیدن"],[1,"sorry","متاسفم"],[1,"sporten","ورزش کردن"],[1,"thuis","در خانه"],[1,"tussen de middag","به وقت ناهار"],[1,"vanavond","امشب"],[1,"vanmiddag","امروز بعد از ظهر"],[1,"vanmorgen","امروز صبح"],[1,"vannacht","امشب"],[1,"vanochtend","امروز صبح"],[1,"volgend","بعدی"],[1,"vorig","آخرین"],[1,"vrij","رایگان"],[1,"wanneer","چهزمانی"],[1,"week, de","هفته"],[1,"weekend, het","آخر هفته"],[2,"afspraak, de","قرار ملاقات"],[2,"alweer","دوباره"],[2,"bijna","تقریبا"],[2,"dinsdag","سهشنبه"],[2,"donderdag","پنجشنبه"],[2,"eten","خوردن"],[2,"feest, het","مهمانی"],[2,"gelijk hebben","درست گفتن"],[2,"half","نیم"],[2,"heel (de hele dag)","تمام روز"],[2,"hoe laat","چه زمانی"],[2,"jarig (ik ben jarig)","تولد (تولدمه)"],[2,"klaar","آماده"],[2,"kwart, het (tijd)","ربع ساعت (زمان)"],[2,"kwartier, het","ربع ساعت"],[2,"laat","دیر"],[2,"land, het","کشور"],[2,"maandag","دوشنبه"],[2,"minuut, de","دقیقه"],[2,"net","خالص"],[2,"ontbijt, het","صبحانه"],[2,"opschieten","عجله کردن"],[2,"over (kwart over twee)","گذشته (یک ربع و دو)"],[2,"over (over 10 minuten)","در (در 10 دقیقه)"],[2,"precies","دقیق"],[2,"te (te laat)","خیلی (خیلی دیر)"],[2,"tijd, de","زمان"],[2,"uur, het (om 3 uur)","ساعت (رأس ساعت سه)"],[2,"vanaf","از"],[2,"veel","زیاد"],[2,"verjaardag, de","تولد"],[2,"voor (vijf voor acht)","تا (پنج دقیقه مانده به هشت)"],[2,"vriendin, de","دوست دختر"],[2,"vrijdag","جمعه"],[2,"wakker","بیدار"],[2,"woensdag","چهارشنبه"],[2,"zaterdag","شنبه"],[2,"zondag","یکشنبه"],[3,"anderhalf","یک و نیم"],[3,"bus, de","اتوبوس"],[3,"centrum, het","مرکز"],[3,"dansen","رقصیدن"],[3,"dienstregeling, de","جدول زمانی"],[3,"duren","دوام آوردن"],[3,"dus","بنابراین"],[3,"feestdag, de","تعطیلات رسمی"],[3,"halte, de (de bushalte)","اما بس کن"],[3,"hoeveel","چقدر"],[3,"keer, de","زمانها"],[3,"kiezen","انتخاب کردن"],[3,"lang","طولانی"],[3,"nemen","گرفتن"],[3,"per","به ازای هر"],[3,"programma, het (tv)","برنامه (تلویزیون)"],[3,"rit, de","سواری"],[3,"rooster, het","جدول زمانی"],[3,"station, het","ایستگاه"],[3,"tot (van … tot)","از ... تا"],[3,"vakantie, de","تعطیلات"],[3,"vieren","جشن گرفتن"],[4,"bericht, het","پیام"],[4,"beste","عزیز"],[4,"bezoeken","دیدار کردن، ملاقات کردن"],[4,"feliciteren","تبریک گفتن"],[4,"geboren","متولد"],[4,"hartelijk gefeliciteerd","تولدت مبارک"],[4,"hartelijke groeten, de","با احترام"],[4,"jong","جوان"],[4,"kalender, de","تقویم"],[4,"leeftijd, de","سن"],[4,"lief (lieve)","عزیز (عزیزم)"],[4,"meenemen","آوردن"],[4,"mooi","زیبا"],[4,"pas (pas 19)","فقط (فقط ۹۱)"],[4,"sterk","قوی"],[4,"toch (dat is toch niet oud)","آیا (این قدیمی نیست، هست؟)"],[4,"tot (tot zaterdag)","تا (میبینمت در / تا شنبه)"],[4,"wc, de","دستشویی"],[4,"wensen","آرزو کردن"],[4,"worden","شدن"]],"fr":[[1,"agenda, de","calendrier"],[1,"al","déjà"],[1,"avond, de ('s avonds)","soir"],[1,"dag, de","jour"],[1,"deze","ce, cette"],[1,"door de week","en semaine"],[1,"gisteren","hier"],[1,"les, de","cours"],[1,"maand, de","mois"],[1,"middag, de ('s middags)","après-midi"],[1,"morgen","demain"],[1,"morgen, de ('s morgens)","matin (le matin)"],[1,"nacht, de ('s nachts)","nuit (la nuit)"],[1,"ochtend, de ('s ochtends)","le matin"],[1,"of","ou"],[1,"restaurant, het","restaurant"],[1,"rijden","conduire"],[1,"school, de","école"],[1,"slapen","dormir"],[1,"sorry","désolé"],[1,"sporten","faire du sport"],[1,"thuis","à domicile"],[1,"tussen de middag","à midi"],[1,"vanavond","ce soir"],[1,"vanmiddag","cette après-midi"],[1,"vanmorgen","ce matin"],[1,"vannacht","cette nuit"],[1,"vanochtend","ce matin"],[1,"volgend","suivant"],[1,"vorig","passé"],[1,"vrij","libre"],[1,"wanneer","quand"],[1,"week, de","semaine"],[1,"weekend, het","week-end"],[2,"afspraak, de","rendez-vous, accord"],[2,"alweer","à nouveau"],[2,"bijna","presque"],[2,"dinsdag","mardi"],[2,"donderdag","jeudi"],[2,"eten (eet)","manger"],[2,"feest, het","fête"],[2,"gelijk hebben","avoir raison"],[2,"half","demi"],[2,"heel (de hele dag)","tout (toute la journée)"],[2,"hoe laat","quelle heure"],[2,"jarig (ik ben jarig)","c'est mon anniversaire"],[2,"klaar","terminé"],[2,"kwart, het (het is kwart voor tien)","quart"],[2,"kwartier, het","quart d’heure"],[2,"laat","tard"],[2,"land, het","pays"],[2,"maandag","lundi"],[2,"minuut, de","minute"],[2,"net","juste"],[2,"ontbijt, het","petit déjeuner"],[2,"opschieten (schiet op)","se dépêcher"],[2,"over (kwart over twee)","et (deux heures et quart)"],[2,"over (over 10 minuten)","dans (dans 10 minutes)"],[2,"precies","précis"],[2,"te (te laat)","trop (trop tard)"],[2,"tijd, de","temps"],[2,"uur, het (om 3 uur)","heure (à 3 heures)"],[2,"vanaf","à partir de"],[2,"veel","beaucoup"],[2,"verjaardag, de","anniversaire"],[2,"voor (vijf voor acht)","moins (huit heures moins cinq)"],[2,"vriendin, de","(petite) amie"],[2,"vrijdag","vendredi"],[2,"wakker","éveillé"],[2,"woensdag","mercredi"],[2,"zaterdag","samedi"],[2,"zondag","dimanche"],[3,"anderhalf","un et demi"],[3,"bus, de","autobus"],[3,"centrum, het","centre"],[3,"dansen","danser"],[3,"dienstregeling, de","horaires"],[3,"duren","durer"],[3,"dus","donc"],[3,"feestdag, de","jour férié"],[3,"halte, de","arrêt (l’arrêt d’autobus)"],[3,"hoeveel","combien"],[3,"keer, de (twee keer per week)","fois"],[3,"kiezen","choisir"],[3,"lang","long"],[3,"nemen","prendre"],[3,"per (twee keer per week)","par"],[3,"programma, het","programme"],[3,"rit, de","trajet"],[3,"rooster, het","horaire"],[3,"station, het","gare"],[3,"tot (van … tot)","à (de ... à)"],[3,"vakantie, de","vacances"],[3,"vieren","fêter"],[4,"bericht(je), het","message"],[4,"beste (beste mevrouw X)","cher"],[4,"bezoeken","visiter"],[4,"feliciteren","féliciter"],[4,"geboren","né"],[4,"hartelijk gefeliciteerd","félicitations"],[4,"hartelijke groeten, de","cordialement"],[4,"jong","jeune"],[4,"kalender, de","calendrier"],[4,"leeftijd, de","âge"],[4,"lief (lieve)","cher (chère)"],[4,"meenemen","emporter"],[4,"mooi","joli"],[4,"pas (pas 19)","ne...que"],[4,"sterk","fort"],[4,"toch (dat is toch niet oud)","pourtant (ce n’est pourtant pas vieux)"],[4,"tot (tot zaterdag)","à (à samedi)"],[4,"wc, de","wc"],[4,"wensen","souhaiter"],[4,"worden","devenir"]],"kmr":[[1,"agenda, de","salname"],[1,"al","êdî"],[1,"avond, de","êvar"],[1,"dag, de","roj"],[1,"deze","ev"],[1,"door de week","di rojên hefteyê de"],[1,"gisteren","do"],[1,"les, de","ders"],[1,"maand, de","meh"],[1,"middag","piştînîvroj"],[1,"morgen","sibê"],[1,"morgen, de ('s morgens)","sibehê (sibêdeyê)"],[1,"nacht, de","şev"],[1,"ochtend, de ('s ochtends)","sibehê (sibêdeyê)"],[1,"of","an"],[1,"restaurant, het","aşxane"],[1,"rijden","ajotin"],[1,"school, de","dibistan"],[1,"slapen","raketin"],[1,"sorry","bibore"],[1,"sporten","werzîşkirin"],[1,"thuis","di malê da"],[1,"tussen de middag","di dema nîvro de"],[1,"vanavond","îşev"],[1,"vanmiddag","îro piştî nîvro"],[1,"vanmorgen","vê sibê"],[1,"vannacht","îşev"],[1,"vanochtend","vê sibê"],[1,"volgend","paş"],[1,"vorig","dawîn"],[1,"vrij","belaş"],[1,"wanneer","wextê"],[1,"week, de","hefte"],[1,"weekend, het","dawîaya heftê"],[2,"afspraak, de","randevû"],[2,"alweer","dîsa"],[2,"bijna","hema hema"],[2,"dinsdag","Sêşem"],[2,"donderdag","Pêncşem"],[2,"eten","xwarin"],[2,"feest, het","partî"],[2,"gelijk hebben","rast bûn"],[2,"half","nîv"],[2,"heel (de hele dag)","tevahiya rojê"],[2,"hoe laat","çi dem"],[2,"jarig (ik ben jarig)","rojbûn (rojbûna min e)"],[2,"klaar","amade"],[2,"kwart, het (tijd)","çaryeka saetê (demjimêr)"],[2,"kwartier, het","çaryeka saetê"],[2,"laat","dereng"],[2,"land, het","welat"],[2,"maandag","Duşem"],[2,"minuut, de","deqîqe"],[2,"net","tor"],[2,"ontbijt, het","taştê"],[2,"opschieten","lez kirin"],[2,"over (kwart over twee)","borî (du û çaryekek)"],[2,"over (over 10 minuten)","di (di 10 deqîqeyan de)"],[2,"precies","tam"],[2,"te (te laat)","pir dereng (pir dereng)"],[2,"tijd, de","dem"],[2,"uur, het (om 3 uur)","saet (saet sêyan)"],[2,"vanaf","ji"],[2,"veel","pir"],[2,"verjaardag, de","rojbûn"],[2,"voor (vijf voor acht)","heta (pênc deqe ji heştan kêm)"],[2,"vriendin, de","hevala keç"],[2,"vrijdag","În"],[2,"wakker","hişyar"],[2,"woensdag","Çarşem"],[2,"zaterdag","Şemî"],[2,"zondag","Yekşem"],[3,"anderhalf","yek û nîv"],[3,"bus, de","otobês"],[3,"centrum, het","navend"],[3,"dansen","reqskirin"],[3,"dienstregeling, de","dempîlan"],[3,"duren","domandin"],[3,"dus","wiha"],[3,"feestdag, de","betlaneya giştî"],[3,"halte, de (de bushalte)","rawestgeha otobêsê"],[3,"hoeveel","çi qas"],[3,"keer, de","caran"],[3,"kiezen","bijartin"],[3,"lang","dirêj"],[3,"nemen","birin"],[3,"per","serê"],[3,"programma, het (tv)","bername (tv)"],[3,"rit, de","ajotin"],[3,"rooster, het","dempîlan"],[3,"station, het","rawestgeh"],[3,"tot (van … tot)","ji … heta"],[3,"vakantie, de","karberdayî"],[3,"vieren","pîrozkirin"],[4,"bericht, het","peyam"],[4,"beste","ezîz"],[4,"bezoeken","serîlêdan"],[4,"feliciteren","pîrozkirin"],[4,"geboren","zayî"],[4,"hartelijk gefeliciteerd","rojbûna te pîroz be"],[4,"hartelijke groeten, de","ligel rêzê"],[4,"jong","ciwan"],[4,"kalender, de","salname"],[4,"leeftijd, de","temen"],[4,"lief (lieve)","ezîz (delal)"],[4,"meenemen","anîn"],[4,"mooi","bedew"],[4,"pas (pas 19)","tenê (tenê 19)"],[4,"sterk","qewî"],[4,"toch (dat is toch niet oud)","ew e (ew ne kevin e, ne wisa?)"],[4,"tot (tot zaterdag)","te (heta roja Şemiyê / roja Şemiyê hevdû dibînin)"],[4,"wc, de","destav"],[4,"wensen","xwestin"],[4,"worden","bûn"]],"uk":[[1,"agenda, de","порядок денний / календар"],[1,"al","весь"],[1,"avond, de ('s avonds)","вечір"],[1,"dag, de","День"],[1,"deze","цей / ця"],[1,"door de week","через тиждень"],[1,"gisteren","вчора"],[1,"les, de","Урок"],[1,"maand, de","місяць"],[1,"middag, de ('s middags)","полудень"],[1,"morgen","завтра"],[1,"morgen, de ('s morgens)","завтра (вранці)"],[1,"nacht, de ('s nachts)","ніч (вночі)"],[1,"ochtend, de ('s ochtends)","вранці"],[1,"of","або"],[1,"restaurant, het","ресторан"],[1,"rijden","їзда"],[1,"school, de","школа"],[1,"slapen","сон"],[1,"sorry","вибачте"],[1,"sporten","спортивні змагання"],[1,"thuis","головна"],[1,"tussen de middag","близько полудня"],[1,"vanavond","сьогодні ввечері"],[1,"vanmiddag","сьогодні вдень"],[1,"vanmorgen","цього ранку"],[1,"vannacht","минулої ночі"],[1,"vanochtend","цього ранку"],[1,"volgend","Наступні"],[1,"vorig","попередній"],[1,"vrij","вільно"],[1,"wanneer","коли"],[1,"week, de","тиждень"],[1,"weekend, het","вихідні"],[2,"afspraak, de","зустріч"],[2,"alweer","знову"],[2,"bijna","майже"],[2,"dinsdag","вівторок"],[2,"donderdag","четвер"],[2,"eten (eet)","їсти"],[2,"feest, het","вечірка"],[2,"gelijk hebben","бути правим"],[2,"half","половина"],[2,"heel (de hele dag)","весь (цілий день)"],[2,"hoe laat","о котрій"],[2,"jarig (ik ben jarig)","день народження (це мій день народження)"],[2,"klaar","Готовий"],[2,"kwart, het (het is kwart voor tien)","квартал"],[2,"kwartier, het","15 хвилин"],[2,"laat","пізно"],[2,"land, het","Земельні ділянки"],[2,"maandag","понеділок"],[2,"minuut, de","хвилина"],[2,"net","тільки що / щойно"],[2,"ontbijt, het","сніданок"],[2,"opschieten (schiet op)","квапитися"],[2,"over (kwart over twee)","минуле (чверть на третю)"],[2,"over (over 10 minuten)","через (через 10 хвилин)"],[2,"precies","точний"],[2,"te (te laat)","занадто (занадто пізно)"],[2,"tijd, de","час"],[2,"uur, het (om 3 uur)","година (о 3 годині)"],[2,"vanaf","від"],[2,"veel","багато"],[2,"verjaardag, de","день народження"],[2,"voor (vijf voor acht)","раніше (за 5 хвилин до восьмої)"],[2,"vriendin, de","дівчина"],[2,"vrijdag","п'ятниця"],[2,"wakker","прокинутися"],[2,"woensdag","середа"],[2,"zaterdag","субота"],[2,"zondag","неділя"],[3,"anderhalf","півтора"],[3,"bus, de","автобус"],[3,"centrum, het","центер"],[3,"dansen","танцювати"],[3,"dienstregeling, de","розклад"],[3,"duren","останній"],[3,"dus","так"],[3,"feestdag, de","Свято"],[3,"halte, de","зупинка (автобусна зупинка)"],[3,"hoeveel","скільки"],[3,"keer, de (twee keer per week)","разів"],[3,"kiezen","вибрати"],[3,"lang","довгий"],[3,"nemen","взяти"],[3,"per (twee keer per week)","на"],[3,"programma, het","програма"],[3,"rit, de","поїздка"],[3,"rooster, het","розклад"],[3,"station, het","станція"],[3,"tot (van … tot)","до (від...до)"],[3,"vakantie, de","відпустка"],[3,"vieren","святкувати"],[4,"bericht(je), het","масаж"],[4,"beste (beste mevrouw X)","найкращий"],[4,"bezoeken","відвідувати"],[4,"feliciteren","вітати"],[4,"geboren","народжений"],[4,"hartelijk gefeliciteerd","Вітаємо"],[4,"hartelijke groeten, de","з повагою"],[4,"jong","молодий"],[4,"kalender, de","календар"],[4,"leeftijd, de","вік"],[4,"lief (lieve)","милий (мила)"],[4,"meenemen","брати"],[4,"mooi","гарний"],[4,"pas (pas 19)","просто"],[4,"sterk","сильний"],[4,"toch (dat is toch niet oud)","ще (це ще не старе)"],[4,"tot (tot zaterdag)","до (до суботи)"],[4,"wc, de","туалет"],[4,"wensen","побажання"],[4,"worden","стати"]],"prs":[[1,"agenda, de","تقویم"],[1,"al","از قبل"],[1,"avond, de ('s avonds)","شام/ عصر"],[1,"dag, de","روز"],[1,"deze","این"],[1,"door de week","در روز های هفته"],[1,"gisteren","دیروز"],[1,"les, de","درس"],[1,"maand, de","ماه"],[1,"middag, de ('s middags)","بعد از ظهر"],[1,"morgen","فردا"],[1,"morgen, de ('s morgens)","صبح (وقت صبح)"],[1,"nacht, de ('s nachts)","شب (در شب)"],[1,"ochtend, de ('s ochtends)","در هنگام صبح"],[1,"of","یا"],[1,"restaurant, het","رستورانت"],[1,"rijden","رانندگی کردن"],[1,"school, de","مکتب"],[1,"slapen","خوابیدن"],[1,"sorry","ببخشید"],[1,"sporten","ورزش کردن، سپورت کردن"],[1,"thuis","در خانه"],[1,"tussen de middag","در وقت نان چاشت"],[1,"vanavond","امشب"],[1,"vanmiddag","امروز بعد از چاشت"],[1,"vanmorgen","امروز صبح"],[1,"vannacht","امشب"],[1,"vanochtend","امروز صبح"],[1,"volgend","بعدی"],[1,"vorig","آخر"],[1,"vrij","آزاد، یک روز رخصتی"],[1,"wanneer","چی وقت"],[1,"week, de","هفته"],[1,"weekend, het","آخر هفته"],[2,"afspraak, de","انتصاب کردن"],[2,"alweer","از قبل"],[2,"bijna","نزدیک، تقریبا"],[2,"dinsdag","سشنبه"],[2,"donderdag","پنجشنبه"],[2,"eten (eet)","خوردن"],[2,"feest, het","مهمانی/ پارتی"],[2,"gelijk hebben","صحیح بودن"],[2,"half","نصف"],[2,"heel (de hele dag)","تمام (تمام روز)"],[2,"hoe laat","(در) ساعت چند"],[2,"jarig (ik ben jarig)","تولد (تولد من است)"],[2,"klaar","آماد ه"],[2,"kwart, het (het is kwart voor tien)","یک چهارم"],[2,"kwartier, het","یک ربع یک ساعت"],[2,"laat","مرحوم/ ناوقت"],[2,"land, het","کشور"],[2,"maandag","دوشنبه"],[2,"minuut, de","دقیقه"],[2,"net","فقط"],[2,"ontbijt, het","صبحانه"],[2,"opschieten (schiet op)","عجله کردن"],[2,"over (kwart over twee)","گذشته (پانزده دقیقه از دو گذشته)"],[2,"over (over 10 minuten)","حدود (حدود/ در ده دقیقه)"],[2,"precies","دقیق/ درست سر وقت"],[2,"te (te laat)","بسیار (بسیار ناوقت)"],[2,"tijd, de","وقت"],[2,"uur, het (om 3 uur)","ساعت (ساعت سه)"],[2,"vanaf","از طرف"],[2,"veel","بسیار، زیاد"],[2,"verjaardag, de","روز تولد"],[2,"voor (vijf voor acht)","برای (پنج تا هشت دقیقه)"],[2,"vriendin, de","دوست دختر/ رفیقه"],[2,"vrijdag","جمعه"],[2,"wakker","بیدار"],[2,"woensdag","چهارشنبه"],[2,"zaterdag","شنبه"],[2,"zondag","یکشنبه"],[3,"anderhalf","یک و نیم"],[3,"bus, de","سرویس/ بس"],[3,"centrum, het","مرکز (شهرک، شهر)"],[3,"dansen","رقصیدن"],[3,"dienstregeling, de","تقسیم اوقات (برای سرویس، ریل و غیره)"],[3,"duren","تمام کردن/ آخر کردن"],[3,"dus","پس"],[3,"feestdag, de","تعطیلات عمومی"],[3,"halte, de","ایستگاه (بس)"],[3,"hoeveel","چند، چند تا"],[3,"keer, de (twee keer per week)","بار"],[3,"kiezen","انتخاب کردن"],[3,"lang","دراز"],[3,"nemen","گرفتن"],[3,"per (twee keer per week)","فی (a)"],[3,"programma, het","برنامه"],[3,"rit, de","سواری"],[3,"rooster, het","تقسیم اوقات"],[3,"station, het","مقام/ ایستگاه"],[3,"tot (van … tot)","برای (از طرف ... برای)"],[3,"vakantie, de","رخصتی(ها)"],[3,"vieren","تجلیل کردن"],[4,"bericht(je), het","پیام"],[4,"beste (beste mevrouw X)","محترم/ عزیز"],[4,"bezoeken","بازدید کردن"],[4,"feliciteren","تبریکی دادن"],[4,"geboren","بدنیا آمده"],[4,"hartelijk gefeliciteerd","تبریک می گویم، با بهترین آرزوها"],[4,"hartelijke groeten, de","با احترام، با احترامات صمیمانه"],[4,"jong","کم سن"],[4,"kalender, de","جنتری"],[4,"leeftijd, de","سن"],[4,"lief (lieve)","محترم/ محترمه"],[4,"meenemen","آوردن، همراه آوردن"],[4,"mooi","مقبول، دلپذیر"],[4,"pas (pas 19)","فقط"],[4,"sterk","قوی"],[4,"toch (dat is toch niet oud)","آیا است (آن کهنه نیست، آیا است؟)"],[4,"tot (tot zaterdag)","که (روز شنبه می بینمت)"],[4,"wc, de","تشناب"],[4,"wensen","آرزو کردن"],[4,"worden","شدن، بدست آوردن"]],"ru":[[1,"agenda, de","повестка дня / календарь"],[1,"al","уже"],[1,"avond, de ('s avonds)","вечер"],[1,"dag, de","день"],[1,"deze","этот / эта"],[1,"door de week","на неделе"],[1,"gisteren","вчера"],[1,"les, de","урок"],[1,"maand, de","месяц"],[1,"middag, de ('s middags)","после полудня"],[1,"morgen","завтра"],[1,"morgen, de ('s morgens)","завтра (утром)"],[1,"nacht, de ('s nachts)","ночь (ночью)"],[1,"ochtend, de ('s ochtends)","утром"],[1,"of","или"],[1,"restaurant, het","ресторан"],[1,"rijden","водить"],[1,"school, de","школа"],[1,"slapen","спать"],[1,"sorry","извините, извини, прости"],[1,"sporten","заниматься спортом"],[1,"thuis","дома"],[1,"tussen de middag","около полудня"],[1,"vanavond","сегодня вечером"],[1,"vanmiddag","сегодня днем"],[1,"vanmorgen","сегодня утром"],[1,"vannacht","сегодня ночью"],[1,"vanochtend","сегодня утром"],[1,"volgend","следующий"],[1,"vorig","прошлый"],[1,"vrij","свободный"],[1,"wanneer","когда"],[1,"week, de","неделя"],[1,"weekend, het","выходные"],[2,"afspraak, de","прием, договоренность"],[2,"alweer","уже"],[2,"bijna","почти"],[2,"dinsdag","вторник"],[2,"donderdag","четверг"],[2,"eten (eet)","есть"],[2,"feest, het","вечеринка, праздник"],[2,"gelijk hebben","быть правым"],[2,"half","половина"],[2,"heel (de hele dag)","весь (весь день)"],[2,"hoe laat","сколько времени? Который час? / Во сколько?"],[2,"jarig (ik ben jarig)","день рождения (сегодня мой день рождения)"],[2,"klaar","готов"],[2,"kwart, het (het is kwart voor tien)","четверть"],[2,"kwartier, het","четверть часа"],[2,"laat","поздно"],[2,"land, het","страна"],[2,"maandag","понедельник"],[2,"minuut, de","минута"],[2,"net","только что / недавно"],[2,"ontbijt, het","завтрак"],[2,"opschieten (schiet op)","торопиться"],[2,"over (kwart over twee)","(четверть третьего)"],[2,"over (over 10 minuten)","через (через 10 мин)"],[2,"precies","точно"],[2,"te (te laat)","слишком (слишком поздно)"],[2,"tijd, de","время"],[2,"uur, het (om 3 uur)","часа (в три часа)"],[2,"vanaf","c"],[2,"veel","много"],[2,"verjaardag, de","день рождения"],[2,"voor (vijf voor acht)","до (без пяти восемь)"],[2,"vriendin, de","подружка"],[2,"vrijdag","пятница"],[2,"wakker","проснувшийся"],[2,"woensdag","среда"],[2,"zaterdag","суббота"],[2,"zondag","воскресенье"],[3,"anderhalf","полтора"],[3,"bus, de","автобус"],[3,"centrum, het","центр"],[3,"dansen","танцевать"],[3,"dienstregeling, de","расписание"],[3,"duren","длиться"],[3,"dus","таким образом"],[3,"feestdag, de","праздник"],[3,"halte, de","остановка (автобусная остановка)"],[3,"hoeveel","сколько"],[3,"keer, de (twee keer per week)","раз"],[3,"kiezen","выбрать"],[3,"lang","длинный"],[3,"nemen","брать"],[3,"per (twee keer per week)","в"],[3,"programma, het","программа"],[3,"rit, de","поездка"],[3,"rooster, het","расписание"],[3,"station, het","станция"],[3,"tot (van … tot)","до (от... до)"],[3,"vakantie, de","отпуск, каникулы"],[3,"vieren","отпраздновать"],[4,"bericht(je), het","сообщение"],[4,"beste (beste mevrouw X)","Уважаемый/уважаемая/уважаемые"],[4,"bezoeken","посещать"],[4,"feliciteren","поздравить"],[4,"geboren","рожденный"],[4,"hartelijk gefeliciteerd","сердечные поздравления"],[4,"hartelijke groeten, de","с уважением,"],[4,"jong","молодой"],[4,"kalender, de","календарь"],[4,"leeftijd, de","возраст"],[4,"lief (lieve)","милый (милая)"],[4,"meenemen","брать/взять с собой"],[4,"mooi","красивый"],[4,"pas (pas 19)","всего (лишь)"],[4,"sterk","сильный"],[4,"toch (dat is toch niet oud)","же (это же не старый)"],[4,"tot (tot zaterdag)","до (до субботы)"],[4,"wc, de","туалет"],[4,"wensen","пожелания"],[4,"worden","становиться"]],"so":[[1,"agenda, de","jadwalka"],[1,"al","horeba"],[1,"avond, de","fiidka"],[1,"dag, de","maalin"],[1,"deze","tan"],[1,"door de week","maalmaha shaqada"],[1,"gisteren","shalay"],[1,"les, de","cashar"],[1,"maand, de","bil"],[1,"middag","galab"],[1,"morgen","berri"],[1,"morgen, de ('s morgens)","subax (subaxdii)"],[1,"nacht, de","habeen"],[1,"ochtend, de ('s ochtends)","subax (subaxdii)"],[1,"of","ama"],[1,"restaurant, het","makhaayad cunto"],[1,"rijden","inaad waddo"],[1,"school, de","dugsiga"],[1,"slapen","inaad seexato"],[1,"sorry","waan ka xumahay"],[1,"sporten","inaad jimicsato"],[1,"thuis","guriga"],[1,"tussen de middag","wakhtiga qadada"],[1,"vanavond","caawa"],[1,"vanmiddag","galabtan"],[1,"vanmorgen","subaxdan"],[1,"vannacht","caawa"],[1,"vanochtend","subaxdan"],[1,"volgend","xiga"],[1,"vorig","saddexaad"],[1,"vrij","bilaash"],[1,"wanneer","goor"],[1,"week, de","toddobaad"],[1,"weekend, het","fasax toddobaad"],[2,"afspraak, de","ballan"],[2,"alweer","mar kale"],[2,"bijna","ku dhawaad"],[2,"dinsdag","Talaado"],[2,"donderdag","Khamiis"],[2,"eten","inaad cunto"],[2,"feest, het","xaflad"],[2,"gelijk hebben","inaad sax ahaato"],[2,"half","kalabar"],[2,"heel (de hele dag)","maalintii oo dhan"],[2,"hoe laat","waa maxay waqtiga"],[2,"jarig (ik ben jarig)","xus dhalasho (waa xuska dhalashadayda)"],[2,"klaar","diyaar"],[2,"kwart, het (tijd)","rubuc saac (waqti)"],[2,"kwartier, het","rubuc saac"],[2,"laat","daahday"],[2,"land, het","waddan"],[2,"maandag","Isniin"],[2,"minuut, de","daqiiqad"],[2,"net","shabaq"],[2,"ontbijt, het","quraac"],[2,"opschieten","inaad degdegto"],[2,"over (kwart over twee)","dhaaftay (labadii iyo rubuc)"],[2,"over (over 10 minuten)","gude (10 daqiiqo gudahood)"],[2,"precies","sax ah"],[2,"te (te laat)","aad (aad u daahay)"],[2,"tijd, de","wakhti"],[2,"uur, het (om 3 uur)","saacad (saddex saac)"],[2,"vanaf","laga bilaabo"],[2,"veel","badan"],[2,"verjaardag, de","xus dhalasho"],[2,"voor (vijf voor acht)","la' (siddeedii oo shan daqiiqo la')"],[2,"vriendin, de","saaxiibad"],[2,"vrijdag","Jimce"],[2,"wakker","soo jeeda"],[2,"woensdag","Arbaco"],[2,"zaterdag","Sabti"],[2,"zondag","Axad"],[3,"anderhalf","hal iyo badh"],[3,"bus, de","bas"],[3,"centrum, het","xarun"],[3,"dansen","inaad jaasto"],[3,"dienstregeling, de","jadwal"],[3,"duren","inuu jiro"],[3,"dus","markaa"],[3,"feestdag, de","fasax dadweyne"],[3,"halte, de (de bushalte)","laakiin jooji"],[3,"hoeveel","xaddi intee ah"],[3,"keer, de","jeer"],[3,"kiezen","inaad doorato"],[3,"lang","dheer"],[3,"nemen","inaad sare u qaaddo"],[3,"per","halkii"],[3,"programma, het (tv)","barnaamij (tv)"],[3,"rit, de","fuulid"],[3,"rooster, het","jadwal"],[3,"station, het","saldhig"],[3,"tot (van … tot)","laga bilaabo ... ilaa"],[3,"vakantie, de","fasaxa"],[3,"vieren","inaad dabbaaldegto"],[4,"bericht, het","farriin"],[4,"beste","gacali(ye/so)"],[4,"bezoeken","inaad booqato"],[4,"feliciteren","inaad hambalyeyso"],[4,"geboren","dhashay"],[4,"hartelijk gefeliciteerd","dhalasha wacan"],[4,"hartelijke groeten, de","nabadgalyo"],[4,"jong","dhallin-yar"],[4,"kalender, de","jadwalka"],[4,"leeftijd, de","da'"],[4,"lief (lieve)","gacali(ye/so) (xubbi)"],[4,"meenemen","inaad keento"],[4,"mooi","qurux badan"],[4,"pas (pas 19)","kaliya (19 kaliya)"],[4,"sterk","xooggan"],[4,"toch (dat is toch niet oud)","ma yahay (taasi ma tahay duug, ma tahay?)"],[4,"tot (tot zaterdag)","si (waa innoo / ilaa Sabtida)"],[4,"wc, de","musqul"],[4,"wensen","inaad rabto"],[4,"worden","inaad noqoto"]],"es":[[1,"agenda, de","calendario"],[1,"al","ya"],[1,"avond, de ('s avonds)","tarde-noche (a partir de las 6 de la tarde)"],[1,"dag, de","día"],[1,"deze","este/esta/esto"],[1,"door de week","entre semana"],[1,"gisteren","ayer"],[1,"les, de","lección, clase"],[1,"maand, de","mes"],[1,"middag, de ('s middags)","tarde (de 12 a 18 horas)"],[1,"morgen","mañana (día siguiente)"],[1,"morgen, de ('s morgens)","mañana (por la mañana)"],[1,"nacht, de ('s nachts)","noche (por la noche)"],[1,"ochtend, de ('s ochtends)","por la mañana"],[1,"of","o"],[1,"restaurant, het","restaurante"],[1,"rijden","conducir, manejar (vehículo)"],[1,"school, de","escuela"],[1,"slapen","dormir"],[1,"sorry","perdón"],[1,"sporten","hacer deporte"],[1,"thuis","(en) casa"],[1,"tussen de middag","al mediodía"],[1,"vanavond","esta tarde (tarde-noche, a partir de las 18 horas)"],[1,"vanmiddag","esta tarde (de las 12 a las 18 horas)"],[1,"vanmorgen","esta mañana"],[1,"vannacht","esta noche"],[1,"vanochtend","esta mañana"],[1,"volgend","siguiente"],[1,"vorig","pasado/a"],[1,"vrij","libre"],[1,"wanneer","cuándo"],[1,"week, de","semana"],[1,"weekend, het","fin de semana"],[2,"afspraak, de","cita"],[2,"alweer","ya"],[2,"bijna","casi"],[2,"dinsdag","martes"],[2,"donderdag","jueves"],[2,"eten (eet)","comer"],[2,"feest, het","fiesta"],[2,"gelijk hebben","tener razón"],[2,"half","medio, mitad"],[2,"heel (de hele dag)","entero (todo el día)"],[2,"hoe laat","a qué hora"],[2,"jarig (ik ben jarig)","es mi cumpleaños"],[2,"klaar","preparado/a, listo/a"],[2,"kwart, het (het is kwart voor tien)","cuarto"],[2,"kwartier, het","cuarto (de hora)"],[2,"laat","tarde"],[2,"land, het","país"],[2,"maandag","lunes"],[2,"minuut, de","minuto"],[2,"net","justo"],[2,"ontbijt, het","desayuno"],[2,"opschieten (schiet op)","darse prisa"],[2,"over (kwart over twee)","y (para las horas, ej.: las dos y cuarto)"],[2,"over (over 10 minuten)","dentro de (dentro de 10 minutos)"],[2,"precies","exactamente"],[2,"te (te laat)","demasiado (tarde)"],[2,"tijd, de","tiempo"],[2,"uur, het (om 3 uur)","hora (a las 3)"],[2,"vanaf","desde"],[2,"veel","mucho/a"],[2,"verjaardag, de","cumpleaños"],[2,"voor (vijf voor acht)","menos (ocho menos cinco)"],[2,"vriendin, de","amiga"],[2,"vrijdag","viernes"],[2,"wakker","despierto/a"],[2,"woensdag","miércoles"],[2,"zaterdag","sábado"],[2,"zondag","domingo"],[3,"anderhalf","uno y medio"],[3,"bus, de","autobús"],[3,"centrum, het","centro"],[3,"dansen","bailar"],[3,"dienstregeling, de","horario"],[3,"duren","durar"],[3,"dus","entonces, así que, pues"],[3,"feestdag, de","(día) festivo"],[3,"halte, de","parada (de autobús)"],[3,"hoeveel","cuánto(s)/a(s)"],[3,"keer, de (twee keer per week)","vez"],[3,"kiezen","elegir"],[3,"lang","largo/a"],[3,"nemen","tomar"],[3,"per (twee keer per week)","por"],[3,"programma, het","programa"],[3,"rit, de","viaje"],[3,"rooster, het","horario"],[3,"station, het","estación"],[3,"tot (van … tot)","hasta (desde ... hasta)"],[3,"vakantie, de","vacaciones"],[3,"vieren","celebrar"],[4,"bericht(je), het","mensaje"],[4,"beste (beste mevrouw X)","querido(s)/a(s), estimado(s)/a(s)"],[4,"bezoeken","visitar"],[4,"feliciteren","felicitar"],[4,"geboren","nacido/a"],[4,"hartelijk gefeliciteerd","felicidades, enhorabuena"],[4,"hartelijke groeten, de","saludos cordiales"],[4,"jong","joven"],[4,"kalender, de","calendario"],[4,"leeftijd, de","edad"],[4,"lief (lieve)","cariñoso (cariñosa)"],[4,"meenemen","llevar consigo"],[4,"mooi","bonito/a, guapo/a"],[4,"pas (pas 19)","solo"],[4,"sterk","fuerte"],[4,"toch (dat is toch niet oud)","pues (pues no es tan viejo)"],[4,"tot (tot zaterdag)","hasta (hasta el sábado)"],[4,"wc, de","servicio, inodoro"],[4,"wensen","desear"],[4,"worden","convertirse, volverse, pasar a ser, hacerse"]],"ti":[[1,"agenda, de","ዕኣውደ-ኣዋርሕ"],[1,"al","ኵሉ"],[1,"avond, de ('s avonds)","ምሸት"],[1,"dag, de","መዓልቲ"],[1,"deze","እዚ"],[1,"door de week","ኣብ ሰሙን ምሉእ"],[1,"gisteren","ትማሊ"],[1,"les, de","ትምህርቲ"],[1,"maand, de","ወርሒ"],[1,"middag, de ('s middags)","ቀን ድሕሪ"],[1,"morgen","ፅባሕ"],[1,"morgen, de ('s morgens)","ንግሆ (ኣብ ንግሆ)"],[1,"nacht, de ('s nachts)","ለይቲ (ኣብ ለይቲ)"],[1,"ochtend, de ('s ochtends)","ንጉሆ"],[1,"of","ወይ ከኣ"],[1,"restaurant, het","ቤት ምግቢ"],[1,"rijden","ምር"],[1,"school, de","ቤት ትምህርቲ"],[1,"slapen","ድቃስ"],[1,"sorry","ይሓዝን"],[1,"sporten","ስፖርትታት"],[1,"thuis","ገዛ"],[1,"tussen de middag","ፍርቂ መዓልቲ ኣቢሉ ይኸውን"],[1,"vanavond","ንሎሚ ምት"],[1,"vanmiddag","ሎሚ ድሕሪ ቐትሪ"],[1,"vanmorgen","ሎሚ ንጉሆ"],[1,"vannacht","ትማሊ ምሸት"],[1,"vanochtend","ሎሚ ንጉሆ"],[1,"volgend","ምኽታል"],[1,"vorig","ኣቐዲሙ ዝነበረ"],[1,"vrij","ናጻ"],[1,"wanneer","መ"],[1,"week, de","ሰሙ"],[1,"weekend, het","ቀዳመ-ሰናብቲ"],[2,"afspraak, de","ቆጸ"],[2,"alweer","ደጊም"],[2,"bijna","ዳርጋ"],[2,"dinsdag","ሰሉስ"],[2,"donderdag","ሓሙስ"],[2,"eten (eet)","ብላዕ"],[2,"feest, het","ጓይላ"],[2,"gelijk hebben","ሓቅኻ ኩን"],[2,"half","ፍርቂ"],[2,"heel (de hele dag)","ምሉኡ (ምሉእ መዓልቲ)"],[2,"hoe laat","ክንደይ ግዜ"],[2,"jarig (ik ben jarig)","ልደተይ እዩ"],[2,"klaar","ኣንብብ"],[2,"kwart, het (het is kwart voor tien)","ርብዒ"],[2,"kwartier, het","15 ደቓይቕ"],[2,"laat","ምድንጓይ"],[2,"land, het","ሃገር"],[2,"maandag","ሰኑይ"],[2,"minuut, de","ደቂቅ"],[2,"net","ጥራይ"],[2,"ontbijt, het","ቁርሲ"],[2,"opschieten (schiet op)","ቀልጥፍ"],[2,"over (kwart over twee)","ዝሓለፈ (ርብዒ ዝሓለፈ ኽልተ)"],[2,"over (over 10 minuten)","(ኣብ ውሽጢ 10 ደቒቕ)"],[2,"precies","ትኽኽል"],[2,"te (te laat)","ብጣእሚ (ብጣሚ ረፊዱ)"],[2,"tijd, de","ጊዜ"],[2,"uur, het (om 3 uur)","ሰዓት (ኣብ 3 )"],[2,"vanaf","ካብ"],[2,"veel","ብዙሕ"],[2,"verjaardag, de","ልደት"],[2,"voor (vijf voor acht)","ቅድሚ (ቅድሚ 5ደቂቅ ን ሸሞንተ)"],[2,"vriendin, de","ዓርኪ"],[2,"vrijdag","ዓርቢ"],[2,"wakker","ምበራበር"],[2,"woensdag","ሮብዕ"],[2,"zaterdag","ቀዳም"],[2,"zondag","ሰንበት"],[3,"anderhalf","ሃደን ፈረቃን"],[3,"bus, de","ኣውቶብስ"],[3,"centrum, het","ማእኸል"],[3,"dansen","ምስዕሳዕ"],[3,"dienstregeling, de","ናይ ግዜ ሰሌዳ (ንኣውቶቡስ፣ ባቡር ወዘተ)"],[3,"duren","መወዳእታ"],[3,"dus","ስለዚ"],[3,"feestdag, de","በዓል"],[3,"halte, de","ደው ምባል (እቲ መዕረፊ ኣውቶቡስ)"],[3,"hoeveel","ክንደይ"],[3,"keer, de (twee keer per week)","ግዜያት"],[3,"kiezen","ምረፅ"],[3,"lang","ነዊሕ"],[3,"nemen","ውሰድ"],[3,"per (twee keer per week)","ንነፍሲ ወከፍ"],[3,"programma, het","መደብ"],[3,"rit, de","ምዝዋር"],[3,"rooster, het","ናይ ግዜ ሰሌዳ"],[3,"station, het","መደበር ባቡር"],[3,"tot (van … tot)","ክሳዕ (ካብ... ክሳዕ)"],[3,"vakantie, de","ጉ"],[3,"vieren","ንምጽንባል"],[4,"bericht(je), het","ማሳጅ"],[4,"beste (beste mevrouw X)","ምሩፅ"],[4,"bezoeken","ምብጻሕ"],[4,"feliciteren","እንቋዕ ሓጎሰካ"],[4,"geboren","ተወሊዱ"],[4,"hartelijk gefeliciteerd","እንቋዕ ሓጎሰ"],[4,"hartelijke groeten, de","ምስ ኣኽብሮት"],[4,"jong","መንእሰይ"],[4,"kalender, de","መቁጸሪ-ዓመት"],[4,"leeftijd, de","ዕድመ"],[4,"lief (lieve)","ክቡር"],[4,"meenemen","ውሰድ"],[4,"mooi","ጽብቕቲ"],[4,"pas (pas 19)","ጥራሕ"],[4,"sterk","ሓያል"],[4,"toch (dat is toch niet oud)","ገና ግን (እዚ ገና ኣይኣረገን)"],[4,"tot (tot zaterdag)","ክሳብ (ክሳብ )"],[4,"wc, de","ሽቓቕ"],[4,"wensen","ምምናይ"],[4,"worden","ምኳን"]],"tr":[[1,"agenda, de","takvim"],[1,"al","zaten"],[1,"avond, de ('s avonds)","akşam"],[1,"dag, de","gün"],[1,"deze","bu"],[1,"door de week","hafta içi"],[1,"gisteren","dün"],[1,"les, de","ders"],[1,"maand, de","ay"],[1,"middag, de ('s middags)","öğleden sonra"],[1,"morgen","yarın"],[1,"morgen, de ('s morgens)","sabah (sabahleyin)"],[1,"nacht, de ('s nachts)","gece (geceleri)"],[1,"ochtend, de ('s ochtends)","sabahleyin"],[1,"of","veya"],[1,"restaurant, het","restoran"],[1,"rijden","sürmek"],[1,"school, de","okul"],[1,"slapen","uyumak"],[1,"sorry","üzgün, özür"],[1,"sporten","spor yapmak"],[1,"thuis","evde"],[1,"tussen de middag","öğle arası"],[1,"vanavond","bu gece"],[1,"vanmiddag","bu öğleden sonra"],[1,"vanmorgen","bu sabah"],[1,"vannacht","bu gece"],[1,"vanochtend","bu sabah"],[1,"volgend","gelecek"],[1,"vorig","önceki"],[1,"vrij","serbest"],[1,"wanneer","ne zaman"],[1,"week, de","hafta"],[1,"weekend, het","hafta sonu"],[2,"afspraak, de","randevu"],[2,"alweer","çoktan"],[2,"bijna","neredeyse"],[2,"dinsdag","Salı"],[2,"donderdag","Perşembe"],[2,"eten (eet)","yemek yemek"],[2,"feest, het","parti"],[2,"gelijk hebben","haklı olmak"],[2,"half","yarım"],[2,"heel (de hele dag)","bütün (tüm gün)"],[2,"hoe laat","saat kaç"],[2,"jarig (ik ben jarig)","doğum günü olmak (bugün benim doğum günüm)"],[2,"klaar","bitirmek"],[2,"kwart, het (het is kwart voor tien)","15 dakika"],[2,"kwartier, het","çeyrek"],[2,"laat","geç"],[2,"land, het","ülke"],[2,"maandag","Pazartesi"],[2,"minuut, de","dakika"],[2,"net","sadece / yalnızca"],[2,"ontbijt, het","kahvaltı"],[2,"opschieten (schiet op)","acele etmek"],[2,"over (kwart over twee)","geçiyor (ikiyi çeyrek geçiyor)"],[2,"over (over 10 minuten)","sonra (10 dakika sonra)"],[2,"precies","tam olarak"],[2,"te (te laat)","çok (çok geç)"],[2,"tijd, de","zaman"],[2,"uur, het (om 3 uur)","saat (saat 3'te)"],[2,"vanaf","itibaren"],[2,"veel","çok"],[2,"verjaardag, de","doğum günü"],[2,"voor (vijf voor acht)","var (sekize beş var)"],[2,"vriendin, de","kız arkadaş"],[2,"vrijdag","Cuma"],[2,"wakker","uyanık"],[2,"woensdag","Çarşamba"],[2,"zaterdag","Cumartesi"],[2,"zondag","Pazar"],[3,"anderhalf","bir buçuk"],[3,"bus, de","otobüs"],[3,"centrum, het","merkez"],[3,"dansen","dans etmek"],[3,"dienstregeling, de","tarife / sefer saatleri (otobüs, tren vb. için)"],[3,"duren","sürmek"],[3,"dus","yani"],[3,"feestdag, de","tatil, milli bayram"],[3,"halte, de","durak (otobüs durağı)"],[3,"hoeveel","kaç tane"],[3,"keer, de (twee keer per week)","kez"],[3,"kiezen","seçmek"],[3,"lang","uzun"],[3,"nemen","almak"],[3,"per (twee keer per week)","başına"],[3,"programma, het","program"],[3,"rit, de","gezinti / yolculuk (araçla)"],[3,"rooster, het","program / zaman çizelgesi"],[3,"station, het","istasyon"],[3,"tot (van … tot)","kadar (-den …. -a(y)a kadar)"],[3,"vakantie, de","tatil"],[3,"vieren","kutlamak"],[4,"bericht(je), het","mesaj"],[4,"beste (beste mevrouw X)","sevgili"],[4,"bezoeken","ziyaret etmek"],[4,"feliciteren","tebrik etmek"],[4,"geboren","doğmak"],[4,"hartelijk gefeliciteerd","içten tebrikler"],[4,"hartelijke groeten, de","saygılarımla"],[4,"jong","genç"],[4,"kalender, de","takvim"],[4,"leeftijd, de","yaş"],[4,"lief (lieve)","sevgili / sayın (hitap)"],[4,"meenemen","götürmek"],[4,"mooi","güzel"],[4,"pas (pas 19)","sadece"],[4,"sterk","güçlü"],[4,"toch (dat is toch niet oud)","değil mi"],[4,"tot (tot zaterdag)","görüşürüz"],[4,"wc, de","tuvalet"],[4,"wensen","dilemek / arzu etmek"],[4,"worden","olmak"]]};
+
+/* ---------- MIJN TAAL: flitskaarten Nederlands ↔ eigen taal ----------
+   Vertalingen letterlijk overgenomen uit de woordenlijsten van Code+ Deel 1 (ThiemeMeulenhoff). */
+const LANGS = [
+  ['ar','العربية','Arabisch',1], ['prs','دری','Dari',1], ['en','English','Engels',0], ['fa','فارسی','Farsi',1],
+  ['fr','Français','Frans',0], ['kmr','Kurmancî','Koerdisch (Kurmanji)',0], ['uk','Українська','Oekraïens',0],
+  ['ru','Русский','Russisch',0], ['so','Soomaali','Somalisch',0], ['es','Español','Spaans',0],
+  ['ti','ትግርኛ','Tigrinya',0], ['tr','Türkçe','Turks',0]
+];
+const LS_KEY = 'code1_mijntaal';
+let myLang = null, richting = 'nl', deck = [], di = 0, fcFlipped = false, fcWrong = [];
+try { myLang = localStorage.getItem(LS_KEY); } catch (e) {}
+if (!LANGS.some(l => l[0] === myLang)) myLang = null;
+function langInfo(c) { return LANGS.find(l => l[0] === c); }
+function taakOf(t) { if (typeof TMAP !== 'undefined' && t in TMAP) return TMAP[t]; return (t === 0 && !TAKEN.some(x => x[0] === 0)) ? 1 : t; }
+function taalPool() {
+  return (TRANS[myLang] || []).filter(e => taak === 'all' || taakOf(e[0]) === taak);
+}
+function setLang(c) {
+  myLang = c;
+  try { if (c) localStorage.setItem(LS_KEY, c); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  renderTaal();
+}
+function renderTaal() {
+  const p = document.getElementById('panel');
+  if (!myLang) {
+    p.innerHTML = '<h2>🌍 Mijn taal</h2><p class="how">Kies je taal. Dan oefen je met flitskaarten: Nederlands en jouw taal.</p>' +
+      '<div class="lang-grid">' + LANGS.map(l => '<button class="lang-btn" data-l="' + l[0] + '"><span class="nat" lang="' + l[0] + '" dir="' + (l[3] ? 'rtl' : 'ltr') + '">' + l[1] + '</span><span class="nl">' + l[2] + '</span></button>').join('') + '</div>';
+    p.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    return;
+  }
+  const L = langInfo(myLang), n = taalPool().length;
+  const dirs = [['nl', 'Nederlands → ' + L[2]], ['taal', L[2] + ' → Nederlands'], ['mix', 'Door elkaar']];
+  p.innerHTML = '<h2>🌍 Mijn taal</h2>' +
+    '<div class="lang-bar"><span class="cur">Jouw taal: <span lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '">' + L[1] + '</span> (' + L[2] + ')</span><button class="linkbtn" id="chg">Andere taal kiezen</button></div>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === richting ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' kaarten)</button></div>'
+       : '<p class="how">Er zijn geen kaarten voor deze taak in deze taal.</p>');
+  document.getElementById('chg').onclick = () => setLang(null);
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { richting = b.dataset.d; renderTaal(); });
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startDeck(taalPool());
+}
+function startDeck(list) {
+  deck = shuffle(list).map(e => ({ e, side: richting === 'mix' ? (Math.random() < .5 ? 'nl' : 'taal') : richting }));
+  di = 0; fcWrong = []; renderCard();
+}
+function faceHtml(isNl, e, L, tag) {
+  const txt = isNl ? e[1] : e[2];
+  const attrs = isNl ? 'lang="nl" dir="ltr"' : 'lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '"';
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-word' + (txt.length > 28 ? ' long' : '') + '" ' + attrs + '>' + esc(txt) + '</div>' +
+    (isNl ? '<button class="fc-say" data-say="1">🔊 Luister</button>' : '');
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), L = langInfo(myLang), c = deck[di], e = c.e;
+  const frontNl = c.side === 'nl';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + faceHtml(frontNl, e, L, frontNl ? 'Nederlands' : L[2]) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + faceHtml(!frontNl, e, L, frontNl ? L[2] : 'Nederlands') + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het woord eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(e[1]); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontNl) say(e[1]);
+  };
+  document.getElementById('kk').onclick = () => { di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(e); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🌍</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderTaal();
+}
+document.addEventListener('keydown', e => {
+  if (tab !== 'taal' || !document.getElementById('fcs')) return;
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+  else if (fcFlipped && (e.key === 'k' || e.key === 'K')) document.getElementById('kk').click();
+  else if (fcFlipped && (e.key === 'o' || e.key === 'O')) document.getElementById('nk').click();
+});
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds bij A staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\([^)]*\)/g, ''));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- STATUS ---------- */
+let taak = 'all', tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], lastList = [];
+
+function pool() { return W.filter(x => taak === 'all' || x.t === taak); }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  TAKEN.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => { taak = v; tk.querySelectorAll('.pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); openTab(tab); };
+    tk.appendChild(b);
+  });
+  const tb = document.getElementById('tabs');
+  TABS.forEach(([id, ic, lb]) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (id === tab ? ' active' : '');
+    b.dataset.id = id;
+    b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+    b.onclick = () => openTab(id);
+    tb.appendChild(b);
+  });
+}
+
+const INTRO = {
+  luister: ['🎧 Luisteren en kiezen', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  dehet:   ['🔤 De of het?', 'Kijk naar het woord. Is het <b>de</b> of <b>het</b>?'],
+  sorteer: ['🧺 Sorteren', 'Waar hoort het woord bij? Klik op de goede groep.'],
+  zinnen:  ['✏️ Zinnen', 'Welk woord past in de zin?']
+};
+
+function openTab(id) {
+  tab = id;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'taal') return renderTaal();
+  const p = document.getElementById('panel');
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p>' +
+    '<div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Voor deze taak zijn er geen vragen bij deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startQuiz(buildQuestions(id));
+}
+
+function checkVoice() {
+  if (tab !== 'luister' && tab !== 'woorden') return;
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet in de instellingen van je telefoon of computer de spraak op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const groups = taak === 'all' ? TAKEN.filter(t => t[0] !== 'all').map(t => t[0]) : [taak];
+  const names = Object.fromEntries(TAKEN);
+  let html = '<h2>📖 Woorden</h2><p class="how">Klik op een woord. Je hoort het woord. Zeg het hardop na.</p><div class="warn" id="warn"></div>';
+  groups.forEach(g => {
+    const list = W.filter(x => x.t === g);
+    if (groups.length > 1) html += '<div class="wl-head">' + names[g] + ' · ' + list.length + '</div>';
+    html += '<div class="wl">' + list.map(x =>
+      '<div class="wcard" data-say="' + esc(full(x)) + '"><span class="we">' + (x.e || '') + '</span>' +
+      '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + '</span><span class="sp">🔊</span></div>'
+    ).join('') + '</div>';
+  });
+  p.innerHTML = html;
+  p.querySelectorAll('.wcard').forEach(c => c.onclick = () => say(c.dataset.say));
+  checkVoice();
+}
+
+/* ---------- VRAGEN MAKEN ---------- */
+function buildQuestions(mode) {
+  const P = pool();
+  if (mode === 'luister') {
+    return shuffle(P).slice(0, 10).map(x => {
+      let others = P.filter(y => y.w !== x.w);
+      if (others.length < 3) others = W.filter(y => y.w !== x.w);
+      return { mode, x, opts: shuffleOpts([x, ...shuffle(others).slice(0, 3)]) };
+    });
+  }
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'sorteer') return shuffle(P.filter(x => x.c)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'zinnen') {
+    const Z = ZINNEN.filter(z => taak === 'all' || z[2] === taak);
+    return shuffle(Z).slice(0, 12).map(z => ({ mode, s: z[0], ans: z[1][0], opts: shuffleOpts(z[1]) }));
+  }
+  return [];
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(list) {
+  lastList = list;
+  Q = list.map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : { ...q });
+  qi = 0; score = 0; wrongs = [];
+  renderQ();
+}
+
+function head() {
+  return '<div class="progress"><div>Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' +
+            '<div class="opts">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '"><span class="oe">' + (o.e || '') + '</span>' + esc(o.w) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+            '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'sorteer') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+            '<div class="opts three">' + Object.entries(CATS).map(([k, v]) => '<button class="opt" data-v="' + k + '">' + v + '</button>').join('') + '</div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' +
+            '<div class="opts">' + q.opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister') {
+    document.getElementById('sp').onclick = () => say(full(q.x));
+    document.getElementById('spS').onclick = () => say(full(q.x), true);
+    say(full(q.x));
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].w === q.x.w, q.x.w));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (q.mode === 'sorteer') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.c, q.x.c));
+  } else if (q.mode === 'zinnen') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.textContent === q.ans, q.ans));
+  }
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  const btns = p.querySelectorAll('.opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    const val = q.mode === 'luister' ? q.opts[+b.dataset.i].w : q.mode === 'zinnen' ? b.textContent : b.dataset.v;
+    if (val === correct) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  if (ok) score++; else wrongs.push(q);
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (q.x.m) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(full(q.x));
+  } else if (q.mode === 'sorteer') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het hoort bij: ' + CATS[q.x.c];
+    say(full(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans).replace(/–/g, ','));
+  }
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  document.getElementById('nb').onclick = () => { qi++; renderQ(); };
+  document.getElementById('nb').focus();
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden. Probeer het dan opnieuw. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">📒</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe ronde</button></div></div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(wrongs);
+  document.getElementById('rn').onclick = () => startQuiz(buildQuestions(tab));
+}
+
+/* ---------- AVATAR ----------
+   De avatar wordt uit overzicht_code1.html (zelfde map op GitHub) gehaald.
+   Lukt dat niet (bijv. bestand lokaal geopend), dan blijft het emoji-plaatje staan. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code1.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>

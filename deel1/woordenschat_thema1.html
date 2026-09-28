@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 1 – Wie ben jij? – Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --blue: #2d3a8c;
+    --blue2: #4338ca;
+    --accent: #f5a623;
+    --pink: #e84393;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5;
+    --bad: #dc2626; --bad-bg: #fee2e2;
+    --shadow: rgba(45,58,140,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(45,58,140,.15); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .6rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.5rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .75rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(45,58,140,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--pink)); border-radius: 10px; transition: width .3s; }
+
+  .big-emoji { font-size: 4rem; text-align: center; line-height: 1.1; min-height: 4.4rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.15rem, 4.5vw, 1.45rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+  .speak:hover { transform: translateY(-1px); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .opts.three { grid-template-columns: 1fr 1fr; } }
+  .opt { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.05rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; }
+  .opt .oe { font-size: 1.5rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+  .tip { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .3rem; font-style: italic; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  /* woordenlijst */
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin: 1.1rem 0 .5rem; }
+  .wl-head:first-child { margin-top: 0; }
+  .wl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .wcard { border: 1px solid #e3e8ff; border-radius: 12px; padding: .5rem .6rem; display: flex; align-items: center; gap: .5rem; cursor: pointer; background: #fbfcff; transition: all .12s; }
+  .wcard:hover { border-color: var(--blue); background: white; }
+  .wcard .we { font-size: 1.4rem; width: 1.8rem; text-align: center; flex-shrink: 0; }
+  .wcard .ww { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+  .wcard .ww small { color: var(--muted); font-weight: 600; }
+  .wcard .sp { margin-left: auto; font-size: .9rem; opacity: .5; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+  /* ---------- MIJN TAAL (flitskaarten) ---------- */
+  .tabs { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .55rem; }
+  .lang-btn { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .7rem .5rem; cursor: pointer; font-family: inherit; text-align: center; transition: all .12s; }
+  .lang-btn:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .lang-btn .nat { display: block; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .lang-btn .nl { display: block; font-size: .75rem; color: var(--muted); font-weight: 700; margin-top: .1rem; }
+  .lang-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; font-weight: 700; }
+  .lang-bar .cur { font-size: 1.05rem; color: var(--blue); }
+  .linkbtn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; }
+  .fc-scene { height: 250px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #dbe2ff; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--blue); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .fc-word.long { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef2ff; }
+  [lang="ar"], [lang="fa"], [lang="prs"] { font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif; }
+  [lang="ti"] { font-family: 'Noto Sans Ethiopic', 'Nunito', sans-serif; }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+</style>
+
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/overzicht_code1.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">👋</div>
+    <div>
+      <h1>Thema 1 · Wie ben jij?</h1>
+      <p>Code+ Deel 1 · woordenschat · 161 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b>: klik op een woord en luister.<br>
+    Daarna: <b>🎧 Luisteren</b>, <b>de of het</b>, <b>🧺 Sorteren</b> en <b>✏️ Zinnen</b>.<br>
+    Bij <b>🌍 Mijn taal</b> oefen je met flitskaarten in je eigen taal.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten NT2 · Code+ Deel 1</footer>
+</div>
+
+<script>
+/* ---------- WOORDEN (Code+ Deel 1, Thema 1) ----------
+   [woord, lidwoord, emoji, taak, categorie, meervoud]
+   taak 0 = intro
+   categorie: fa familie · me mensen · gr beleefd zijn · vr vraagwoorden · fo formulier · hv hoe vaak */
+const RAW = [
+  ['achternaam','de','📝',0,'fo'], ['auto','de','🚗',0,''], ['autorijles','de','🚙',0,''], ['broer','de','🧑',0,'fa'],
+  ['dochter','de','👧',0,'fa'], ['en','','➕',0,''], ['familie','de','👨‍👩‍👧‍👦',0,'fa'], ['gebruiken','','🔧',0,''],
+  ['geven','','🎁',0,''], ['hebben','','',0,''], ['heten','','🏷️',0,''], ['huisarts','de','🩺',0,'me'], ['in','','',0,''],
+  ['jaar','het','🗓️',0,''], ['kijken','','👀',0,''], ['kinderen','de','🧒',0,'fa',1], ['komen','','🚶',0,''],
+  ['man','de','👨',0,'fa'], ['met','','',0,''], ['moeder','de','👩‍🍼',0,'fa'], ['naam','de','🏷️',0,'fo'], ['nieuw','','✨',0,''],
+  ['nu','','',0,''], ['nummer','het','#️⃣',0,'fo'], ['oefenen','','💪',0,''], ['op','','',0,''], ['persoonlijk','','',0,''],
+  ['student','de','🧑‍🎓',0,'me'], ['studeren','','🎓',0,''], ['uit','','',0,''], ['vader','de','🧔',0,'fa'],
+  ['voornaam','de','🪪',0,'fo'], ['vrouw','de','👩',0,'fa'], ['wat','','',0,'vr'], ['welk','','',0,'vr'], ['werken','','💼',0,''],
+  ['wie','','',0,'vr'], ['winkel','de','🏪',0,''], ['wonen','','🏠',0,''], ['woord','het','🔤',0,''], ['zien','','👁️',0,''],
+  ['zijn','','',0,''], ['zoon','de','👦',0,'fa'], ['zus','de','👩‍🦰',0,'fa'],
+
+  ['ander','','',1,''], ['antwoord','het','✅',1,''], ['bedanken','','🙏',1,'gr'], ['beginnen','','▶️',1,''],
+  ['binnenkomen','','🚪',1,''], ['collega','de','🧑‍💼',1,'me'], ['dit','','',1,''], ['doen','','',1,''], ['einde','het','🏁',1,''],
+  ['even','','',1,''], ['gaan','','',1,''], ['goed','','👍',1,''], ['goedemiddag','','🌤️',1,'gr'], ['hoe','','',1,'vr'],
+  ['iemand','','',1,''], ['ja','','✔️',1,''], ['jezelf','','',1,''], ['leuk','','😊',1,''], ['luisteren','','👂',1,''],
+  ['meedoen','','🙋',1,''], ['meneer','de','👔',1,'me'], ['mevrouw','de','👩‍💼',1,'me'], ['moeten','','',1,''], ['nee','','❌',1,''],
+  ['ontmoeten','','🤝',1,''], ['ook','','',1,''], ['passen bij','','🧩',1,''], ['reageren','','',1,''], ['samen','','👫',1,''],
+  ['schrijven','','✏️',1,''], ['vandaan','','',1,''], ['verder','','',1,''], ['voorstellen','','🙋‍♀️',1,''], ['vraag','de','❓',1,''],
+  ['vragen','','',1,''], ['waar','','',1,'vr'], ['weer','','🔁',1,''], ['weten','','🧠',1,''], ['zin','de','📄',1,''],
+  ['zitten','','🪑',1,''], ['zullen','','',1,''],
+
+  ['achter','','',2,''], ['adres','het','🏡',2,'fo'], ['altijd','','',2,'hv'], ['bellen','','📞',2,''], ['cijfer','het','7️⃣',2,''],
+  ['combinatie','de','',2,''], ['cursus','de','📚',2,''], ['dan','','',2,''], ['danken','','',2,'gr'], ['dankjewel','','😊',2,'gr'],
+  ['dankuwel','','',2,'gr'], ['dezelfde','','',2,''], ['excuus','het','🙇',2,'gr'], ['fijn','','',2,''], ['geen','','',2,''],
+  ['getal','het','🔢',2,''], ['goedemorgen','','🌅',2,'gr'], ['herkomst','de','🌍',2,'fo'], ['huis','het','🏠',2,''],
+  ['klopt dat?','','',2,''], ['krant','de','📰',2,''], ['kunnen','','',2,''], ['letter','de','🔠',2,''], ['lezen','','📖',2,''],
+  ['maar','','',2,''], ['maken','','🛠️',2,''], ['naar','','➡️',2,''], ['niet','','',2,''], ['ongeveer','','',2,''],
+  ['plaats','de','📍',2,''], ['postcode','de','📮',2,'fo'], ['soms','','',2,'hv'], ['staan','','🧍',2,''], ['straat','de','🛣️',2,'fo'],
+  ['uniek','','',2,''], ['vandaag','','📆',2,''], ['vervelend','','😒',2,''], ['vinden','','🎯',2,''], ['volgen','','',2,''],
+  ['willen','','',2,''], ['woonplaats','de','🏙️',2,'fo'], ['zoeken','','🔎',2,''],
+
+  ['afgelopen','','',3,''], ['antwoorden','','',3,''], ['bijvoorbeeld','','',3,''], ['boek','het','📕',3,''],
+  ['docent','de','🧑‍🏫',3,'me'], ['eindigen','','🔚',3,''], ['elkaar','','',3,''], ['groeten','','👋',3,'gr'], ['kennen','','',3,''],
+  ['meestal','','',3,'hv'], ['mensen','de','👥',3,'me',1], ['oud','','👵',3,''], ['pauze','de','☕',3,''], ['prettig','','😌',3,''],
+  ['schat','de','💛',3,''], ['straks','','⏳',3,''], ['tegen','','',3,''], ['vaak','','',3,'hv'], ['vriend','de','🧑‍🤝‍🧑',3,'me'],
+  ['wachten','','⏰',3,''], ['weggaan','','🏃',3,''], ['zeggen','','🗣️',3,''],
+
+  ['daar','','👉',4,''], ['datum','de','📅',4,'fo'], ['formulier','het','📋',4,'fo'], ['geboorte','de','👶',4,'fo'],
+  ['geslacht','het','',4,'fo'], ['handtekening','de','✍️',4,'fo'], ['invullen','','🖊️',4,''], ['maart','','🌷',4,''],
+  ['nationaliteit','de','🌐',4,'fo'], ['Nederlands','','🇳🇱',4,''], ['onder','','⬇️',4,''], ['zetten','','',4,'']
+];
+const W = RAW.map(r => ({ w: r[0], a: r[1], e: r[2], t: r[3], c: r[4], m: !!r[5] }));
+
+const CATS = {
+  fa: '👨‍👩‍👧 Familie', me: '🧑‍💼 Mensen', gr: '👋 Beleefd zijn',
+  vr: '❓ Vraagwoorden', fo: '📋 Formulier', hv: '🔁 Hoe vaak?'
+};
+
+/* [zin, [goed antwoord, fout, fout, fout], taak] */
+const ZINNEN = [
+  ['Mijn ___ is Ahmed. Mijn achternaam is Ali.', ['voornaam','straat','woord','winkel'], 0],
+  ['Ik ___ Maria.', ['heet','woon','kom','werk'], 0],
+  ['Mijn vader en mijn moeder hebben drie ___.', ['kinderen','namen','woorden','auto’s'], 0],
+  ['Mijn broer is de ___ van mijn moeder.', ['zoon','dochter','vader','zus'], 0],
+  ['Mijn zus is de ___ van mijn vader.', ['dochter','zoon','broer','man'], 0],
+  ['Ik ben ziek. Ik ga naar de ___.', ['huisarts','winkel','student','familie'], 0],
+  ['Ik leer auto rijden. Ik heb ___.', ['autorijles','huisarts','familie','voornaam'], 0],
+  ['___ is dat? – Dat is mijn broer.', ['Wie','Wat','Welk','Nu'], 0],
+  ['Uit ___ land kom je?', ['welk','wie','wat','nu'], 0],
+
+  ['___ heet je? – Ik heet Sara.', ['Hoe','Waar','Wie','Wat'], 1],
+  ['___ kom je vandaan? – Uit Eritrea.', ['Waar','Hoe','Wie','Wat'], 1],
+  ['Dit is mijn ___. We werken samen.', ['collega','vraag','antwoord','zin'], 1],
+  ['Goedemiddag, ___ De Vries. U bent de vader van Tom?', ['meneer','mevrouw','collega','vraag'], 1],
+  ['Ik heb een ___. – Ja, zeg het maar.', ['vraag','antwoord','einde','zin'], 1],
+  ['Ik heet Anna. En jij? – Ik heet ___ Anna!', ['ook','nee','weer','even'], 1],
+  ['Kom je uit Turkije? – ___, ik kom uit Marokko.', ['Nee','Ja','Ook','Goed'], 1],
+  ['Leuk je te ___!', ['ontmoeten','schrijven','reageren','luisteren'], 1],
+  ['Mag ik mij even ___? Ik ben Omar.', ['voorstellen','luisteren','zitten','vragen'], 1],
+  ['___ en schrijf het woord.', ['Luister','Zit','Ontmoet','Bedank'], 1],
+
+  ['Wat is je ___? – Kerkstraat 12.', ['adres','getal','excuus','krant'], 2],
+  ['Mijn ___ is 1621 AB.', ['postcode','straat','woonplaats','letter'], 2],
+  ['Wat is je ___? – Hoorn.', ['woonplaats','postcode','cursus','krant'], 2],
+  ['1621 AB is een ___ van cijfers en letters.', ['combinatie','krant','straat','cursus'], 2],
+  ['Ik lees de ___.', ['krant','getal','excuus','postcode'], 2],
+  ['Ik ___ je morgen. Wat is je nummer?', ['bel','lees','maak','zoek'], 2],
+  ['Ik doe een ___ Nederlands.', ['cursus','krant','straat','letter'], 2],
+  ['Je woont in Hoorn. Klopt dat? – Ja, dat ___.', ['klopt','kan','wil','staat'], 2],
+  ['Hier is je koffie. – ___!', ['Dankjewel','Goedemorgen','Soms','Ongeveer'], 2],
+  ['Het is acht uur. ___!', ['Goedemorgen','Dankjewel','Vervelend','Uniek'], 2],
+  ['Ik ga ___ naar de bibliotheek. Niet vaak.', ['soms','altijd','vandaag','uniek'], 2],
+  ['Ik heb ___ auto. Ik fiets.', ['geen','niet','maar','dan'], 2],
+  ['Hij is ___ 30 jaar. 29 of 31.', ['ongeveer','altijd','uniek','vandaag'], 2],
+
+  ['Dit is Mo. Hij is mijn ___.', ['vriend','pauze','boek','schat'], 3],
+  ['Om half elf hebben we ___. We drinken koffie.', ['pauze','boek','docent','vriend'], 3],
+  ['Mijn ___ heet Els. Zij geeft les.', ['docent','vriend','pauze','schat'], 3],
+  ['Ik ben ___ thuis. Bijna altijd.', ['meestal','straks','elkaar','afgelopen'], 3],
+  ['We kennen ___. We zijn vrienden.', ['elkaar','straks','tegen','vaak'], 3],
+  ['Tot ___! Ik zie je om drie uur.', ['straks','elkaar','vaak','oud'], 3],
+  ['Hoe ___ ben je? – Ik ben 34.', ['oud','vaak','prettig','straks'], 3],
+  ['Ik ___ op de bus.', ['wacht','ken','zeg','groet'], 3],
+  ['___ kennis te maken!', ['Prettig','Oud','Straks','Vaak'], 3],
+
+  ['Vul het ___ in.', ['formulier','geslacht','datum','maart'], 4],
+  ['Zet hier je ___.', ['handtekening','nationaliteit','geboorte','datum'], 4],
+  ['Wat is de ___ van vandaag? – 3 maart.', ['datum','geboorte','formulier','geslacht'], 4],
+  ['Man of vrouw? Dat is je ___.', ['geslacht','nationaliteit','datum','handtekening'], 4],
+  ['Wat is je ___? – Ik ben Nederlands.', ['nationaliteit','handtekening','formulier','geslacht'], 4],
+  ['Ik ben jarig in ___.', ['maart','onder','daar','datum'], 4],
+  ['Je naam staat boven. Je handtekening staat ___.', ['onder','daar','maart','geslacht'], 4]
+];
+
+const TAKEN = [['all','Alles'],[0,'Intro'],[1,'Taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4']];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['luister','🎧','Luisteren'], ['dehet','🔤','De of het'],
+  ['sorteer','🧺','Sorteren'], ['zinnen','✏️','Zinnen'], ['taal','🌍','Mijn taal']
+];
+
+const TRANS = {"ar":[[0,"achternaam, de","أسم العائلة/اللقب"],[0,"auto, de","السيارة"],[0,"autorijles, de","درس تعليم قيادة السيارات"],[0,"broer, de","الأخ/الشقيق"],[0,"dochter, de","إبنة"],[0,"en","و"],[0,"familie, de","الأسرة"],[0,"gebruiken (gebruik)","يستخدم"],[0,"geven (geeft)","يعطي"],[0,"hebben","فعل يمتلك، أن يكون لديه"],[0,"heten","فعل يسمي"],[0,"huisarts, de","طبيب الأسرة"],[0,"in","في"],[0,"jaar, het","السنة"],[0,"kijken","فعل ينظر/يشاهد"],[0,"kinderen, de (het kind)","الأطفال"],[0,"komen","قادم من بلد (من)"],[0,"man, de","زوج (ذكر)"],[0,"met","مع"],[0,"moeder, de","الأم"],[0,"naam, de","الأسم"],[0,"nieuw","جديد"],[0,"nu","الآن"],[0,"nummer, het","الرقم"],[0,"oefenen","يتمرن / يمارس"],[0,"op","على، فيه"],[0,"persoonlijk","شخصيا، شخصي"],[0,"student, de","طالب"],[0,"studeren","يدرس"],[0,"uit (ik kom uit…)","من (أنا من...)"],[0,"vader, de","الأب"],[0,"voornaam, de","الاسم الأول"],[0,"vrouw, de","الزوجة"],[0,"wat","ماذا"],[0,"welk","أي واحد"],[0,"werken","يعمل"],[0,"wie","من"],[0,"winkel, de","المتجر/ المحل"],[0,"wonen","يعيش، يسكن"],[0,"woord, het","كلمة"],[0,"zien","فعل ينظر"],[0,"zijn (ben, bent, is)","يفعل يكون"],[0,"zoon, de","ابن"],[0,"zus, de","الأخت، الشقيقة"],[1,"ander","آخر/مختلف"],[1,"antwoord, het","الإجابة"],[1,"bedanken","يشكر أحد"],[1,"beginnen","فعل يبدأ"],[1,"binnenkomen","ادخل، يدخل"],[1,"collega, de","الزميل"],[1,"dit","هذا / هذه (للمحايد القريب)"],[1,"doen","فعل يعمل (شيء)"],[1,"eind(e), het","النهاية"],[1,"even","لحظة / لفترة وجيزة"],[1,"gaan","فعل يذهب"],[1,"goed","تمام، جيد"],[1,"goedemiddag","مساء الخير (من بعد الظهر وحتى غروب الشمس)"],[1,"hoe (hoe heet je?)","ما (اسمك؟)"],[1,"iemand (anders)","شخص (آخر)"],[1,"ja","نعم"],[1,"jezelf","نفسك"],[1,"leuk","لطيف، جميل، ممتع"],[1,"luisteren","ينصت"],[1,"meedoen","يشارك"],[1,"meneer, de","السيد، الأستاذ"],[1,"mevrouw, de","السيدة، الأستاذة"],[1,"moeten","فعل يجب"],[1,"nee","لا"],[1,"ontmoeten","يقابل / يلتقي"],[1,"ook","أيضا"],[1,"passen bij / in","يليق، يلائم/ يناسب الوضع في"],[1,"reageren","يرد، يتفاعل"],[1,"samen","معا / سوية"],[1,"schrijven","يكتب"],[1,"vandaan","من أين"],[1,"verder (verder gaan / zoeken)","تابع، استمر (ابحث أكثر)"],[1,"voorstellen","يقدم"],[1,"vraag, de","السؤال"],[1,"vragen","فعل يسأل"],[1,"waar","أين؟"],[1,"weer","مرة أخرى، مجددا"],[1,"weten","فعل يعرف"],[1,"zin, de","جملة"],[1,"zitten","فعل يجلس"],[1,"zullen (zal)","سنقوم بعمل"],[2,"achter","وراء/خلف"],[2,"adres, het","العنوان"],[2,"altijd","دائما"],[2,"bellen","يتصل هاتفيا"],[2,"cijfer, het","الرقم"],[2,"combinatie, de","مزيج / تركيبة"],[2,"cursus, de","الدورة الدراسية/ الكورس"],[2,"dan","كلمة تضاف إلى الكلام بمعنى في هذه الحالة (أو بالعامية بقى)"],[2,"danken","يشكر (شكرا لحضرتك (حضراتكم))"],[2,"dankjewel","شكرا جزيلا لك"],[2,"dankuwel","شكرا جزيلا لحضرتك"],[2,"dezelfde","نفس الشيء"],[2,"excuus, het","اعتذار"],[2,"fijn (dat is fijn)","لطيف، جميل، رائع"],[2,"geen","لا شيء"],[2,"getal, het","عدد"],[2,"goedemorgen","صباح الخير"],[2,"herkomst, de","أصل / منشأ"],[2,"huis, het","البيت، المنزل"],[2,"klopt dat?","هل هذا صحيح؟"],[2,"krant, de","الصحيفة"],[2,"kunnen (kan)","فعل يستطيع"],[2,"letter, de","حرف"],[2,"lezen (lees)","يقرأ*"],[2,"maar","لكن (لكنني أعتقد...)"],[2,"maken (maak)","يعمل، يصنع"],[2,"naar","إلى"],[2,"niet","لم يحدث/ليس"],[2,"ongeveer","تقريبا"],[2,"plaats, de","مكان الإقامة، المدينة"],[2,"postcode, de","الرمز البريدي"],[2,"soms","في بعض الأحيان"],[2,"staan","مكتوب، مذكور"],[2,"straat, de","الشارع"],[2,"uniek","فريد من نوعه"],[2,"vandaag","اليوم"],[2,"vervelend","مزعج، ممل"],[2,"vinden","يبحث"],[2,"volgen","يتبع"],[2,"willen","فعل يريد"],[2,"woonplaats, de","المدينة"],[2,"zoeken (zoekt)","يبحث"],[3,"afgelopen","منتهي"],[3,"antwoorden","يجيب/ يرد"],[3,"bijvoorbeeld","على سبيل المثال/مثلا"],[3,"boek, het","الكتاب"],[3,"docent(e), de","مدرس / مدرسة"],[3,"eindigen","ينتهي"],[3,"elkaar","بعضنا البعض"],[3,"groeten","يلقي التحية شخص"],[3,"kennen","يعلم"],[3,"meestal","عادة /غالبا"],[3,"mensen, de","ناس / أشخاص"],[3,"oma, de","جدة"],[3,"oud (ouder)","قديم"],[3,"pauze, de","فاصل قصير، استراحة"],[3,"prettig","لطيف"],[3,"schat, de","حبيب"],[3,"straks","لاحقا، فيما بعد"],[3,"tegen","ضد، على، إلى/ لـ"],[3,"vaak","في كثير من الأحيان، عادة"],[3,"vriend, de","صديق"],[3,"wachten","ينتظر"],[3,"weggaan","يرحل، يذهب"],[3,"zeggen","فعل يقول"],[4,"daar","هناك"],[4,"datum, de","التاريخ"],[4,"formulier, het","النموذج"],[4,"geboorte, de","الولادة"],[4,"geslacht, het","نوع الجنس"],[4,"handtekening, de","التوقيع"],[4,"invullen","يعبىء، يملأ"],[4,"maart","آذار/مارس"],[4,"nationaliteit, de","الجنسية"],[4,"Nederlands(e)","هولندي/هولندية (صفة)"],[4,"onder","أسفل، أدنى"],[4,"zetten (een handtekening zetten)","يضع (يضع توقيعه)"]],"en":[[0,"achternaam, de","surname"],[0,"auto, de","car"],[0,"autorijles, de","driving lesson"],[0,"broer, de","brother"],[0,"dochter, de","daughter"],[0,"en","and"],[0,"familie, de","family / relatives"],[0,"gebruiken (gebruik)","to use"],[0,"geven (geeft)","to give"],[0,"hebben","to have"],[0,"heten","to be called"],[0,"huisarts, de","family doctor / general practitioner"],[0,"in","in"],[0,"jaar, het","year"],[0,"kijken","to look"],[0,"kinderen, de (het kind)","children (child)"],[0,"komen","to come"],[0,"man, de","husband (man)"],[0,"met","with"],[0,"moeder, de","mother"],[0,"naam, de","name"],[0,"nieuw","new"],[0,"nu","now"],[0,"nummer, het","number"],[0,"oefenen","to practice"],[0,"op","on / at"],[0,"persoonlijk","personal"],[0,"student, de","student"],[0,"studeren","to study"],[0,"uit (ik kom uit…)","from (I am from)"],[0,"vader, de","father"],[0,"voornaam, de","first name"],[0,"vrouw, de","wife (woman)"],[0,"wat","what"],[0,"welk","which / what"],[0,"werken","to work"],[0,"wie","who"],[0,"winkel, de","shop"],[0,"wonen","to live"],[0,"woord, het","word"],[0,"zien","to see"],[0,"zijn (ben, bent, is)","to be"],[0,"zoon, de","son"],[0,"zus, de","sister"],[1,"ander","other / different"],[1,"antwoord, het","answer"],[1,"bedanken","to thank"],[1,"beginnen","to begin"],[1,"binnenkomen","to come in"],[1,"collega, de","colleague"],[1,"dit","this"],[1,"doen","to do"],[1,"eind(e), het","end"],[1,"even","briefly / just"],[1,"gaan","to go"],[1,"goed","okay / good"],[1,"goedemiddag","good afternoon"],[1,"hoe (hoe heet je?)","how (what's your name)"],[1,"iemand (anders)","someone (else)"],[1,"ja","yes"],[1,"jezelf","yourself"],[1,"leuk","nice"],[1,"luisteren","to listen"],[1,"meedoen","to participate"],[1,"meneer, de","sir (hello sir) / Mr. (Mr. Bos)"],[1,"mevrouw, de","madam (hello madam) / Mrs. Ms. Bos"],[1,"moeten","must / shall"],[1,"nee","no"],[1,"ontmoeten","to meet"],[1,"ook","also / too"],[1,"passen bij / in","to go with / to match with / to go well in"],[1,"reageren","to respond / to react"],[1,"samen","together"],[1,"schrijven","to write (down)"],[1,"vandaan","from"],[1,"verder (verder gaan / zoeken)","farther / further (to go on / to go on looking)"],[1,"voorstellen","to introduce"],[1,"vraag, de","question"],[1,"vragen","to ask"],[1,"waar","where"],[1,"weer","again"],[1,"weten","to know"],[1,"zin, de","sentence"],[1,"zitten","to sit / to be"],[1,"zullen (zal)","shall / will"],[2,"achter","after / behind"],[2,"adres, het","address"],[2,"altijd","always / constantly"],[2,"bellen","to call / to phone"],[2,"cijfer, het","figure / numeral"],[2,"combinatie, de","combination"],[2,"cursus, de","course"],[2,"dan","then / than"],[2,"danken","to thank"],[2,"dankjewel","thank you (informal)"],[2,"dankuwel","thank you (formal)"],[2,"dezelfde","the same"],[2,"excuus, het","apology"],[2,"fijn (dat is fijn)","nice / lovely / great (that is nice)"],[2,"geen","no"],[2,"getal, het","number"],[2,"goedemorgen","good morning"],[2,"herkomst, de","origin"],[2,"huis, het","house"],[2,"klopt dat?","is that correct?"],[2,"krant, de","newspaper"],[2,"kunnen (kan)","can / to be able to"],[2,"letter, de","letter (character)"],[2,"lezen (lees)","to read"],[2,"maar","but"],[2,"maken (maak)","to make"],[2,"naar","to"],[2,"niet","not"],[2,"ongeveer","about"],[2,"plaats, de","here: town / city"],[2,"postcode, de","postal code"],[2,"soms","sometimes"],[2,"staan","to stand"],[2,"straat, de","street"],[2,"uniek","unique"],[2,"vandaag","today"],[2,"vervelend","annoying / unpleasant"],[2,"vinden","to find"],[2,"volgen","to follow"],[2,"willen","to want"],[2,"woonplaats, de","(place of) residence"],[2,"zoeken (zoekt)","to look for"],[3,"afgelopen","finished"],[3,"antwoorden","to answer"],[3,"bijvoorbeeld","for example"],[3,"boek, het","book"],[3,"docent(e), de","teacher"],[3,"eindigen","to end / to finish / to conclude"],[3,"elkaar","each other / one another"],[3,"groeten","to greet"],[3,"kennen","to know"],[3,"meestal","mostly / usually"],[3,"mensen, de","people"],[3,"oma, de","grandma"],[3,"oud (ouder)","old (older)"],[3,"pauze, de","break"],[3,"prettig","nice / good"],[3,"schat, de","darling"],[3,"straks","later"],[3,"tegen","against / by / to"],[3,"vaak","often"],[3,"vriend, de","friend"],[3,"wachten","to wait"],[3,"weggaan","to leave"],[3,"zeggen","to say"],[4,"daar","there"],[4,"datum, de","date"],[4,"formulier, het","form"],[4,"geboorte, de","birth"],[4,"geslacht, het","gender"],[4,"handtekening, de","signature"],[4,"invullen","to fill in / to fill out"],[4,"maart","March"],[4,"nationaliteit, de","nationality"],[4,"Nederlands(e)","Dutch"],[4,"onder","here: at the bottom"],[4,"zetten (een handtekening zetten)","to put (to put your signature / to sign)"]],"fa":[[0,"achternaam, de","نام خانوادگی"],[0,"auto, de","ماشین، خودرو"],[0,"autorijles, de","درس رانندگی"],[0,"broer, de","برادر"],[0,"dochter, de","دختر"],[0,"en","و"],[0,"familie, de","خانواده"],[0,"gebruiken (gebruik)","استفاده کردن (به کار بردن)"],[0,"geven (geef)","دادن (دادن)"],[0,"hebben","داشتن"],[0,"heten","فراخوانده شدن"],[0,"huisarts, de","پزشک عمومی"],[0,"in","در"],[0,"jaar, het","سال"],[0,"kijken","نگاه کردن"],[0,"kinderen, de","بچهها"],[0,"komen","آمدن"],[0,"man, de","شوهر"],[0,"met","با"],[0,"moeder, de","مادر"],[0,"naam, de","نام"],[0,"nieuw","جدید"],[0,"nu","الان"],[0,"nummer, het","شماره"],[0,"oefenen","تمرین کردن"],[0,"op","روی"],[0,"persoonlijk","شخصی"],[0,"student, de","دانشجو"],[0,"studeren","مطالعه کردن"],[0,"uit (ik kom uit…)","از (من اهل) هستم"],[0,"vader, de","پدر"],[0,"voornaam, de","نام کوچک"],[0,"vrouw, de","همسر (زن)"],[0,"wat","چی"],[0,"welk","که"],[0,"werken","کار کردن"],[0,"wie","چه کسی"],[0,"winkel, de","مغازه"],[0,"wonen (woon)","زیستن (زنده بودن)"],[0,"woord, het","کلمه"],[0,"zien","برای دیدن"],[0,"zijn (ben, bent, is)","بودن (هستم، هستم، هست)"],[0,"zoon, de","پسر"],[0,"zus, de","خواهر"],[1,"ander","دیگر، سایر"],[1,"antwoord, het","جواب / پاسخ"],[1,"bedanken","تشکر کردن"],[1,"beginnen","شروع کردن"],[1,"binnenkomen","وارد شدن"],[1,"collega, de","همکار"],[1,"dit","این"],[1,"doen","انجام دادن"],[1,"eind, het","نهایی"],[1,"even","حتی"],[1,"gaan","رفتن"],[1,"goed","خوب"],[1,"goedemiddag","عصر بخیر"],[1,"hoe (hoe heet je?)","چی (اسمت چیه؟)"],[1,"iemand (anders)","شخصی (دیگر)"],[1,"ja","بله"],[1,"jezelf","خودت"],[1,"leuk","خوب"],[1,"luisteren","گوش دادن"],[1,"meedoen","شرکت کردن"],[1,"meneer, de","آقا"],[1,"mevrouw, de","خانم"],[1,"moeten","باید"],[1,"nee","خیر"],[1,"ontmoeten","ملاقات کردن"],[1,"ook","همچنین"],[1,"passen bij / in","برای رفتن با"],[1,"reageren","پاسخ دادن"],[1,"samen","با هم"],[1,"schrijven","نوشتن"],[1,"vandaan","از"],[1,"verder (verder zoeken)","بیشتر (برای ادامه جستجو)"],[1,"voorstellen","معرفی کردن"],[1,"vraag, de","سوال"],[1,"vragen","پرسیدن"],[1,"waar","کجا"],[1,"weer","دوباره"],[1,"weten","دانستن"],[1,"zin","معنی"],[1,"zitten","نشستن"],[1,"zullen (zal)","باید (خواهد شد)"],[2,"achter","پشت / عقب"],[2,"adres, het","آدرس"],[2,"altijd","همیشه"],[2,"bellen","تماس گرفتن"],[2,"cijfer, het","شماره"],[2,"combinatie, de","ترکیب"],[2,"cursus, de","دوره"],[2,"dan","آن زمان"],[2,"danken (dank u wel)","تشکر کردن"],[2,"dankjewel","مرسی (غیررسمی)"],[2,"dankuwel","متشکرم (رسمی)"],[2,"dezelfde","همان"],[2,"excuus, het","عذرخواهی"],[2,"fijn","خوب"],[2,"geen","هیچ"],[2,"getal, het","شماره"],[2,"goedemorgen","صبح بخیر"],[2,"herkomst, de","منشأ"],[2,"huis, het","خانه"],[2,"klopt dat?","آیا این درست است؟"],[2,"krant, de","روزنامه"],[2,"kunnen","میتواند"],[2,"letter, de","نامه"],[2,"lezen","برای خواندن"],[2,"maar (maar ik vind…)","اما (اما من فکر میکنم...)"],[2,"maken","ساختن"],[2,"naar","به"],[2,"niet","نیست"],[2,"ongeveer","درباره"],[2,"plaats, de","موقعیت"],[2,"postcode, de","کد پستی"],[2,"soms","گاهی اوقات"],[2,"staan (staat)","ایستادن (ایستادن)"],[2,"straat, de","خیابان"],[2,"uniek","منحصر به فرد"],[2,"vandaag","امروز"],[2,"vervelend","آزاردهنده"],[2,"vinden","پیدا کردن"],[2,"volgen","دنبال کردن"],[2,"willen","خواستن"],[2,"woonplaats, de","محل سکونت"],[2,"zoeken","برای جستجو"],[3,"afgelopen","تمامشده"],[3,"antwoorden","جواب دادن، پاسخ دادن"],[3,"bijvoorbeeld","برای مثال"],[3,"boek, het","کتاب"],[3,"docent, de (e)","معلم"],[3,"eindigen","پایان دادن"],[3,"elkaar","یکدیگر"],[3,"groeten","احوالپرسی کردن"],[3,"kennen","دانستن"],[3,"meestal","معمولا"],[3,"mensen, de","مردم"],[3,"oma, de","مادربزرگ"],[3,"oud","قدیمی"],[3,"pauze, de","استراحت"],[3,"prettig","خوب"],[3,"schat, de","عزیزم"],[3,"straks","بعدا"],[3,"tegen","علیه"],[3,"vaak","اغلب"],[3,"vriend, de","دوست"],[3,"wachten","منتظر ماندن"],[3,"weggaan","ترک کردن"],[3,"zeggen","گفتن"],[4,"Nederlands(e)","هلندی"],[4,"daar","آنجا"],[4,"datum, de","تاریخ"],[4,"formulier, het","فرم"],[4,"geboorte, de","تولد"],[4,"geslacht, het","جنسیت"],[4,"handtekening, de","امضا"],[4,"invullen","برای پر کردن"],[4,"maart","مارس"],[4,"nationaliteit, de","ملیت"],[4,"onder","زیر"],[4,"zetten (een handtekening zetten)","گذاشتن (امضا کردن)"]],"fr":[[0,"achternaam, de","nom"],[0,"auto, de","voiture"],[0,"autorijles, de","cours de conduite"],[0,"broer, de","frère"],[0,"dochter, de","fille"],[0,"en","et"],[0,"familie, de","famille"],[0,"gebruiken (gebruik)","utiliser (utilise)"],[0,"geven (geeft)","donner"],[0,"hebben","avoir"],[0,"heten","s’appeler"],[0,"huisarts, de","médecin de famille"],[0,"in","dans"],[0,"jaar, het","année"],[0,"kijken","regarder"],[0,"kinderen, de (het kind)","enfants"],[0,"komen","venir (de)"],[0,"man, de","époux (homme)"],[0,"met","avec"],[0,"moeder, de","mère"],[0,"naam, de","nom"],[0,"nieuw","nouveau"],[0,"nu","maintenant"],[0,"nummer, het","numéro"],[0,"oefenen","exercer"],[0,"op","le"],[0,"persoonlijk","personnel"],[0,"student, de","étudiant"],[0,"studeren","étudier"],[0,"uit (ik kom uit…)","de (je viens de…)"],[0,"vader, de","père"],[0,"voornaam, de","prénom"],[0,"vrouw, de","femme"],[0,"wat","quoi"],[0,"welk","quel"],[0,"werken","travailler"],[0,"wie","qui"],[0,"winkel, de","magasin"],[0,"wonen","habiter"],[0,"woord, het","mot"],[0,"zien","voir"],[0,"zijn (ben, bent, is)","être"],[0,"zoon, de","fils"],[0,"zus, de","sœur"],[1,"ander","autre"],[1,"antwoord, het","réponse"],[1,"bedanken","remercier"],[1,"beginnen","commencer"],[1,"binnenkomen","rentrer"],[1,"collega, de","collègue"],[1,"dit","ceci, cela"],[1,"doen","faire"],[1,"eind(e), het","fin"],[1,"even","un instant"],[1,"gaan","aller"],[1,"goed","bien"],[1,"goedemiddag","bonne après-midi"],[1,"hoe (hoe heet je?)","comment (comment t’appelles-tu ?)"],[1,"iemand (anders)","quelqu’un (d’autre)"],[1,"ja","oui"],[1,"jezelf","toi-même"],[1,"leuk","chouette"],[1,"luisteren","écouter"],[1,"meedoen","participer"],[1,"meneer, de","monsieur"],[1,"mevrouw, de","madame"],[1,"moeten","devoir"],[1,"nee","non"],[1,"ontmoeten","rencontrer"],[1,"ook","aussi"],[1,"passen bij / in","aller avec / s’adapter"],[1,"reageren","réagir"],[1,"samen","ensemble"],[1,"schrijven","écrire"],[1,"vandaan","d’où"],[1,"verder (verder gaan / zoeken)","plus loin (chercher plus loin)"],[1,"voorstellen","présenter"],[1,"vraag, de","question"],[1,"vragen","demander"],[1,"waar","où"],[1,"weer","à nouveau"],[1,"weten","savoir"],[1,"zin, de","phrase"],[1,"zitten","s’asseoir"],[1,"zullen (zal)","verbe auxiliaire indiquant le futur"],[2,"achter","derrière"],[2,"adres, het","adresse"],[2,"altijd","toujours"],[2,"bellen","appeler"],[2,"cijfer, het","chiffre"],[2,"combinatie, de","combinaison"],[2,"cursus, de","cours"],[2,"dan","alors"],[2,"danken","remercier (merci)"],[2,"dankjewel","merci"],[2,"dankuwel","je vous remercie"],[2,"dezelfde","le même"],[2,"excuus, het","excuse"],[2,"fijn (dat is fijn)","agréable"],[2,"geen","aucun"],[2,"getal, het","nombre"],[2,"goedemorgen","bonjour"],[2,"herkomst, de","origine"],[2,"huis, het","maison"],[2,"klopt dat?","c'est exact ?"],[2,"krant, de","journal"],[2,"kunnen (kan)","pouvoir"],[2,"letter, de","lettre"],[2,"lezen (lees)","lire"],[2,"maar","mais (mais je trouve...)"],[2,"maken (maak)","faire"],[2,"naar","à"],[2,"niet","pas"],[2,"ongeveer","environ"],[2,"plaats, de","ville"],[2,"postcode, de","code postal"],[2,"soms","parfois"],[2,"staan","se trouver"],[2,"straat, de","rue"],[2,"uniek","unique"],[2,"vandaag","aujourd’hui"],[2,"vervelend","ennuyeux"],[2,"vinden","trouver"],[2,"volgen","suivre"],[2,"willen","vouloir"],[2,"woonplaats, de","lieu de résidence"],[2,"zoeken (zoekt)","rechercher"],[3,"afgelopen","terminé"],[3,"antwoorden","réponses"],[3,"bijvoorbeeld","par exemple"],[3,"boek, het","livre"],[3,"docent(e), de","enseignant(e)"],[3,"eindigen","terminer"],[3,"elkaar","l’un l’autre"],[3,"groeten","saluer"],[3,"kennen","savoir"],[3,"meestal","généralement"],[3,"mensen, de","personnes"],[3,"oma, de","grand-mère"],[3,"oud (ouder)","vieux"],[3,"pauze, de","pause"],[3,"prettig","agréable"],[3,"schat, de","chéri, chérie"],[3,"straks","tout à l’heure"],[3,"tegen","contre"],[3,"vaak","souvent"],[3,"vriend, de","ami"],[3,"wachten","attendre"],[3,"weggaan","partir"],[3,"zeggen","dire"],[4,"daar","là"],[4,"datum, de","date"],[4,"formulier, het","formulaire"],[4,"geboorte, de","naissance"],[4,"geslacht, het","sexe"],[4,"handtekening, de","signature"],[4,"invullen","remplir"],[4,"maart","mars"],[4,"nationaliteit, de","nationalité"],[4,"Nederlands(e)","néerlandais"],[4,"onder","au bas"],[4,"zetten (een handtekening zetten)","apposer (apposer une signature)"]],"kmr":[[0,"achternaam, de","paşnav"],[0,"auto, de","trimbêl"],[0,"autorijles, de","dersa ajotinê"],[0,"broer, de","brak"],[0,"dochter, de","keç"],[0,"en","û"],[0,"familie, de","malbat"],[0,"gebruiken (gebruik)","bikaranîn (bikaranîn)"],[0,"geven (geef)","dayîn (dan)"],[0,"hebben","xwedîbûn"],[0,"heten","hatin binavkirin"],[0,"huisarts, de","bijîşkê giştî"],[0,"in","li"],[0,"jaar, het","sal"],[0,"kijken","lê nêrîn"],[0,"kinderen, de","zarok"],[0,"komen","hatin"],[0,"man, de","mêr"],[0,"met","bi"],[0,"moeder, de","dê"],[0,"naam, de","nav"],[0,"nieuw","nû"],[0,"nu","niha"],[0,"nummer, het","jimare"],[0,"oefenen","pratîkkirin"],[0,"op","li ser"],[0,"persoonlijk","şexsî"],[0,"student, de","xwendekar"],[0,"studeren","xwendin"],[0,"uit (ik kom uit…)","ji (ez ji) me"],[0,"vader, de","bav"],[0,"voornaam, de","nav"],[0,"vrouw, de","jin (jin)"],[0,"wat","çi"],[0,"welk","kîjan"],[0,"werken","kar kirin"],[0,"wie","kî"],[0,"winkel, de","dikan"],[0,"wonen (woon)","jiyîn (bijî)"],[0,"woord, het","bêje"],[0,"zien","dîtin"],[0,"zijn (ben, bent, is)","bûn (ez, in, e)"],[0,"zoon, de","kur"],[0,"zus, de","xwişk"],[1,"ander","yê din:"],[1,"antwoord, het","bersiv"],[1,"bedanken","spasîkirin"],[1,"beginnen","destpêkirin"],[1,"binnenkomen","hatina hundir"],[1,"collega, de","karheval"],[1,"dit","ev"],[1,"doen","kirin"],[1,"eind, het","dawî"],[1,"even","hetta"],[1,"gaan","çûn"],[1,"goed","baş"],[1,"goedemiddag","roj baş"],[1,"hoe (hoe heet je?)","çi (navê te çi ye)"],[1,"iemand (anders)","kesek (din)"],[1,"ja","erê"],[1,"jezelf","xwe"],[1,"leuk","xweşik"],[1,"luisteren","guhdarîkirin"],[1,"meedoen","beşdarbûn"],[1,"meneer, de","mirze"],[1,"mevrouw, de","xanim"],[1,"moeten","divê"],[1,"nee","na"],[1,"ontmoeten","hevdîtin"],[1,"ook","jî"],[1,"passen bij / in","çûna bi"],[1,"reageren","bersivdan"],[1,"samen","bi hev re"],[1,"schrijven","nivîsandin"],[1,"vandaan","ji"],[1,"verder (verder zoeken)","wêdetir (lêgerîna wêdetir)"],[1,"voorstellen","danasîn"],[1,"vraag, de","pirs"],[1,"vragen","pirsîn"],[1,"waar","ku"],[1,"weer","dîsa"],[1,"weten","zanîn"],[1,"zin","mane"],[1,"zitten","rûniştin"],[1,"zullen (zal)","dê (wê)"],[2,"achter","li paş"],[2,"adres, het","navnîşan"],[2,"altijd","her dem"],[2,"bellen","gazîkirin"],[2,"cijfer, het","jimare"],[2,"combinatie, de","hevgirêkî"],[2,"cursus, de","kûrs"],[2,"dan","bêtir"],[2,"danken (dank u wel)","spasîkirin"],[2,"dankjewel","spas (nefermî)"],[2,"dankuwel","spas dikim (fermî)"],[2,"dezelfde","heman"],[2,"excuus, het","lêborîn"],[2,"fijn","xweşik"],[2,"geen","netu"],[2,"getal, het","jimare"],[2,"goedemorgen","beyanî baş"],[2,"herkomst, de","kok"],[2,"huis, het","xanî"],[2,"klopt dat?","ev rast e?"],[2,"krant, de","rojname"],[2,"kunnen","karîn"],[2,"letter, de","name"],[2,"lezen","xwendin"],[2,"maar (maar ik vind…)","lê (lê ez difikirim ...)"],[2,"maken","çêkirin"],[2,"naar","ber"],[2,"niet","ne"],[2,"ongeveer","li dor"],[2,"plaats, de","rewş"],[2,"postcode, de","koda postê"],[2,"soms","carna"],[2,"staan (staat)","rawestin (radiweste)"],[2,"straat, de","kolan"],[2,"uniek","yekane"],[2,"vandaag","îro"],[2,"vervelend","acizker"],[2,"vinden","dîtin"],[2,"volgen","şopandin"],[2,"willen","xwestin"],[2,"woonplaats, de","cîwar"],[2,"zoeken","lêgerîn"],[3,"afgelopen","qediya"],[3,"antwoorden","bersivdan"],[3,"bijvoorbeeld","bo nimûne"],[3,"boek, het","pirtûk"],[3,"docent, de (e)","mamoste"],[3,"eindigen","bidawîkirin"],[3,"elkaar","yekûdu"],[3,"groeten","silavkirin"],[3,"kennen","zanîn"],[3,"meestal","pirî caran"],[3,"mensen, de","gel"],[3,"oma, de","dapîr"],[3,"oud","pîr"],[3,"pauze, de","navber"],[3,"prettig","xweşik"],[3,"schat, de","delal"],[3,"straks","paşê"],[3,"tegen","dijî"],[3,"vaak","gelek car"],[3,"vriend, de","dost"],[3,"wachten","li bendê mayîn"],[3,"weggaan","derketin"],[3,"zeggen","gotin"],[4,"daar","wir"],[4,"datum, de","roj"],[4,"formulier, het","şikil"],[4,"geboorte, de","zayîn"],[4,"geslacht, het","zayend"],[4,"handtekening, de","destnîşan"],[4,"invullen","tijîkirin"],[4,"maart","Adar"],[4,"nationaliteit, de","niştimanî"],[4,"Nederlands(e)","Holandî"],[4,"onder","di bin"],[4,"zetten (een handtekening zetten)","danîn (îmze kirin)"]],"uk":[[0,"achternaam, de","прізвище"],[0,"auto, de","автомобіль"],[0,"autorijles, de","Курси водіїв"],[0,"broer, de","брат"],[0,"dochter, de","дочка"],[0,"en","та"],[0,"familie, de","сім'я"],[0,"gebruiken (gebruik)","використовувати (використання)"],[0,"geven (geeft)","давати"],[0,"hebben","мати"],[0,"heten","гарячий"],[0,"huisarts, de","лікар"],[0,"in","в"],[0,"jaar, het","Рік"],[0,"kijken","дивитися"],[0,"kinderen, de (het kind)","діти"],[0,"komen","прийти (вийти)"],[0,"man, de","чоловік"],[0,"met","з"],[0,"moeder, de","мати"],[0,"naam, de","назва"],[0,"nieuw","новий"],[0,"nu","зараз"],[0,"nummer, het","номер"],[0,"oefenen","практикувати / тренуватися"],[0,"op","увімкнена"],[0,"persoonlijk","особистий"],[0,"student, de","учень"],[0,"studeren","вивчає"],[0,"uit (ik kom uit…)","з (я з...)"],[0,"vader, de","батько"],[0,"voornaam, de","ім'я"],[0,"vrouw, de","заміжня жінка"],[0,"wat","що"],[0,"welk","які"],[0,"werken","Робота"],[0,"wie","хто"],[0,"winkel, de","магазин"],[0,"wonen","жити"],[0,"woord, het","слово"],[0,"zien","побачити"],[0,"zijn (ben, bent, is)","бути"],[0,"zoon, de","син"],[0,"zus, de","сестра"],[1,"ander","ще один евро"],[1,"antwoord, het","відповідь"],[1,"bedanken","дякувати"],[1,"beginnen","почати"],[1,"binnenkomen","входити"],[1,"collega, de","колега"],[1,"dit","це"],[1,"doen","робити"],[1,"eind(e), het","довгий шлях"],[1,"even","хвилинку"],[1,"gaan","йти"],[1,"goed","добре"],[1,"goedemiddag","добрий день"],[1,"hoe (hoe heet je?)","що (як тебе звати?)"],[1,"iemand (anders)","хтось (інший)"],[1,"ja","Так"],[1,"jezelf","себе"],[1,"leuk","веселощі"],[1,"luisteren","слухай"],[1,"meedoen","приєднуватися"],[1,"meneer, de","Сер"],[1,"mevrouw, de","мадам"],[1,"moeten","повинен"],[1,"nee","ні"],[1,"ontmoeten","зустрічатися"],[1,"ook","також"],[1,"passen bij / in","ставити у відповідність/пристосувати"],[1,"reageren","реагувати"],[1,"samen","разом"],[1,"schrijven","писати"],[1,"vandaan","від"],[1,"verder (verder gaan / zoeken)","шукати (шукати далі)"],[1,"voorstellen","пропонувати"],[1,"vraag, de","запитання"],[1,"vragen","запитайте"],[1,"waar","де"],[1,"weer","знову"],[1,"weten","знати"],[1,"zin, de","речення / смисл"],[1,"zitten","сидіти"],[1,"zullen (zal)","повинен"],[2,"achter","позаду"],[2,"adres, het","адреса"],[2,"altijd","завжди"],[2,"bellen","виклик"],[2,"cijfer, het","номер"],[2,"combinatie, de","комбінація"],[2,"cursus, de","курс"],[2,"dan","тоді"],[2,"danken","дякую (дякую вам)"],[2,"dankjewel","дякую / дякуємо"],[2,"dankuwel","дякую / дякуємо"],[2,"dezelfde","такий же"],[2,"excuus, het","вибачення"],[2,"fijn (dat is fijn)","Чудовий"],[2,"geen","жоден"],[2,"getal, het","число"],[2,"goedemorgen","доброго ранку"],[2,"herkomst, de","походження"],[2,"huis, het","будинок"],[2,"klopt dat?","це так?"],[2,"krant, de","газета"],[2,"kunnen (kan)","може"],[2,"letter, de","літера"],[2,"lezen (lees)","читати"],[2,"maar","але (але я вважаю…)"],[2,"maken (maak)","робити"],[2,"naar","до"],[2,"niet","треба"],[2,"ongeveer","про"],[2,"plaats, de","Місце"],[2,"postcode, de","індекс"],[2,"soms","іноді"],[2,"staan","стоїть"],[2,"straat, de","вулиця"],[2,"uniek","унікальний"],[2,"vandaag","сьогодні"],[2,"vervelend","дратуючий"],[2,"vinden","знайти"],[2,"volgen","слідувати"],[2,"willen","хотіти"],[2,"woonplaats, de","проживання"],[2,"zoeken (zoekt)","дивлячись"],[3,"afgelopen","минулий / закінчений"],[3,"antwoorden","відповіді"],[3,"bijvoorbeeld","наприклад"],[3,"boek, het","книга"],[3,"docent(e), de","викладач"],[3,"eindigen","закінчувати"],[3,"elkaar","один одного"],[3,"groeten","овочі"],[3,"kennen","знати"],[3,"meestal","здебільшого"],[3,"mensen, de","люди"],[3,"oma, de","бабуся"],[3,"oud (ouder)","старий"],[3,"pauze, de","перерва"],[3,"prettig","приємно"],[3,"schat, de","дорогий / дорога"],[3,"straks","пізніше"],[3,"tegen","За адресою"],[3,"vaak","частий"],[3,"vriend, de","друг"],[3,"wachten","очікування"],[3,"weggaan","йти геть"],[3,"zeggen","сказати"],[4,"daar","там"],[4,"datum, de","дата"],[4,"formulier, het","форма"],[4,"geboorte, de","народження"],[4,"geslacht, het","забитий"],[4,"handtekening, de","Підпис"],[4,"invullen","заповнити"],[4,"maart","Березень"],[4,"nationaliteit, de","національність"],[4,"Nederlands(e)","Нідерландська"],[4,"onder","під"],[4,"zetten (een handtekening zetten)","ставити (підписати)"]],"prs":[[0,"achternaam, de","تخلص/ اسم آخر"],[0,"auto, de","موتر"],[0,"autorijles, de","درس رانندگی"],[0,"broer, de","برادر"],[0,"dochter, de","دختر"],[0,"en","و"],[0,"familie, de","فامیل، خویشاوندن"],[0,"gebruiken (gebruik)","برای استفاده"],[0,"geven (geeft)","دادن"],[0,"hebben","داشتن"],[0,"heten","نامیده شود"],[0,"huisarts, de","داکتر فامیلی، داکتر عمومی"],[0,"in","در"],[0,"jaar, het","سال"],[0,"kijken","دیدن به چیزی"],[0,"kinderen, de (het kind)","اطفال"],[0,"komen","آمدن (از)"],[0,"man, de","شوهر (مرد)"],[0,"met","با"],[0,"moeder, de","مادر"],[0,"naam, de","نام"],[0,"nieuw","جدید"],[0,"nu","حالا"],[0,"nummer, het","شماره"],[0,"oefenen","تمرین کردن"],[0,"op","روی، در"],[0,"persoonlijk","شخصی"],[0,"student, de","شاگرد"],[0,"studeren","درس خواندن"],[0,"uit (ik kom uit…)","بیرون (من از... هستم)"],[0,"vader, de","پدر"],[0,"voornaam, de","نام اول"],[0,"vrouw, de","خانم (زن)"],[0,"wat","چی"],[0,"welk","کدام، چی"],[0,"werken","کار کردن"],[0,"wie","کی"],[0,"winkel, de","دکان"],[0,"wonen","زندگی کردن"],[0,"woord, het","کلمه"],[0,"zien","دیدن"],[0,"zijn (ben, bent, is)","هستند"],[0,"zoon, de","پسر"],[0,"zus, de","خواهر"],[1,"ander","دیگر/ سائر"],[1,"antwoord, het","جواب"],[1,"bedanken","تشکر کردن"],[1,"beginnen","شروع کردن"],[1,"binnenkomen","داخل بیائید"],[1,"collega, de","همکار"],[1,"dit","این"],[1,"doen","برای کردن"],[1,"eind(e), het","آخر/ پایان"],[1,"even","مختصر/ فقط"],[1,"gaan","رفتن"],[1,"goed","بسیار خوب، خوب"],[1,"goedemiddag","بعد از چاشت بخیر"],[1,"hoe (hoe heet je?)","چیست؟ (نام شما چست؟)"],[1,"iemand (anders)","کسی (دیگر)"],[1,"ja","بلی"],[1,"jezelf","خودت"],[1,"leuk","دلپذیر"],[1,"luisteren","گوش کردن"],[1,"meedoen","شرکت کردن"],[1,"meneer, de","محترم/ آقا"],[1,"mevrouw, de","محترمه/ خانم/ دوشیزه"],[1,"moeten","باشد/ حتما"],[1,"nee","نخیر"],[1,"ontmoeten","ملاقات کردن"],[1,"ook","همچنان، هم"],[1,"passen bij / in","رفتن با/ مطابقت داشتن - همراه خوب معلوم شدن"],[1,"reageren","پاسخ دادن، عکس العمل نشان دادن"],[1,"samen","باهم"],[1,"schrijven","نوشتن (چیزی)"],[1,"vandaan","از طرف"],[1,"verder (verder gaan / zoeken)","پدر، پیش تر (دیده برو)"],[1,"voorstellen","معرفی کردن"],[1,"vraag, de","سوال"],[1,"vragen","پرسیدن"],[1,"waar","کجا"],[1,"weer","دوباره"],[1,"weten","شناختن"],[1,"zin, de","احساس کردن مانند"],[1,"zitten","نشستن، بودن"],[1,"zullen (zal)","باید، خواهد"],[2,"achter","بعد، عقب"],[2,"adres, het","آدرس"],[2,"altijd","همیشه / پیوسته"],[2,"bellen","زنگ زدن، تلیفون کردن"],[2,"cijfer, het","شماره"],[2,"combinatie, de","مرکب"],[2,"cursus, de","کورس/ دوره"],[2,"dan","پس/ نسبت به"],[2,"danken","تشکری کردن (تشکر از شما - رسمی)"],[2,"dankjewel","تشکر (غیر رسمی)"],[2,"dankuwel","تشکر از شما (رسمی)"],[2,"dezelfde","یک نوع"],[2,"excuus, het","معذرت"],[2,"fijn (dat is fijn)","خوب، قشنگ، بسیار عالی"],[2,"geen","نخیر"],[2,"getal, het","عدد"],[2,"goedemorgen","صبح بخیر"],[2,"herkomst, de","اصل و نسب"],[2,"huis, het","خانه"],[2,"klopt dat?","آیا این صحیح است؟"],[2,"krant, de","روزنامه/ اخبار"],[2,"kunnen (kan)","می تواند، توانستن"],[2,"letter, de","حرف (حروف)"],[2,"lezen (lees)","خواندن"],[2,"maar","اما"],[2,"maken (maak)","ساختن"],[2,"naar","تا"],[2,"niet","نیست/ نمی باشد"],[2,"ongeveer","درباره/ حدود"],[2,"plaats, de","شهرک، شهر"],[2,"postcode, de","کد پستی"],[2,"soms","بعضی اوقات"],[2,"staan","ایستاد شدن"],[2,"straat, de","کوچه"],[2,"uniek","یکتا"],[2,"vandaag","امروز"],[2,"vervelend","آزار دهنده، ناخوشایند"],[2,"vinden","پیدا کردن"],[2,"volgen","دنبال کردن"],[2,"willen","خواستن"],[2,"woonplaats, de","(جای) بود و باش"],[2,"zoeken (zoekt)","پالیدن، جستجو کردن"],[3,"afgelopen","تمام شد"],[3,"antwoorden","جواب دادن"],[3,"bijvoorbeeld","برای مثال"],[3,"boek, het","کتاب"],[3,"docent(e), de","معلم"],[3,"eindigen","خاتمه/ تمام کردن/ نتیجه کرفتن"],[3,"elkaar","همدیگر"],[3,"groeten","احوالپرسی کردن"],[3,"kennen","شناختن"],[3,"meestal","اکثر اوقات، عموما"],[3,"mensen, de","مردم"],[3,"oma, de","مادر بزرگ"],[3,"oud (ouder)","پیر"],[3,"pauze, de","تفریح"],[3,"prettig","خوب / خوبش"],[3,"schat, de","عزیزم"],[3,"straks","بعدا"],[3,"tegen","در برابر، توسط، به"],[3,"vaak","اکثرا"],[3,"vriend, de","دوست"],[3,"wachten","منتظر بودن"],[3,"weggaan","ایلا کردن"],[3,"zeggen","گفتن"],[4,"daar","آنجا"],[4,"datum, de","تاریخ"],[4,"formulier, het","فورمه"],[4,"geboorte, de","تولد"],[4,"geslacht, het","جنسیت"],[4,"handtekening, de","امضاء"],[4,"invullen","خانه پری، تکمیل کردن"],[4,"maart","مارچ"],[4,"nationaliteit, de","ملیت"],[4,"Nederlands(e)","هلندی"],[4,"onder","در زیر/ پائین"],[4,"zetten (een handtekening zetten)","انجام دادن (امضا خود کردن)"]],"ru":[[0,"achternaam, de","фамилия"],[0,"auto, de","автомобиль"],[0,"autorijles, de","урок вождения"],[0,"broer, de","брат"],[0,"dochter, de","дочь"],[0,"en","и"],[0,"familie, de","семья"],[0,"gebruiken (gebruik)","использовать (использование)"],[0,"geven (geeft)","давать"],[0,"hebben","иметь"],[0,"heten","называться (меня зовут Ян)"],[0,"huisarts, de","семейный (участковый) врач"],[0,"in","в"],[0,"jaar, het","год"],[0,"kijken","смотреть, глядеть"],[0,"kinderen, de (het kind)","дети"],[0,"komen","быть родом из..."],[0,"man, de","муж (мужчина)"],[0,"met","с"],[0,"moeder, de","мать"],[0,"naam, de","имя"],[0,"nieuw","новый"],[0,"nu","сейчас"],[0,"nummer, het","число"],[0,"oefenen","практиковать / тренироваться"],[0,"op","на"],[0,"persoonlijk","личный"],[0,"student, de","студент"],[0,"studeren","изучать, учиться"],[0,"uit (ik kom uit…)","из (я из...)"],[0,"vader, de","отец"],[0,"voornaam, de","имя"],[0,"vrouw, de","жена"],[0,"wat","что"],[0,"welk","какой / который"],[0,"werken","работать"],[0,"wie","кто"],[0,"winkel, de","магазин"],[0,"wonen","жить"],[0,"woord, het","слово"],[0,"zien","видеть"],[0,"zijn (ben, bent, is)","быть"],[0,"zoon, de","сын"],[0,"zus, de","сестра"],[1,"ander","другой"],[1,"antwoord, het","ответ"],[1,"bedanken","благодарить"],[1,"beginnen","начинать"],[1,"binnenkomen","войти"],[1,"collega, de","коллега"],[1,"dit","это"],[1,"doen","делать"],[1,"eind(e), het","конец"],[1,"even","минутку"],[1,"gaan","ходить"],[1,"goed","хорошо"],[1,"goedemiddag","добрый день"],[1,"hoe (hoe heet je?)","как (как тебя зовут?)"],[1,"iemand (anders)","кто-то (другой)"],[1,"ja","да"],[1,"jezelf","себя"],[1,"leuk","приятный, симпатичный, здорово!"],[1,"luisteren","слушать"],[1,"meedoen","участвовать"],[1,"meneer, de","господин"],[1,"mevrouw, de","госпожа, мадам"],[1,"moeten","долженствовать, быть должным"],[1,"nee","нет"],[1,"ontmoeten","встречаться"],[1,"ook","также, тоже"],[1,"passen bij / in","подходить для/к"],[1,"reageren","реагировать"],[1,"samen","вместе"],[1,"schrijven","(за)писывать"],[1,"vandaan","откуда"],[1,"verder (verder gaan / zoeken)","искать (искать дальше)"],[1,"voorstellen","представиться (zelf), представить (iemand)"],[1,"vraag, de","вопрос"],[1,"vragen","спрашивать"],[1,"waar","где"],[1,"weer","снова, опять"],[1,"weten","знать"],[1,"zin, de","предложение / смысл"],[1,"zitten","сидеть"],[1,"zullen (zal)","буду, будешь, будет"],[2,"achter","сзади/позади"],[2,"adres, het","адрес"],[2,"altijd","всегда"],[2,"bellen","(по-)звонить"],[2,"cijfer, het","цифра"],[2,"combinatie, de","комбинация"],[2,"cursus, de","курс"],[2,"dan","тогда, в таком случае"],[2,"danken","благодарить (благодарю)"],[2,"dankjewel","спасибо"],[2,"dankuwel","спасибо"],[2,"dezelfde","тоже самое"],[2,"excuus, het","извинение"],[2,"fijn (dat is fijn)","приятный"],[2,"geen","нет"],[2,"getal, het","число"],[2,"goedemorgen","доброе утро"],[2,"herkomst, de","происхождение"],[2,"huis, het","дом"],[2,"klopt dat?","это верно?"],[2,"krant, de","газета"],[2,"kunnen (kan)","мочь, быть в состоянии"],[2,"letter, de","буква"],[2,"lezen (lees)","читать"],[2,"maar","но (но я считаю…)"],[2,"maken (maak)","делать"],[2,"naar","в"],[2,"niet","нет"],[2,"ongeveer","около"],[2,"plaats, de","населенный пункт"],[2,"postcode, de","почтовый индекс"],[2,"soms","иногда"],[2,"staan","стоять"],[2,"straat, de","улица"],[2,"uniek","уникальный"],[2,"vandaag","сегодня"],[2,"vervelend","раздражающий"],[2,"vinden","найти"],[2,"volgen","следовать"],[2,"willen","хотеть"],[2,"woonplaats, de","место жительства"],[2,"zoeken (zoekt)","искать"],[3,"afgelopen","прошлый / законченный"],[3,"antwoorden","отвечать"],[3,"bijvoorbeeld","например"],[3,"boek, het","книга"],[3,"docent(e), de","преподаватель"],[3,"eindigen","заканчивать"],[3,"elkaar","друг друга"],[3,"groeten","приветствовать"],[3,"kennen","знать"],[3,"meestal","обычно"],[3,"mensen, de","люди"],[3,"oma, de","бабушка"],[3,"oud (ouder)","старый"],[3,"pauze, de","пауза, перерыв, перемена"],[3,"prettig","приятно"],[3,"schat, de","дорогой / дорогая"],[3,"straks","скоро"],[3,"tegen","в"],[3,"vaak","часто"],[3,"vriend, de","друг"],[3,"wachten","ждать"],[3,"weggaan","уходить"],[3,"zeggen","сказать"],[4,"daar","там"],[4,"datum, de","дата"],[4,"formulier, het","бланк, формуляр"],[4,"geboorte, de","рождение"],[4,"geslacht, het","пол"],[4,"handtekening, de","подпись"],[4,"invullen","заполнять"],[4,"maart","март"],[4,"nationaliteit, de","гражданство"],[4,"Nederlands(e)","нидерландский"],[4,"onder","под"],[4,"zetten (een handtekening zetten)","ставить (подписать)"]],"so":[[0,"achternaam, de","magaca qoyska"],[0,"auto, de","gaadhi"],[0,"autorijles, de","casharka wadista"],[0,"broer, de","walaal"],[0,"dochter, de","inantay"],[0,"en","iyo"],[0,"familie, de","qoys"],[0,"gebruiken (gebruik)","inaad isticmaasho (isticmaal)"],[0,"geven (geef)","bixi (inaad bixiso)"],[0,"hebben","inaad haysato"],[0,"heten","in la waco"],[0,"huisarts, de","dhakhtar guud"],[0,"in","gude"],[0,"jaar, het","sanad"],[0,"kijken","inaad eegto"],[0,"kinderen, de","carruurta"],[0,"komen","inaad timaad"],[0,"man, de","say"],[0,"met","la"],[0,"moeder, de","hooyo"],[0,"naam, de","magaca"],[0,"nieuw","cusub"],[0,"nu","imika"],[0,"nummer, het","lambar"],[0,"oefenen","inaad dabbaqdo"],[0,"op","dusha"],[0,"persoonlijk","shakhsiyeed"],[0,"student, de","arday"],[0,"studeren","inaad wax u barato"],[0,"uit (ik kom uit…)","ka imi (waxaan ka imi)"],[0,"vader, de","aabbe"],[0,"voornaam, de","magaca koowaad"],[0,"vrouw, de","afo (haweenay)"],[0,"wat","waxa"],[0,"welk","taas oo"],[0,"werken","inaad shaqayso"],[0,"wie","kaasoo/taasoo"],[0,"winkel, de","tukaan"],[0,"wonen (woon)","inaad noolaato (noolaansho)"],[0,"woord, het","eray"],[0,"zien","inaad aragto"],[0,"zijn (ben, bent, is)","ahaansho (ahay, tahay/nahay/yihiin, tahay/yahay)"],[0,"zoon, de","wiilkay"],[0,"zus, de","walaal"],[1,"ander","waxkale"],[1,"antwoord, het","jawaab"],[1,"bedanken","inaad u mahadceliso"],[1,"beginnen","inaad bilawdo"],[1,"binnenkomen","inaad soo gasho"],[1,"collega, de","shaqo-wadaag"],[1,"dit","tan"],[1,"doen","inaad samayso"],[1,"eind, het","ugu dambeyn"],[1,"even","xitaa"],[1,"gaan","inaad tagto"],[1,"goed","wanaagsan"],[1,"goedemiddag","galab wanaagsan"],[1,"hoe (hoe heet je?)","maxaa (magacaagu waa maxay)"],[1,"iemand (anders)","cid (kale)"],[1,"ja","haa"],[1,"jezelf","adiga laftaada"],[1,"leuk","wanaag"],[1,"luisteren","inaad dhageysato"],[1,"meedoen","inaad ka qaybqaadato"],[1,"meneer, de","mudane"],[1,"mevrouw, de","mudan"],[1,"moeten","waa"],[1,"nee","maya"],[1,"ontmoeten","inaad la kulanto"],[1,"ook","sidoo kale"],[1,"passen bij / in","inaad isqaadataan"],[1,"reageren","inaad jawaabto"],[1,"samen","wada jir"],[1,"schrijven","inaad qorto"],[1,"vandaan","laga bilaabo"],[1,"verder (verder zoeken)","dheeraad (inaad sii waddo eegista)"],[1,"voorstellen","inaad barto"],[1,"vraag, de","su’aal"],[1,"vragen","inaad weydiiso"],[1,"waar","goobta"],[1,"weer","mar kale"],[1,"weten","inaad ogaato"],[1,"zin","macnaha"],[1,"zitten","inaad fadhiisato"],[1,"zullen (zal)","doonaa (doonaa)"],[2,"achter","gadaasha"],[2,"adres, het","Cinwaanka"],[2,"altijd","had iyo jeer"],[2,"bellen","inaad wacdo"],[2,"cijfer, het","lambar"],[2,"combinatie, de","isku darka"],[2,"cursus, de","koorso"],[2,"dan","ka badan"],[2,"danken (dank u wel)","inaad u mahadceliso"],[2,"dankjewel","waad mahadsan tahay (aan rasmi ahayn)"],[2,"dankuwel","waad mahadsan tahay (rasmi ah)"],[2,"dezelfde","isla sidaas oo kale"],[2,"excuus, het","raaligelin"],[2,"fijn","wanaag"],[2,"geen","waxna"],[2,"getal, het","lambar"],[2,"goedemorgen","subax wanaagsan"],[2,"herkomst, de","asal"],[2,"huis, het","guri"],[2,"klopt dat?","taasi ma sax baa?"],[2,"krant, de","warside"],[2,"kunnen","daasad"],[2,"letter, de","warqad"],[2,"lezen","inaad akhrido"],[2,"maar (maar ik vind…)","laakiin (laakiin waxaan u malaynayaa...)"],[2,"maken","inaad samayso"],[2,"naar","ilaa"],[2,"niet","ma aha"],[2,"ongeveer","ku saabsan"],[2,"plaats, de","goob"],[2,"postcode, de","koodhka boostada"],[2,"soms","waqtiyada qaarkood"],[2,"staan (staat)","inuu istaago (istaaga)"],[2,"straat, de","jid"],[2,"uniek","gooni ah"],[2,"vandaag","maanta"],[2,"vervelend","dhibsad leh"],[2,"vinden","inaad hesho"],[2,"volgen","inaad raacdo"],[2,"willen","inaad rabto"],[2,"woonplaats, de","degganaansho"],[2,"zoeken","inaad raadiso"],[3,"afgelopen","dhammeeyay"],[3,"antwoorden","inaad jawaabto"],[3,"bijvoorbeeld","tusaale ahaan"],[3,"boek, het","Buug"],[3,"docent, de (e)","macallin"],[3,"eindigen","inaad dhammayso"],[3,"elkaar","midba midka kale"],[3,"groeten","inaad salaanto"],[3,"kennen","inaad ogaado"],[3,"meestal","caadi ahaan"],[3,"mensen, de","dad"],[3,"oma, de","ayeeyo"],[3,"oud","gaboobay"],[3,"pauze, de","nasasho"],[3,"prettig","wanaag"],[3,"schat, de","xubbi"],[3,"straks","dambe"],[3,"tegen","ka dhan ah"],[3,"vaak","sida badan"],[3,"vriend, de","saaxiib"],[3,"wachten","inaad sugto"],[3,"weggaan","inaad tagto"],[3,"zeggen","inaad dhahdo"],[4,"daar","halkaas"],[4,"datum, de","taariikhda"],[4,"formulier, het","foom"],[4,"geboorte, de","dhalasho"],[4,"geslacht, het","Jinsi"],[4,"handtekening, de","saxeex"],[4,"invullen","inaad buuxiso"],[4,"maart","Maarso"],[4,"nationaliteit, de","dhalashada"],[4,"Nederlands(e)","Dutch"],[4,"onder","ka hooseeya"],[4,"zetten (een handtekening zetten)","inaad qorto (inaad saxeexdo)"]],"es":[[0,"achternaam, de","apellido"],[0,"auto, de","coche"],[0,"autorijles, de","clase de conducir"],[0,"broer, de","hermano"],[0,"dochter, de","hija"],[0,"en","y"],[0,"familie, de","familia"],[0,"gebruiken (gebruik)","usar/utilizar (uso)"],[0,"geven (geeft)","dar"],[0,"hebben","tener"],[0,"heten","llamarse"],[0,"huisarts, de","médico de familia"],[0,"in","en"],[0,"jaar, het","año"],[0,"kijken","ver, mirar"],[0,"kinderen, de (het kind)","niños/as, hijos/as"],[0,"komen","ser de"],[0,"man, de","marido, esposo (hombre)"],[0,"met","con"],[0,"moeder, de","madre"],[0,"naam, de","nombre"],[0,"nieuw","nuevo/a"],[0,"nu","ahora"],[0,"nummer, het","número"],[0,"oefenen","practicar"],[0,"op","en"],[0,"persoonlijk","personal"],[0,"student, de","estudiante"],[0,"studeren","estudiar"],[0,"uit (ik kom uit…)","de (soy de...)"],[0,"vader, de","padre"],[0,"voornaam, de","nombre de pila"],[0,"vrouw, de","mujer (esposa)"],[0,"wat","qué"],[0,"welk","cuál"],[0,"werken","trabajar"],[0,"wie","quién"],[0,"winkel, de","tienda"],[0,"wonen","vivir, residir"],[0,"woord, het","palabra"],[0,"zien","ver"],[0,"zijn (ben, bent, is)","ser, estar"],[0,"zoon, de","hijo"],[0,"zus, de","hermana"],[1,"ander","otro/a"],[1,"antwoord, het","respuesta"],[1,"bedanken","agradecer, dar las gracias"],[1,"beginnen","empezar, iniciar, comenzar"],[1,"binnenkomen","entrar"],[1,"collega, de","compañero/a de trabajo"],[1,"dit","este/esta/esto"],[1,"doen","hacer"],[1,"eind(e), het","final, término"],[1,"even","brevemente"],[1,"gaan","ir"],[1,"goed","bien"],[1,"goedemiddag","buenas tardes"],[1,"hoe (hoe heet je?)","cómo (¿cómo te llamas?)"],[1,"iemand (anders)","otro/otra/otra persona"],[1,"ja","sí"],[1,"jezelf","tú mismo/tú misma"],[1,"leuk","guay, genial"],[1,"luisteren","escuchar"],[1,"meedoen","participar"],[1,"meneer, de","señor"],[1,"mevrouw, de","señora"],[1,"moeten","deber, tener que"],[1,"nee","no"],[1,"ontmoeten","encontrar(se)"],[1,"ook","también"],[1,"passen bij / in","combinar"],[1,"reageren","reaccionar, responder"],[1,"samen","juntos/juntas"],[1,"schrijven","escribir"],[1,"vandaan","de dónde"],[1,"verder (verder gaan / zoeken)","seguir (seguir buscando)"],[1,"voorstellen","presentar"],[1,"vraag, de","pregunta"],[1,"vragen","preguntar"],[1,"waar","dónde"],[1,"weer","de nuevo, otra vez"],[1,"weten","saber"],[1,"zin, de","ganas (tengo ganas de)"],[1,"zitten","sentarse"],[1,"zullen (zal)","verbo auxiliar que indica futuro"],[2,"achter","detrás (de)"],[2,"adres, het","dirección"],[2,"altijd","siempre"],[2,"bellen","llamar por teléfono"],[2,"cijfer, het","número / calificación"],[2,"combinatie, de","combinación"],[2,"cursus, de","curso"],[2,"dan","pues, entonces"],[2,"danken","gracias (formal, usted)"],[2,"dankjewel","gracias"],[2,"dankuwel","gracias"],[2,"dezelfde","el/la mismo/a"],[2,"excuus, het","disculpa"],[2,"fijn (dat is fijn)","bueno/a, agradable"],[2,"geen","no, ninguno"],[2,"getal, het","número"],[2,"goedemorgen","buenos días"],[2,"herkomst, de","origen"],[2,"huis, het","casa"],[2,"klopt dat?","¿es correcto?"],[2,"krant, de","periódico"],[2,"kunnen (kan)","poder"],[2,"letter, de","letra"],[2,"lezen (lees)","leer"],[2,"maar","pero (pero creo que…)"],[2,"maken (maak)","hacer"],[2,"naar","a, hacia"],[2,"niet","no"],[2,"ongeveer","aproximadamente, más o menos"],[2,"plaats, de","localidad"],[2,"postcode, de","código postal"],[2,"soms","a veces, de vez en cuando"],[2,"staan","estar situado/a, aparecer"],[2,"straat, de","calle"],[2,"uniek","único/única"],[2,"vandaag","hoy"],[2,"vervelend","aburrido/a, molesto/a"],[2,"vinden","encontrar"],[2,"volgen","seguir"],[2,"willen","querer"],[2,"woonplaats, de","lugar de residencia"],[2,"zoeken (zoekt)","buscar"],[3,"afgelopen","terminado"],[3,"antwoorden","responder"],[3,"bijvoorbeeld","por ejemplo"],[3,"boek, het","libro"],[3,"docent(e), de","profesor/profesora"],[3,"eindigen","terminar/acabar/concluir"],[3,"elkaar","entre sí, mutuamente"],[3,"groeten","saludar"],[3,"kennen","conocer"],[3,"meestal","generalmente, suele (+ expresión)"],[3,"mensen, de","gente"],[3,"oma, de","abuela"],[3,"oud (ouder)","viejo/a"],[3,"pauze, de","pausa"],[3,"prettig","agradable"],[3,"schat, de","tesoro/cariño"],[3,"straks","luego, en un rato, más adelante"],[3,"tegen","contra"],[3,"vaak","a menudo"],[3,"vriend, de","amigo"],[3,"wachten","esperar"],[3,"weggaan","irse"],[3,"zeggen","decir"],[4,"daar","ahí, allí"],[4,"datum, de","fecha"],[4,"formulier, het","formulario"],[4,"geboorte, de","nacimiento"],[4,"geslacht, het","género, sexo biológico"],[4,"handtekening, de","firma"],[4,"invullen","rellenar, completar"],[4,"maart","marzo"],[4,"nationaliteit, de","nacionalidad"],[4,"Nederlands(e)","holandés, holandesa"],[4,"onder","al final"],[4,"zetten (een handtekening zetten)","poner (poner una firma)"]],"ti":[[0,"achternaam, de","ስም ኣቦ"],[0,"auto, de","ኪና"],[0,"autorijles, de","መራሒ መኪና ኤድ"],[0,"broer, de","ሓው"],[0,"dochter, de","ጓል"],[0,"en","ከምኡ ድማ"],[0,"familie, de","ስድራ"],[0,"gebruiken (gebruik)","ምጥቃም"],[0,"geven (geeft)","ሃብ"],[0,"hebben","ኣለኒ"],[0,"heten","ምዉቅ"],[0,"huisarts, de","ሓኪም"],[0,"in","ኣብ"],[0,"jaar, het","ዓመት"],[0,"kijken","ምርኣይ"],[0,"kinderen, de (het kind)","ቈልዑ"],[0,"komen","ንኣ (ውጻ)"],[0,"man, de","ብዓል ቤት (ተባ)"],[0,"met","ምስ"],[0,"moeder, de","ኣዶ"],[0,"naam, de","ሹም"],[0,"nieuw","ሓዱሽ"],[0,"nu","ሕጂ"],[0,"nummer, het","ቁጽሪ"],[0,"oefenen","ምልምማድ"],[0,"op","ኣብ"],[0,"persoonlijk","ግለሰባዊ"],[0,"student, de","ተመሃራይ"],[0,"studeren","መጽናዕቲ"],[0,"uit (ik kom uit…)","ካብ (ኣነ ዝመፃኩ ...)"],[0,"vader, de","ኣቦ"],[0,"voornaam, de","ቀዳማይ ም"],[0,"vrouw, de","ሰበይቲ (ሰበይቲ)"],[0,"wat","እንታ"],[0,"welk","አየናይ"],[0,"werken","ስራሕ፡"],[0,"wie","መን"],[0,"winkel, de","መካዘን"],[0,"wonen","ብቀጥታ"],[0,"woord, het","ቃል"],[0,"zien","ርኣይ"],[0,"zijn (ben, bent, is)","ኩን"],[0,"zoon, de","ወዲ"],[0,"zus, de","ሓፍቲ"],[1,"ander","ካሊእ"],[1,"antwoord, het","መልሲ"],[1,"bedanken","እናመስገንካ"],[1,"beginnen","ጀምር"],[1,"binnenkomen","ኣእትው"],[1,"collega, de","መሳርሕ"],[1,"dit","እዚ"],[1,"doen","ግበር"],[1,"eind(e), het","ነዊሕ መንገዲ"],[1,"even","ብሓጺሩ / ሕጂሕጂ"],[1,"gaan","ኪድ"],[1,"goed","ፅቡቅ"],[1,"goedemiddag","ከመይ ውዒልኩም"],[1,"hoe (hoe heet je?)","(ሽምካ መን ኢዩ?)"],[1,"iemand (anders)","ሓደ ሰብ (ካልእ)"],[1,"ja","እወ"],[1,"jezelf","ገዛእ-ርእስኻ"],[1,"leuk","መዘናግዒ"],[1,"luisteren","ኣዳምፅ"],[1,"meedoen","ተፀምበሩ"],[1,"meneer, de","ሓለቃ"],[1,"mevrouw, de","ኧምበይተ/ ወ/ሮ ወ/ሪት"],[1,"moeten","ናይ ግድን"],[1,"nee","አይኮንን"],[1,"ontmoeten","ምርኻብ"],[1,"ook","እውን"],[1,"passen bij / in","ምስ/ኣብ ዝሰማማዕ"],[1,"reageren","ምልግብሪ"],[1,"samen","ብሓባር"],[1,"schrijven","ጻሓፍ"],[1,"vandaan","ካብ"],[1,"verder (verder gaan / zoeken)","ድለ (ተወሳኪ )"],[1,"voorstellen","እ"],[1,"vraag, de","ሕቶ"],[1,"vragen","ሕተት"],[1,"waar","ኣበይ"],[1,"weer","ካልኣይ"],[1,"weten","ምፍላጥ"],[1,"zin, de","ሕኣደ ነገር ክትገብር ምድላይ"],[1,"zitten","ኮፍ"],[1,"zullen (zal)","ክገብር"],[2,"achter","ብድሕሪ"],[2,"adres, het","ኣድራሻ"],[2,"altijd","ኩሉ ግዜ / ብቐጻሊ"],[2,"bellen","ምጽዋዕ"],[2,"cijfer, het","ቁጽሪ"],[2,"combinatie, de","ጥምረት"],[2,"cursus, de","ስልጠና ወይ ኮርስ"],[2,"dan","ሽዑ"],[2,"danken","ናስገንና (የቐንየልና)"],[2,"dankjewel","የቐንየለይ (ዘይወግዓዊ)"],[2,"dankuwel","አመስግን (ወግዓዊ)"],[2,"dezelfde","ማዕረ"],[2,"excuus, het","ይቕሬታ"],[2,"fijn (dat is fijn)","ደሓን"],[2,"geen","ጸቕጢ መስመር"],[2,"getal, het","ቁጽሪ"],[2,"goedemorgen","ከመይ ሓዲርኩም"],[2,"herkomst, de","መበቆል"],[2,"huis, het","ገዛ"],[2,"klopt dat?","ትኽክል ድዩ?"],[2,"krant, de","ጋዜጣ"],[2,"kunnen (kan)","ምኣል"],[2,"letter, de","ፊደል (ምልክት)"],[2,"lezen (lees)","ንምንባብ"],[2,"maar","ግን"],[2,"maken (maak)","ኣዳሉ"],[2,"naar","ናብ"],[2,"niet","ተግባራ"],[2,"ongeveer","ብዛዕባ"],[2,"plaats, de","ቦታ"],[2,"postcode, de","ዚፕ ኮድ"],[2,"soms","ሓደሓደ ግዜ"],[2,"staan","ደው ምባል"],[2,"straat, de","ፅርጊያ"],[2,"uniek","ፍሉይ"],[2,"vandaag","ሎሚ"],[2,"vervelend","መፅልኢ"],[2,"vinden","ንምርካብ"],[2,"volgen","ተኸተል"],[2,"willen","ምድላይ"],[2,"woonplaats, de","መንበሪ"],[2,"zoeken (zoekt)","ምርኣይ"],[3,"afgelopen","ዝተዛዘመ"],[3,"antwoorden","መልሲታት"],[3,"bijvoorbeeld","ንኣብነት"],[3,"boek, het","መፅሓፍ"],[3,"docent(e), de","መምህር"],[3,"eindigen","ምዝዛም / ምውዳእ / ምድምዳም"],[3,"elkaar","ነንባዕሎም"],[3,"groeten","ኣትኽልቲታት"],[3,"kennen","ምፍላጥ"],[3,"meestal","መብዛሕቲ"],[3,"mensen, de","ህዝቢ"],[3,"oma, de","ኣደዓባይ"],[3,"oud (ouder)","ኣረጊት"],[3,"pauze, de","ስበር"],[3,"prettig","ደስ-ዝብል / ጽቡቕ"],[3,"schat, de","ፍትውተይ"],[3,"straks","ዳሓር"],[3,"tegen","ኣብ"],[3,"vaak","ብተደጋጋሚ"],[3,"vriend, de","ዓርኪ/መሓዛ"],[3,"wachten","ምጽባይ"],[3,"weggaan","ምኻድ"],[3,"zeggen","በል"],[4,"daar","ኣብኡ"],[4,"datum, de","ዕለት"],[4,"formulier, het","ቅጺ"],[4,"geboorte, de","ልደት"],[4,"geslacht, het","ፆታ"],[4,"handtekening, de","ፊርማ"],[4,"invullen","ወፃኢ"],[4,"maart","መጋቢት"],[4,"nationaliteit, de","ዜግት"],[4,"Nederlands(e)","ዳች"],[4,"onder","ትሕቲ"],[4,"zetten (een handtekening zetten)","ምቕማጥ (ፍርማኻ ምቕማጥ / ንምፍራም)"]],"tr":[[0,"achternaam, de","soyadı"],[0,"auto, de","araba"],[0,"autorijles, de","araba sürüş dersleri"],[0,"broer, de","(erkek) kardeş"],[0,"dochter, de","kız evlat"],[0,"en","ve"],[0,"familie, de","aile"],[0,"gebruiken (gebruik)","kullanmak"],[0,"geven (geeft)","vermek"],[0,"hebben","sahip olmak"],[0,"heten","adı olmak"],[0,"huisarts, de","aile hekimi"],[0,"in","içinde, -de/-da"],[0,"jaar, het","yıl"],[0,"kijken","izlemek"],[0,"kinderen, de (het kind)","çocuklar"],[0,"komen","-li/-lı olmak"],[0,"man, de","koca (erkek)"],[0,"met","ile"],[0,"moeder, de","anne"],[0,"naam, de","isim"],[0,"nieuw","yeni"],[0,"nu","şimdi"],[0,"nummer, het","sayı"],[0,"oefenen","pratik yapmak / alıştırma yapmak"],[0,"op","-de/-da"],[0,"persoonlijk","kişisel"],[0,"student, de","öğrenci"],[0,"studeren","çalışmak, okumak"],[0,"uit (ik kom uit…)","-den/-dan gelmek"],[0,"vader, de","baba"],[0,"voornaam, de","ilk isim"],[0,"vrouw, de","eş (kadın)"],[0,"wat","ne"],[0,"welk","hangi"],[0,"werken","çalışmak"],[0,"wie","kim"],[0,"winkel, de","dükkan"],[0,"wonen","yaşamak"],[0,"woord, het","kelime"],[0,"zien","bakmak"],[0,"zijn (ben, bent, is)","olmak"],[0,"zoon, de","oğul"],[0,"zus, de","(kız) kardeş"],[1,"ander","diğer"],[1,"antwoord, het","cevap"],[1,"bedanken","teşekkür etmek"],[1,"beginnen","başlamak"],[1,"binnenkomen","içeri girmek"],[1,"collega, de","meslektaş"],[1,"dit","bu"],[1,"doen","yapmak"],[1,"eind(e), het","son"],[1,"even","kısaca / sadece"],[1,"gaan","gitmek"],[1,"goed","iyi"],[1,"goedemiddag","iyi günler / tünaydın"],[1,"hoe (hoe heet je?)","ne (adın ne?)"],[1,"iemand (anders)","(başka) biri"],[1,"ja","evet"],[1,"jezelf","kendin"],[1,"leuk","güzel, hoş"],[1,"luisteren","dinlemek"],[1,"meedoen","katılmak"],[1,"meneer, de","bay"],[1,"mevrouw, de","bayan"],[1,"moeten","zorunda olmak, gerekmek"],[1,"nee","hayır"],[1,"ontmoeten","tanışmak / buluşmak"],[1,"ook","de, da"],[1,"passen bij / in","ile uymak, iyi gitmek"],[1,"reageren","yanıt vermek"],[1,"samen","birlikte"],[1,"schrijven","yazmak"],[1,"vandaan","-den/-dan"],[1,"verder (verder gaan / zoeken)","daha fazla (daha fazla arama)"],[1,"voorstellen","tanıştırmak"],[1,"vraag, de","soru"],[1,"vragen","soru sormak"],[1,"waar","nerede"],[1,"weer","tekrar"],[1,"weten","bilmek"],[1,"zin, de","canı ... çekmek / istemek"],[1,"zitten","oturmak"],[1,"zullen (zal)","-ecek/-acak"],[2,"achter","arkasında"],[2,"adres, het","adres"],[2,"altijd","her zaman / sürekli"],[2,"bellen","aramak"],[2,"cijfer, het","sayı"],[2,"combinatie, de","kombinasyon"],[2,"cursus, de","kurs"],[2,"dan","öyleyse, o hâlde"],[2,"danken","teşekkür etmek"],[2,"dankjewel","teşekkürler"],[2,"dankuwel","teşekkür ederim"],[2,"dezelfde","aynı"],[2,"excuus, het","özür"],[2,"fijn (dat is fijn)","harika"],[2,"geen","yok (olumsuzluk anlamı verir)"],[2,"getal, het","sayı / numara"],[2,"goedemorgen","günaydın"],[2,"herkomst, de","köken / menşei"],[2,"huis, het","ev"],[2,"klopt dat?","doğru mu?"],[2,"krant, de","gazete"],[2,"kunnen (kan)","-abilmek, -ebilmek"],[2,"letter, de","harf"],[2,"lezen (lees)","okumak"],[2,"maar","ama / fakat"],[2,"maken (maak)","yapmak"],[2,"naar","-e/-a"],[2,"niet","değil"],[2,"ongeveer","yaklaşık olarak"],[2,"plaats, de","şehir"],[2,"postcode, de","posta kodu"],[2,"soms","bazen"],[2,"staan","durmak"],[2,"straat, de","sokak"],[2,"uniek","eşsiz / benzersiz"],[2,"vandaag","bugün"],[2,"vervelend","can sıkıcı"],[2,"vinden","bulmak"],[2,"volgen","takip etmek"],[2,"willen","istemek"],[2,"woonplaats, de","oturduğu şehir"],[2,"zoeken (zoekt)","aramak"],[3,"afgelopen","bitmiş / hazır / tamamlanmış"],[3,"antwoorden","cevaplamak"],[3,"bijvoorbeeld","örneğin"],[3,"boek, het","kitap"],[3,"docent(e), de","öğretmen"],[3,"eindigen","bitirmek / sonlandırmak"],[3,"elkaar","birbirlerine"],[3,"groeten","saygılarımla"],[3,"kennen","bilmek"],[3,"meestal","çoğunlukla"],[3,"mensen, de","insanlar"],[3,"oma, de","büyükanne / nine"],[3,"oud (ouder)","eski, yaşlı"],[3,"pauze, de","mola"],[3,"prettig","güzel / iyi"],[3,"schat, de","sevgili / canım"],[3,"straks","yakında, kısa bir süre sonra"],[3,"tegen","karşı, karşısı"],[3,"vaak","sık sık"],[3,"vriend, de","arkadaş"],[3,"wachten","beklemek"],[3,"weggaan","ayrılmak"],[3,"zeggen","söylemek"],[4,"daar","orada"],[4,"datum, de","tarih"],[4,"formulier, het","form"],[4,"geboorte, de","doğum"],[4,"geslacht, het","cinsiyet"],[4,"handtekening, de","imza"],[4,"invullen","doldurmak"],[4,"maart","mart"],[4,"nationaliteit, de","uyruk"],[4,"Nederlands(e)","Hollandaca"],[4,"onder","altında"],[4,"zetten (een handtekening zetten)","koymak / atmak (imzanı)"]]};
+
+/* ---------- MIJN TAAL: flitskaarten Nederlands ↔ eigen taal ----------
+   Vertalingen letterlijk overgenomen uit de woordenlijsten van Code+ Deel 1 (ThiemeMeulenhoff). */
+const LANGS = [
+  ['ar','العربية','Arabisch',1], ['prs','دری','Dari',1], ['en','English','Engels',0], ['fa','فارسی','Farsi',1],
+  ['fr','Français','Frans',0], ['kmr','Kurmancî','Koerdisch (Kurmanji)',0], ['uk','Українська','Oekraïens',0],
+  ['ru','Русский','Russisch',0], ['so','Soomaali','Somalisch',0], ['es','Español','Spaans',0],
+  ['ti','ትግርኛ','Tigrinya',0], ['tr','Türkçe','Turks',0]
+];
+const LS_KEY = 'code1_mijntaal';
+let myLang = null, richting = 'nl', deck = [], di = 0, fcFlipped = false, fcWrong = [];
+try { myLang = localStorage.getItem(LS_KEY); } catch (e) {}
+if (!LANGS.some(l => l[0] === myLang)) myLang = null;
+function langInfo(c) { return LANGS.find(l => l[0] === c); }
+function taakOf(t) { if (typeof TMAP !== 'undefined' && t in TMAP) return TMAP[t]; return (t === 0 && !TAKEN.some(x => x[0] === 0)) ? 1 : t; }
+function taalPool() {
+  return (TRANS[myLang] || []).filter(e => taak === 'all' || taakOf(e[0]) === taak);
+}
+function setLang(c) {
+  myLang = c;
+  try { if (c) localStorage.setItem(LS_KEY, c); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  renderTaal();
+}
+function renderTaal() {
+  const p = document.getElementById('panel');
+  if (!myLang) {
+    p.innerHTML = '<h2>🌍 Mijn taal</h2><p class="how">Kies je taal. Dan oefen je met flitskaarten: Nederlands en jouw taal.</p>' +
+      '<div class="lang-grid">' + LANGS.map(l => '<button class="lang-btn" data-l="' + l[0] + '"><span class="nat" lang="' + l[0] + '" dir="' + (l[3] ? 'rtl' : 'ltr') + '">' + l[1] + '</span><span class="nl">' + l[2] + '</span></button>').join('') + '</div>';
+    p.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    return;
+  }
+  const L = langInfo(myLang), n = taalPool().length;
+  const dirs = [['nl', 'Nederlands → ' + L[2]], ['taal', L[2] + ' → Nederlands'], ['mix', 'Door elkaar']];
+  p.innerHTML = '<h2>🌍 Mijn taal</h2>' +
+    '<div class="lang-bar"><span class="cur">Jouw taal: <span lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '">' + L[1] + '</span> (' + L[2] + ')</span><button class="linkbtn" id="chg">Andere taal kiezen</button></div>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === richting ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' kaarten)</button></div>'
+       : '<p class="how">Er zijn geen kaarten voor deze taak in deze taal.</p>');
+  document.getElementById('chg').onclick = () => setLang(null);
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { richting = b.dataset.d; renderTaal(); });
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startDeck(taalPool());
+}
+function startDeck(list) {
+  deck = shuffle(list).map(e => ({ e, side: richting === 'mix' ? (Math.random() < .5 ? 'nl' : 'taal') : richting }));
+  di = 0; fcWrong = []; renderCard();
+}
+function faceHtml(isNl, e, L, tag) {
+  const txt = isNl ? e[1] : e[2];
+  const attrs = isNl ? 'lang="nl" dir="ltr"' : 'lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '"';
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-word' + (txt.length > 28 ? ' long' : '') + '" ' + attrs + '>' + esc(txt) + '</div>' +
+    (isNl ? '<button class="fc-say" data-say="1">🔊 Luister</button>' : '');
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), L = langInfo(myLang), c = deck[di], e = c.e;
+  const frontNl = c.side === 'nl';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + faceHtml(frontNl, e, L, frontNl ? 'Nederlands' : L[2]) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + faceHtml(!frontNl, e, L, frontNl ? L[2] : 'Nederlands') + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het woord eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(e[1]); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontNl) say(e[1]);
+  };
+  document.getElementById('kk').onclick = () => { di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(e); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🌍</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderTaal();
+}
+document.addEventListener('keydown', e => {
+  if (tab !== 'taal' || !document.getElementById('fcs')) return;
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+  else if (fcFlipped && (e.key === 'k' || e.key === 'K')) document.getElementById('kk').click();
+  else if (fcFlipped && (e.key === 'o' || e.key === 'O')) document.getElementById('nk').click();
+});
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds bij A staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\([^)]*\)/g, ''));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- STATUS ---------- */
+let taak = 'all', tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], lastList = [];
+
+function pool() { return W.filter(x => taak === 'all' || x.t === taak); }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  TAKEN.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => { taak = v; tk.querySelectorAll('.pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); openTab(tab); };
+    tk.appendChild(b);
+  });
+  const tb = document.getElementById('tabs');
+  TABS.forEach(([id, ic, lb]) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (id === tab ? ' active' : '');
+    b.dataset.id = id;
+    b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+    b.onclick = () => openTab(id);
+    tb.appendChild(b);
+  });
+}
+
+const INTRO = {
+  luister: ['🎧 Luisteren en kiezen', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  dehet:   ['🔤 De of het?', 'Kijk naar het woord. Is het <b>de</b> of <b>het</b>?'],
+  sorteer: ['🧺 Sorteren', 'Waar hoort het woord bij? Klik op de goede groep.'],
+  zinnen:  ['✏️ Zinnen', 'Welk woord past in de zin?']
+};
+
+function openTab(id) {
+  tab = id;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'taal') return renderTaal();
+  const p = document.getElementById('panel');
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p>' +
+    '<div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Voor deze taak zijn er geen vragen bij deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startQuiz(buildQuestions(id));
+}
+
+function checkVoice() {
+  if (tab !== 'luister' && tab !== 'woorden') return;
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet in de instellingen van je telefoon of computer de spraak op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const groups = taak === 'all' ? TAKEN.filter(t => t[0] !== 'all').map(t => t[0]) : [taak];
+  const names = Object.fromEntries(TAKEN);
+  let html = '<h2>📖 Woorden</h2><p class="how">Klik op een woord. Je hoort het woord. Zeg het hardop na.</p><div class="warn" id="warn"></div>';
+  groups.forEach(g => {
+    const list = W.filter(x => x.t === g);
+    if (groups.length > 1) html += '<div class="wl-head">' + names[g] + ' · ' + list.length + '</div>';
+    html += '<div class="wl">' + list.map(x =>
+      '<div class="wcard" data-say="' + esc(full(x)) + '"><span class="we">' + (x.e || '') + '</span>' +
+      '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + '</span><span class="sp">🔊</span></div>'
+    ).join('') + '</div>';
+  });
+  p.innerHTML = html;
+  p.querySelectorAll('.wcard').forEach(c => c.onclick = () => say(c.dataset.say));
+  checkVoice();
+}
+
+/* ---------- VRAGEN MAKEN ---------- */
+function buildQuestions(mode) {
+  const P = pool();
+  if (mode === 'luister') {
+    return shuffle(P).slice(0, 10).map(x => {
+      let others = P.filter(y => y.w !== x.w);
+      if (others.length < 3) others = W.filter(y => y.w !== x.w);
+      return { mode, x, opts: shuffleOpts([x, ...shuffle(others).slice(0, 3)]) };
+    });
+  }
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'sorteer') return shuffle(P.filter(x => x.c)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'zinnen') {
+    const Z = ZINNEN.filter(z => taak === 'all' || z[2] === taak);
+    return shuffle(Z).slice(0, 12).map(z => ({ mode, s: z[0], ans: z[1][0], opts: shuffleOpts(z[1]) }));
+  }
+  return [];
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(list) {
+  lastList = list;
+  Q = list.map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : { ...q });
+  qi = 0; score = 0; wrongs = [];
+  renderQ();
+}
+
+function head() {
+  return '<div class="progress"><div>Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' +
+            '<div class="opts">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '"><span class="oe">' + (o.e || '') + '</span>' + esc(o.w) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+            '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'sorteer') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+            '<div class="opts three">' + Object.entries(CATS).map(([k, v]) => '<button class="opt" data-v="' + k + '">' + v + '</button>').join('') + '</div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' +
+            '<div class="opts">' + q.opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister') {
+    document.getElementById('sp').onclick = () => say(full(q.x));
+    document.getElementById('spS').onclick = () => say(full(q.x), true);
+    say(full(q.x));
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].w === q.x.w, q.x.w));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (q.mode === 'sorteer') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.c, q.x.c));
+  } else if (q.mode === 'zinnen') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.textContent === q.ans, q.ans));
+  }
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  const btns = p.querySelectorAll('.opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    const val = q.mode === 'luister' ? q.opts[+b.dataset.i].w : q.mode === 'zinnen' ? b.textContent : b.dataset.v;
+    if (val === correct) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  if (ok) score++; else wrongs.push(q);
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (q.x.m) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(full(q.x));
+  } else if (q.mode === 'sorteer') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het hoort bij: ' + CATS[q.x.c];
+    say(full(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans).replace(/–/g, ','));
+  }
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  document.getElementById('nb').onclick = () => { qi++; renderQ(); };
+  document.getElementById('nb').focus();
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden. Probeer het dan opnieuw. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">👋</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe ronde</button></div></div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(wrongs);
+  document.getElementById('rn').onclick = () => startQuiz(buildQuestions(tab));
+}
+
+/* ---------- AVATAR ----------
+   De avatar wordt uit overzicht_code1.html (zelfde map op GitHub) gehaald.
+   Lukt dat niet (bijv. bestand lokaal geopend), dan blijft het emoji-plaatje staan. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code1.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>

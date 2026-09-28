@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 6 – Wat zie je er leuk uit! – Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --blue: #2d3a8c;
+    --blue2: #4338ca;
+    --accent: #f5a623;
+    --pink: #e84393;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5;
+    --bad: #dc2626; --bad-bg: #fee2e2;
+    --shadow: rgba(45,58,140,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(79,70,229,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(232,67,147,0.07) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px rgba(45,58,140,.15); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: 1rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .6rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.5rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .75rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(45,58,140,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--pink)); border-radius: 10px; transition: width .3s; }
+
+  .big-emoji { font-size: 4rem; text-align: center; line-height: 1.1; min-height: 4.4rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.15rem, 4.5vw, 1.45rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+  .speak:hover { transform: translateY(-1px); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .opts.three { grid-template-columns: 1fr 1fr; } }
+  .opt { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.05rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; }
+  .opt .oe { font-size: 1.5rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); }
+  .tip { text-align: center; font-size: .85rem; color: var(--muted); margin-top: .3rem; font-style: italic; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  /* woordenlijst */
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--pink); margin: 1.1rem 0 .5rem; }
+  .wl-head:first-child { margin-top: 0; }
+  .wl { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+  .wcard { border: 1px solid #e3e8ff; border-radius: 12px; padding: .5rem .6rem; display: flex; align-items: center; gap: .5rem; cursor: pointer; background: #fbfcff; transition: all .12s; }
+  .wcard:hover { border-color: var(--blue); background: white; }
+  .wcard .we { font-size: 1.4rem; width: 1.8rem; text-align: center; flex-shrink: 0; }
+  .wcard .ww { font-weight: 700; font-size: .92rem; line-height: 1.2; }
+  .wcard .ww small { color: var(--muted); font-weight: 600; }
+  .wcard .sp { margin-left: auto; font-size: .9rem; opacity: .5; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+  /* ---------- MIJN TAAL (flitskaarten) ---------- */
+  .tabs { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+  .lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .55rem; }
+  .lang-btn { background: #f8faff; border: 2px solid #dbe2ff; border-radius: 14px; padding: .7rem .5rem; cursor: pointer; font-family: inherit; text-align: center; transition: all .12s; }
+  .lang-btn:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .lang-btn .nat { display: block; font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+  .lang-btn .nl { display: block; font-size: .75rem; color: var(--muted); font-weight: 700; margin-top: .1rem; }
+  .lang-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; font-weight: 700; }
+  .lang-bar .cur { font-size: 1.05rem; color: var(--blue); }
+  .linkbtn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; }
+  .fc-scene { height: 250px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #dbe2ff; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--blue); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.2rem); font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .fc-word.long { font-size: clamp(1.05rem, 4.2vw, 1.4rem); }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef2ff; }
+  [lang="ar"], [lang="fa"], [lang="prs"] { font-family: 'Noto Naskh Arabic', 'Nunito', sans-serif; }
+  [lang="ti"] { font-family: 'Noto Sans Ethiopic', 'Nunito', sans-serif; }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+</style>
+
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/overzicht_code1.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">👕</div>
+    <div>
+      <h1>Thema 6 · Wat zie je er leuk uit!</h1>
+      <p>Code+ Deel 1 · woordenschat · 79 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b>: klik op een woord en luister.<br>
+    Daarna: <b>🎧 Luisteren</b>, <b>de of het</b>, <b>🧺 Sorteren</b> en <b>✏️ Zinnen</b>.<br>
+    Bij <b>🌍 Mijn taal</b> oefen je met flitskaarten in je eigen taal.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten NT2 · Code+ Deel 1</footer>
+</div>
+
+<script>
+/* ---------- WOORDEN (Code+ Deel 1, Thema 6) ----------
+   [woord, lidwoord, emoji, taak, categorie, meervoud]
+   taak 1 = intro + taak 1
+   categorie: kl kleding · ui uiterlijk · wi in de winkel · me mensen */
+const RAW = [
+  ['bloes','de','👚',1,'kl'], ['broek','de','',1,'kl'], ['jas','de','🧥',1,'kl'], ['jurk','de','👗',1,'kl'],
+  ['paar (een paar schoenen)','het','',1,''], ['rok','de','',1,'kl'], ['roze','','🩷',1,''], ['schoen','de','👞',1,'kl'],
+  ['sok','de','🧦',1,'kl'], ['spijkerbroek','de','👖',1,'kl'], ['T-shirt','het','👕',1,'kl'], ['kleding','de','',1,''],
+
+  ['aanhebben (ik heb … aan)','','',1,''], ['aantrekken (ik trek … aan)','','',1,''], ['bank (geld)','de','🏦',1,''],
+  ['dragen','','',1,''], ['duidelijk','','',1,''], ['hardlopen','','🏃',1,''], ['kleren','de','',1,'',1], ['kort','','',1,''],
+  ['modeshow','de','💃',1,''], ['muts','de','',1,'kl'], ['net (voor kleren)','','🤵',1,''], ['omdoen','','',1,''],
+  ['onbeleefd','','😤',1,''], ['ongemakkelijk','','😬',1,''], ['opdoen','','',1,''], ['overhemd','het','',1,'kl'],
+  ['pak (kleding)','het','',1,'kl'], ['pet','de','🧢',1,'kl'], ['politie','de','👮',1,'me'], ['situatie','de','',1,''],
+  ['sjaal','de','🧣',1,'kl'], ['stropdas','de','👔',1,'kl'], ['trui','de','🧶',1,'kl'], ['uitgaan','','🎉',1,''],
+  ['uittrekken','','',1,''], ['uniform','het','',1,'kl'],
+
+  ['blond','','👱',2,'ui'], ['bril','de','👓',2,''], ['eruitzien','','',2,''], ['gestreept','','',2,''], ['jongen','de','👦',2,'me'],
+  ['kaal','','👨‍🦲',2,'ui'], ['knap','','😎',2,'ui'], ['krul (krullen)','de','🌀',2,'ui'], ['lijken op','','',2,''],
+  ['maar (het zijn er maar zes)','','',2,''], ['oog','het','👁️',2,''], ['raden','','🤔',2,''], ['steil (haar)','','',2,'ui'],
+  ['uiterlijk','het','🪞',2,''], ['verliefd','','😍',2,''],
+
+  ['bon','de','🧾',3,'wi'], ['gat','het','🕳️',3,''], ['kapot','','💔',3,''], ['lukken','','✅',3,''], ['maat','de','📏',3,'wi'],
+  ['paskamer','de','🚪',3,'wi'], ['passen','','',3,''], ['plezier','het','😄',3,''], ['rits','de','🤐',3,''], ['ruilen','','🔄',3,''],
+  ['stuk (kapot)','','',3,''], ['tegoedbon','de','🎫',3,'wi'], ['teruggeven','','↩️',3,''], ['weinig','','',3,''],
+
+  ['baas','de','🧑‍💼',4,'me'], ['bijzonder','','✨',4,''], ['buurman','de','👨',4,'me'], ['buurvrouw','de','👩',4,'me'],
+  ['compliment','het','💬',4,''], ['kapper','de','💇',4,'me'], ['moeilijk','','😓',4,''], ['netjes','','👌',4,''],
+  ['niemand','','',4,''], ['opstaan','','⏰',4,''], ['sommige','','',4,''], ['uitverkoop','de','🏷️',4,'wi']
+];
+const W = RAW.map(r => ({ w: r[0], a: r[1], e: r[2], t: r[3], c: r[4], m: !!r[5] }));
+
+const CATS = {
+  kl: '👕 Kleding', ui: '👀 Uiterlijk', wi: '🛍️ In de winkel', me: '🧑 Mensen'
+};
+
+/* [zin, [goed antwoord, fout, fout, fout], taak] */
+const ZINNEN = [
+  ['Het is koud. Ik doe mijn ___ aan.', ['jas','T-shirt','rok','sok'], 1],
+  ['Aan mijn voeten draag ik ___ en schoenen.', ['sokken','jurken','broeken','jassen'], 1],
+  ['Op het feest draagt zij een mooie ___.', ['jurk','pet','sok','bank'], 1],
+  ['Bij zijn overhemd draagt hij een ___.', ['stropdas','rok','jurk','bloes'], 1],
+  ['Het is koud. Ik doe een ___ om mijn nek.', ['sjaal','pet','rok','sok'], 1],
+  ['Ik doe een ___ op. Mijn hoofd is koud.', ['muts','sjaal','broek','sok'], 1],
+  ['Het is warm. Ik ___ mijn trui uit.', ['trek','draag','heb','loop'], 1],
+  ['De ___ helpt mensen op straat.', ['politie','modeshow','situatie','bank'], 1],
+  ['Ik haal geld bij de ___.', ['bank','politie','modeshow','pet'], 1],
+  ['Mijn broek is te ___. Ik ben lang.', ['kort','duidelijk','onbeleefd','roze'], 1],
+  ['Je zegt geen goedendag. Dat is ___!', ['onbeleefd','duidelijk','kort','roze'], 1],
+  ['Ik ga elke ochtend ___ in het park.', ['hardlopen','uitgaan','aantrekken','omdoen'], 1],
+  ['Op zaterdagavond wil ik ___ met vrienden. We gaan dansen.', ['uitgaan','hardlopen','aantrekken','opdoen'], 1],
+  ['Een agent draagt een ___.', ['uniform','jurk','modeshow','situatie'], 1],
+
+  ['Hij heeft geen haar. Hij is ___.', ['kaal','blond','knap','steil'], 2],
+  ['Zij heeft geel haar. Ze is ___.', ['blond','kaal','verliefd','gestreept'], 2],
+  ['Ik kan niet goed zien. Ik draag een ___.', ['bril','krul','oog','jongen'], 2],
+  ['Hij ___ op zijn vader. Ze hebben dezelfde ogen.', ['lijkt','raadt','draagt','past'], 2],
+  ['Ze is ___. Ze denkt de hele dag aan hem.', ['verliefd','kaal','gestreept','steil'], 2],
+  ['Mijn trui heeft strepen. Hij is ___.', ['gestreept','blond','kaal','knap'], 2],
+  ['Haar haar is niet steil. Ze heeft ___.', ['krullen','brillen','ogen','jongens'], 2],
+  ['Hij is lang en knap. Ik vind zijn ___ mooi.', ['uiterlijk','bril','krul','jongen'], 2],
+  ['Wie is het? Kun je het ___?', ['raden','lijken','dragen','passen'], 2],
+  ['Er zijn ___ zes stoelen. Dat is te weinig!', ['maar','kaal','knap','blond'], 2],
+
+  ['Deze broek is te klein. Heeft u een grotere ___?', ['maat','bon','rits','gat'], 3],
+  ['Ik pas de broek in de ___.', ['paskamer','bon','maat','rits'], 3],
+  ['Er zit een ___ in mijn sok.', ['gat','rits','maat','bon'], 3],
+  ['Mijn telefoon is ___. Hij doet het niet meer.', ['kapot','weinig','bijzonder','netjes'], 3],
+  ['Mag ik deze jas ___? Hij is te groot.', ['ruilen','lukken','raden','dragen'], 3],
+  ['Heeft u de ___ nog? U kunt de jas ruilen.', ['bon','gat','rits','maat'], 3],
+  ['Ik krijg geen geld terug. Ik krijg een ___.', ['tegoedbon','paskamer','rits','maat'], 3],
+  ['De ___ van mijn jas is kapot. Hij gaat niet dicht.', ['rits','maat','bon','paskamer'], 3],
+  ['Veel ___ vanavond!', ['plezier','gat','maat','bon'], 3],
+  ['Het ___ niet. Het is te moeilijk.', ['lukt','past','ruilt','raadt'], 3],
+  ['Ik heb ___ geld. Maar tien euro.', ['weinig','kapot','netjes','bijzonder'], 3],
+
+  ['Mijn ___ woont naast mij. Hij heet Tom.', ['buurman','buurvrouw','kapper','uitverkoop'], 4],
+  ['Ik ga naar de ___. Mijn haar is te lang.', ['kapper','baas','buurman','uitverkoop'], 4],
+  ['In januari is er ___. Alles is goedkoper.', ['uitverkoop','compliment','kapper','baas'], 4],
+  ['Wat een mooie jas! – Dank je voor het ___.', ['compliment','uitverkoop','kapper','baas'], 4],
+  ['Ik moet vroeg ___. Om zes uur.', ['opstaan','niemand','netjes','sommige'], 4],
+  ['Er is ___ thuis. Het huis is leeg.', ['niemand','sommige','moeilijk','netjes'], 4],
+  ['Nederlands is ___. Maar ik leer het!', ['moeilijk','netjes','niemand','sommige'], 4],
+  ['Je kamer is ___. Alles ligt op zijn plek.', ['netjes','moeilijk','niemand','sommige'], 4],
+  ['Mijn ___ zegt: je bent te laat op je werk!', ['baas','kapper','buurvrouw','compliment'], 4],
+  ['___ mensen dragen een muts. Niet iedereen.', ['Sommige','Niemand','Netjes','Moeilijk'], 4]
+];
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4']];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['luister','🎧','Luisteren'], ['dehet','🔤','De of het'],
+  ['sorteer','🧺','Sorteren'], ['zinnen','✏️','Zinnen'], ['taal','🌍','Mijn taal']
+];
+
+const TRANS = {"ar":[[0,"bloes, de","البلوزة/ القميص"],[0,"broek, de","البنطلون"],[0,"jas, de","الجاكيت"],[0,"jurk, de","الفستان"],[0,"paar, het","زوج بمعنى اثنين، زوجين/صديق و صديقته"],[0,"rok, de","التنورة"],[0,"schoen, de","حذاء"],[0,"sok, de","الجرب"],[0,"spijkerbroek, de","بنطلون جينز"],[0,"T-shirt, het","التي شيرت"],[0,"kleding, de","ملابس"],[0,"roze","وردي"],[1,"aanhebben (ik heb … aan)","يرتدي"],[1,"aantrekken (ik trek …aan)","يرتدي (الملابس)"],[1,"bank, de (geld)","البنك"],[1,"dragen","يرتدي"],[1,"duidelijk","واضح"],[1,"hardlopen","يركض، يجري (الركض)"],[1,"kleren, de","الملابس"],[1,"kort","قصير"],[1,"modeshow, de","عرض الأزياء"],[1,"muts, de","قبعة / طاقية"],[1,"net (voor kleren)","أنيق (للملابس)"],[1,"omdoen","يرتدي (وشاح / حزام)"],[1,"onbeleefd","غير مهذب / فظ"],[1,"ongemakkelijk","غير مريح / محرج"],[1,"opdoen","يرتدي (قبعة أو طاقية أو ما شابه)"],[1,"overhemd, het","القميص"],[1,"pak, het (kleding)","البدلة (ملابس)"],[1,"pet, de","كاب للرأس"],[1,"politie, de","الشرطة"],[1,"situatie, de","وضع / حالة / موقف"],[1,"sjaal, de","شال / وشاح"],[1,"stropdas, de","ربطة العنق، كرافت"],[1,"trui, de","السترة/البلوفير"],[1,"uitgaan","يخرج"],[1,"uittrekken","يخلع / ينزع (ملابس أو أحذية)"],[1,"uniform, het","زي العمل الموحد"],[2,"blond","شقراء"],[2,"bril, de","النظارات"],[2,"eruitzien","المظهر، الشكل الخارجي لشخص/لشيء"],[2,"gestreept","مخطط"],[2,"jongen, de","الصبي"],[2,"kaal","أصلع"],[2,"knap","وسيم"],[2,"krul, de (krullen)","خصلة الشعر المجعدة"],[2,"lijken op","يشبه / يشابه"],[2,"maar","فقط (هناك ستة فقط)"],[2,"oog, het","العين"],[2,"raden","يخمن"],[2,"steil (haar)","مستقيم، أملس (شعر)"],[2,"uiterlijk, het","المظهر الخارجي"],[2,"verliefd","واقع في الحب"],[3,"bon, de","الفاتورة/إيصال الدفع"],[3,"gat, het","حفرة، ثقب"],[3,"kapot","مكسور"],[3,"lukken","ينجح / يفلح"],[3,"maat, de","الحجم، المقاس"],[3,"paskamer, de","غرفة قياس الملابس"],[3,"passen","يقيس أو يجرب الملابس"],[3,"plezier, het","المرح، الإستمتاع"],[3,"rits, de","السوستة"],[3,"ruilen","يبدل"],[3,"stuk","مكسور"],[3,"tegoedbon, de","إشعار دائن"],[3,"teruggeven","يعيد شيء"],[3,"weinig","قليل"],[4,"baas, de","رب/صاحب العمل/الرئيس في العمل"],[4,"bijzonder","خاص/مميز"],[4,"buurman, de","الجار"],[4,"buurvrouw, de","الجارة"],[4,"compliment, het","الثناء"],[4,"kapper, de","مصفف الشعر، الحلاق"],[4,"moeilijk","صعب"],[4,"netjes","مرتب / أنيق / مهندم"],[4,"niemand","لا أحد"],[4,"opstaan","ينهض، يقف"],[4,"sommige","بعض"],[4,"uitverkoop, de","تخفيضات / تصفيات"]],"en":[[0,"bloes, de","blouse / shirt"],[0,"broek, de","trousers"],[0,"jas, de","coat"],[0,"jurk, de","dress"],[0,"paar, het","pair"],[0,"rok, de","skirt"],[0,"schoen, de","shoe"],[0,"sok, de","sock"],[0,"spijkerbroek, de","jeans"],[0,"T-shirt, het","t-shirt"],[0,"kleding, de","clothing / clothes"],[0,"roze","pink"],[1,"aanhebben (ik heb … aan)","to wear"],[1,"aantrekken (ik trek …aan)","to put on (your clothes)"],[1,"bank, de (geld)","bank"],[1,"dragen","to wear"],[1,"duidelijk","clear"],[1,"hardlopen","to run"],[1,"kleren, de","clothes"],[1,"kort","short"],[1,"modeshow, de","fashion show"],[1,"muts, de","hat / beanie"],[1,"net (voor kleren)","neat / smart (clothing)"],[1,"omdoen","to put on (a scarf / a belt)"],[1,"onbeleefd","impolite / rude"],[1,"ongemakkelijk","uncomfortable / awkward"],[1,"opdoen","to put on (a hat / beanie)"],[1,"overhemd, het","dress shirt / good shirt"],[1,"pak, het (kleding)","suit"],[1,"pet, de","cap"],[1,"politie, de","police"],[1,"situatie, de","situation"],[1,"sjaal, de","shawl / scarf"],[1,"stropdas, de","tie"],[1,"trui, de","sweater"],[1,"uitgaan","to go out"],[1,"uittrekken","to take off (clothes, shoes)"],[1,"uniform, het","uniform"],[2,"blond","blond"],[2,"bril, de","glasses / spectacles"],[2,"eruitzien","to look like"],[2,"gestreept","striped"],[2,"jongen, de","boy"],[2,"kaal","bold"],[2,"knap","handsome"],[2,"krul, de (krullen)","curl (curls)"],[2,"lijken op","to look like (to resemble, to take after)"],[2,"maar","only"],[2,"oog, het","eye"],[2,"raden","to guess"],[2,"steil (haar)","straight (hair)"],[2,"uiterlijk, het","appearance"],[2,"verliefd","in love"],[3,"bon, de","receipt"],[3,"gat, het","hole"],[3,"kapot","torn / broken"],[3,"lukken","to manage / to succeed / to work"],[3,"maat, de","size"],[3,"paskamer, de","fitting room"],[3,"passen","to try on (clothes)"],[3,"plezier, het","fun"],[3,"rits, de","zipper"],[3,"ruilen","to exchange"],[3,"stuk","broken"],[3,"tegoedbon, de","voucher"],[3,"teruggeven","to refund / to give back"],[3,"weinig","few"],[4,"baas, de","boss"],[4,"bijzonder","special"],[4,"buurman, de","neighbour (male)"],[4,"buurvrouw, de","neighbour (female)"],[4,"compliment, het","compliment"],[4,"kapper, de","hairdresser"],[4,"moeilijk","difficult"],[4,"netjes","neat / nice / tidy"],[4,"niemand","nobody / no one"],[4,"opstaan","to get up / to stand up"],[4,"sommige","some"],[4,"uitverkoop, de","sale"]],"fa":[[0,"T-shirt, het","تیشرت"],[0,"bloes, de","بلوز"],[0,"broek, de","شلوار"],[0,"jas, de","کت"],[0,"jurk, de","لباس"],[0,"kleding, de","لباس"],[0,"paar, het","جفت"],[0,"rok, de","دامن"],[0,"roze","صورتی"],[0,"schoen, de","کفش"],[0,"sok, de","جوراب"],[0,"spijkerbroek, de","شلوار جین"],[1,"aanhebben","پوشیدن"],[1,"aantrekken (ik trek …aan)","لباس پوشیدن (به تن کردن...)"],[1,"bank, de (geld)","بانک (پول)"],[1,"dragen","پوشیدن"],[1,"duidelijk","پاک"],[1,"hardlopen","دویدن"],[1,"kleren, de","لباس"],[1,"kort","کوتاه"],[1,"modeshow, de","نمایش مد"],[1,"muts, de","کلاه"],[1,"net (voor kleren)","هوشمند (لباس)"],[1,"omdoen","پوشیدن"],[1,"onbeleefd","بیادب"],[1,"ongemakkelijk","ناراحت کننده"],[1,"opdoen","پوشیدن"],[1,"overhemd, het","پیراهن مجلسی"],[1,"pak, het (kleding)","کت و شلوار (لباس)"],[1,"pet, de","حیوان خانگی"],[1,"politie, de","پلیس"],[1,"situatie, de","وضعیت"],[1,"sjaal, de","شال"],[1,"stropdas, de","کراوات"],[1,"trui, de","ژاکت"],[1,"uitgaan","بیرون رفتن"],[1,"uittrekken","برخاستن"],[1,"uniform, het","یکنواخت"],[2,"blond","بلوند"],[2,"bril, de","عینک"],[2,"eruitzien","شبیه شدن"],[2,"gestreept","راه راه"],[2,"jongen, de","پسر"],[2,"kaal","جسورانه"],[2,"knap","خوش تیپ"],[2,"krul, de","حلقه زدن"],[2,"lijken op","شبیه بودن"],[2,"maar (het zijn er maar zes)","فقط (اما فقط شش مورد وجود دارد)"],[2,"oog, het","چشم"],[2,"raden","حدس زدن"],[2,"steil (haar)","صاف (مو)"],[2,"uiterlijk, het","ظاهر"],[2,"verliefd","عاشق"],[3,"bon, de","رسید"],[3,"gat, het","سوراخ"],[3,"kapot","شکسته"],[3,"lukken","برای موفقیت"],[3,"maat, de","اندازه"],[3,"paskamer, de","اتاق پرو"],[3,"passen","برای امتحان کردن"],[3,"plezier, het","سرگرمی"],[3,"rits, de","زیپ"],[3,"ruilen","برای تبادل"],[3,"stuk","شکسته"],[3,"tegoedbon, de","کوپن هدیه"],[3,"teruggeven","پس دادن"],[3,"weinig","تعداد کمی"],[4,"baas, de","رئیس"],[4,"bijzonder","ویژه، خاص"],[4,"buurman, de","همسایه (مرد)"],[4,"buurvrouw, de","همسایه (زن)"],[4,"compliment, het","تعریف و تمجید"],[4,"kapper, de","آرایشگر"],[4,"moeilijk","دشوار"],[4,"netjes","مرتب"],[4,"niemand","هیچکس"],[4,"opstaan","برای بلند شدن"],[4,"sommige","مقداری"],[4,"uitverkoop, de","فروش"]],"fr":[[0,"bloes, de","blouse"],[0,"broek, de","pantalon"],[0,"jas, de","veste"],[0,"jurk, de","robe"],[0,"paar, het","paire"],[0,"rok, de","jupe"],[0,"schoen, de","chaussure"],[0,"sok, de","chaussette"],[0,"spijkerbroek, de","jean"],[0,"T-shirt, het","t-shirt"],[0,"kleding, de","vêtements"],[0,"roze","rose"],[1,"aanhebben (ik heb … aan)","porter"],[1,"aantrekken (ik trek …aan)","mettre (je mets ...)"],[1,"bank, de (geld)","banque"],[1,"dragen","porter"],[1,"duidelijk","clair"],[1,"hardlopen","courir"],[1,"kleren, de","vêtements"],[1,"kort","court"],[1,"modeshow, de","défilé de mode"],[1,"muts, de","bonnet"],[1,"net (voor kleren)","chic (pour des vêtements)"],[1,"omdoen","mettre"],[1,"onbeleefd","impoli"],[1,"ongemakkelijk","embarrassant"],[1,"opdoen","mettre"],[1,"overhemd, het","chemise"],[1,"pak, het (kleding)","costume (vêtement)"],[1,"pet, de","casquette"],[1,"politie, de","police"],[1,"situatie, de","situation"],[1,"sjaal, de","châle"],[1,"stropdas, de","cravate"],[1,"trui, de","pull-over"],[1,"uitgaan","sortir"],[1,"uittrekken","enlever"],[1,"uniform, het","uniforme"],[2,"blond","blond"],[2,"bril, de","lunettes"],[2,"eruitzien","paraître"],[2,"gestreept","rayé"],[2,"jongen, de","garçon"],[2,"kaal","chauve"],[2,"knap","beau, belle"],[2,"krul, de (krullen)","boucle"],[2,"lijken op","ressembler à"],[2,"maar","que (il n’y en a que six)"],[2,"oog, het","œil"],[2,"raden","deviner"],[2,"steil (haar)","raide (cheveu)"],[2,"uiterlijk, het","apparence"],[2,"verliefd","amoureux"],[3,"bon, de","reçu"],[3,"gat, het","trou"],[3,"kapot","cassé"],[3,"lukken","réussir"],[3,"maat, de","taille"],[3,"paskamer, de","cabine d'essayage"],[3,"passen","essayer"],[3,"plezier, het","plaisir"],[3,"rits, de","fermeture à glissière"],[3,"ruilen","échanger"],[3,"stuk","cassé"],[3,"tegoedbon, de","avoir"],[3,"teruggeven","rendre"],[3,"weinig","peu"],[4,"baas, de","patron"],[4,"bijzonder","particulier"],[4,"buurman, de","voisin"],[4,"buurvrouw, de","voisine"],[4,"compliment, het","compliment"],[4,"kapper, de","coiffeur"],[4,"moeilijk","difficile"],[4,"netjes","propre"],[4,"niemand","personne"],[4,"opstaan","se lever"],[4,"sommige","certains"],[4,"uitverkoop, de","soldes"]],"kmr":[[0,"bloes, de","berdil"],[0,"broek, de","şal"],[0,"jas, de","mont"],[0,"jurk, de","kinclêkirin"],[0,"paar, het","cot"],[0,"rok, de","kiras"],[0,"schoen, de","pêlav"],[0,"sok, de","gore"],[0,"spijkerbroek, de","kot"],[0,"T-shirt, het","tîşort"],[1,"aanhebben","li xwe kirin"],[1,"aantrekken (ik trek …aan)","cil li xwe kirin (min li xwe kir ...)"],[1,"bank, de (geld)","bank (pere)"],[1,"dragen","li xwe kirin"],[1,"duidelijk","zelal"],[1,"hardlopen","revîn"],[1,"kleren, de","cil"],[1,"kort","kurt"],[1,"modeshow, de","pêşandana modayê"],[1,"muts, de","kum"],[1,"net (voor kleren)","cil û bergên xweşik"],[1,"omdoen","li xwe kirin"],[1,"onbeleefd","bêterbiye"],[1,"ongemakkelijk","nerehet"],[1,"opdoen","li xwe kirin"],[1,"overhemd, het","kirasê kincê"],[1,"pak, het (kleding)","qat (cil û berg)"],[1,"pet, de","ajalê navmalê"],[1,"politie, de","polîs"],[1,"situatie, de","rewş"],[1,"sjaal, de","şal"],[1,"stropdas, de","girêdan"],[1,"trui, de","kenze"],[1,"uitgaan","derketin"],[1,"uittrekken","vekişîn"],[1,"uniform, het","cilwaz"],[2,"blond","çûr"],[2,"bril, de","berçavk"],[2,"eruitzien","şibandin"],[2,"gestreept","xêzkirî"],[2,"jongen, de","xort"],[2,"kaal","qalind"],[2,"knap","xweşik"],[2,"krul, de","pêçandin"],[2,"lijken op","şibandin"],[2,"maar (het zijn er maar zes)","tenê (lê belê tenê şeş hene)"],[2,"oog, het","çav"],[2,"raden","texmînkirin"],[2,"steil (haar)","rast (por)"],[2,"uiterlijk, het","xuyabûnî"],[2,"verliefd","evîndar"],[3,"bon, de","meqbûz"],[3,"gat, het","qul"],[3,"kapot","şikestî"],[3,"lukken","serkeftin"],[3,"maat, de","mezinayî"],[3,"paskamer, de","odeya ceribandinê"],[3,"passen","ceribandin"],[3,"plezier, het","henek"],[3,"rits, de","circirk"],[3,"ruilen","guhertin"],[3,"stuk","şikestî"],[3,"tegoedbon, de","kupona diyariyê"],[3,"teruggeven","vegerandin"],[3,"weinig","kêmane"],[4,"baas, de","şef"],[4,"bijzonder","taybet"],[4,"buurman, de","cîran (nêr)"],[4,"buurvrouw, de","cîran (mê)"],[4,"compliment, het","pesin"],[4,"kapper, de","berber"],[4,"moeilijk","dijwar"],[4,"netjes","rêzane"],[4,"niemand","nekes"],[4,"opstaan","rabûn"],[4,"sommige","hin"],[4,"uitverkoop, de","firotin"]],"uk":[[0,"bloes, de","блузка"],[0,"broek, de","штани"],[0,"jas, de","куртка"],[0,"jurk, de","спідниця"],[0,"paar, het","пара"],[0,"rok, de","спідниця"],[0,"schoen, de","взуття"],[0,"sok, de","шкарпетка"],[0,"spijkerbroek, de","джинси"],[0,"T-shirt, het","футболка"],[0,"kleding, de","одяг"],[0,"roze","рожевий"],[1,"aanhebben (ik heb … aan)","носити"],[1,"aantrekken (ik trek …aan)","надягати (я надягаю …)"],[1,"bank, de (geld)","банк"],[1,"dragen","носити"],[1,"duidelijk","ясно / зрозуміло"],[1,"hardlopen","працює"],[1,"kleren, de","одяг"],[1,"kort","короткий"],[1,"modeshow, de","показ мод"],[1,"muts, de","шапка"],[1,"net (voor kleren)","чистий (одяг)"],[1,"omdoen","надіти"],[1,"onbeleefd","неввічливо"],[1,"ongemakkelijk","незручно"],[1,"opdoen","здобувати / набувати"],[1,"overhemd, het","сорочка"],[1,"pak, het (kleding)","костюм (одяг)"],[1,"pet, de","шапка"],[1,"politie, de","поліція"],[1,"situatie, de","ситуація"],[1,"sjaal, de","шарф"],[1,"stropdas, de","краватка"],[1,"trui, de","светр"],[1,"uitgaan","виходити"],[1,"uittrekken","знімати"],[1,"uniform, het","рівномірний"],[2,"blond","білявий"],[2,"bril, de","окуляри"],[2,"eruitzien","дивитися"],[2,"gestreept","смугастий"],[2,"jongen, de","хлопець"],[2,"kaal","лисий"],[2,"knap","розумний / привабливий"],[2,"krul, de (krullen)","локон"],[2,"lijken op","бути схожим на / нагадувати"],[2,"maar","але (їх тільки шість)"],[2,"oog, het","око"],[2,"raden","припускати"],[2,"steil (haar)","пряме (волосся)"],[2,"uiterlijk, het","щонайпізніше"],[2,"verliefd","закоханий"],[3,"bon, de","купон"],[3,"gat, het","отвір"],[3,"kapot","зламаний"],[3,"lukken","вдатися / виходити"],[3,"maat, de","розмір"],[3,"paskamer, de","примірочна"],[3,"passen","приміряти"],[3,"plezier, het","радість"],[3,"rits, de","блискавка"],[3,"ruilen","біржа"],[3,"stuk","зламаний"],[3,"tegoedbon, de","ваучер"],[3,"teruggeven","повертати"],[3,"weinig","мало"],[4,"baas, de","керівник"],[4,"bijzonder","зокрема"],[4,"buurman, de","сусід"],[4,"buurvrouw, de","сусід"],[4,"compliment, het","комплімент"],[4,"kapper, de","перукар"],[4,"moeilijk","важко / складно"],[4,"netjes","акуратно / охайно / пристойно"],[4,"niemand","ніхто"],[4,"opstaan","підводитися"],[4,"sommige","деякі"],[4,"uitverkoop, de","розпродаж"]],"prs":[[0,"bloes, de","بلوز، پیراهن"],[0,"broek, de","پتلون ها، برزو ها"],[0,"jas, de","کرتی"],[0,"jurk, de","لباس"],[0,"paar, het","جفت"],[0,"rok, de","دامن"],[0,"schoen, de","بوت"],[0,"sok, de","جوراب"],[0,"spijkerbroek, de","جینس"],[0,"T-shirt, het","تی شرت"],[0,"kleding, de","لباس پوشیدن/ لباس ها"],[0,"roze","رنگ صورتی"],[1,"aanhebben (ik heb … aan)","پوشیدن"],[1,"aantrekken (ik trek …aan)","پوشیدن (لباس خود)"],[1,"bank, de (geld)","بانک"],[1,"dragen","پوشیدن"],[1,"duidelijk","پاک/ صاف"],[1,"hardlopen","دویدن"],[1,"kleren, de","لباس ها"],[1,"kort","کوتاه"],[1,"modeshow, de","نمایش فیشن"],[1,"muts, de","کلاه / کلاه کوچک"],[1,"net (voor kleren)","پاک / خوب / یکشنبه بهترین است (برای لباس)"],[1,"omdoen","پوشیدن (چادر / یک کمربند)"],[1,"onbeleefd","بی ادب / زشت"],[1,"ongemakkelijk","ناراحت کننده / عجیب"],[1,"opdoen","پوشیدن (یک کلاه / کلاه کوچک)"],[1,"overhemd, het","پیراهن"],[1,"pak, het (kleding)","دریشی (پوشاک)"],[1,"pet, de","کلاه پیک دار"],[1,"politie, de","پولیس"],[1,"situatie, de","وضعیت"],[1,"sjaal, de","شال / چادر"],[1,"stropdas, de","نکتایی/ بسته کردن"],[1,"trui, de","جاکت"],[1,"uitgaan","بیرون رفتن"],[1,"uittrekken","بیرون کشیدن (لباس، بوت)"],[1,"uniform, het","یونیفورم"],[2,"blond","بلوند/ بور"],[2,"bril, de","عینک، عینک ها"],[2,"eruitzien","که معلوم شود مثل"],[2,"gestreept","خط دار"],[2,"jongen, de","پسر"],[2,"kaal","با جرات"],[2,"knap","زیبا"],[2,"krul, de (krullen)","قاط مو"],[2,"lijken op","هم شکل بودن (طرف کسی رفتن، به کسی چهره دادن)"],[2,"maar","فقط"],[2,"oog, het","چشم"],[2,"raden","حدس زدن"],[2,"steil (haar)","راست (موی)"],[2,"uiterlijk, het","شکل ظاهری"],[2,"verliefd","مبتلای عشق"],[3,"bon, de","رسید/فاکتور"],[3,"gat, het","سوراخ/ غار"],[3,"kapot","پاره، شکسته"],[3,"lukken","مدیریت کردن / موفق شدن / کار کردن"],[3,"maat, de","سایز"],[3,"paskamer, de","اتاق لباس پوشی"],[3,"passen","برای پوشیدن و امتحان کردن (لباس)"],[3,"plezier, het","جالب"],[3,"rits, de","زپ/ زنجیر"],[3,"ruilen","تبدیل کردن"],[3,"stuk","شکسته شدن"],[3,"tegoedbon, de","یادداشت کریدت"],[3,"teruggeven","پس دادن/ پول پس پرداختن"],[3,"weinig","چند"],[4,"baas, de","رئیس"],[4,"bijzonder","مخصوص"],[4,"buurman, de","همسایه (مرد)"],[4,"buurvrouw, de","همسایه (خانم)"],[4,"compliment, het","تعریف و تمجید"],[4,"kapper, de","آرایشگر مو"],[4,"moeilijk","سخت"],[4,"netjes","مرتب / خوب / منظم"],[4,"niemand","هیچ کس، هیچ کسی"],[4,"opstaan","بیدار شدن/ ایستاد شدن"],[4,"sommige","بعضی"],[4,"uitverkoop, de","فروش"]],"ru":[[0,"bloes, de","блуза"],[0,"broek, de","брюки"],[0,"jas, de","куртка"],[0,"jurk, de","платье"],[0,"paar, het","пара"],[0,"rok, de","юбка"],[0,"schoen, de","туфля, ботинок"],[0,"sok, de","носок"],[0,"spijkerbroek, de","джинсы"],[0,"T-shirt, het","футболка"],[0,"kleding, de","одежда"],[0,"roze","розовый"],[1,"aanhebben (ik heb … aan)","быть одетым в"],[1,"aantrekken (ik trek …aan)","надевать (я надеваю …)"],[1,"bank, de (geld)","банк"],[1,"dragen","носить"],[1,"duidelijk","ясно / понятно"],[1,"hardlopen","бегать"],[1,"kleren, de","одежда"],[1,"kort","короткий"],[1,"modeshow, de","показ мод"],[1,"muts, de","шапка"],[1,"net (voor kleren)","приличный, аккуратный"],[1,"omdoen","надеть"],[1,"onbeleefd","невежливо"],[1,"ongemakkelijk","неудобно"],[1,"opdoen","приобретать / получать"],[1,"overhemd, het","рубашка"],[1,"pak, het (kleding)","костюм (одежда)"],[1,"pet, de","кепка"],[1,"politie, de","полиция"],[1,"situatie, de","ситуация"],[1,"sjaal, de","шарф"],[1,"stropdas, de","галстук"],[1,"trui, de","свитер"],[1,"uitgaan","развлекаться вне дома"],[1,"uittrekken","снимать"],[1,"uniform, het","униформа"],[2,"blond","белокурый"],[2,"bril, de","очки"],[2,"eruitzien","выглядеть"],[2,"gestreept","полосатый"],[2,"jongen, de","мальчик"],[2,"kaal","лысый"],[2,"knap","умный / привлекательный"],[2,"krul, de (krullen)","завиток, кудряшка"],[2,"lijken op","быть похожим на / напоминать"],[2,"maar","но (их всего шесть)"],[2,"oog, het","глаз"],[2,"raden","угадывать"],[2,"steil (haar)","прямые (волосы)"],[2,"uiterlijk, het","внешний вид"],[2,"verliefd","влюбленный"],[3,"bon, de","чек"],[3,"gat, het","дыра"],[3,"kapot","сломан"],[3,"lukken","удаться / получаться"],[3,"maat, de","размер"],[3,"paskamer, de","примерочная"],[3,"passen","примерять"],[3,"plezier, het","удовольствие"],[3,"rits, de","застёжка-молния"],[3,"ruilen","поменяться"],[3,"stuk","сломанный"],[3,"tegoedbon, de","кредитная нота"],[3,"teruggeven","возвращать"],[3,"weinig","мало"],[4,"baas, de","начальник"],[4,"bijzonder","особенный"],[4,"buurman, de","сосед"],[4,"buurvrouw, de","соседка"],[4,"compliment, het","комплимент"],[4,"kapper, de","парикмахер"],[4,"moeilijk","тяжело / сложно"],[4,"netjes","аккуратно / опрятно / прилично"],[4,"niemand","никто"],[4,"opstaan","встать"],[4,"sommige","некоторые"],[4,"uitverkoop, de","распродажа"]],"so":[[0,"bloes, de","shaati-dumar"],[0,"broek, de","surwaal"],[0,"jas, de","koodh"],[0,"jurk, de","labbis"],[0,"paar, het","lammaanaha"],[0,"rok, de","goono"],[0,"schoen, de","kabo"],[0,"sok, de","sharabaad"],[0,"spijkerbroek, de","jiinis"],[0,"T-shirt, het","garan-shaar"],[1,"aanhebben","in aad u xirato"],[1,"aantrekken (ik trek …aan)","inaad xirato dharka (Waxaan xirtaa ...)"],[1,"bank, de (geld)","bangi (lacag)"],[1,"dragen","in aad u xirato"],[1,"duidelijk","masax"],[1,"hardlopen","inaad oroddo"],[1,"kleren, de","maryo"],[1,"kort","gaaban"],[1,"modeshow, de","bandhig xarrageed"],[1,"muts, de","koofiyad"],[1,"net (voor kleren)","xarrago (dhar)"],[1,"omdoen","inaad xirato"],[1,"onbeleefd","edeb darro"],[1,"ongemakkelijk","bilaa raaxo"],[1,"opdoen","inaad xirato"],[1,"overhemd, het","shaar-rageed"],[1,"pak, het (kleding)","suudh (dharka)"],[1,"pet, de","rabbaayad"],[1,"politie, de","boolis"],[1,"situatie, de","xaalad"],[1,"sjaal, de","shaal"],[1,"stropdas, de","xidh"],[1,"trui, de","funaanad"],[1,"uitgaan","inaad baxdo"],[1,"uittrekken","inaad iska bixiso"],[1,"uniform, het","dirays"],[2,"blond","timo cad"],[2,"bril, de","muraayadaha"],[2,"eruitzien","inaad u ekaato"],[2,"gestreept","xariijimo leh"],[2,"jongen, de","wiil"],[2,"kaal","dhumuc leh"],[2,"knap","qurux badan"],[2,"krul, de","laalaaban"],[2,"lijken op","inaad u ekaato"],[2,"maar (het zijn er maar zes)","kaliya (laakiin waxaa jira lix kaliya)"],[2,"oog, het","il"],[2,"raden","inaad qiyaasto"],[2,"steil (haar)","toosan (timo)"],[2,"uiterlijk, het","muuqaal"],[2,"verliefd","jacayl hayo"],[3,"bon, de","rasiid"],[3,"gat, het","god"],[3,"kapot","jabtay"],[3,"lukken","inaad guuleysato"],[3,"maat, de","xajmi"],[3,"paskamer, de","qolka isku eegidda"],[3,"passen","inaad isku daydo"],[3,"plezier, het","madadaalo"],[3,"rits, de","suusad"],[3,"ruilen","inaad weydaarsato"],[3,"stuk","jabtay"],[3,"tegoedbon, de","foojar hadiyad"],[3,"teruggeven","inaad u bogto"],[3,"weinig","kooban"],[4,"baas, de","taliye"],[4,"bijzonder","gaar ah"],[4,"buurman, de","deris (lab)"],[4,"buurvrouw, de","deris (dheddig)"],[4,"compliment, het","ammaan"],[4,"kapper, de","timo-jare"],[4,"moeilijk","dhib ah"],[4,"netjes","nidaamsan"],[4,"niemand","cidna"],[4,"opstaan","inaad kacdo"],[4,"sommige","qaar"],[4,"uitverkoop, de","iib"]],"es":[[0,"bloes, de","blusa"],[0,"broek, de","pantalones"],[0,"jas, de","chaqueta, abrigo"],[0,"jurk, de","vestido"],[0,"paar, het","pareja"],[0,"rok, de","falda"],[0,"schoen, de","zapato"],[0,"sok, de","calcetín"],[0,"spijkerbroek, de","pantalones vaqueros, tejanos, jeans"],[0,"T-shirt, het","camiseta"],[0,"kleding, de","ropa"],[0,"roze","rosa"],[1,"aanhebben (ik heb … aan)","llevar puesto"],[1,"aantrekken (ik trek …aan)","ponerse * (me pongo...)"],[1,"bank, de (geld)","banco"],[1,"dragen","llevar puesto (ropa)"],[1,"duidelijk","claro"],[1,"hardlopen","correr"],[1,"kleren, de","ropa"],[1,"kort","corto/a, breve"],[1,"modeshow, de","desfile de moda"],[1,"muts, de","gorro"],[1,"net (voor kleren)","bonito/a"],[1,"omdoen","ponerse *"],[1,"onbeleefd","maleducado/maleducada"],[1,"ongemakkelijk","incómodo/incómoda"],[1,"opdoen","ponerse *"],[1,"overhemd, het","camisa"],[1,"pak, het (kleding)","traje (ropa)"],[1,"pet, de","gorra"],[1,"politie, de","policía"],[1,"situatie, de","situación"],[1,"sjaal, de","bufanda"],[1,"stropdas, de","corbata"],[1,"trui, de","jersey, suéter"],[1,"uitgaan","salir"],[1,"uittrekken","quitarse *"],[1,"uniform, het","uniforme"],[2,"blond","rubio/a"],[2,"bril, de","gafas"],[2,"eruitzien","parecer, tener aspecto de"],[2,"gestreept","rayado"],[2,"jongen, de","niño, chico"],[2,"kaal","calvo/calva"],[2,"knap","guapo/guapa"],[2,"krul, de (krullen)","rizo"],[2,"lijken op","parecerse a *"],[2,"maar","pero (solo son seis)"],[2,"oog, het","ojo"],[2,"raden","adivinar"],[2,"steil (haar)","(cabello/pelo) liso"],[2,"uiterlijk, het","apariencia"],[2,"verliefd","enamorado/a"],[3,"bon, de","tique de compra"],[3,"gat, het","agujero"],[3,"kapot","roto/a, estropeado/a"],[3,"lukken","lograr/conseguir"],[3,"maat, de","talla, tamaño, medida"],[3,"paskamer, de","probador"],[3,"passen","probar"],[3,"plezier, het","diversión, placer, gusto"],[3,"rits, de","cremallera"],[3,"ruilen","(inter)cambiar, hacer un trueque"],[3,"stuk","roto/a"],[3,"tegoedbon, de","cupón, vale"],[3,"teruggeven","devolver algo"],[3,"weinig","poco/poca"],[4,"baas, de","jefe"],[4,"bijzonder","especial"],[4,"buurman, de","vecino (hombre)"],[4,"buurvrouw, de","vecina (mujer)"],[4,"compliment, het","cumplido, piropo"],[4,"kapper, de","peluquero/a"],[4,"moeilijk","difícil"],[4,"netjes","ordenado/ordenada"],[4,"niemand","nadie"],[4,"opstaan","levantarse"],[4,"sommige","algunos/algunas"],[4,"uitverkoop, de","liquidación/rebajas"]],"ti":[[0,"bloes, de","ሸርት"],[0,"broek, de","ስረታት"],[0,"jas, de","ጃኬት"],[0,"jurk, de","ጉርዲ"],[0,"paar, het","ሰብ ሓዳር"],[0,"rok, de","ጉርዲ"],[0,"schoen, de","ጫማ"],[0,"sok, de","ካልሲ"],[0,"spijkerbroek, de","ጅንስ"],[0,"T-shirt, het","ቲሸርት"],[0,"kleding, de","ክዳውንቲ / ክዳውንቲ"],[0,"roze","ሮዛ"],[1,"aanhebben (ik heb … aan)","ተኸደን"],[1,"aantrekken (ik trek …aan)","ምልባስ (ክዳንካ)"],[1,"bank, de (geld)","ባንኪ"],[1,"dragen","ተኸደን"],[1,"duidelijk","ንጹር"],[1,"hardlopen","ምጉያይ"],[1,"kleren, de","ክዳውንቲ"],[1,"kort","ሓፂር"],[1,"modeshow, de","ምርኢት"],[1,"muts, de","ቆቢዕ / ባርኔጣ"],[1,"net (voor kleren)","ጽሩይ (ክዳውንቲ)"],[1,"omdoen","ምልባስ (ሻርባ / ቁልፊ)"],[1,"onbeleefd","ዘይእዱብ / ደረቐኛ"],[1,"ongemakkelijk","ዘይምቹእ / ዘሕንኽ"],[1,"opdoen","ምልባስ (ቆቢዕ / ባርኔጣ)"],[1,"overhemd, het","ካምቻ"],[1,"pak, het (kleding)","ሱፍ (ክዳውንቲ)"],[1,"pet, de","ቆቢእ"],[1,"politie, de","ፖሊስ"],[1,"situatie, de","ኩነት"],[1,"sjaal, de","መጎልበቢ / ሻርባ"],[1,"stropdas, de","ክራባታ"],[1,"trui, de","ስረ"],[1,"uitgaan","ምውጻእ"],[1,"uittrekken","ምውጻእ (ክዳን፣ ጫማ)"],[1,"uniform, het","ተመሳሳሊ"],[2,"blond","ጸሊም ቆርበት ዘለዎ"],[2,"bril, de","መስታወታት"],[2,"eruitzien","ምርኣይ"],[2,"gestreept","ሽራጥ-ዘለዎ"],[2,"jongen, de","ተባ"],[2,"kaal","ደሚቕ"],[2,"knap","ምልኩዕ"],[2,"krul, de (krullen)","ቁርጽራጽ"],[2,"lijken op","ምምሳል (ምስስል፡ ቅምጥ ኢልካ ምምሳል)"],[2,"maar","ጥራይ"],[2,"oog, het","ዓይኒ"],[2,"raden","ምግማት"],[2,"steil (haar)","ትኽ ዝበለ (ጸጕሪ)"],[2,"uiterlijk, het","ኣብ ቀረባ እዋን"],[2,"verliefd","ኣብ"],[3,"bon, de","ቅብሊት/ፋክቱር"],[3,"gat, het","ነዃል"],[3,"kapot","ምስባር"],[3,"lukken","ምምሕዳር / ምትካእ / ምስራሕ"],[3,"maat, de","ግዝፊ"],[3,"paskamer, de","መቐየሪ ክፍሊ"],[3,"passen","ምፍታን (ክዳን)"],[3,"plezier, het","መዘናግዒ"],[3,"rits, de","መዝግ"],[3,"ruilen","ምልውዋጥ"],[3,"stuk","ምስባር"],[3,"tegoedbon, de","ናይ ልቓሕ መዘኻኸሪ"],[3,"teruggeven","መሊስካ"],[3,"weinig","ሒደት"],[4,"baas, de","ሓላፊ"],[4,"bijzonder","ብፍላይ"],[4,"buurman, de","ጎረቤት"],[4,"buurvrouw, de","ጎረቤት"],[4,"compliment, het","ኣረኣእያ"],[4,"kapper, de","መስተኻኸሊ"],[4,"moeilijk","ከቢድ"],[4,"netjes","ጽሩይ / ደስ ዝብል / ጽፉፍ"],[4,"niemand","ዝኾነ"],[4,"opstaan","ሓፍ"],[4,"sommige","ገለ"],[4,"uitverkoop, de","ምሻጥ"]],"tr":[[0,"bloes, de","bluz"],[0,"broek, de","pantolon"],[0,"jas, de","ceket, mont"],[0,"jurk, de","elbise"],[0,"paar, het","çift"],[0,"rok, de","etek"],[0,"schoen, de","ayakkabı"],[0,"sok, de","çorap"],[0,"spijkerbroek, de","kot pantolon"],[0,"T-shirt, het","tişört"],[0,"kleding, de","giysi / elbise / kıyafet"],[0,"roze","pembe"],[1,"aanhebben (ik heb … aan)","giymek"],[1,"aantrekken (ik trek …aan)","giymek (giysilerini)"],[1,"bank, de (geld)","banka"],[1,"dragen","giymek"],[1,"duidelijk","açık / net"],[1,"hardlopen","koşmak"],[1,"kleren, de","giysiler"],[1,"kort","kısa"],[1,"modeshow, de","moda şovu"],[1,"muts, de","şapka / bere"],[1,"net (voor kleren)","iyi (giysiler için)"],[1,"omdoen","takmak (bir eşarp / bir kemer)"],[1,"onbeleefd","kaba / nezaketsiz"],[1,"ongemakkelijk","rahatsız / tuhaf / garip"],[1,"opdoen","giymek / takmak (bir şapka / bere)"],[1,"overhemd, het","gömlek"],[1,"pak, het (kleding)","takım elbise (giyim)"],[1,"pet, de","kep, şapka"],[1,"politie, de","polis"],[1,"situatie, de","durum"],[1,"sjaal, de","eşarp / atkı"],[1,"stropdas, de","kravat"],[1,"trui, de","kazak, süveter"],[1,"uitgaan","dışarı çıkmak"],[1,"uittrekken","çıkarmak (giysileri, ayakkabıyı)"],[1,"uniform, het","üniforma"],[2,"blond","sarışın"],[2,"bril, de","gözlük"],[2,"eruitzien","görünmek"],[2,"gestreept","çizgili"],[2,"jongen, de","erkek çocuk"],[2,"kaal","koyu (yazı) / cesur"],[2,"knap","yakışıklı"],[2,"krul, de (krullen)","kıvırcık, lüle"],[2,"lijken op","benzemek"],[2,"maar","sadece / yalnızca"],[2,"oog, het","göz"],[2,"raden","tahmin etmek"],[2,"steil (haar)","düz (saç)"],[2,"uiterlijk, het","dış görünüş"],[2,"verliefd","aşık"],[3,"bon, de","makbuz, fiş"],[3,"gat, het","delik"],[3,"kapot","kırık, yırtık"],[3,"lukken","başarmak / işe yaramak"],[3,"maat, de","beden"],[3,"paskamer, de","prova kabini"],[3,"passen","denemek (giysileri)"],[3,"plezier, het","eğlence, keyif"],[3,"rits, de","fermuar"],[3,"ruilen","değiştirmek"],[3,"stuk","kırık"],[3,"tegoedbon, de","kupon"],[3,"teruggeven","iade etmek, geri vermek"],[3,"weinig","az / birkaç"],[4,"baas, de","patron"],[4,"bijzonder","özel"],[4,"buurman, de","(erkek) komşu"],[4,"buurvrouw, de","(kadın) komşu"],[4,"compliment, het","iltifat"],[4,"kapper, de","kuaför"],[4,"moeilijk","zor"],[4,"netjes","düzenli / güzel / tertipli"],[4,"niemand","hiç kimse"],[4,"opstaan","ayağa kalkmak"],[4,"sommige","biraz / bazı"],[4,"uitverkoop, de","indirim / satış"]]};
+
+/* ---------- MIJN TAAL: flitskaarten Nederlands ↔ eigen taal ----------
+   Vertalingen letterlijk overgenomen uit de woordenlijsten van Code+ Deel 1 (ThiemeMeulenhoff). */
+const LANGS = [
+  ['ar','العربية','Arabisch',1], ['prs','دری','Dari',1], ['en','English','Engels',0], ['fa','فارسی','Farsi',1],
+  ['fr','Français','Frans',0], ['kmr','Kurmancî','Koerdisch (Kurmanji)',0], ['uk','Українська','Oekraïens',0],
+  ['ru','Русский','Russisch',0], ['so','Soomaali','Somalisch',0], ['es','Español','Spaans',0],
+  ['ti','ትግርኛ','Tigrinya',0], ['tr','Türkçe','Turks',0]
+];
+const LS_KEY = 'code1_mijntaal';
+let myLang = null, richting = 'nl', deck = [], di = 0, fcFlipped = false, fcWrong = [];
+try { myLang = localStorage.getItem(LS_KEY); } catch (e) {}
+if (!LANGS.some(l => l[0] === myLang)) myLang = null;
+function langInfo(c) { return LANGS.find(l => l[0] === c); }
+function taakOf(t) { if (typeof TMAP !== 'undefined' && t in TMAP) return TMAP[t]; return (t === 0 && !TAKEN.some(x => x[0] === 0)) ? 1 : t; }
+function taalPool() {
+  return (TRANS[myLang] || []).filter(e => taak === 'all' || taakOf(e[0]) === taak);
+}
+function setLang(c) {
+  myLang = c;
+  try { if (c) localStorage.setItem(LS_KEY, c); else localStorage.removeItem(LS_KEY); } catch (e) {}
+  renderTaal();
+}
+function renderTaal() {
+  const p = document.getElementById('panel');
+  if (!myLang) {
+    p.innerHTML = '<h2>🌍 Mijn taal</h2><p class="how">Kies je taal. Dan oefen je met flitskaarten: Nederlands en jouw taal.</p>' +
+      '<div class="lang-grid">' + LANGS.map(l => '<button class="lang-btn" data-l="' + l[0] + '"><span class="nat" lang="' + l[0] + '" dir="' + (l[3] ? 'rtl' : 'ltr') + '">' + l[1] + '</span><span class="nl">' + l[2] + '</span></button>').join('') + '</div>';
+    p.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => setLang(b.dataset.l));
+    return;
+  }
+  const L = langInfo(myLang), n = taalPool().length;
+  const dirs = [['nl', 'Nederlands → ' + L[2]], ['taal', L[2] + ' → Nederlands'], ['mix', 'Door elkaar']];
+  p.innerHTML = '<h2>🌍 Mijn taal</h2>' +
+    '<div class="lang-bar"><span class="cur">Jouw taal: <span lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '">' + L[1] + '</span> (' + L[2] + ')</span><button class="linkbtn" id="chg">Andere taal kiezen</button></div>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === richting ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' kaarten)</button></div>'
+       : '<p class="how">Er zijn geen kaarten voor deze taak in deze taal.</p>');
+  document.getElementById('chg').onclick = () => setLang(null);
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { richting = b.dataset.d; renderTaal(); });
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startDeck(taalPool());
+}
+function startDeck(list) {
+  deck = shuffle(list).map(e => ({ e, side: richting === 'mix' ? (Math.random() < .5 ? 'nl' : 'taal') : richting }));
+  di = 0; fcWrong = []; renderCard();
+}
+function faceHtml(isNl, e, L, tag) {
+  const txt = isNl ? e[1] : e[2];
+  const attrs = isNl ? 'lang="nl" dir="ltr"' : 'lang="' + L[0] + '" dir="' + (L[3] ? 'rtl' : 'ltr') + '"';
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-word' + (txt.length > 28 ? ' long' : '') + '" ' + attrs + '>' + esc(txt) + '</div>' +
+    (isNl ? '<button class="fc-say" data-say="1">🔊 Luister</button>' : '');
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), L = langInfo(myLang), c = deck[di], e = c.e;
+  const frontNl = c.side === 'nl';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + faceHtml(frontNl, e, L, frontNl ? 'Nederlands' : L[2]) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + faceHtml(!frontNl, e, L, frontNl ? L[2] : 'Nederlands') + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het woord eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(e[1]); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontNl) say(e[1]);
+  };
+  document.getElementById('kk').onclick = () => { di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(e); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🌍</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderTaal();
+}
+document.addEventListener('keydown', e => {
+  if (tab !== 'taal' || !document.getElementById('fcs')) return;
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+  else if (fcFlipped && (e.key === 'k' || e.key === 'K')) document.getElementById('kk').click();
+  else if (fcFlipped && (e.key === 'o' || e.key === 'O')) document.getElementById('nk').click();
+});
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds bij A staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/\s*\([^)]*\)/g, ''));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- STATUS ---------- */
+let taak = 'all', tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], lastList = [];
+
+function pool() { return W.filter(x => taak === 'all' || x.t === taak); }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  TAKEN.forEach(([v, label]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.textContent = label;
+    b.onclick = () => { taak = v; tk.querySelectorAll('.pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); openTab(tab); };
+    tk.appendChild(b);
+  });
+  const tb = document.getElementById('tabs');
+  TABS.forEach(([id, ic, lb]) => {
+    const b = document.createElement('button');
+    b.className = 'tab' + (id === tab ? ' active' : '');
+    b.dataset.id = id;
+    b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+    b.onclick = () => openTab(id);
+    tb.appendChild(b);
+  });
+}
+
+const INTRO = {
+  luister: ['🎧 Luisteren en kiezen', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  dehet:   ['🔤 De of het?', 'Kijk naar het woord. Is het <b>de</b> of <b>het</b>?'],
+  sorteer: ['🧺 Sorteren', 'Waar hoort het woord bij? Klik op de goede groep.'],
+  zinnen:  ['✏️ Zinnen', 'Welk woord past in de zin?']
+};
+
+function openTab(id) {
+  tab = id;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'taal') return renderTaal();
+  const p = document.getElementById('panel');
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p>' +
+    '<div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Voor deze taak zijn er geen vragen bij deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => startQuiz(buildQuestions(id));
+}
+
+function checkVoice() {
+  if (tab !== 'luister' && tab !== 'woorden') return;
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet in de instellingen van je telefoon of computer de spraak op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const groups = taak === 'all' ? TAKEN.filter(t => t[0] !== 'all').map(t => t[0]) : [taak];
+  const names = Object.fromEntries(TAKEN);
+  let html = '<h2>📖 Woorden</h2><p class="how">Klik op een woord. Je hoort het woord. Zeg het hardop na.</p><div class="warn" id="warn"></div>';
+  groups.forEach(g => {
+    const list = W.filter(x => x.t === g);
+    if (groups.length > 1) html += '<div class="wl-head">' + names[g] + ' · ' + list.length + '</div>';
+    html += '<div class="wl">' + list.map(x =>
+      '<div class="wcard" data-say="' + esc(full(x)) + '"><span class="we">' + (x.e || '') + '</span>' +
+      '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + '</span><span class="sp">🔊</span></div>'
+    ).join('') + '</div>';
+  });
+  p.innerHTML = html;
+  p.querySelectorAll('.wcard').forEach(c => c.onclick = () => say(c.dataset.say));
+  checkVoice();
+}
+
+/* ---------- VRAGEN MAKEN ---------- */
+function buildQuestions(mode) {
+  const P = pool();
+  if (mode === 'luister') {
+    return shuffle(P).slice(0, 10).map(x => {
+      let others = P.filter(y => y.w !== x.w);
+      if (others.length < 3) others = W.filter(y => y.w !== x.w);
+      return { mode, x, opts: shuffleOpts([x, ...shuffle(others).slice(0, 3)]) };
+    });
+  }
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'sorteer') return shuffle(P.filter(x => x.c)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'zinnen') {
+    const Z = ZINNEN.filter(z => taak === 'all' || z[2] === taak);
+    return shuffle(Z).slice(0, 12).map(z => ({ mode, s: z[0], ans: z[1][0], opts: shuffleOpts(z[1]) }));
+  }
+  return [];
+}
+
+/* ---------- QUIZ ---------- */
+function startQuiz(list) {
+  lastList = list;
+  Q = list.map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : { ...q });
+  qi = 0; score = 0; wrongs = [];
+  renderQ();
+}
+
+function head() {
+  return '<div class="progress"><div>Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' +
+            '<div class="opts">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '"><span class="oe">' + (o.e || '') + '</span>' + esc(o.w) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+            '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'sorteer') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+            '<div class="opts three">' + Object.entries(CATS).map(([k, v]) => '<button class="opt" data-v="' + k + '">' + v + '</button>').join('') + '</div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' +
+            '<div class="opts">' + q.opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister') {
+    document.getElementById('sp').onclick = () => say(full(q.x));
+    document.getElementById('spS').onclick = () => say(full(q.x), true);
+    say(full(q.x));
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].w === q.x.w, q.x.w));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (q.mode === 'sorteer') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.c, q.x.c));
+  } else if (q.mode === 'zinnen') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.textContent === q.ans, q.ans));
+  }
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  const btns = p.querySelectorAll('.opt');
+  btns.forEach(b => {
+    b.disabled = true;
+    const val = q.mode === 'luister' ? q.opts[+b.dataset.i].w : q.mode === 'zinnen' ? b.textContent : b.dataset.v;
+    if (val === correct) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  if (ok) score++; else wrongs.push(q);
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (q.x.m) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(full(q.x));
+  } else if (q.mode === 'sorteer') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het hoort bij: ' + CATS[q.x.c];
+    say(full(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans).replace(/–/g, ','));
+  }
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  document.getElementById('nb').onclick = () => { qi++; renderQ(); };
+  document.getElementById('nb').focus();
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden. Probeer het dan opnieuw. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">👕</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe ronde</button></div></div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(wrongs);
+  document.getElementById('rn').onclick = () => startQuiz(buildQuestions(tab));
+}
+
+/* ---------- AVATAR ----------
+   De avatar wordt uit overzicht_code1.html (zelfde map op GitHub) gehaald.
+   Lukt dat niet (bijv. bestand lokaal geopend), dan blijft het emoji-plaatje staan. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code1.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>
