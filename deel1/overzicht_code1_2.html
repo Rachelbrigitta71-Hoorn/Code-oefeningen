@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oefenmateriaal Code+ Deel 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2; --ink: #1c1710; --gold: #c8922a; --gold-light: #f5e6c8;
+    --teal: #1a6b6b; --teal-light: #d4eeee; --rose: #b5385a; --rose-light: #fde8ee;
+    --blue: #2d3a8c; --blue-light: #e0e7ff; --amber: #b45309; --amber-light: #fef3c7;
+    --purple: #6b2a7a; --purple-light: #f3e8f7;
+    --card-bg: #ffffff; --border: #e8e0d0; --muted: #7a6e5f; --shadow: rgba(28,23,16,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(ellipse at 0% 0%, rgba(200,146,42,0.06) 0%, transparent 60%),
+                      radial-gradient(ellipse at 100% 100%, rgba(26,107,107,0.06) 0%, transparent 60%);
+    font-family: "DM Sans", sans-serif; color: var(--ink); min-height: 100vh; padding: 3rem 1.5rem 5rem;
+  }
+  .hero { max-width: 760px; margin: 0 auto 3rem; display: flex; align-items: center; gap: 1.8rem; }
+  .hero-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); box-shadow: 0 6px 20px rgba(200,146,42,0.25); flex-shrink: 0; }
+  .hero-text h1 { font-family: "Fraunces", serif; font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 900; line-height: 1.1; }
+  .hero-text h1 span { color: var(--gold); }
+  .hero-text p { margin-top: 0.5rem; font-size: 0.95rem; color: var(--muted); font-weight: 300; line-height: 1.6; }
+  .section-title { max-width: 760px; margin: 0 auto 1rem; font-family: "Fraunces", serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rose); }
+  .chapter { max-width: 760px; margin: 0 auto 2.5rem; }
+  .chapter-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.2rem; padding-bottom: 0.7rem; border-bottom: 2px solid var(--border); flex-wrap: wrap; }
+  .chapter-num { font-family: "Fraunces", serif; font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
+  .chapter-title { font-family: "Fraunces", serif; font-size: 1.15rem; font-weight: 700; }
+  .chapter-meta { font-size: 0.8rem; color: var(--muted); margin-left: auto; font-weight: 300; }
+  .exercises { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  @media (max-width: 580px) { .exercises { grid-template-columns: 1fr; } .hero { gap: 1rem; } }
+  .ex-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem 1.2rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.6rem; box-shadow: 0 2px 10px var(--shadow); transition: transform 0.18s, box-shadow 0.18s; position: relative; overflow: hidden; }
+  .ex-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .ex-card.uitleg::before { background: var(--blue); }
+  .ex-card.onr::before { background: var(--rose); }
+  .ex-card.reg::before { background: var(--teal); }
+  .ex-card.mix::before { background: var(--amber); }
+  .ex-card.paars::before { background: var(--purple); }
+  .ex-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px var(--shadow); }
+  .ex-icon { font-size: 1.6rem; line-height: 1; }
+  .ex-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 20px; width: fit-content; }
+  .uitleg .ex-label { background: var(--blue-light); color: var(--blue); }
+  .onr .ex-label { background: var(--rose-light); color: var(--rose); }
+  .reg .ex-label { background: var(--teal-light); color: var(--teal); }
+  .mix .ex-label { background: var(--amber-light); color: var(--amber); }
+  .paars .ex-label { background: var(--purple-light); color: var(--purple); }
+  .ex-title { font-family: "Fraunces", serif; font-size: 1.05rem; font-weight: 700; line-height: 1.2; }
+  .ex-desc { font-size: 0.82rem; color: var(--muted); font-weight: 300; line-height: 1.5; flex: 1; }
+  .ex-arrow { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+  .ex-card:hover .ex-arrow { color: var(--ink); }
+  .step { font-size: 0.7rem; font-weight: 500; color: var(--muted); position: absolute; top: 1rem; right: 1rem; }
+  .footer { max-width: 760px; margin: 3rem auto 0; text-align: center; font-size: 0.78rem; color: var(--muted); font-weight: 300; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+  .footer img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 0.4rem; border: 2px solid var(--gold); }
+  .ex-card.woord::before { background: var(--gold); }
+  .woord .ex-label { background: var(--gold-light); color: var(--amber); }
+  .choose { max-width: 760px; margin: -1.5rem auto 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .choose a { display: flex; align-items: center; gap: 1rem; padding: 1.3rem 1.4rem; border-radius: 18px; text-decoration: none; color: var(--ink); background: var(--card-bg); border: 2px solid var(--border); box-shadow: 0 4px 16px var(--shadow); transition: transform 0.18s, box-shadow 0.18s; }
+  .choose a:hover { transform: translateY(-3px); box-shadow: 0 10px 28px var(--shadow); }
+  .choose a.w { border-color: var(--gold); background: #fffaf0; }
+  .choose a.g { border-color: var(--blue); background: #f5f7ff; }
+  .choose .big { font-size: 2.4rem; line-height: 1; }
+  .choose .t { font-family: "Fraunces", serif; font-size: 1.25rem; font-weight: 900; line-height: 1.15; }
+  .choose .d { font-size: 0.82rem; color: var(--muted); font-weight: 300; margin-top: 0.2rem; }
+  @media (max-width: 580px) { .choose { grid-template-columns: 1fr; } }
+  .section-title { scroll-margin-top: 1.5rem; }
+  .section-title.w { color: var(--amber); }
+  .section-title.g { color: var(--blue); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img class="hero-avatar" src="data:image/jpeg;base64,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" alt="docent">
+  <div class="hero-text">
+    <h1>Oefenmateriaal <span>Code+</span> Deel 1</h1>
+    <p>Kies wat je wilt oefenen: woorden of grammatica. Klik dan op een oefening.</p>
+  </div>
+</div>
+
+<div class="choose">
+  <a class="w" href="#woorden">
+    <div class="big">📖</div>
+    <div><div class="t">Woorden oefenen</div><div class="d">Woordenschat per thema: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal</div></div>
+  </a>
+  <a class="g" href="#grammatica">
+    <div class="big">🔤</div>
+    <div><div class="t">Grammatica</div><div class="d">Uitleg en oefeningen: het perfectum en de plaats van niet</div></div>
+  </a>
+</div>
+
+<div class="section-title w" id="woorden">📖 Woorden oefenen</div>
+
+<!-- WOORDEN: THEMA 1 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">1</div>
+    <div class="chapter-title">Wie ben jij?</div>
+    <div class="chapter-meta">thema 1 · 161 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema1.html">
+      <div class="ex-icon">👋</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 1</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- WOORDEN: THEMA 2 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">2</div>
+    <div class="chapter-title">Even in mijn agenda kijken</div>
+    <div class="chapter-meta">thema 2 · 115 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema2.html">
+      <div class="ex-icon">📒</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 2</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- WOORDEN: THEMA 3 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">3</div>
+    <div class="chapter-title">Wat eten we vanavond?</div>
+    <div class="chapter-meta">thema 3 · 111 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema3.html">
+      <div class="ex-icon">🍽️</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 3</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- WOORDEN: THEMA 4 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">4</div>
+    <div class="chapter-title">We gaan verhuizen</div>
+    <div class="chapter-meta">thema 4 · 112 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema4.html">
+      <div class="ex-icon">🏠</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 4</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- WOORDEN: THEMA 5 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">5</div>
+    <div class="chapter-title">We zijn onderweg!</div>
+    <div class="chapter-meta">thema 5 · 99 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema5.html">
+      <div class="ex-icon">🚲</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 5</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- WOORDEN: THEMA 6 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">6</div>
+    <div class="chapter-title">Wat zie je er leuk uit!</div>
+    <div class="chapter-meta">thema 6 · 79 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema6.html">
+      <div class="ex-icon">👕</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 6</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- WOORDEN: THEMA 7 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">7</div>
+    <div class="chapter-title">Wat gaan we doen?</div>
+    <div class="chapter-meta">thema 7 · 87 woorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card woord" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/woordenschat_thema7.html">
+      <div class="ex-icon">🎉</div>
+      <div class="ex-label">Woordenschat</div>
+      <div class="ex-title">Woorden van thema 7</div>
+      <div class="ex-desc">Kijk en luister naar de woorden. Oefen daarna: luisteren, de of het, sorteren, zinnen en flitskaarten in je eigen taal.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+
+<!-- Nieuwe thema's hier toevoegen (kopieer het blok van thema 3) -->
+
+<div class="section-title g" id="grammatica">🔤 Grammatica</div>
+
+<!-- GRAMMATICA: PERFECTUM -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">🔤</div>
+    <div class="chapter-title">Regelmatige en onregelmatige werkwoorden</div>
+    <div class="chapter-meta">het perfectum · 109 werkwoorden</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card uitleg" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/grammatica_perfectum.html">
+      <span class="step">stap 1</span>
+      <div class="ex-icon">📘</div>
+      <div class="ex-label">Uitleg</div>
+      <div class="ex-title">Uitleg: regelmatig en onregelmatig</div>
+      <div class="ex-desc">Wat is het perfectum? Hoe werkt soft ketchup? Met een korte test.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+    <a class="ex-card reg" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/flashcards_perfectum_regelmatig.html">
+      <span class="step">stap 2</span>
+      <div class="ex-icon">✓</div>
+      <div class="ex-label">Flitskaarten</div>
+      <div class="ex-title">Perfectum met regelmatige werkwoorden</div>
+      <div class="ex-desc">54 werkwoorden uit het boek · 250 kaarten. Fout? Dan krijg je uitleg.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+    <a class="ex-card onr" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/flashcards_perfectum_onregelmatig.html">
+      <span class="step">stap 3</span>
+      <div class="ex-icon">★</div>
+      <div class="ex-label">Flitskaarten</div>
+      <div class="ex-title">Perfectum met onregelmatige werkwoorden</div>
+      <div class="ex-desc">55 werkwoorden uit de lijst · 275 kaarten. Geen regel: dit moet je leren!</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+    <a class="ex-card mix" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/flashcards_perfectum_mix.html">
+      <span class="step">extra</span>
+      <div class="ex-icon">💪</div>
+      <div class="ex-label">Uitdaging</div>
+      <div class="ex-title">Mix: regelmatig en onregelmatig</div>
+      <div class="ex-desc">Extra moeilijk! Alles door elkaar. Kies 20, 50, 100 of alle kaarten.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<!-- GRAMMATICA: DE PLAATS VAN NIET -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">🚫</div>
+    <div class="chapter-title">De plaats van niet in de zin</div>
+    <div class="chapter-meta">de negatie · thema 7 · 90 zinnen</div>
+  </div>
+  <div class="exercises">
+    <a class="ex-card uitleg" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/grammatica_niet.html">
+      <span class="step">stap 1</span>
+      <div class="ex-icon">📘</div>
+      <div class="ex-label">Uitleg en oefenen</div>
+      <div class="ex-title">Waar staat niet?</div>
+      <div class="ex-desc">De regels en een stappenplan. Daarna oefenen: klik waar niet moet staan. Je ziet altijd waarom.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+    <a class="ex-card reg" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/goedfout_niet.html">
+      <span class="step">stap 2</span>
+      <div class="ex-icon">✓✗</div>
+      <div class="ex-label">Goed of fout?</div>
+      <div class="ex-title">Staat niet op de goede plek?</div>
+      <div class="ex-desc">Lees de zin. Is het goed of fout? Snel herhalen met uitleg.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+    <a class="ex-card paars" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel1/zinbouwen_niet.html">
+      <span class="step">extra</span>
+      <div class="ex-icon">🧩</div>
+      <div class="ex-label">Uitdaging</div>
+      <div class="ex-title">Zinnen bouwen met niet</div>
+      <div class="ex-desc">Extra moeilijk! Zet de woorden in de goede volgorde.</div>
+      <div class="ex-arrow">Openen →</div>
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  <img src="data:image/jpeg;base64,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" alt="docent">
+  Gemaakt voor cursisten NT2 · Code+ Deel 1
+</div>
+
+</body>
+</html>
