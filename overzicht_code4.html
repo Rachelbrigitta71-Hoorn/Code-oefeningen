@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Oefenmateriaal Code+ Deel 4</title>
+<meta name="description" content="Woordenlijsten, zelftests, flitskaarten en vervangspellen. Op je telefoon, tablet of computer.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Oefen thuis met Code+ Deel 4!">
+<meta property="og:description" content="Woordenlijsten, zelftests, flitskaarten en vervangspellen. Op je telefoon, tablet of computer.">
+<meta property="og:url" content="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/overzicht_code4.html">
+<meta property="og:image" content="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deelkaart_code4.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -219,6 +229,25 @@
     margin-right: 0.4rem;
     border: 2px solid var(--gold);
   }
+
+  /* MAPJES PER HOOFDSTUK */
+  .section-title { max-width: 760px; margin: 0 auto 1.2rem; font-family: "Fraunces", serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rose); }
+  .folder { max-width: 760px; margin: 0 auto 1rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 2px 10px var(--shadow); }
+  .folder > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.3rem; border-radius: 14px; transition: background 0.15s; }
+  .folder > summary::-webkit-details-marker { display: none; }
+  .folder > summary:hover { background: var(--gold-light); }
+  .folder-icon { font-size: 1.6rem; line-height: 1; }
+  .folder[open] .folder-icon::after { content: ""; }
+  .folder-text { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 0; }
+  .folder-name { font-family: "Fraunces", serif; font-size: 1.2rem; font-weight: 900; color: var(--ink); }
+  .folder-subs { font-size: 0.8rem; color: var(--muted); font-weight: 300; line-height: 1.4; }
+  .folder-count { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+  .folder-count::after { content: " ▸"; display: inline-block; transition: transform 0.2s; margin-left: 0.2rem; }
+  .folder[open] .folder-count::after { transform: rotate(90deg); }
+  .folder[open] > summary { border-bottom: 1px solid var(--border); border-radius: 14px 14px 0 0; }
+  .folder-body { padding: 1.6rem 1.3rem 0.5rem; }
+  .folder-body .chapter { margin-bottom: 2rem; }
+  @media (max-width: 580px) { .folder-count { display: none; } .folder > summary { padding: 1rem; } .folder-body { padding: 1.2rem 0.9rem 0.2rem; } }
 </style>
 </head>
 <body>
@@ -230,6 +259,8 @@
     <p>Klik op een oefening om te beginnen. Per hoofdstuk vind je hier de woordenlijst met zelftest, het vervangspel en de flitskaarten.</p>
   </div>
 </div>
+
+<div class="section-title">Nu in de les · Hoofdstuk 1 · Te gek voor woorden</div>
 
 <!-- HOOFDSTUK 1.1 -->
 <div class="chapter">
@@ -263,7 +294,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 1.2 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -295,7 +325,6 @@
     </a>
   </div>
 </div>
-
 
 <!-- HOOFDSTUK 1.3 -->
 <div class="chapter">
@@ -329,7 +358,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 1.4 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -362,7 +390,15 @@
   </div>
 </div>
 
+<div class="section-title" style="margin-top:3.5rem">Volgende hoofdstukken</div>
 
+<details class="folder">
+  <summary>
+    <span class="folder-icon">📁</span>
+    <span class="folder-text"><span class="folder-name">Hoofdstuk 6</span><span class="folder-subs">6.3 Rijk zijn en zuinig leven · 6.4 Sociale zekerheid</span></span>
+    <span class="folder-count">2 onderdelen</span>
+  </summary>
+  <div class="folder-body">
 <!-- HOOFDSTUK 6.3 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -395,7 +431,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 6.4 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -427,8 +462,16 @@
     </a>
   </div>
 </div>
+  </div>
+</details>
 
-
+<details class="folder">
+  <summary>
+    <span class="folder-icon">📁</span>
+    <span class="folder-text"><span class="folder-name">Hoofdstuk 7</span><span class="folder-subs">7.1 Sterren en planeten · 7.2 De ruimte · 7.3 Kunstmatige intelligentie · 7.4 Concurrentie en rivaliteit</span></span>
+    <span class="folder-count">4 onderdelen</span>
+  </summary>
+  <div class="folder-body">
 <!-- HOOFDSTUK 7.1 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -460,7 +503,6 @@
     </a>
   </div>
 </div>
-
 
 <!-- HOOFDSTUK 7.2 -->
 <div class="chapter">
@@ -494,7 +536,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 7.3 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -527,7 +568,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 7.4 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -559,8 +599,16 @@
     </a>
   </div>
 </div>
+  </div>
+</details>
 
-
+<details class="folder">
+  <summary>
+    <span class="folder-icon">📁</span>
+    <span class="folder-text"><span class="folder-name">Hoofdstuk 8</span><span class="folder-subs">8.1 Sinterklaas — H8.1 en introductie · 8.2 De Gouden Eeuw · 8.3 Literatuur en maatschappij · 8.4 Poëzie</span></span>
+    <span class="folder-count">4 onderdelen</span>
+  </summary>
+  <div class="folder-body">
 <!-- HOOFDSTUK 8.1 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -592,7 +640,6 @@
     </a>
   </div>
 </div>
-
 
 <!-- HOOFDSTUK 8.2 -->
 <div class="chapter">
@@ -626,7 +673,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 8.3 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -659,7 +705,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 8.4 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -691,8 +736,16 @@
     </a>
   </div>
 </div>
+  </div>
+</details>
 
-
+<details class="folder">
+  <summary>
+    <span class="folder-icon">📁</span>
+    <span class="folder-text"><span class="folder-name">Hoofdstuk 9</span><span class="folder-subs">9.1 Machthebbers en veroveraars · 9.2 Ontdekkingsreizigers · 9.3 Vrouwenrechten · 9.4 Protest en verzet</span></span>
+    <span class="folder-count">4 onderdelen</span>
+  </summary>
+  <div class="folder-body">
 <!-- HOOFDSTUK 9.1 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -724,7 +777,6 @@
     </a>
   </div>
 </div>
-
 
 <!-- HOOFDSTUK 9.2 -->
 <div class="chapter">
@@ -758,7 +810,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 9.3 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -791,7 +842,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 9.4 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -823,8 +873,16 @@
     </a>
   </div>
 </div>
+  </div>
+</details>
 
-
+<details class="folder">
+  <summary>
+    <span class="folder-icon">📁</span>
+    <span class="folder-text"><span class="folder-name">Hoofdstuk 10</span><span class="folder-subs">10.1 Aan de macht · 10.2 Democratie en monarchie · 10.3 Media en politiek · 10.4 Internationale samenwerking</span></span>
+    <span class="folder-count">4 onderdelen</span>
+  </summary>
+  <div class="folder-body">
 <!-- HOOFDSTUK 10.1 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -856,7 +914,6 @@
     </a>
   </div>
 </div>
-
 
 <!-- HOOFDSTUK 10.2 -->
 <div class="chapter">
@@ -890,7 +947,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 10.3 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -923,7 +979,6 @@
   </div>
 </div>
 
-
 <!-- HOOFDSTUK 10.4 -->
 <div class="chapter">
   <div class="chapter-header">
@@ -955,6 +1010,8 @@
     </a>
   </div>
 </div>
+  </div>
+</details>
 
 <!-- PLACEHOLDER voor toekomstige hoofdstukken — verwijder of vul in -->
 
