@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 5.4 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -814,6 +829,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 5.4 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -835,49 +851,49 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aanslaan*", def:"gaan werken, van een apparaat; ook: succes hebben", wrong:["maakt nooit fouten","het einde; hoe iets afloopt","winnen van iets; ergens overheen komen"] },
-  { term:"afloop, de", def:"het einde; hoe iets afloopt", wrong:["een sterke liefde voor iets","angst","met je mond of een apparaat lucht of vloeistof naar binnen halen"] },
-  { term:"berm, de", def:"de strook gras naast een weg", wrong:["een sterke liefde voor iets","minder goed of minder waard dan anderen","anders zijn dan normaal"] },
-  { term:"bezeten", def:"heel erg bezig met iets; helemaal in de macht van iets", wrong:["gaan werken, van een apparaat; ook: succes hebben","een apparaat; ook: een vliegtuig","in het midden van een afstand of tijd"] },
-  { term:"fenomeen, het", def:"een verschijnsel", wrong:["een strijd waarbij je vecht","hoe je over jezelf denkt","een sterke liefde voor iets"] },
-  { term:"fobie, de", def:"een heel sterke angst voor iets", wrong:["een kritisch stuk over een boek, film of voorstelling","alles wat te maken heeft met vliegen","een probleem hebben waarmee je worstelt"] },
-  { term:"gevecht, het", def:"een strijd waarbij je vecht", wrong:["zeggen dat iets waar is, ook al is dat moeilijk","hoe het ook is; in elk geval","anders zijn dan normaal"] },
-  { term:"halverwege", def:"in het midden van een afstand of tijd", wrong:["een zwak punt","maakt nooit fouten","zeggen dat iets waar is, ook al is dat moeilijk"] },
-  { term:"hulpverlenend", def:"gericht op het helpen van mensen", wrong:["hoe het ook is; in elk geval","stap voor stap","gaan werken, van een apparaat; ook: succes hebben"] },
-  { term:"immers", def:"want; zoals je weet", wrong:["angst","maakt nooit fouten","een heel sterke angst voor iets"] },
-  { term:"kandidaat, de", def:"iemand die meedoet aan een verkiezing, examen of sollicitatie", wrong:["een zwak punt","nodig; het moet echt","veel kritiek hebben op iemand"] },
-  { term:"kennis, de", def:"wat je weet; ook: iemand die je een beetje kent", wrong:["hoe het ook is; in elk geval","anders zijn dan normaal","iemand die meedoet aan een verkiezing, examen of sollicitatie"] },
-  { term:"luchtvaart, de", def:"alles wat te maken heeft met vliegen", wrong:["emotioneel niet sterk genoeg zijn om een taak uit te voeren","een zwak punt","het einde; hoe iets afloopt"] },
-  { term:"luchtvaartmaatschappij, de", def:"een bedrijf dat vluchten uitvoert", wrong:["heel erg bezig met iets; helemaal in de macht van iets","iets in de prullenbak doen","met veel macht; ook: heel erg"] },
-  { term:"machtig", def:"met veel macht; ook: heel erg", wrong:["iemand die meedoet aan een verkiezing, examen of sollicitatie","afgewezen worden","emotioneel niet sterk genoeg zijn om een taak uit te voeren"] },
-  { term:"minderwaardig", def:"minder goed of minder waard dan anderen", wrong:["nodig; het moet echt","een zwak punt","wat je weet; ook: iemand die je een beetje kent"] },
-  { term:"noodzakelijk", def:"nodig; het moet echt", wrong:["een sterke liefde voor iets","een begeleide tour door een gebouw of plek","winnen van iets; ergens overheen komen"] },
-  { term:"onfeilbaar", def:"maakt nooit fouten", wrong:["gericht op het helpen van mensen","veel kritiek hebben op iemand","hoe je over jezelf denkt"] },
-  { term:"opleiden", def:"iemand leren een beroep uit te oefenen", wrong:["stap voor stap","plotseling, zonder aanleiding","gaan werken, van een apparaat; ook: succes hebben"] },
-  { term:"overwinnen*", def:"winnen van iets; ergens overheen komen", wrong:["een kritisch stuk over een boek, film of voorstelling","het einde; hoe iets afloopt","gaan werken, van een apparaat; ook: succes hebben"] },
-  { term:"passie, de", def:"een sterke liefde voor iets", wrong:["gericht op het helpen van mensen","heel erg bezig met iets; helemaal in de macht van iets","nodig; het moet echt"] },
-  { term:"recensie, de", def:"een kritisch stuk over een boek, film of voorstelling", wrong:["een strijd waarbij je vecht","een bedrijf dat vluchten uitvoert","gaan werken, van een apparaat; ook: succes hebben"] },
-  { term:"rondleiding, de", def:"een begeleide tour door een gebouw of plek", wrong:["heel erg bezig met iets; helemaal in de macht van iets","hoe het ook is; in elk geval","zorgen dat iets of iemand niet verder kan"] },
-  { term:"stapsgewijs", def:"stap voor stap", wrong:["een probleem hebben waarmee je worstelt","een strijd waarbij je vecht","gaan vechten tegen iets of iemand"] },
-  { term:"tegenhouden*", def:"zorgen dat iets of iemand niet verder kan", wrong:["een apparaat; ook: een vliegtuig","hoe je over jezelf denkt","met veel macht; ook: heel erg"] },
-  { term:"tekeergaan*", def:"heel boos of wild doen", wrong:["gaan werken, van een apparaat; ook: succes hebben","hoe je over jezelf denkt","de strook gras naast een weg"] },
-  { term:"toegeven*", def:"zeggen dat iets waar is, ook al is dat moeilijk", wrong:["een probleem hebben waarmee je worstelt","het einde; hoe iets afloopt","iemand leren een beroep uit te oefenen"] },
-  { term:"toestel, het", def:"een apparaat; ook: een vliegtuig", wrong:["hoe het ook is; in elk geval","een sterke liefde voor iets","veel kritiek hebben op iemand"] },
-  { term:"vrees, de", def:"angst", wrong:["gaan vechten tegen iets of iemand","een begeleide tour door een gebouw of plek","een zwak punt"] },
-  { term:"weggooien", def:"iets in de prullenbak doen", wrong:["minder goed of minder waard dan anderen","anders zijn dan normaal","in het midden van een afstand of tijd"] },
-  { term:"zelfbeeld, het", def:"hoe je over jezelf denkt", wrong:["stap voor stap","een verschijnsel","hoe het ook is; in elk geval"] },
-  { term:"zuigen*", def:"met je mond of een apparaat lucht of vloeistof naar binnen halen", wrong:["stap voor stap","zorgen dat iets of iemand niet verder kan","veel kritiek hebben op iemand"] },
-  { term:"zwakheid, de", def:"een zwak punt", wrong:["een kritisch stuk over een boek, film of voorstelling","angst","zeggen dat iets waar is, ook al is dat moeilijk"] },
-  { term:"de strijd aangaan met iets/iemand", def:"gaan vechten tegen iets of iemand", wrong:["een apparaat; ook: een vliegtuig","een verschijnsel","een begeleide tour door een gebouw of plek"] },
-  { term:"een uitzondering op de regel zijn", def:"anders zijn dan normaal", wrong:["met je mond of een apparaat lucht of vloeistof naar binnen halen","een probleem hebben waarmee je worstelt","want; zoals je weet"] },
-  { term:"hoe het ook zij", def:"hoe het ook is; in elk geval", wrong:["emotioneel niet sterk genoeg zijn om een taak uit te voeren","heel erg bezig met iets; helemaal in de macht van iets","met veel macht; ook: heel erg"] },
-  { term:"met een probleem kampen", def:"een probleem hebben waarmee je worstelt", wrong:["zeggen dat iets waar is, ook al is dat moeilijk","iemand leren een beroep uit te oefenen","emotioneel niet sterk genoeg zijn om een taak uit te voeren"] },
-  { term:"uit het niets", def:"plotseling, zonder aanleiding", wrong:["iets in de prullenbak doen","een probleem hebben waarmee je worstelt","in het midden van een afstand of tijd"] },
-  { term:"het hoofd boven water houden", def:"net voldoende geld hebben om van te leven", wrong:["heel erg bezig met iets; helemaal in de macht van iets","zorgen dat iets of iemand niet verder kan","veel kritiek hebben op iemand"] },
-  { term:"iemand naar beneden halen", def:"veel kritiek hebben op iemand", wrong:["zeggen dat iets waar is, ook al is dat moeilijk","een sterke liefde voor iets","stap voor stap"] },
-  { term:"iets niet trekken", def:"emotioneel niet sterk genoeg zijn om een taak uit te voeren", wrong:["gaan werken, van een apparaat; ook: succes hebben","een zwak punt","hoe het ook is; in elk geval"] },
-  { term:"iets zat zijn", def:"heel erg genoeg van iets hebben", wrong:["het einde; hoe iets afloopt","een bedrijf dat vluchten uitvoert","een verschijnsel"] },
-  { term:"zijn neus stoten", def:"afgewezen worden", wrong:["zorgen dat iets of iemand niet verder kan","nodig; het moet echt","met veel macht; ook: heel erg"] }
+  { term:"aanslaan*", def:"gaan werken, van een apparaat; ook: succes hebben", wrong:["een sterke liefde voor iets", "uitgaan, van een apparaat; ook: mislukken", "kapotgaan, van een apparaat; ook: lang duren"] },
+  { term:"afloop, de", def:"het einde; hoe iets afloopt", wrong:["alles wat te maken heeft met vliegen", "het begin; hoe iets begint", "het midden; hoe iets verder gaat"] },
+  { term:"berm, de", def:"de strook gras naast een weg", wrong:["want; zoals je weet", "de stoep langs huizen", "de middenstreep op een weg"] },
+  { term:"bezeten", def:"heel erg bezig met iets; helemaal in de macht van iets", wrong:["het einde; hoe iets afloopt", "helemaal niet geïnteresseerd in iets", "lang op een stoel gezeten"] },
+  { term:"fenomeen, het", def:"een verschijnsel", wrong:["een begeleide tour door een gebouw of plek", "een oorzaak", "een vraag"] },
+  { term:"fobie, de", def:"een heel sterke angst voor iets", wrong:["hoe het ook is; in elk geval", "een sterke voorkeur voor iets", "een lichte zorg over iets"] },
+  { term:"gevecht, het", def:"een strijd waarbij je vecht", wrong:["heel boos of wild doen", "een gesprek waarbij je samenwerkt", "een wedstrijd waarbij je rent"] },
+  { term:"halverwege", def:"in het midden van een afstand of tijd", wrong:["afgewezen worden", "aan het begin van een afstand of tijd", "aan het eind van een afstand of tijd"] },
+  { term:"hulpverlenend", def:"gericht op het helpen van mensen", wrong:["met veel macht; ook: heel erg", "gericht op het straffen van mensen", "gericht op het verkopen van producten"] },
+  { term:"immers", def:"want; zoals je weet", wrong:["plotseling, zonder aanleiding", "maar; toch", "misschien; wie weet"] },
+  { term:"kandidaat, de", def:"iemand die meedoet aan een verkiezing, examen of sollicitatie", wrong:["want; zoals je weet", "iemand die een verkiezing, examen of sollicitatie organiseert", "iemand die de winnaar kiest"] },
+  { term:"kennis, de", def:"wat je weet; ook: iemand die je een beetje kent", wrong:["de strook gras naast een weg", "wat je voelt; ook: iemand die je heel goed kent", "wat je kunt; ook: iemand die je niet kent"] },
+  { term:"luchtvaart, de", def:"alles wat te maken heeft met vliegen", wrong:["een zwak punt", "alles wat te maken heeft met varen", "alles wat te maken heeft met het weer"] },
+  { term:"luchtvaartmaatschappij, de", def:"een bedrijf dat vluchten uitvoert", wrong:["anders zijn dan normaal", "een vliegveld waar vliegtuigen landen", "een bedrijf dat vliegtuigen bouwt"] },
+  { term:"machtig", def:"met veel macht; ook: heel erg", wrong:["heel erg bezig met iets; helemaal in de macht van iets", "zonder macht; ook: een beetje", "rijk; ook: heel weinig"] },
+  { term:"minderwaardig", def:"minder goed of minder waard dan anderen", wrong:["een strijd waarbij je vecht", "beter of meer waard dan anderen", "even goed als anderen"] },
+  { term:"noodzakelijk", def:"nodig; het moet echt", wrong:["alles wat te maken heeft met vliegen", "overbodig; het hoeft niet", "handig; het is leuk als het kan"] },
+  { term:"onfeilbaar", def:"maakt nooit fouten", wrong:["anders zijn dan normaal", "maakt vaak fouten", "kan niet vallen"] },
+  { term:"opleiden", def:"iemand leren een beroep uit te oefenen", wrong:["een probleem hebben waarmee je worstelt", "iemand ontslaan uit een beroep", "iemand naar boven leiden"] },
+  { term:"overwinnen*", def:"winnen van iets; ergens overheen komen", wrong:["heel erg genoeg van iets hebben", "verliezen van iets; ergens in blijven hangen", "opnieuw proberen; ergens omheen lopen"] },
+  { term:"passie, de", def:"een sterke liefde voor iets", wrong:["een bedrijf dat vluchten uitvoert", "een sterke afkeer van iets", "een kleine interesse voor iets"] },
+  { term:"recensie, de", def:"een kritisch stuk over een boek, film of voorstelling", wrong:["iemand die meedoet aan een verkiezing, examen of sollicitatie", "een reclame voor een boek, film of voorstelling", "een samenvatting van een boek zonder mening"] },
+  { term:"rondleiding, de", def:"een begeleide tour door een gebouw of plek", wrong:["een probleem hebben waarmee je worstelt", "een wandeling alleen, zonder gids", "een lezing in een zaal"] },
+  { term:"stapsgewijs", def:"stap voor stap", wrong:["in het midden van een afstand of tijd", "in één keer", "met grote sprongen"] },
+  { term:"tegenhouden*", def:"zorgen dat iets of iemand niet verder kan", wrong:["stap voor stap", "zorgen dat iets of iemand sneller verder kan", "iets of iemand ontmoeten"] },
+  { term:"tekeergaan*", def:"heel boos of wild doen", wrong:["gaan vechten tegen iets of iemand", "rustig en kalm doen", "zachtjes huilen"] },
+  { term:"toegeven*", def:"zeggen dat iets waar is, ook al is dat moeilijk", wrong:["net voldoende geld hebben om van te leven", "ontkennen dat iets waar is", "iets extra geven"] },
+  { term:"toestel, het", def:"een apparaat; ook: een vliegtuig", wrong:["zorgen dat iets of iemand niet verder kan", "een gebouw; ook: een schip", "een stopcontact; ook: een auto"] },
+  { term:"vrees, de", def:"angst", wrong:["iemand die meedoet aan een verkiezing, examen of sollicitatie", "moed", "boosheid"] },
+  { term:"weggooien", def:"iets in de prullenbak doen", wrong:["een verschijnsel", "iets bewaren", "iets uitlenen"] },
+  { term:"zelfbeeld, het", def:"hoe je over jezelf denkt", wrong:["een heel sterke angst voor iets", "hoe anderen over jou denken", "een foto van jezelf"] },
+  { term:"zuigen*", def:"met je mond of een apparaat lucht of vloeistof naar binnen halen", wrong:["een begeleide tour door een gebouw of plek", "lucht of vloeistof naar buiten blazen", "iets met je tanden kapotbijten"] },
+  { term:"zwakheid, de", def:"een zwak punt", wrong:["stap voor stap", "een sterk punt", "een ziekte"] },
+  { term:"de strijd aangaan met iets/iemand", def:"gaan vechten tegen iets of iemand", wrong:["gaan werken, van een apparaat; ook: succes hebben", "opgeven tegen iets of iemand", "samenwerken met iets of iemand"] },
+  { term:"een uitzondering op de regel zijn", def:"anders zijn dan normaal", wrong:["een heel sterke angst voor iets", "precies volgens de regel zijn", "een nieuwe regel maken"] },
+  { term:"hoe het ook zij", def:"hoe het ook is; in elk geval", wrong:["in het midden van een afstand of tijd", "zo moet het zijn", "het is niet duidelijk hoe het is"] },
+  { term:"met een probleem kampen", def:"een probleem hebben waarmee je worstelt", wrong:["een begeleide tour door een gebouw of plek", "een probleem makkelijk oplossen", "op een camping wonen"] },
+  { term:"uit het niets", def:"plotseling, zonder aanleiding", wrong:["heel boos of wild doen", "na lange voorbereiding", "zonder geld"] },
+  { term:"het hoofd boven water houden", def:"net voldoende geld hebben om van te leven", wrong:["een kritisch stuk over een boek, film of voorstelling", "heel veel geld hebben", "goed kunnen zwemmen"] },
+  { term:"iemand naar beneden halen", def:"veel kritiek hebben op iemand", wrong:["afgewezen worden", "iemand veel complimenten geven", "iemand helpen met de trap"] },
+  { term:"iets niet trekken", def:"emotioneel niet sterk genoeg zijn om een taak uit te voeren", wrong:["zorgen dat iets of iemand niet verder kan", "iets heel goed aankunnen", "iets niet willen kopen"] },
+  { term:"iets zat zijn", def:"heel erg genoeg van iets hebben", wrong:["alles wat te maken heeft met vliegen", "ergens veel zin in hebben", "genoeg gegeten hebben"] },
+  { term:"zijn neus stoten", def:"afgewezen worden", wrong:["gericht op het helpen van mensen", "aangenomen worden", "zich bezeren aan een deur"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -909,6 +925,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

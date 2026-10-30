@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 3.4 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -616,6 +631,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 3.4 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -637,31 +653,31 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aanpassen, zich", def:"je gedrag veranderen zodat het past bij een nieuwe situatie", wrong:["een manier van uitspreken die laat horen waar je vandaan komt; ook: nadruk","een vaste vorm of herhaling","met je hoofd vooruit in het water springen; ook: snel ergens in gaan"] },
-  { term:"abrupt", def:"plotseling en onverwacht", wrong:["wakker blijven om op iemand te letten","in de war raken; niet meer normaal verlopen","hoe je stem omhoog en omlaag gaat als je praat"] },
-  { term:"accent, het", def:"een manier van uitspreken die laat horen waar je vandaan komt; ook: nadruk", wrong:["niet duidelijk","regelmatig opschrijven of bijwerken; ook: in hetzelfde tempo meegaan","een vaste vorm of herhaling"] },
-  { term:"bijhouden*", def:"regelmatig opschrijven of bijwerken; ook: in hetzelfde tempo meegaan", wrong:["een boek waarin je elke dag opschrijft wat je meemaakt","je gedrag veranderen zodat het past bij een nieuwe situatie","deel zijn van een groep"] },
-  { term:"dagboek, het", def:"een boek waarin je elke dag opschrijft wat je meemaakt", wrong:["heel erg moe","hoe je stem omhoog en omlaag gaat als je praat","door iets ergs niet meer goed kunnen functioneren"] },
-  { term:"duiken*", def:"met je hoofd vooruit in het water springen; ook: snel ergens in gaan", wrong:["iets voor elkaar krijgen","een vaste vorm of herhaling","heel erg moe"] },
-  { term:"humeur, het", def:"je stemming; hoe je je voelt", wrong:["met je hoofd vooruit in het water springen; ook: snel ergens in gaan","een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam","een boek waarin je elke dag opschrijft wat je meemaakt"] },
-  { term:"inslapen*", def:"in slaap vallen", wrong:["muziek afspelen","een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam","hoe je stem omhoog en omlaag gaat als je praat"] },
-  { term:"intonatie, de", def:"hoe je stem omhoog en omlaag gaat als je praat", wrong:["met je hoofd vooruit in het water springen; ook: snel ergens in gaan","je stemming; hoe je je voelt","niet duidelijk"] },
-  { term:"klok, de", def:"een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam", wrong:["een manier van uitspreken die laat horen waar je vandaan komt; ook: nadruk","regelmatig opschrijven of bijwerken; ook: in hetzelfde tempo meegaan","er is geen verschil"] },
-  { term:"opkomst, de", def:"het opkomen of verschijnen; ook: het aantal mensen dat komt", wrong:["veranderen naar iets anders","een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam","muziek afspelen"] },
-  { term:"patroon, het", def:"een vaste vorm of herhaling", wrong:["plotseling en onverwacht","wakker blijven om op iemand te letten","in slaap vallen"] },
-  { term:"synchroon", def:"precies op hetzelfde moment", wrong:["iets voor elkaar krijgen","regelmatig opschrijven of bijwerken; ook: in hetzelfde tempo meegaan","in de war raken; niet meer normaal verlopen"] },
-  { term:"uitgeput", def:"heel erg moe", wrong:["veranderen naar iets anders","iemand vindt het (niet) erg","precies op hetzelfde moment"] },
-  { term:"vaag", def:"niet duidelijk", wrong:["een boek waarin je elke dag opschrijft wat je meemaakt","iemand vindt het (niet) erg","precies op hetzelfde moment"] },
-  { term:"vooruit", def:"naar voren; ook: eerder in de tijd", wrong:["deel zijn van een groep","veranderen naar iets anders","een vaste vorm of herhaling"] },
-  { term:"waken", def:"wakker blijven om op iemand te letten", wrong:["heel erg moe","een vaste vorm of herhaling","door iets ergs niet meer goed kunnen functioneren"] },
-  { term:"behoren tot iets", def:"deel zijn van een groep", wrong:["je stemming; hoe je je voelt","een boek waarin je elke dag opschrijft wat je meemaakt","naar voren; ook: eerder in de tijd"] },
-  { term:"ergens in slagen", def:"iets voor elkaar krijgen", wrong:["je gedrag veranderen zodat het past bij een nieuwe situatie","naar voren; ook: eerder in de tijd","er is geen verschil"] },
-  { term:"muziek draaien", def:"muziek afspelen", wrong:["naar voren; ook: eerder in de tijd","met je hoofd vooruit in het water springen; ook: snel ergens in gaan","er is geen verschil"] },
-  { term:"overgaan op iets", def:"veranderen naar iets anders", wrong:["er is geen verschil","een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam","met je hoofd vooruit in het water springen; ook: snel ergens in gaan"] },
-  { term:"verstoord raken", def:"in de war raken; niet meer normaal verlopen", wrong:["heel erg moe","een vaste vorm of herhaling","plotseling en onverwacht"] },
-  { term:"het doet iemand (niet) veel", def:"iemand vindt het (niet) erg", wrong:["in de war raken; niet meer normaal verlopen","precies op hetzelfde moment","met je hoofd vooruit in het water springen; ook: snel ergens in gaan"] },
-  { term:"het maakt niets uit", def:"er is geen verschil", wrong:["wakker blijven om op iemand te letten","deel zijn van een groep","naar voren; ook: eerder in de tijd"] },
-  { term:"van slag raken", def:"door iets ergs niet meer goed kunnen functioneren", wrong:["iets voor elkaar krijgen","niet duidelijk","met je hoofd vooruit in het water springen; ook: snel ergens in gaan"] }
+  { term:"aanpassen, zich", def:"je gedrag veranderen zodat het past bij een nieuwe situatie", wrong:["een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam", "je gedrag hetzelfde houden, ook in een nieuwe situatie", "andere kleren aantrekken"] },
+  { term:"abrupt", def:"plotseling en onverwacht", wrong:["met je hoofd vooruit in het water springen; ook: snel ergens in gaan", "langzaam en verwacht", "zacht en voorzichtig"] },
+  { term:"accent, het", def:"een manier van uitspreken die laat horen waar je vandaan komt; ook: nadruk", wrong:["in de war raken; niet meer normaal verlopen", "een taal die je als kind hebt geleerd; ook: een stem", "een fout in de grammatica; ook: een pauze"] },
+  { term:"bijhouden*", def:"regelmatig opschrijven of bijwerken; ook: in hetzelfde tempo meegaan", wrong:["een vaste vorm of herhaling", "één keer opschrijven en dan weggooien; ook: achterblijven", "iets bij je houden zodat je het niet verliest; ook: sneller gaan"] },
+  { term:"dagboek, het", def:"een boek waarin je elke dag opschrijft wat je meemaakt", wrong:["je stemming; hoe je je voelt", "een boek met afspraken voor de komende weken", "een boek waarin je leest wat er in de wereld gebeurt"] },
+  { term:"duiken*", def:"met je hoofd vooruit in het water springen; ook: snel ergens in gaan", wrong:["regelmatig opschrijven of bijwerken; ook: in hetzelfde tempo meegaan", "met je voeten eerst langzaam het water in lopen; ook: ergens uit gaan", "op je rug in het water drijven; ook: ergens over nadenken"] },
+  { term:"humeur, het", def:"je stemming; hoe je je voelt", wrong:["muziek afspelen", "je gezondheid", "je karakter"] },
+  { term:"inslapen*", def:"in slaap vallen", wrong:["door iets ergs niet meer goed kunnen functioneren", "wakker worden", "slecht slapen"] },
+  { term:"intonatie, de", def:"hoe je stem omhoog en omlaag gaat als je praat", wrong:["een boek waarin je elke dag opschrijft wat je meemaakt", "hoe snel je praat", "welke woorden je kiest als je praat"] },
+  { term:"klok, de", def:"een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam", wrong:["door iets ergs niet meer goed kunnen functioneren", "een apparaat dat de temperatuur aangeeft; de biologische klok is je gewicht", "een agenda met afspraken; de biologische klok is je leeftijd"] },
+  { term:"opkomst, de", def:"het opkomen of verschijnen; ook: het aantal mensen dat komt", wrong:["in de war raken; niet meer normaal verlopen", "het weggaan of verdwijnen; ook: het aantal mensen dat wegblijft", "het begin van een vergadering; ook: de lijst met namen"] },
+  { term:"patroon, het", def:"een vaste vorm of herhaling", wrong:["naar voren; ook: eerder in de tijd", "een toevallige verandering", "een losse lijn"] },
+  { term:"synchroon", def:"precies op hetzelfde moment", wrong:["door iets ergs niet meer goed kunnen functioneren", "na elkaar, op verschillende momenten", "bijna tegelijk, met een kleine vertraging"] },
+  { term:"uitgeput", def:"heel erg moe", wrong:["in slaap vallen", "fit en uitgerust", "een beetje moe"] },
+  { term:"vaag", def:"niet duidelijk", wrong:["precies op hetzelfde moment", "heel duidelijk", "heel donker"] },
+  { term:"vooruit", def:"naar voren; ook: eerder in de tijd", wrong:["deel zijn van een groep", "naar achteren; ook: later in de tijd", "omhoog; ook: nu"] },
+  { term:"waken", def:"wakker blijven om op iemand te letten", wrong:["het opkomen of verschijnen; ook: het aantal mensen dat komt", "diep slapen", "vroeg opstaan"] },
+  { term:"behoren tot iets", def:"deel zijn van een groep", wrong:["een manier van uitspreken die laat horen waar je vandaan komt; ook: nadruk", "buiten een groep staan", "iets moeten doen"] },
+  { term:"ergens in slagen", def:"iets voor elkaar krijgen", wrong:["je stemming; hoe je je voelt", "ergens in mislukken", "ergens aan beginnen"] },
+  { term:"muziek draaien", def:"muziek afspelen", wrong:["iemand vindt het (niet) erg", "muziek maken op een instrument", "muziek zachter zetten"] },
+  { term:"overgaan op iets", def:"veranderen naar iets anders", wrong:["een boek waarin je elke dag opschrijft wat je meemaakt", "bij hetzelfde blijven", "over iets heen springen"] },
+  { term:"verstoord raken", def:"in de war raken; niet meer normaal verlopen", wrong:["een apparaat dat de tijd aangeeft; de biologische klok is het ritme van je lichaam", "weer normaal worden", "boos worden"] },
+  { term:"het doet iemand (niet) veel", def:"iemand vindt het (niet) erg", wrong:["hoe je stem omhoog en omlaag gaat als je praat", "iemand heeft het (niet) druk", "iemand doet (niet) veel moeite"] },
+  { term:"het maakt niets uit", def:"er is geen verschil", wrong:["een vaste vorm of herhaling", "er is een groot verschil", "er komt niets uit"] },
+  { term:"van slag raken", def:"door iets ergs niet meer goed kunnen functioneren", wrong:["je stemming; hoe je je voelt", "heel rustig blijven", "een wedstrijd verliezen"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -693,6 +709,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

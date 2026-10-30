@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 6.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -715,6 +730,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 6.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -736,40 +752,40 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aantrekken*", def:"naar je toe trekken; ook: kleding aandoen", wrong:["wat dat betreft; tot die mate","weghalen","na lange tijd; uiteindelijk"] },
-  { term:"bedelaar, de", def:"iemand die op straat om geld vraagt", wrong:["gelijk zijn aan iets","iemand met meer dan een miljoen euro","vroeger"] },
-  { term:"bende, de", def:"een groep criminelen; ook: een rommel", wrong:["daar heeft iemand een andere, nog onbekende bedoeling mee","wat dat betreft; tot die mate","een plek om te wonen of te slapen"] },
-  { term:"enkeling, de", def:"één persoon of een heel klein aantal mensen", wrong:["iemand met meer dan een miljoen euro","wat dat betreft; tot die mate","iemand die op straat om geld vraagt"] },
-  { term:"enquête, de", def:"een lijst met vragen om meningen te onderzoeken", wrong:["juist het tegenovergestelde","niet terecht; onrechtvaardig","hoofd, vooral van een dier; ook: de titel van een artikel"] },
-  { term:"gereedschap, het", def:"werktuigen zoals een hamer en een zaag", wrong:["op een bepaald moment","wat dat betreft; tot die mate","rommel"] },
-  { term:"integendeel", def:"juist het tegenovergestelde", wrong:["een tekst of plan schrijven en maken; ook: neerzetten","de hoeveelheid banen die er zijn","gelijk zijn aan iets"] },
-  { term:"inzetten", def:"geld inzetten bij een spel; ook: gebruiken voor een doel", wrong:["niet allemaal tegelijk, maar na elkaar","daar heeft iemand een andere, nog onbekende bedoeling mee","moeite willen doen voor iets/iemand"] },
-  { term:"kop, de", def:"hoofd, vooral van een dier; ook: de titel van een artikel", wrong:["iemand die op straat om geld vraagt","kunnen","wat dat betreft; tot die mate"] },
-  { term:"lol, de", def:"plezier", wrong:["wat dat betreft; tot die mate","iemand met meer dan een miljoen euro","niet meer leuk vinden; ergens genoeg van hebben"] },
-  { term:"loterij, de", def:"een spel waarbij je een lot koopt en geld kunt winnen", wrong:["kunnen","een wens of taak waarmaken of uitvoeren","hoofd, vooral van een dier; ook: de titel van een artikel"] },
-  { term:"miljonair, de", def:"iemand met meer dan een miljoen euro", wrong:["een wens of taak waarmaken of uitvoeren","iemand die op straat om geld vraagt","iets ontdekken"] },
-  { term:"onderdak, het", def:"een plek om te wonen of te slapen", wrong:["weghalen","gelijk zijn aan iets","een gevoel van opwinding of bedwelming"] },
-  { term:"onterecht", def:"niet terecht; onrechtvaardig", wrong:["een spel waarbij je een lot koopt en geld kunt winnen","op een bepaald moment","weghalen"] },
-  { term:"opstellen", def:"een tekst of plan schrijven en maken; ook: neerzetten", wrong:["na lange tijd; uiteindelijk","niet terecht; onrechtvaardig","werktuigen zoals een hamer en een zaag"] },
-  { term:"roes, de", def:"een gevoel van opwinding of bedwelming", wrong:["iemand met meer dan een miljoen euro","wat dat betreft; tot die mate","een tekst of plan schrijven en maken; ook: neerzetten"] },
-  { term:"rotzooi, de", def:"rommel", wrong:["een groep criminelen; ook: een rommel","iemand dringend vragen iets te doen","geld inzetten bij een spel; ook: gebruiken voor een doel"] },
-  { term:"tegenstaan*", def:"niet meer leuk vinden; ergens genoeg van hebben", wrong:["een gevoel van opwinding of bedwelming","na lange tijd; uiteindelijk","iets ontdekken"] },
-  { term:"uitspraak, de", def:"iets wat iemand zegt; ook: hoe je een woord uitspreekt", wrong:["een wens of taak waarmaken of uitvoeren","werktuigen zoals een hamer en een zaag","een spel waarbij je een lot koopt en geld kunt winnen"] },
-  { term:"vervullen", def:"een wens of taak waarmaken of uitvoeren", wrong:["een groep criminelen; ook: een rommel","geld inzetten bij een spel; ook: gebruiken voor een doel","moeite willen doen voor iets/iemand"] },
-  { term:"verwijderen", def:"weghalen", wrong:["niet meer leuk vinden; ergens genoeg van hebben","niet allemaal tegelijk, maar na elkaar","een groep criminelen; ook: een rommel"] },
-  { term:"voorheen", def:"vroeger", wrong:["niet allemaal tegelijk, maar na elkaar","een spel waarbij je een lot koopt en geld kunt winnen","iemand die op straat om geld vraagt"] },
-  { term:"werkgelegenheid, de", def:"de hoeveelheid banen die er zijn", wrong:["na lange tijd; uiteindelijk","gelijk zijn aan iets","hoofd, vooral van een dier; ook: de titel van een artikel"] },
-  { term:"een voor een", def:"niet allemaal tegelijk, maar na elkaar", wrong:["werktuigen zoals een hamer en een zaag","rommel","wat dat betreft; tot die mate"] },
-  { term:"in zoverre", def:"wat dat betreft; tot die mate", wrong:["een groep criminelen; ook: een rommel","weghalen","iets ontdekken"] },
-  { term:"op den duur", def:"na lange tijd; uiteindelijk", wrong:["niet meer leuk vinden; ergens genoeg van hebben","geld inzetten bij een spel; ook: gebruiken voor een doel","een groep criminelen; ook: een rommel"] },
-  { term:"op een gegeven ogenblik", def:"op een bepaald moment", wrong:["iemand met meer dan een miljoen euro","wat dat betreft; tot die mate","rommel"] },
-  { term:"overeenkomen met iets", def:"gelijk zijn aan iets", wrong:["na lange tijd; uiteindelijk","een groep criminelen; ook: een rommel","daar heeft iemand een andere, nog onbekende bedoeling mee"] },
-  { term:"achter iets komen", def:"iets ontdekken", wrong:["niet terecht; onrechtvaardig","iemand met meer dan een miljoen euro","weghalen"] },
-  { term:"daar zit iets achter", def:"daar heeft iemand een andere, nog onbekende bedoeling mee", wrong:["iets wat iemand zegt; ook: hoe je een woord uitspreekt","iemand dringend vragen iets te doen","wat dat betreft; tot die mate"] },
-  { term:"een beroep doen op iemand", def:"iemand dringend vragen iets te doen", wrong:["iemand die op straat om geld vraagt","hoofd, vooral van een dier; ook: de titel van een artikel","iemand met meer dan een miljoen euro"] },
-  { term:"grip krijgen op iets", def:"iets steeds beter begrijpen of kunnen", wrong:["naar je toe trekken; ook: kleding aandoen","geld inzetten bij een spel; ook: gebruiken voor een doel","weghalen"] },
-  { term:"in staat zijn", def:"kunnen", wrong:["daar heeft iemand een andere, nog onbekende bedoeling mee","wat dat betreft; tot die mate","een lijst met vragen om meningen te onderzoeken"] },
-  { term:"je vingers uitsteken naar iets/iemand", def:"moeite willen doen voor iets/iemand", wrong:["gelijk zijn aan iets","een groep criminelen; ook: een rommel","iemand met meer dan een miljoen euro"] }
+  { term:"aantrekken*", def:"naar je toe trekken; ook: kleding aandoen", wrong:["iets wat iemand zegt; ook: hoe je een woord uitspreekt", "van je af duwen; ook: kleding uitdoen", "achter je aan slepen; ook: kleding wassen"] },
+  { term:"bedelaar, de", def:"iemand die op straat om geld vraagt", wrong:["één persoon of een heel klein aantal mensen", "iemand die op straat dingen verkoopt", "iemand die op straat muziek maakt voor publiek"] },
+  { term:"bende, de", def:"een groep criminelen; ook: een rommel", wrong:["niet meer leuk vinden; ergens genoeg van hebben", "een groep vrienden die samen sporten; ook: een kast", "een groep politieagenten; ook: netheid"] },
+  { term:"enkeling, de", def:"één persoon of een heel klein aantal mensen", wrong:["werktuigen zoals een hamer en een zaag", "een grote groep mensen", "iemand die altijd alleen woont"] },
+  { term:"enquête, de", def:"een lijst met vragen om meningen te onderzoeken", wrong:["iets steeds beter begrijpen of kunnen", "een lijst met antwoorden op een examen", "een gesprek met één deskundige"] },
+  { term:"gereedschap, het", def:"werktuigen zoals een hamer en een zaag", wrong:["een plek om te wonen of te slapen", "materialen zoals hout en spijkers", "machines zoals een auto en een trein"] },
+  { term:"integendeel", def:"juist het tegenovergestelde", wrong:["plezier", "bovendien; nog meer van hetzelfde", "bijvoorbeeld; zoals"] },
+  { term:"inzetten", def:"geld inzetten bij een spel; ook: gebruiken voor een doel", wrong:["rommel", "geld uitgeven in een winkel; ook: weghalen", "geld sparen op een rekening; ook: uitstellen"] },
+  { term:"kop, de", def:"hoofd, vooral van een dier; ook: de titel van een artikel", wrong:["daar heeft iemand een andere, nog onbekende bedoeling mee", "staart, vooral van een dier; ook: het einde van een artikel", "buik, vooral van een dier; ook: de schrijver van een artikel"] },
+  { term:"lol, de", def:"plezier", wrong:["een groep criminelen; ook: een rommel", "verdriet", "verveling"] },
+  { term:"loterij, de", def:"een spel waarbij je een lot koopt en geld kunt winnen", wrong:["wat dat betreft; tot die mate", "een spel waarbij je kaarten koopt en punten verzamelt", "een bank waar je geld kunt lenen"] },
+  { term:"miljonair, de", def:"iemand met meer dan een miljoen euro", wrong:["een gevoel van opwinding of bedwelming", "iemand met heel veel schulden", "iemand met een goed salaris"] },
+  { term:"onderdak, het", def:"een plek om te wonen of te slapen", wrong:["iemand met meer dan een miljoen euro", "het dak van een huis", "een kelder onder een huis"] },
+  { term:"onterecht", def:"niet terecht; onrechtvaardig", wrong:["een lijst met vragen om meningen te onderzoeken", "terecht; eerlijk", "niet op tijd; te laat"] },
+  { term:"opstellen", def:"een tekst of plan schrijven en maken; ook: neerzetten", wrong:["iets ontdekken", "een tekst of plan weggooien; ook: opruimen", "een tekst voorlezen; ook: omgooien"] },
+  { term:"roes, de", def:"een gevoel van opwinding of bedwelming", wrong:["iets steeds beter begrijpen of kunnen", "een gevoel van rust en helderheid", "een gevoel van verdriet"] },
+  { term:"rotzooi, de", def:"rommel", wrong:["een spel waarbij je een lot koopt en geld kunt winnen", "netheid", "afval in een vuilniszak"] },
+  { term:"tegenstaan*", def:"niet meer leuk vinden; ergens genoeg van hebben", wrong:["een tekst of plan schrijven en maken; ook: neerzetten", "iets steeds leuker vinden", "tegen iemand aan staan"] },
+  { term:"uitspraak, de", def:"iets wat iemand zegt; ook: hoe je een woord uitspreekt", wrong:["een groep criminelen; ook: een rommel", "iets wat iemand schrijft; ook: hoe je een woord spelt", "iets wat iemand denkt; ook: wat een woord betekent"] },
+  { term:"vervullen", def:"een wens of taak waarmaken of uitvoeren", wrong:["de hoeveelheid banen die er zijn", "een wens of taak opgeven", "een wens of taak uitstellen"] },
+  { term:"verwijderen", def:"weghalen", wrong:["een gevoel van opwinding of bedwelming", "toevoegen", "verplaatsen"] },
+  { term:"voorheen", def:"vroeger", wrong:["de hoeveelheid banen die er zijn", "later", "nu"] },
+  { term:"werkgelegenheid, de", def:"de hoeveelheid banen die er zijn", wrong:["plezier", "de hoeveelheid werklozen die er zijn", "de tijd die je op je werk bent"] },
+  { term:"een voor een", def:"niet allemaal tegelijk, maar na elkaar", wrong:["moeite willen doen voor iets/iemand", "allemaal tegelijk", "twee aan twee"] },
+  { term:"in zoverre", def:"wat dat betreft; tot die mate", wrong:["kunnen", "helemaal niet", "zo ver weg"] },
+  { term:"op den duur", def:"na lange tijd; uiteindelijk", wrong:["iemand die op straat om geld vraagt", "meteen; direct", "te laat"] },
+  { term:"op een gegeven ogenblik", def:"op een bepaald moment", wrong:["iemand die op straat om geld vraagt", "altijd", "nooit"] },
+  { term:"overeenkomen met iets", def:"gelijk zijn aan iets", wrong:["iemand die op straat om geld vraagt", "verschillen van iets", "afspreken met iemand"] },
+  { term:"achter iets komen", def:"iets ontdekken", wrong:["een plek om te wonen of te slapen", "iets verbergen", "iets volgen"] },
+  { term:"daar zit iets achter", def:"daar heeft iemand een andere, nog onbekende bedoeling mee", wrong:["gelijk zijn aan iets", "daar zit niets verborgen achter", "daar staat iemand achter"] },
+  { term:"een beroep doen op iemand", def:"iemand dringend vragen iets te doen", wrong:["weghalen", "iemand een baan aanbieden", "iemand rustig laten"] },
+  { term:"grip krijgen op iets", def:"iets steeds beter begrijpen of kunnen", wrong:["niet terecht; onrechtvaardig", "iets steeds minder begrijpen", "iets vastpakken"] },
+  { term:"in staat zijn", def:"kunnen", wrong:["juist het tegenovergestelde", "niet kunnen", "willen"] },
+  { term:"je vingers uitsteken naar iets/iemand", def:"moeite willen doen voor iets/iemand", wrong:["de hoeveelheid banen die er zijn", "geen moeite willen doen voor iets/iemand", "naar iets of iemand wijzen"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -801,6 +817,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

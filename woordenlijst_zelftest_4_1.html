@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 4.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -858,6 +873,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 4.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -879,53 +895,53 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"afwijzen*", def:"nee zeggen tegen een verzoek of voorstel", wrong:["als het nodig is; misschien","de beslissing van de rechter; ook: hoe je een woord zegt","het met opzet doden van iemand"] },
-  { term:"beschuldigen", def:"zeggen dat iemand iets slechts heeft gedaan", wrong:["iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken","officiële toestemming om iets te doen","met een voorwaarde; een voorwaardelijke straf hoef je alleen te ondergaan als je opnieuw iets fout doet"] },
-  { term:"betrappen", def:"iemand zien terwijl hij iets doet wat niet mag", wrong:["iemand die een misdaad heeft gepleegd","een overtreding van een regel of wet","zich bezighouden met een zaak; ook: medisch verzorgen"] },
-  { term:"binnendringen*", def:"ergens naar binnen gaan zonder toestemming", wrong:["alleen","een overtreding van een regel of wet","iemand zien terwijl hij iets doet wat niet mag"] },
-  { term:"justitie, de", def:"de organisaties van de overheid die zorgen dat de wet wordt nageleefd, zoals politie en rechtbank", wrong:["iets wat echt gebeurd is; ook: een strafbare daad","denken dat iemand iets slechts heeft gedaan","de beslissing van de rechter dat iemand niet schuldig is"] },
-  { term:"misdaad, de", def:"een ernstige daad die tegen de wet is", wrong:["iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken","met een wapen een kogel afvuren","officiële toestemming om iets te doen"] },
-  { term:"mishandeling, de", def:"het slaan of pijn doen van iemand", wrong:["het zoeken naar daders of naar verdwenen mensen","iemand zien terwijl hij iets doet wat niet mag","een gebouw waarin veroordeelde mensen worden opgesloten"] },
-  { term:"moord, de", def:"het met opzet doden van iemand", wrong:["het gebouw of de instelling waar rechters zaken behandelen","een straf of regel laten gelden voor iemand","een organisatie of officiële instelling"] },
-  { term:"overbrengen*", def:"iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken", wrong:["het officieel beëindigen van een huwelijk","iemand die iets heeft gezien en daarover vertelt","het met opzet doden van iemand"] },
-  { term:"overval, de", def:"een plotselinge aanval om iets te stelen, vaak met geweld", wrong:["iemand betrappen tijdens het plegen van een strafbaar feit","het officieel beëindigen van een huwelijk","het met opzet kapotmaken van spullen van anderen"] },
-  { term:"schieten*", def:"met een wapen een kogel afvuren", wrong:["een overtreding van een regel of wet","beschermen tegen een aanval of beschuldiging","officiële toestemming om iets te doen"] },
-  { term:"vandalisme, het", def:"het met opzet kapotmaken van spullen van anderen", wrong:["de organisaties van de overheid die zorgen dat de wet wordt nageleefd, zoals politie en rechtbank","officiële toestemming om iets te doen","officieel laten weten dat je het ergens niet mee eens bent"] },
-  { term:"verdenken*", def:"denken dat iemand iets slechts heeft gedaan", wrong:["het gebouw of de instelling waar rechters zaken behandelen","verantwoordelijk voor iets wat fout is","zich bezighouden met een zaak; ook: medisch verzorgen"] },
-  { term:"vernielen", def:"met opzet kapotmaken", wrong:["een lichte strafbare daad, zoals door rood rijden","iemand van wie de politie denkt dat hij een misdaad heeft gepleegd","denken dat iemand iets slechts heeft gedaan"] },
-  { term:"asiel, het", def:"bescherming die een land geeft aan iemand die in zijn eigen land in gevaar is", wrong:["iets slechts doen, zoals een misdaad","denken dat iemand iets slechts heeft gedaan","zeggen dat iemand iets slechts heeft gedaan"] },
-  { term:"behandelen", def:"zich bezighouden met een zaak; ook: medisch verzorgen", wrong:["nee zeggen tegen een verzoek of voorstel","een vastgestelde grens overgaan (titel van hoofdstuk 4)","officieel laten weten dat je het ergens niet mee eens bent"] },
-  { term:"dader, de", def:"iemand die een misdaad heeft gepleegd", wrong:["ergens naar binnen gaan zonder toestemming","iemand betrappen tijdens het plegen van een strafbaar feit","een gebouw waarin veroordeelde mensen worden opgesloten"] },
-  { term:"echtscheiding, de", def:"het officieel beëindigen van een huwelijk", wrong:["zich bezighouden met een zaak; ook: medisch verzorgen","een vastgestelde grens overgaan (titel van hoofdstuk 4)","iemand van wie de politie denkt dat hij een misdaad heeft gepleegd"] },
-  { term:"eventueel", def:"als het nodig is; misschien", wrong:["iets slechts doen, zoals een misdaad","verantwoordelijk voor iets wat fout is","het slaan of pijn doen van iemand"] },
-  { term:"feit, het", def:"iets wat echt gebeurd is; ook: een strafbare daad", wrong:["zeggen dat iemand iets slechts heeft gedaan","een vastgestelde grens overgaan (titel van hoofdstuk 4)","met opzet een brand veroorzaken (introductie)"] },
-  { term:"getuige, de", def:"iemand die iets heeft gezien en daarover vertelt", wrong:["de beslissing van de rechter; ook: hoe je een woord zegt","het met opzet doden van iemand","iets slechts doen, zoals een misdaad"] },
-  { term:"gevangenis, de", def:"een gebouw waarin veroordeelde mensen worden opgesloten", wrong:["een plotselinge aanval om iets te stelen, vaak met geweld","een ernstige daad die tegen de wet is","alleen"] },
-  { term:"instantie, de", def:"een organisatie of officiële instelling", wrong:["iemand die een misdaad heeft gepleegd","een ernstig strafbaar feit","iemand van wie de politie denkt dat hij een misdaad heeft gepleegd"] },
-  { term:"misdrijf, het", def:"een ernstig strafbaar feit", wrong:["iets wat echt gebeurd is; ook: een strafbare daad","denken dat iemand iets slechts heeft gedaan","een organisatie of officiële instelling"] },
-  { term:"opleggen", def:"een straf of regel laten gelden voor iemand", wrong:["iemand van wie de politie denkt dat hij een misdaad heeft gepleegd","verantwoordelijk voor iets wat fout is","in vrijheid (nadat je in de gevangenis hebt gezeten)"] },
-  { term:"opsporing, de", def:"het zoeken naar daders of naar verdwenen mensen", wrong:["het officieel beëindigen van een huwelijk","met opzet kapotmaken","bescherming die een land geeft aan iemand die in zijn eigen land in gevaar is"] },
-  { term:"overtreding, de", def:"een lichte strafbare daad, zoals door rood rijden", wrong:["alleen","het met opzet kapotmaken van spullen van anderen","het zoeken naar daders of naar verdwenen mensen"] },
-  { term:"plegen", def:"iets slechts doen, zoals een misdaad", wrong:["de beslissing van de rechter; ook: hoe je een woord zegt","iemand zien terwijl hij iets doet wat niet mag","door een rechter: vaststellen dat iemand schuldig is"] },
-  { term:"rechtbank, de", def:"het gebouw of de instelling waar rechters zaken behandelen", wrong:["zich bezighouden met een zaak; ook: medisch verzorgen","het met opzet kapotmaken van spullen van anderen","iemand die een misdaad heeft gepleegd"] },
-  { term:"schuldig", def:"verantwoordelijk voor iets wat fout is", wrong:["de organisaties van de overheid die zorgen dat de wet wordt nageleefd, zoals politie en rechtbank","het slaan of pijn doen van iemand","iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken"] },
-  { term:"uitkering, de", def:"geld dat je van de overheid of een verzekering krijgt, bijvoorbeeld als je geen werk hebt", wrong:["iemand zien terwijl hij iets doet wat niet mag","officiële toestemming om iets te doen","nee zeggen tegen een verzoek of voorstel"] },
-  { term:"uitsluitend", def:"alleen", wrong:["zich bezighouden met een zaak; ook: medisch verzorgen","iemand van wie de politie denkt dat hij een misdaad heeft gepleegd","een ernstig strafbaar feit"] },
-  { term:"uitspraak, de", def:"de beslissing van de rechter; ook: hoe je een woord zegt", wrong:["iemand die een misdaad heeft gepleegd","een overtreding van een regel of wet","iets wat echt gebeurd is; ook: een strafbare daad"] },
-  { term:"verdachte, de", def:"iemand van wie de politie denkt dat hij een misdaad heeft gepleegd", wrong:["zeggen dat iemand iets slechts heeft gedaan","het zoeken naar daders of naar verdwenen mensen","beschermen tegen een aanval of beschuldiging"] },
-  { term:"verdedigen", def:"beschermen tegen een aanval of beschuldiging", wrong:["als het nodig is; misschien","een ernstige daad die tegen de wet is","een straf of regel laten gelden voor iemand"] },
-  { term:"vergrijp, het", def:"een overtreding van een regel of wet", wrong:["een plotselinge aanval om iets te stelen, vaak met geweld","iemand die iets heeft gezien en daarover vertelt","iets wat echt gebeurd is; ook: een strafbare daad"] },
-  { term:"vergunning, de", def:"officiële toestemming om iets te doen", wrong:["ergens naar binnen gaan zonder toestemming","het met opzet kapotmaken van spullen van anderen","de beslissing van de rechter; ook: hoe je een woord zegt"] },
-  { term:"vervolging, de", def:"het voor de rechter brengen van een verdachte", wrong:["met opzet kapotmaken","in vrijheid (nadat je in de gevangenis hebt gezeten)","zeggen dat iemand iets slechts heeft gedaan"] },
-  { term:"voorwaardelijk", def:"met een voorwaarde; een voorwaardelijke straf hoef je alleen te ondergaan als je opnieuw iets fout doet", wrong:["de beslissing van de rechter dat iemand niet schuldig is","een ernstige daad die tegen de wet is","iemand betrappen tijdens het plegen van een strafbaar feit"] },
-  { term:"vrijspraak, de", def:"de beslissing van de rechter dat iemand niet schuldig is", wrong:["het zoeken naar daders of naar verdwenen mensen","het met opzet doden van iemand","in vrijheid (nadat je in de gevangenis hebt gezeten)"] },
-  { term:"zaak, de", def:"een rechtszaak; ook: een winkel of een kwestie", wrong:["officieel laten weten dat je het ergens niet mee eens bent","iemand zien terwijl hij iets doet wat niet mag","een gebouw waarin veroordeelde mensen worden opgesloten"] },
-  { term:"brand stichten", def:"met opzet een brand veroorzaken (introductie)", wrong:["iemand betrappen tijdens het plegen van een strafbaar feit","met een wapen een kogel afvuren","het gebouw of de instelling waar rechters zaken behandelen"] },
-  { term:"bezwaar maken tegen iets/iemand", def:"officieel laten weten dat je het ergens niet mee eens bent", wrong:["nee zeggen tegen een verzoek of voorstel","in vrijheid (nadat je in de gevangenis hebt gezeten)","het voor de rechter brengen van een verdachte"] },
-  { term:"iemand schuldig bevinden", def:"door een rechter: vaststellen dat iemand schuldig is", wrong:["iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken","iets slechts doen, zoals een misdaad","een ernstige daad die tegen de wet is"] },
-  { term:"over de schreef gaan", def:"een vastgestelde grens overgaan (titel van hoofdstuk 4)", wrong:["iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken","iemand die een misdaad heeft gepleegd","iemand van wie de politie denkt dat hij een misdaad heeft gepleegd"] },
-  { term:"op heterdaad betrappen", def:"iemand betrappen tijdens het plegen van een strafbaar feit", wrong:["de organisaties van de overheid die zorgen dat de wet wordt nageleefd, zoals politie en rechtbank","verantwoordelijk voor iets wat fout is","bescherming die een land geeft aan iemand die in zijn eigen land in gevaar is"] },
-  { term:"op vrije voeten", def:"in vrijheid (nadat je in de gevangenis hebt gezeten)", wrong:["alleen","het officieel beëindigen van een huwelijk","iemand betrappen tijdens het plegen van een strafbaar feit"] }
+  { term:"afwijzen*", def:"nee zeggen tegen een verzoek of voorstel", wrong:["het gebouw of de instelling waar rechters zaken behandelen", "ja zeggen tegen een verzoek of voorstel", "een verzoek of voorstel doorsturen naar iemand anders"] },
+  { term:"beschuldigen", def:"zeggen dat iemand iets slechts heeft gedaan", wrong:["beschermen tegen een aanval of beschuldiging", "zeggen dat iemand iets goeds heeft gedaan", "vragen of iemand iets heeft gezien"] },
+  { term:"betrappen", def:"iemand zien terwijl hij iets doet wat niet mag", wrong:["het slaan of pijn doen van iemand", "iemand achteraf vertellen dat hij iets deed wat niet mocht", "iemand waarschuwen voordat hij iets doet wat niet mag"] },
+  { term:"binnendringen*", def:"ergens naar binnen gaan zonder toestemming", wrong:["als het nodig is; misschien", "ergens naar binnen gaan met toestemming", "ergens naar buiten gaan zonder dat iemand het ziet"] },
+  { term:"justitie, de", def:"de organisaties van de overheid die zorgen dat de wet wordt nageleefd, zoals politie en rechtbank", wrong:["alleen", "de organisaties van de overheid die zorgen voor onderwijs, zoals scholen", "de organisaties die zorgen voor gezondheid, zoals ziekenhuizen"] },
+  { term:"misdaad, de", def:"een ernstige daad die tegen de wet is", wrong:["verantwoordelijk voor iets wat fout is", "een kleine vergissing die niet tegen de wet is", "een ernstig ongeluk zonder schuld"] },
+  { term:"mishandeling, de", def:"het slaan of pijn doen van iemand", wrong:["de beslissing van de rechter dat iemand niet schuldig is", "het helpen of verzorgen van iemand", "het uitschelden van iemand"] },
+  { term:"moord, de", def:"het met opzet doden van iemand", wrong:["met een wapen een kogel afvuren", "het per ongeluk doden van iemand", "het ernstig verwonden van iemand"] },
+  { term:"overbrengen*", def:"iemand of iets naar een andere plek brengen; ook: een boodschap duidelijk maken", wrong:["officieel laten weten dat je het ergens niet mee eens bent", "iemand of iets op dezelfde plek laten; ook: een boodschap verbergen", "iemand of iets ophalen; ook: een boodschap vergeten"] },
+  { term:"overval, de", def:"een plotselinge aanval om iets te stelen, vaak met geweld", wrong:["het met opzet doden van iemand", "een rustige inbraak als er niemand thuis is", "een ruzie tussen buren"] },
+  { term:"schieten*", def:"met een wapen een kogel afvuren", wrong:["een vastgestelde grens overgaan (titel van hoofdstuk 4)", "met een mes steken", "een wapen schoonmaken"] },
+  { term:"vandalisme, het", def:"het met opzet kapotmaken van spullen van anderen", wrong:["het slaan of pijn doen van iemand", "het per ongeluk kapotmaken van je eigen spullen", "het stelen van spullen uit een winkel"] },
+  { term:"verdenken*", def:"denken dat iemand iets slechts heeft gedaan", wrong:["iets slechts doen, zoals een misdaad", "zeker weten dat iemand iets slechts heeft gedaan", "denken dat iemand iets goeds heeft gedaan"] },
+  { term:"vernielen", def:"met opzet kapotmaken", wrong:["de organisaties van de overheid die zorgen dat de wet wordt nageleefd, zoals politie en rechtbank", "per ongeluk laten vallen", "repareren"] },
+  { term:"asiel, het", def:"bescherming die een land geeft aan iemand die in zijn eigen land in gevaar is", wrong:["een plotselinge aanval om iets te stelen, vaak met geweld", "een toeristenvisum voor iemand die op vakantie gaat", "een werkvergunning voor iemand die in het buitenland werkt"] },
+  { term:"behandelen", def:"zich bezighouden met een zaak; ook: medisch verzorgen", wrong:["als het nodig is; misschien", "een zaak laten liggen; ook: medisch onderzoeken zonder te helpen", "een zaak opschrijven; ook: een recept geven"] },
+  { term:"dader, de", def:"iemand die een misdaad heeft gepleegd", wrong:["een vastgestelde grens overgaan (titel van hoofdstuk 4)", "iemand die slachtoffer is van een misdaad", "iemand die een misdaad onderzoekt"] },
+  { term:"echtscheiding, de", def:"het officieel beëindigen van een huwelijk", wrong:["het gebouw of de instelling waar rechters zaken behandelen", "het officieel sluiten van een huwelijk", "een korte ruzie tussen getrouwde mensen"] },
+  { term:"eventueel", def:"als het nodig is; misschien", wrong:["een organisatie of officiële instelling", "zeker; in elk geval", "nooit; in geen geval"] },
+  { term:"feit, het", def:"iets wat echt gebeurd is; ook: een strafbare daad", wrong:["als het nodig is; misschien", "iets wat iemand denkt; ook: een straf", "iets wat misschien gebeurd is; ook: een vonnis"] },
+  { term:"getuige, de", def:"iemand die iets heeft gezien en daarover vertelt", wrong:["geld dat je van de overheid of een verzekering krijgt, bijvoorbeeld als je geen werk hebt", "iemand die bij de rechter de verdachte helpt", "iemand die iets niet heeft gezien maar er wel over gehoord heeft"] },
+  { term:"gevangenis, de", def:"een gebouw waarin veroordeelde mensen worden opgesloten", wrong:["het voor de rechter brengen van een verdachte", "een gebouw waarin de rechter zaken behandelt", "een gebouw waarin de politie werkt"] },
+  { term:"instantie, de", def:"een organisatie of officiële instelling", wrong:["een ernstig strafbaar feit", "een persoon die je om hulp vraagt", "een moment of een voorbeeld"] },
+  { term:"misdrijf, het", def:"een ernstig strafbaar feit", wrong:["zich bezighouden met een zaak; ook: medisch verzorgen", "een lichte overtreding, zoals te hard rijden", "een conflict tussen buren"] },
+  { term:"opleggen", def:"een straf of regel laten gelden voor iemand", wrong:["geld dat je van de overheid of een verzekering krijgt, bijvoorbeeld als je geen werk hebt", "een straf of regel afschaffen voor iemand", "een straf of regel voorstellen aan iemand"] },
+  { term:"opsporing, de", def:"het zoeken naar daders of naar verdwenen mensen", wrong:["als het nodig is; misschien", "het opsluiten van daders in de gevangenis", "het verhoren van getuigen in de rechtbank"] },
+  { term:"overtreding, de", def:"een lichte strafbare daad, zoals door rood rijden", wrong:["een straf of regel laten gelden voor iemand", "een zware strafbare daad, zoals een moord", "een klacht over een buurman"] },
+  { term:"plegen", def:"iets slechts doen, zoals een misdaad", wrong:["officiële toestemming om iets te doen", "iets slechts tegenhouden, zoals een misdaad", "iets slechts melden, zoals een misdaad"] },
+  { term:"rechtbank, de", def:"het gebouw of de instelling waar rechters zaken behandelen", wrong:["verantwoordelijk voor iets wat fout is", "het gebouw waar de politie werkt", "het gebouw waar de gemeenteraad vergadert"] },
+  { term:"schuldig", def:"verantwoordelijk voor iets wat fout is", wrong:["het met opzet kapotmaken van spullen van anderen", "onschuldig; niet verantwoordelijk", "verdacht; misschien verantwoordelijk"] },
+  { term:"uitkering, de", def:"geld dat je van de overheid of een verzekering krijgt, bijvoorbeeld als je geen werk hebt", wrong:["een straf of regel laten gelden voor iemand", "geld dat je aan de overheid moet betalen", "geld dat je van je werkgever verdient"] },
+  { term:"uitsluitend", def:"alleen", wrong:["iemand zien terwijl hij iets doet wat niet mag", "ook", "meestal"] },
+  { term:"uitspraak, de", def:"de beslissing van de rechter; ook: hoe je een woord zegt", wrong:["een organisatie of officiële instelling", "de vraag van de advocaat; ook: hoe je een woord schrijft", "het verhaal van de getuige; ook: wat een woord betekent"] },
+  { term:"verdachte, de", def:"iemand van wie de politie denkt dat hij een misdaad heeft gepleegd", wrong:["een overtreding van een regel of wet", "iemand van wie bewezen is dat hij een misdaad heeft gepleegd", "iemand die een misdaad heeft gezien"] },
+  { term:"verdedigen", def:"beschermen tegen een aanval of beschuldiging", wrong:["met opzet een brand veroorzaken (introductie)", "aanvallen of beschuldigen", "veroordelen of straffen"] },
+  { term:"vergrijp, het", def:"een overtreding van een regel of wet", wrong:["een straf of regel laten gelden voor iemand", "een beloning voor goed gedrag", "het aanhouden van een verdachte"] },
+  { term:"vergunning, de", def:"officiële toestemming om iets te doen", wrong:["de beslissing van de rechter dat iemand niet schuldig is", "een officieel verbod om iets te doen", "een boete omdat je iets deed"] },
+  { term:"vervolging, de", def:"het voor de rechter brengen van een verdachte", wrong:["denken dat iemand iets slechts heeft gedaan", "het vrijlaten van een verdachte", "het arresteren van een verdachte op straat"] },
+  { term:"voorwaardelijk", def:"met een voorwaarde; een voorwaardelijke straf hoef je alleen te ondergaan als je opnieuw iets fout doet", wrong:["een straf of regel laten gelden voor iemand", "zonder voorwaarde; een voorwaardelijke straf moet je altijd meteen ondergaan", "met korting; een voorwaardelijke straf is half zo lang"] },
+  { term:"vrijspraak, de", def:"de beslissing van de rechter dat iemand niet schuldig is", wrong:["in vrijheid (nadat je in de gevangenis hebt gezeten)", "de beslissing van de rechter dat iemand schuldig is", "de beslissing van de rechter om een zaak uit te stellen"] },
+  { term:"zaak, de", def:"een rechtszaak; ook: een winkel of een kwestie", wrong:["ergens naar binnen gaan zonder toestemming", "een advocaat; ook: een fabriek of een antwoord", "een straf; ook: een markt of een probleem"] },
+  { term:"brand stichten", def:"met opzet een brand veroorzaken (introductie)", wrong:["officieel laten weten dat je het ergens niet mee eens bent", "een brand blussen", "per ongeluk een brand veroorzaken"] },
+  { term:"bezwaar maken tegen iets/iemand", def:"officieel laten weten dat je het ergens niet mee eens bent", wrong:["een straf of regel laten gelden voor iemand", "officieel laten weten dat je het ergens mee eens bent", "een vraag stellen over iets"] },
+  { term:"iemand schuldig bevinden", def:"door een rechter: vaststellen dat iemand schuldig is", wrong:["het voor de rechter brengen van een verdachte", "door een rechter: vaststellen dat iemand onschuldig is", "door de politie: denken dat iemand schuldig is"] },
+  { term:"over de schreef gaan", def:"een vastgestelde grens overgaan (titel van hoofdstuk 4)", wrong:["officiële toestemming om iets te doen", "netjes binnen de grens blijven", "een streep onder iets zetten"] },
+  { term:"op heterdaad betrappen", def:"iemand betrappen tijdens het plegen van een strafbaar feit", wrong:["iets slechts doen, zoals een misdaad", "iemand later betrappen op een strafbaar feit", "iemand helpen bij een strafbaar feit"] },
+  { term:"op vrije voeten", def:"in vrijheid (nadat je in de gevangenis hebt gezeten)", wrong:["ergens naar binnen gaan zonder toestemming", "in de gevangenis", "op blote voeten"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -957,6 +973,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 9.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -660,6 +675,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 9.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -681,35 +697,35 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"achteruitgang, de", def:"een verslechtering; het slechter worden van een situatie", wrong:["zinken of kapotgaan; ook: een bepaald gevoel hebben","een gewone inwoner van een stad of land","iemand die op zoek gaat naar avontuur en gevaar"] },
-  { term:"avonturier, de", def:"iemand die op zoek gaat naar avontuur en gevaar", wrong:["de eerste zijn die iets doet of introduceert","een zeeman die op een schip werkt","een groot versterkt gebouw dat als verdediging diende"] },
-  { term:"behalen", def:"iets bereiken of winnen; een resultaat halen", wrong:["een groot versterkt gebouw dat als verdediging diende","langzamerhand; in de loop van de tijd","de eerste zijn die iets doet of introduceert"] },
-  { term:"bezwijken*", def:"het niet meer kunnen volhouden; opgeven of instorten", wrong:["een gewone inwoner van een stad of land","op een schip aanwezig zijn","de eerste zijn die iets doet of introduceert"] },
-  { term:"burger, de", def:"een gewone inwoner van een stad of land", wrong:["een aromatisch kruid of product dat als smaakmaker wordt gebruikt","iets bereiken of winnen; een resultaat halen","iets nieuws bedenken en voor het eerst maken"] },
-  { term:"gaandeweg", def:"langzamerhand; in de loop van de tijd", wrong:["een groot gebouw waar goederen worden opgeslagen","iemand die op zoek gaat naar avontuur en gevaar","een verslechtering; het slechter worden van een situatie"] },
-  { term:"hanteren", def:"iets gebruiken of bedienen; omgaan met iets", wrong:["iets bereiken of winnen; een resultaat halen","lang goed blijvend; niet snel bederven","een groot versterkt gebouw dat als verdediging diende"] },
-  { term:"houdbaar", def:"lang goed blijvend; niet snel bederven", wrong:["een persoon die in het leger dient","een kleurstof die wordt gebruikt om iets te schilderen","een verslechtering; het slechter worden van een situatie"] },
-  { term:"kasteel, het", def:"een groot versterkt gebouw dat als verdediging diende", wrong:["een aromatisch kruid of product dat als smaakmaker wordt gebruikt","iets gebruiken of bedienen; omgaan met iets","bedoeld of voorbestemd zijn voor een bepaald doel of persoon"] },
-  { term:"matroos, de", def:"een zeeman die op een schip werkt", wrong:["zinken of kapotgaan; ook: een bepaald gevoel hebben","bedoeld of voorbestemd zijn voor een bepaald doel of persoon","een aromatisch kruid of product dat als smaakmaker wordt gebruikt"] },
-  { term:"merendeel, het", def:"het grootste deel; meer dan de helft", wrong:["een groot gebouw waar goederen worden opgeslagen","lang goed blijvend; niet snel bederven","ruim en comfortabel; luxueus"] },
-  { term:"ongewis", def:"onzeker; niet van tevoren te weten", wrong:["iets nieuws bedenken en voor het eerst maken","een groot versterkt gebouw dat als verdediging diende","genoeg geld of middelen hebben voor iets"] },
-  { term:"opslag, de", def:"een plek waar goederen worden bewaard; ook: salarisverhoging", wrong:["iets te doen hebben; een taak of reis voor je hebben","een verslechtering; het slechter worden van een situatie","onder de bescherming of zorg van iemand vallen"] },
-  { term:"overtreden*", def:"een regel of wet niet naleven; zich niet aan de regels houden", wrong:["genoeg geld of middelen hebben voor iets","langzamerhand; in de loop van de tijd","bedoeld of voorbestemd zijn voor een bepaald doel of persoon"] },
-  { term:"pakhuis, het", def:"een groot gebouw waar goederen worden opgeslagen", wrong:["een regel of wet niet naleven; zich niet aan de regels houden","het grootste deel; meer dan de helft","een groot versterkt gebouw dat als verdediging diende"] },
-  { term:"riant", def:"ruim en comfortabel; luxueus", wrong:["een gewone inwoner van een stad of land","iets gebruiken of bedienen; omgaan met iets","onder de bescherming of zorg van iemand vallen"] },
-  { term:"risico, het", def:"de kans dat iets mis gaat; een gevaar", wrong:["het grootste deel; meer dan de helft","het niet meer kunnen volhouden; opgeven of instorten","iets bereiken of winnen; een resultaat halen"] },
-  { term:"soldaat, de", def:"een persoon die in het leger dient", wrong:["een plek waar goederen worden bewaard; ook: salarisverhoging","het niet meer kunnen volhouden; opgeven of instorten","onzeker; niet van tevoren te weten"] },
-  { term:"specerij, de", def:"een aromatisch kruid of product dat als smaakmaker wordt gebruikt", wrong:["iets te doen hebben; een taak of reis voor je hebben","onzeker; niet van tevoren te weten","een kleurstof die wordt gebruikt om iets te schilderen"] },
-  { term:"uitvinden*", def:"iets nieuws bedenken en voor het eerst maken", wrong:["een groot versterkt gebouw dat als verdediging diende","genoeg geld of middelen hebben voor iets","iemand die op zoek gaat naar avontuur en gevaar"] },
-  { term:"verf, de", def:"een kleurstof die wordt gebruikt om iets te schilderen", wrong:["de eerste zijn die iets doet of introduceert","een groot gebouw waar goederen worden opgeslagen","een persoon die in het leger dient"] },
-  { term:"vergaan*", def:"zinken of kapotgaan; ook: een bepaald gevoel hebben", wrong:["het niet meer kunnen volhouden; opgeven of instorten","een plek waar goederen worden bewaard; ook: salarisverhoging","iets bereiken of winnen; een resultaat halen"] },
-  { term:"aan boord", def:"op een schip aanwezig zijn", wrong:["een persoon die in het leger dient","een zeeman die op een schip werkt","het proberen; een kans wagen"] },
-  { term:"bestemd zijn voor iets/iemand", def:"bedoeld of voorbestemd zijn voor een bepaald doel of persoon", wrong:["een kleurstof die wordt gebruikt om iets te schilderen","iets nieuws bedenken en voor het eerst maken","iets te doen hebben; een taak of reis voor je hebben"] },
-  { term:"een voorloper zijn", def:"de eerste zijn die iets doet of introduceert", wrong:["onzeker; niet van tevoren te weten","een aromatisch kruid of product dat als smaakmaker wordt gebruikt","iets gebruiken of bedienen; omgaan met iets"] },
-  { term:"onder de hoede van iemand", def:"onder de bescherming of zorg van iemand vallen", wrong:["op een schip aanwezig zijn","iets bereiken of winnen; een resultaat halen","iemand die op zoek gaat naar avontuur en gevaar"] },
-  { term:"zich iets kunnen veroorloven", def:"genoeg geld of middelen hebben voor iets", wrong:["zinken of kapotgaan; ook: een bepaald gevoel hebben","lang goed blijvend; niet snel bederven","de eerste zijn die iets doet of introduceert"] },
-  { term:"zijn geluk beproeven", def:"het proberen; een kans wagen", wrong:["een zeeman die op een schip werkt","iets bereiken of winnen; een resultaat halen","iets te doen hebben; een taak of reis voor je hebben"] },
-  { term:"iets voor de boeg hebben", def:"iets te doen hebben; een taak of reis voor je hebben", wrong:["lang goed blijvend; niet snel bederven","het proberen; een kans wagen","het niet meer kunnen volhouden; opgeven of instorten"] }
+  { term:"achteruitgang, de", def:"een verslechtering; het slechter worden van een situatie", wrong:["onder de bescherming of zorg van iemand vallen", "een verbetering; het beter worden van een situatie", "een uitgang aan de achterkant"] },
+  { term:"avonturier, de", def:"iemand die op zoek gaat naar avontuur en gevaar", wrong:["een groot gebouw waar goederen worden opgeslagen", "iemand die liever thuisblijft en geen risico neemt", "iemand die avonturen opschrijft"] },
+  { term:"behalen", def:"iets bereiken of winnen; een resultaat halen", wrong:["een plek waar goederen worden bewaard; ook: salarisverhoging", "iets verliezen of missen", "iets proberen zonder resultaat"] },
+  { term:"bezwijken*", def:"het niet meer kunnen volhouden; opgeven of instorten", wrong:["een aromatisch kruid of product dat als smaakmaker wordt gebruikt", "het lang volhouden; doorzetten", "heel hard werken"] },
+  { term:"burger, de", def:"een gewone inwoner van een stad of land", wrong:["een plek waar goederen worden bewaard; ook: salarisverhoging", "een soldaat in het leger", "de burgemeester van een stad"] },
+  { term:"gaandeweg", def:"langzamerhand; in de loop van de tijd", wrong:["iemand die op zoek gaat naar avontuur en gevaar", "in één keer; plotseling", "onderweg naar huis"] },
+  { term:"hanteren", def:"iets gebruiken of bedienen; omgaan met iets", wrong:["iets te doen hebben; een taak of reis voor je hebben", "iets laten liggen; niet aanraken", "iets kopen"] },
+  { term:"houdbaar", def:"lang goed blijvend; niet snel bederven", wrong:["het niet meer kunnen volhouden; opgeven of instorten", "snel bederven; niet lang goed", "makkelijk vast te houden"] },
+  { term:"kasteel, het", def:"een groot versterkt gebouw dat als verdediging diende", wrong:["iets nieuws bedenken en voor het eerst maken", "een klein huis op het platteland", "een kerk in het centrum van een stad"] },
+  { term:"matroos, de", def:"een zeeman die op een schip werkt", wrong:["een groot gebouw waar goederen worden opgeslagen", "de kapitein die een schip leidt", "een visser aan de kust"] },
+  { term:"merendeel, het", def:"het grootste deel; meer dan de helft", wrong:["zinken of kapotgaan; ook: een bepaald gevoel hebben", "het kleinste deel; minder dan de helft", "precies de helft"] },
+  { term:"ongewis", def:"onzeker; niet van tevoren te weten", wrong:["een gewone inwoner van een stad of land", "zeker; van tevoren bekend", "ongezond; niet goed voor je"] },
+  { term:"opslag, de", def:"een plek waar goederen worden bewaard; ook: salarisverhoging", wrong:["een persoon die in het leger dient", "een winkel waar goederen worden verkocht; ook: salarisverlaging", "een schip waarmee goederen worden vervoerd; ook: een bonus"] },
+  { term:"overtreden*", def:"een regel of wet niet naleven; zich niet aan de regels houden", wrong:["een aromatisch kruid of product dat als smaakmaker wordt gebruikt", "een regel of wet netjes naleven", "een regel of wet maken"] },
+  { term:"pakhuis, het", def:"een groot gebouw waar goederen worden opgeslagen", wrong:["een persoon die in het leger dient", "een klein huis om in te wonen", "een winkel waar je pakjes ophaalt"] },
+  { term:"riant", def:"ruim en comfortabel; luxueus", wrong:["een regel of wet niet naleven; zich niet aan de regels houden", "klein en ongemakkelijk; eenvoudig", "duur maar oud"] },
+  { term:"risico, het", def:"de kans dat iets mis gaat; een gevaar", wrong:["een kleurstof die wordt gebruikt om iets te schilderen", "de zekerheid dat alles goed gaat", "de winst die iets oplevert"] },
+  { term:"soldaat, de", def:"een persoon die in het leger dient", wrong:["iets bereiken of winnen; een resultaat halen", "een persoon die bij de politie werkt", "een persoon die het leger leidt"] },
+  { term:"specerij, de", def:"een aromatisch kruid of product dat als smaakmaker wordt gebruikt", wrong:["de eerste zijn die iets doet of introduceert", "een groente die je kookt als bijgerecht", "een drankje bij het eten"] },
+  { term:"uitvinden*", def:"iets nieuws bedenken en voor het eerst maken", wrong:["het proberen; een kans wagen", "iets wat al bestaat opnieuw kopen", "iets vinden wat je kwijt was"] },
+  { term:"verf, de", def:"een kleurstof die wordt gebruikt om iets te schilderen", wrong:["iets nieuws bedenken en voor het eerst maken", "een kwast waarmee je schildert", "het papier waarop je schildert"] },
+  { term:"vergaan*", def:"zinken of kapotgaan; ook: een bepaald gevoel hebben", wrong:["het niet meer kunnen volhouden; opgeven of instorten", "blijven drijven of heel blijven; ook: niets voelen", "op reis gaan; ook: iets vergeten"] },
+  { term:"aan boord", def:"op een schip aanwezig zijn", wrong:["ruim en comfortabel; luxueus", "aan land; van het schip af", "bij de rand van een tafel"] },
+  { term:"bestemd zijn voor iets/iemand", def:"bedoeld of voorbestemd zijn voor een bepaald doel of persoon", wrong:["iemand die op zoek gaat naar avontuur en gevaar", "niet bedoeld zijn voor iets of iemand", "door iemand gestemd zijn"] },
+  { term:"een voorloper zijn", def:"de eerste zijn die iets doet of introduceert", wrong:["ruim en comfortabel; luxueus", "de laatste zijn die iets doet", "de snelste zijn bij het hardlopen"] },
+  { term:"onder de hoede van iemand", def:"onder de bescherming of zorg van iemand vallen", wrong:["een plek waar goederen worden bewaard; ook: salarisverhoging", "zonder bescherming of zorg", "onder de hoed van iemand"] },
+  { term:"zich iets kunnen veroorloven", def:"genoeg geld of middelen hebben voor iets", wrong:["langzamerhand; in de loop van de tijd", "te weinig geld hebben voor iets", "toestemming krijgen voor iets"] },
+  { term:"zijn geluk beproeven", def:"het proberen; een kans wagen", wrong:["onder de bescherming of zorg van iemand vallen", "niets durven proberen", "erg gelukkig zijn"] },
+  { term:"iets voor de boeg hebben", def:"iets te doen hebben; een taak of reis voor je hebben", wrong:["een aromatisch kruid of product dat als smaakmaker wordt gebruikt", "iets al gedaan hebben", "voorin het schip zitten"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -741,6 +757,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

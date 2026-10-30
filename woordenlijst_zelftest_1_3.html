@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 1.3 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -559,6 +574,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 1.3 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -580,26 +596,26 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"absurd", def:"zo vreemd dat het nergens op slaat; onzinnig", wrong:["zacht; niet streng of scherp","iets groter, beter of erger voorstellen dan het is","iemand of iets dom of lachwekkend laten lijken"] },
-  { term:"adverteren", def:"reclame maken voor een product of dienst", wrong:["iets groter, beter of erger voorstellen dan het is","onder meer; als voorbeeld uit een grotere groep","het gevoel dat iets of iemand goed en waardevol is"] },
-  { term:"context, de", def:"de situatie of tekst waarin iets staat of gebeurt", wrong:["zo vreemd dat het nergens op slaat; onzinnig","minder belangrijk zijn dan iets of iemand anders","iets nieuws maken of laten ontstaan"] },
-  { term:"creëren", def:"iets nieuws maken of laten ontstaan", wrong:["als laatste; aan het eind","zacht; niet streng of scherp","twee dingen die niet tegelijk waar kunnen zijn"] },
-  { term:"gunstig", def:"voordelig; goed voor je", wrong:["het gevoel dat iets of iemand goed en waardevol is","iets doen wat gepland of gevraagd is","zacht; niet streng of scherp"] },
-  { term:"ironie, de", def:"iets zeggen terwijl je eigenlijk het tegenovergestelde bedoelt", wrong:["iets doen wat gepland of gevraagd is","het gevoel dat iets of iemand goed en waardevol is","minder belangrijk zijn dan iets of iemand anders"] },
-  { term:"mild", def:"zacht; niet streng of scherp", wrong:["zorgen dat mensen naar je kijken of luisteren","twee dingen die niet tegelijk waar kunnen zijn","de situatie of tekst waarin iets staat of gebeurt"] },
-  { term:"overdrijving, de", def:"iets groter, beter of erger voorstellen dan het is", wrong:["onder meer; als voorbeeld uit een grotere groep","de situatie of tekst waarin iets staat of gebeurt","reclame maken voor een product of dienst"] },
-  { term:"tegenstrijdigheid, de", def:"twee dingen die niet tegelijk waar kunnen zijn", wrong:["de manier waarop iets werkt of effect heeft","minder belangrijk zijn dan iets of iemand anders","zorgen dat mensen naar je kijken of luisteren"] },
-  { term:"uiting, de", def:"een manier om iets te laten zien of uit te drukken", wrong:["als laatste; aan het eind","reclame maken voor een product of dienst","iemand laten geloven dat iets waar of goed is"] },
-  { term:"uitvoeren", def:"iets doen wat gepland of gevraagd is", wrong:["reclame maken voor een product of dienst","ervoor zorgen dat er iets gebeurt","de situatie of tekst waarin iets staat of gebeurt"] },
-  { term:"waardering, de", def:"het gevoel dat iets of iemand goed en waardevol is", wrong:["iets zeggen terwijl je eigenlijk het tegenovergestelde bedoelt","onder meer; als voorbeeld uit een grotere groep","iemand laten geloven dat iets waar of goed is"] },
-  { term:"werking, de", def:"de manier waarop iets werkt of effect heeft", wrong:["iets nieuws maken of laten ontstaan","zorgen dat mensen naar je kijken of luisteren","reclame maken voor een product of dienst"] },
-  { term:"de aandacht trekken", def:"zorgen dat mensen naar je kijken of luisteren", wrong:["iemand laten geloven dat iets waar of goed is","als laatste; aan het eind","zacht; niet streng of scherp"] },
-  { term:"iemand overtuigen van iets", def:"iemand laten geloven dat iets waar of goed is", wrong:["een manier om iets te laten zien of uit te drukken","het gevoel dat iets of iemand goed en waardevol is","minder belangrijk zijn dan iets of iemand anders"] },
-  { term:"iemand/iets belachelijk maken", def:"iemand of iets dom of lachwekkend laten lijken", wrong:["als laatste; aan het eind","reclame maken voor een product of dienst","een manier om iets te laten zien of uit te drukken"] },
-  { term:"iets tot gevolg hebben", def:"ervoor zorgen dat er iets gebeurt", wrong:["iemand of iets dom of lachwekkend laten lijken","als laatste; aan het eind","iets zeggen terwijl je eigenlijk het tegenovergestelde bedoelt"] },
-  { term:"onder andere (o.a.)", def:"onder meer; als voorbeeld uit een grotere groep", wrong:["voordelig; goed voor je","de manier waarop iets werkt of effect heeft","iets zeggen terwijl je eigenlijk het tegenovergestelde bedoelt"] },
-  { term:"ondergeschikt zijn aan iets/iemand", def:"minder belangrijk zijn dan iets of iemand anders", wrong:["onder meer; als voorbeeld uit een grotere groep","voordelig; goed voor je","zorgen dat mensen naar je kijken of luisteren"] },
-  { term:"tot slot", def:"als laatste; aan het eind", wrong:["zorgen dat mensen naar je kijken of luisteren","zo vreemd dat het nergens op slaat; onzinnig","iemand laten geloven dat iets waar of goed is"] }
+  { term:"absurd", def:"zo vreemd dat het nergens op slaat; onzinnig", wrong:["ervoor zorgen dat er iets gebeurt", "zo normaal dat niemand het opmerkt; gewoon", "zo grappig dat iedereen erom lacht; leuk"] },
+  { term:"adverteren", def:"reclame maken voor een product of dienst", wrong:["als laatste; aan het eind", "een product of dienst kopen", "klachten verzamelen over een product of dienst"] },
+  { term:"context, de", def:"de situatie of tekst waarin iets staat of gebeurt", wrong:["iets doen wat gepland of gevraagd is", "de titel van een tekst of verhaal", "de schrijver van een tekst of verhaal"] },
+  { term:"creëren", def:"iets nieuws maken of laten ontstaan", wrong:["ervoor zorgen dat er iets gebeurt", "iets ouds opnieuw gebruiken", "iets kapotmaken of laten verdwijnen"] },
+  { term:"gunstig", def:"voordelig; goed voor je", wrong:["een manier om iets te laten zien of uit te drukken", "nadelig; slecht voor je", "duur; veel geld kosten"] },
+  { term:"ironie, de", def:"iets zeggen terwijl je eigenlijk het tegenovergestelde bedoelt", wrong:["voordelig; goed voor je", "iets precies zeggen zoals je het bedoelt", "iets zeggen om iemand pijn te doen"] },
+  { term:"mild", def:"zacht; niet streng of scherp", wrong:["ervoor zorgen dat er iets gebeurt", "streng; hard en scherp", "koud; zonder gevoel"] },
+  { term:"overdrijving, de", def:"iets groter, beter of erger voorstellen dan het is", wrong:["ervoor zorgen dat er iets gebeurt", "iets kleiner of minder erg voorstellen dan het is", "iets precies zo vertellen als het is"] },
+  { term:"tegenstrijdigheid, de", def:"twee dingen die niet tegelijk waar kunnen zijn", wrong:["iets doen wat gepland of gevraagd is", "twee dingen die allebei tegelijk waar zijn", "twee mensen die het met elkaar eens zijn"] },
+  { term:"uiting, de", def:"een manier om iets te laten zien of uit te drukken", wrong:["reclame maken voor een product of dienst", "een manier om iets te verbergen", "een plek waar je naar buiten kunt"] },
+  { term:"uitvoeren", def:"iets doen wat gepland of gevraagd is", wrong:["iets nieuws maken of laten ontstaan", "iets plannen wat later moet gebeuren", "iets weigeren wat gevraagd is"] },
+  { term:"waardering, de", def:"het gevoel dat iets of iemand goed en waardevol is", wrong:["als laatste; aan het eind", "het gevoel dat iets of iemand niets waard is", "de prijs die iets kost"] },
+  { term:"werking, de", def:"de manier waarop iets werkt of effect heeft", wrong:["iemand of iets dom of lachwekkend laten lijken", "de plek waar iets gemaakt wordt", "de kleur en vorm van iets"] },
+  { term:"de aandacht trekken", def:"zorgen dat mensen naar je kijken of luisteren", wrong:["een manier om iets te laten zien of uit te drukken", "zorgen dat niemand je ziet of hoort", "goed opletten wat iemand zegt"] },
+  { term:"iemand overtuigen van iets", def:"iemand laten geloven dat iets waar of goed is", wrong:["ervoor zorgen dat er iets gebeurt", "iemand laten twijfelen of iets waar is", "iemand iets vertellen zonder dat hij het gelooft"] },
+  { term:"iemand/iets belachelijk maken", def:"iemand of iets dom of lachwekkend laten lijken", wrong:["ervoor zorgen dat er iets gebeurt", "iemand of iets beter laten lijken dan het is", "met iemand samen lachen om een grap"] },
+  { term:"iets tot gevolg hebben", def:"ervoor zorgen dat er iets gebeurt", wrong:["iemand of iets dom of lachwekkend laten lijken", "ervoor zorgen dat iets niet gebeurt", "iets volgen wat een ander doet"] },
+  { term:"onder andere (o.a.)", def:"onder meer; als voorbeeld uit een grotere groep", wrong:["ervoor zorgen dat er iets gebeurt", "alleen; niets anders", "onder elkaar; tussen twee mensen"] },
+  { term:"ondergeschikt zijn aan iets/iemand", def:"minder belangrijk zijn dan iets of iemand anders", wrong:["de situatie of tekst waarin iets staat of gebeurt", "belangrijker zijn dan iets of iemand anders", "even belangrijk zijn als iets of iemand anders"] },
+  { term:"tot slot", def:"als laatste; aan het eind", wrong:["iets groter, beter of erger voorstellen dan het is", "als eerste; aan het begin", "in het midden; halverwege"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -631,6 +647,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

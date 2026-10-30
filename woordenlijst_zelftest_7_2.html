@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 7.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -858,67 +873,83 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 7.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 <script>
 const ALL = [
-  { term:"ambitieus", def:"vol ambitie; iemand die graag veel wil bereiken", wrong:["helemaal niet; zeker niet","de toestand waarin je geen gewicht voelt, zoals in de ruimte","de laag van gassen rondom een planeet; ook: de sfeer op een plek"] },
-  { term:"arriveren", def:"aankomen op een bestemming", wrong:["een dichte nevel van kleine waterdruppels die het zicht belemmert","het sterrenstelsel waar onze zon deel van uitmaakt","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen"] },
-  { term:"atmosfeer, de", def:"de laag van gassen rondom een planeet; ook: de sfeer op een plek", wrong:["een poging waarbij je niet zeker weet of het lukt; een risico","een groep mensen die samen leven of iets delen","iets gebruiken of inzetten voor een bepaald doel"] },
-  { term:"bedienen", def:"iets besturen of gebruiken; ook: iemand van service voorzien", wrong:["een deel van een stad of dorp met eigen karakter","dromen of nadenken over iets wat niet echt is","bezig zijn; iets doen; in beweging zijn"] },
-  { term:"beuken", def:"hard en herhaaldelijk slaan of stoten", wrong:["langzaam; niet snel","de laag van gassen rondom een planeet; ook: de sfeer op een plek","aankomen op een bestemming"] },
-  { term:"buitenaards", def:"van buiten de aarde; niet van deze planeet afkomstig", wrong:["dromen of nadenken over iets wat niet echt is","een paal met een lamp die de openbare weg verlicht","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen"] },
-  { term:"fantaseren", def:"dromen of nadenken over iets wat niet echt is", wrong:["een stof die vloeit, zoals water of olie","actief zoeken naar iets; proberen iets te vangen of te vinden","aankomen op een bestemming"] },
-  { term:"gemeenschap, de", def:"een groep mensen die samen leven of iets delen", wrong:["een systematische poging om iets of iemand te vinden","het afvuren of opstijgen van een raket of ruimtevaartuig","volkomen thuis zijn; zich volledig op zijn gemak voelen"] },
-  { term:"gewichtloosheid, de", def:"de toestand waarin je geen gewicht voelt, zoals in de ruimte", wrong:["zich snel ontwikkelen; plotseling sterk groeien","aan het begin staan van iets nieuws of iets groots","een deel van een stad of dorp met eigen karakter"] },
-  { term:"gok, de", def:"een poging waarbij je niet zeker weet of het lukt; een risico", wrong:["je best doen om iets te bereiken; ergens naar verlangen","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen","iemand die ergens uitzonderlijk goed in is"] },
-  { term:"instorten", def:"plotseling invallen of ineenzakken; ook: emotioneel bezwijken", wrong:["bezig zijn; iets doen; in beweging zijn","een dichte nevel van kleine waterdruppels die het zicht belemmert","vol ambitie; iemand die graag veel wil bereiken"] },
-  { term:"jacht, de", def:"het actief zoeken en achtervolgen van iets of iemand", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","aan het begin staan van iets nieuws of iets groots","langzaam; niet snel"] },
-  { term:"koepel, de", def:"een ronde, gewelfde dakconstructie; ook: een beschermende bol", wrong:["vertrekken; ook: aftreden uit een functie","een dichte nevel van kleine waterdruppels die het zicht belemmert","een poging waarbij je niet zeker weet of het lukt; een risico"] },
-  { term:"lancering, de", def:"het afvuren of opstijgen van een raket of ruimtevaartuig", wrong:["een paal met een lamp die de openbare weg verlicht","vertrekken; ook: aftreden uit een functie","dromen of nadenken over iets wat niet echt is"] },
-  { term:"lantaarnpaal, de", def:"een paal met een lamp die de openbare weg verlicht", wrong:["van buiten de aarde; niet van deze planeet afkomstig","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","dromen of nadenken over iets wat niet echt is"] },
-  { term:"leefbaar", def:"geschikt om in te leven; aangenaam en veilig genoeg om te bewonen", wrong:["groter worden door druk of vloeistof; opblazen","actief zoeken naar iets; proberen iets te vangen of te vinden","fout lopen; niet goed gaan zoals gepland"] },
-  { term:"melkweg, de", def:"het sterrenstelsel waar onze zon deel van uitmaakt", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek","het geheel van alles wat bestaat; het heelal","een deel van een stad of dorp met eigen karakter"] },
-  { term:"misgaan*", def:"fout lopen; niet goed gaan zoals gepland", wrong:["een groep mensen die samen leven of iets delen","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","van buiten de aarde; niet van deze planeet afkomstig"] },
-  { term:"mist, de", def:"een dichte nevel van kleine waterdruppels die het zicht belemmert", wrong:["een systematische poging om iets of iemand te vinden","een groot, angstaanjagend wezen; ook: iets enorms en gevaarlijks","helemaal niet; zeker niet"] },
-  { term:"monster, het", def:"een groot, angstaanjagend wezen; ook: iets enorms en gevaarlijks", wrong:["tot op dit moment; in de periode die achter ons ligt","het reizen door de ruimte met raketten en ruimtevaartuigen","de zon met alle planeten en hemellichamen die eromheen draaien"] },
-  { term:"nieuwsgierig", def:"vol verlangen om iets te weten of te ontdekken", wrong:["een ronde, gewelfde dakconstructie; ook: een beschermende bol","volkomen thuis zijn; zich volledig op zijn gemak voelen","hard en herhaaldelijk slaan of stoten"] },
-  { term:"onuitputtelijk", def:"zo groot dat het nooit opraakt; oneindig", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek","heel scherp en precies; zonder enige twijfel","een paal met een lamp die de openbare weg verlicht"] },
-  { term:"opstappen", def:"vertrekken; ook: aftreden uit een functie", wrong:["een dichte nevel van kleine waterdruppels die het zicht belemmert","van buiten de aarde; niet van deze planeet afkomstig","een paal met een lamp die de openbare weg verlicht"] },
-  { term:"opzwellen*", def:"groter worden door druk of vloeistof; opblazen", wrong:["dromen of nadenken over iets wat niet echt is","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","fout lopen; niet goed gaan zoals gepland"] },
-  { term:"ruimtevaart, de", def:"het reizen door de ruimte met raketten en ruimtevaartuigen", wrong:["het geheel van alles wat bestaat; het heelal","helemaal niet; zeker niet","groter worden door druk of vloeistof; opblazen"] },
-  { term:"schepping, de", def:"iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","groter worden door druk of vloeistof; opblazen","vertrekken; ook: aftreden uit een functie"] },
-  { term:"scherp", def:"heel duidelijk en precies; ook: snijdend of puntig", wrong:["het afvuren of opstijgen van een raket of ruimtevaartuig","heel scherp en precies; zonder enige twijfel","fout lopen; niet goed gaan zoals gepland"] },
-  { term:"streven", def:"je best doen om iets te bereiken; ergens naar verlangen", wrong:["aan het begin staan van iets nieuws of iets groots","iets gebruiken of inzetten voor een bepaald doel","zich snel ontwikkelen; plotseling sterk groeien"] },
-  { term:"traag", def:"langzaam; niet snel", wrong:["hard en herhaaldelijk slaan of stoten","actief zoeken naar iets; proberen iets te vangen of te vinden","helemaal niet; zeker niet"] },
-  { term:"uitblinker, de", def:"iemand die ergens uitzonderlijk goed in is", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","een deel van een stad of dorp met eigen karakter","geschikt om in te leven; aangenaam en veilig genoeg om te bewonen"] },
-  { term:"universum, het", def:"het geheel van alles wat bestaat; het heelal", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","iemand die ergens uitzonderlijk goed in is","het reizen door de ruimte met raketten en ruimtevaartuigen"] },
-  { term:"verbeelding, de", def:"het vermogen om dingen te bedenken die niet echt zijn; fantasie", wrong:["fout lopen; niet goed gaan zoals gepland","helemaal niet; zeker niet","aan het begin staan van iets nieuws of iets groots"] },
-  { term:"vergiftiging, de", def:"het ziek worden door giftige stoffen", wrong:["een systematische poging om iets of iemand te vinden","een paal met een lamp die de openbare weg verlicht","iets gebruiken of inzetten voor een bepaald doel"] },
-  { term:"vloeistof, de", def:"een stof die vloeit, zoals water of olie", wrong:["vol verlangen om iets te weten of te ontdekken","iets besturen of gebruiken; ook: iemand van service voorzien","een paal met een lamp die de openbare weg verlicht"] },
-  { term:"vulkaan, de", def:"een berg waaruit lava, as en gassen uitbarsten", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek","vol verlangen om iets te weten of te ontdekken","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is"] },
-  { term:"wijk, de", def:"een deel van een stad of dorp met eigen karakter", wrong:["fout lopen; niet goed gaan zoals gepland","hard en herhaaldelijk slaan of stoten","het afvuren of opstijgen van een raket of ruimtevaartuig"] },
-  { term:"zoektocht, de", def:"een systematische poging om iets of iemand te vinden", wrong:["de zon met alle planeten en hemellichamen die eromheen draaien","volkomen thuis zijn; zich volledig op zijn gemak voelen","vol verlangen om iets te weten of te ontdekken"] },
-  { term:"zonnestelsel, het", def:"de zon met alle planeten en hemellichamen die eromheen draaien", wrong:["het afvuren of opstijgen van een raket of ruimtevaartuig","zich snel ontwikkelen; plotseling sterk groeien","het vermogen om dingen te bedenken die niet echt zijn; fantasie"] },
-  { term:"actief zijn", def:"bezig zijn; iets doen; in beweging zijn", wrong:["iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","zich snel ontwikkelen; plotseling sterk groeien","iemand die ergens uitzonderlijk goed in is"] },
-  { term:"jacht maken op iets", def:"actief zoeken naar iets; proberen iets te vangen of te vinden", wrong:["een poging waarbij je niet zeker weet of het lukt; een risico","het sterrenstelsel waar onze zon deel van uitmaakt","de toestand waarin je geen gewicht voelt, zoals in de ruimte"] },
-  { term:"tot nu toe", def:"tot op dit moment; in de periode die achter ons ligt", wrong:["geschikt om in te leven; aangenaam en veilig genoeg om te bewonen","een deel van een stad of dorp met eigen karakter","een berg waaruit lava, as en gassen uitbarsten"] },
-  { term:"verre van", def:"helemaal niet; zeker niet", wrong:["het sterrenstelsel waar onze zon deel van uitmaakt","de zon met alle planeten en hemellichamen die eromheen draaien","je best doen om iets te bereiken; ergens naar verlangen"] },
-  { term:"een vlucht nemen", def:"zich snel ontwikkelen; plotseling sterk groeien", wrong:["de zon met alle planeten en hemellichamen die eromheen draaien","iets wat gemaakt of geschapen is; het universum zoals het ontstaan is","groter worden door druk of vloeistof; opblazen"] },
-  { term:"haarscherp", def:"heel scherp en precies; zonder enige twijfel", wrong:["een paal met een lamp die de openbare weg verlicht","de toestand waarin je geen gewicht voelt, zoals in de ruimte","het ziek worden door giftige stoffen"] },
-  { term:"in stelling brengen", def:"iets gebruiken of inzetten voor een bepaald doel", wrong:["het vermogen om dingen te bedenken die niet echt zijn; fantasie","van buiten de aarde; niet van deze planeet afkomstig","iets besturen of gebruiken; ook: iemand van service voorzien"] },
-  { term:"op de drempel staan van iets", def:"aan het begin staan van iets nieuws of iets groots", wrong:["een groep mensen die samen leven of iets delen","een poging waarbij je niet zeker weet of het lukt; een risico","tot op dit moment; in de periode die achter ons ligt"] },
-  { term:"zich als een vis in het water voelen", def:"volkomen thuis zijn; zich volledig op zijn gemak voelen", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken","heel scherp en precies; zonder enige twijfel","je best doen om iets te bereiken; ergens naar verlangen"] }
+  { term:"ambitieus", def:"vol ambitie; iemand die graag veel wil bereiken", wrong:["een systematische poging om iets of iemand te vinden", "zonder ambitie; tevreden met weinig", "jaloers; iemand die wil wat een ander heeft"] },
+  { term:"arriveren", def:"aankomen op een bestemming", wrong:["iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", "vertrekken van een plek", "onderweg zijn naar een bestemming"] },
+  { term:"atmosfeer, de", def:"de laag van gassen rondom een planeet; ook: de sfeer op een plek", wrong:["groter worden door druk of vloeistof; opblazen", "de bodem van een planeet; ook: het weer op een plek", "de baan van een planeet; ook: de temperatuur op een plek"] },
+  { term:"bedienen", def:"iets besturen of gebruiken; ook: iemand van service voorzien", wrong:["helemaal niet; zeker niet", "iets kapotmaken; ook: iemand laten wachten", "iets bestellen; ook: zelf iets halen"] },
+  { term:"beuken", def:"hard en herhaaldelijk slaan of stoten", wrong:["fout lopen; niet goed gaan zoals gepland", "zachtjes aaien of strelen", "één keer licht tikken"] },
+  { term:"buitenaards", def:"van buiten de aarde; niet van deze planeet afkomstig", wrong:["heel duidelijk en precies; ook: snijdend of puntig", "van de aarde; hier ontstaan", "buiten in de natuur"] },
+  { term:"fantaseren", def:"dromen of nadenken over iets wat niet echt is", wrong:["een groep mensen die samen leven of iets delen", "precies beschrijven wat er echt is", "liegen om iemand te bedriegen"] },
+  { term:"gemeenschap, de", def:"een groep mensen die samen leven of iets delen", wrong:["vol verlangen om iets te weten of te ontdekken", "één persoon die alleen leeft", "een vergadering van een bedrijf"] },
+  { term:"gewichtloosheid, de", def:"de toestand waarin je geen gewicht voelt, zoals in de ruimte", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek", "de toestand waarin je heel zwaar bent", "de toestand waarin je niet kunt ademen"] },
+  { term:"gok, de", def:"een poging waarbij je niet zeker weet of het lukt; een risico", wrong:["van buiten de aarde; niet van deze planeet afkomstig", "een zeker plan waarvan je weet dat het lukt", "een spel met kaarten"] },
+  { term:"instorten", def:"plotseling invallen of ineenzakken; ook: emotioneel bezwijken", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek", "langzaam opbouwen; ook: emotioneel sterker worden", "scheuren krijgen; ook: verdrietig zijn"] },
+  { term:"jacht, de", def:"het actief zoeken en achtervolgen van iets of iemand", wrong:["van buiten de aarde; niet van deze planeet afkomstig", "het rustig wachten op iets of iemand", "het beschermen van dieren"] },
+  { term:"koepel, de", def:"een ronde, gewelfde dakconstructie; ook: een beschermende bol", wrong:["volkomen thuis zijn; zich volledig op zijn gemak voelen", "een plat, recht dak; ook: een open ruimte", "een toren met een punt; ook: een muur"] },
+  { term:"lancering, de", def:"het afvuren of opstijgen van een raket of ruimtevaartuig", wrong:["een berg waaruit lava, as en gassen uitbarsten", "het landen van een raket of ruimtevaartuig", "het bouwen van een raket"] },
+  { term:"lantaarnpaal, de", def:"een paal met een lamp die de openbare weg verlicht", wrong:["het afvuren of opstijgen van een raket of ruimtevaartuig", "een paal met een verkeersbord", "een lamp aan de muur van een huis"] },
+  { term:"leefbaar", def:"geschikt om in te leven; aangenaam en veilig genoeg om te bewonen", wrong:["de laag van gassen rondom een planeet; ook: de sfeer op een plek", "ongeschikt om in te leven; gevaarlijk", "goedkoop genoeg om te kopen"] },
+  { term:"melkweg, de", def:"het sterrenstelsel waar onze zon deel van uitmaakt", wrong:["fout lopen; niet goed gaan zoals gepland", "een planeet in ons zonnestelsel", "een sterrenstelsel heel ver van ons vandaan"] },
+  { term:"misgaan*", def:"fout lopen; niet goed gaan zoals gepland", wrong:["het geheel van alles wat bestaat; het heelal", "goed lopen zoals gepland", "langzaam gaan"] },
+  { term:"mist, de", def:"een dichte nevel van kleine waterdruppels die het zicht belemmert", wrong:["iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", "een harde regenbui met veel wind", "rook van een vuur"] },
+  { term:"monster, het", def:"een groot, angstaanjagend wezen; ook: iets enorms en gevaarlijks", wrong:["plotseling invallen of ineenzakken; ook: emotioneel bezwijken", "een klein, schattig dier; ook: iets onschuldigs", "een held uit een verhaal; ook: iets moois"] },
+  { term:"nieuwsgierig", def:"vol verlangen om iets te weten of te ontdekken", wrong:["heel scherp en precies; zonder enige twijfel", "zonder interesse; het maakt je niet uit", "bang om iets nieuws te weten"] },
+  { term:"onuitputtelijk", def:"zo groot dat het nooit opraakt; oneindig", wrong:["aankomen op een bestemming", "zo klein dat het snel opraakt", "zo moe dat je niet verder kunt"] },
+  { term:"opstappen", def:"vertrekken; ook: aftreden uit een functie", wrong:["aan het begin staan van iets nieuws of iets groots", "blijven; ook: een functie aannemen", "instappen in een bus; ook: promotie maken"] },
+  { term:"opzwellen*", def:"groter worden door druk of vloeistof; opblazen", wrong:["een stof die vloeit, zoals water of olie", "kleiner worden door krimpen", "zwemmen in de zee"] },
+  { term:"ruimtevaart, de", def:"het reizen door de ruimte met raketten en ruimtevaartuigen", wrong:["zich snel ontwikkelen; plotseling sterk groeien", "het reizen over zee met schepen", "het bestuderen van sterren met een telescoop"] },
+  { term:"schepping, de", def:"iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", wrong:["helemaal niet; zeker niet", "iets wat kapotgemaakt is", "het opscheppen over iets"] },
+  { term:"scherp", def:"heel duidelijk en precies; ook: snijdend of puntig", wrong:["vol verlangen om iets te weten of te ontdekken", "vaag en onduidelijk; ook: bot", "fel van kleur; ook: zwaar"] },
+  { term:"streven", def:"je best doen om iets te bereiken; ergens naar verlangen", wrong:["heel scherp en precies; zonder enige twijfel", "opgeven; niet meer willen", "stroomafwaarts drijven"] },
+  { term:"traag", def:"langzaam; niet snel", wrong:["de toestand waarin je geen gewicht voelt, zoals in de ruimte", "snel; vlug", "lui; zonder zin"] },
+  { term:"uitblinker, de", def:"iemand die ergens uitzonderlijk goed in is", wrong:["een berg waaruit lava, as en gassen uitbarsten", "iemand die ergens slecht in is", "een lamp die knippert"] },
+  { term:"universum, het", def:"het geheel van alles wat bestaat; het heelal", wrong:["een stof die vloeit, zoals water of olie", "de aarde met alles wat erop leeft", "één sterrenstelsel"] },
+  { term:"verbeelding, de", def:"het vermogen om dingen te bedenken die niet echt zijn; fantasie", wrong:["een berg waaruit lava, as en gassen uitbarsten", "de werkelijkheid; wat echt is", "een schilderij of foto"] },
+  { term:"vergiftiging, de", def:"het ziek worden door giftige stoffen", wrong:["een deel van een stad of dorp met eigen karakter", "het genezen van een ziekte", "het eten van te veel voedsel"] },
+  { term:"vloeistof, de", def:"een stof die vloeit, zoals water of olie", wrong:["de toestand waarin je geen gewicht voelt, zoals in de ruimte", "een stof die vast is, zoals ijzer of hout", "een stof die als gas door de lucht gaat"] },
+  { term:"vulkaan, de", def:"een berg waaruit lava, as en gassen uitbarsten", wrong:["de toestand waarin je geen gewicht voelt, zoals in de ruimte", "een berg met sneeuw op de top", "een diepe kloof in de grond"] },
+  { term:"wijk, de", def:"een deel van een stad of dorp met eigen karakter", wrong:["iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", "een hele stad", "een straat met winkels"] },
+  { term:"zoektocht, de", def:"een systematische poging om iets of iemand te vinden", wrong:["iets wat gemaakt of geschapen is; het universum zoals het ontstaan is", "een toevallige ontdekking zonder te zoeken", "een wandeling voor plezier"] },
+  { term:"zonnestelsel, het", def:"de zon met alle planeten en hemellichamen die eromheen draaien", wrong:["van buiten de aarde; niet van deze planeet afkomstig", "alle sterren in het heelal", "de zon zonder planeten"] },
+  { term:"actief zijn", def:"bezig zijn; iets doen; in beweging zijn", wrong:["van buiten de aarde; niet van deze planeet afkomstig", "rusten; niets doen", "acteren in een film"] },
+  { term:"jacht maken op iets", def:"actief zoeken naar iets; proberen iets te vangen of te vinden", wrong:["heel duidelijk en precies; ook: snijdend of puntig", "iets met rust laten", "met een boot varen"] },
+  { term:"tot nu toe", def:"tot op dit moment; in de periode die achter ons ligt", wrong:["een poging waarbij je niet zeker weet of het lukt; een risico", "vanaf nu", "in de toekomst"] },
+  { term:"verre van", def:"helemaal niet; zeker niet", wrong:["het sterrenstelsel waar onze zon deel van uitmaakt", "helemaal wel", "ver weg van"] },
+  { term:"een vlucht nemen", def:"zich snel ontwikkelen; plotseling sterk groeien", wrong:["groter worden door druk of vloeistof; opblazen", "zich langzaam ontwikkelen; stilstaan", "op reis gaan met een vliegtuig"] },
+  { term:"haarscherp", def:"heel scherp en precies; zonder enige twijfel", wrong:["de toestand waarin je geen gewicht voelt, zoals in de ruimte", "vaag en onduidelijk", "scherp als een mes"] },
+  { term:"in stelling brengen", def:"iets gebruiken of inzetten voor een bepaald doel", wrong:["groter worden door druk of vloeistof; opblazen", "iets weghalen of opbergen", "iets voorstellen"] },
+  { term:"op de drempel staan van iets", def:"aan het begin staan van iets nieuws of iets groots", wrong:["een stof die vloeit, zoals water of olie", "aan het eind staan van iets", "bij de deur wachten"] },
+  { term:"zich als een vis in het water voelen", def:"volkomen thuis zijn; zich volledig op zijn gemak voelen", wrong:["van buiten de aarde; niet van deze planeet afkomstig", "zich helemaal niet thuis voelen", "graag zwemmen"] }
 ];
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do { shuffled = shuffle(opts); attempts++; }
+  while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
 function render(){
   const root=document.getElementById('quiz-root');
   if(current>=questions.length){ renderScore(); return; }
   const q=questions[current];
-  const opts=shuffle([q.def,...q.wrong]);
+  const opts=shuffleOpts([q.def,...q.wrong], q.def);
   const pct=Math.round((current/questions.length)*100);
   root.innerHTML=`
     <div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div>
@@ -951,6 +982,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

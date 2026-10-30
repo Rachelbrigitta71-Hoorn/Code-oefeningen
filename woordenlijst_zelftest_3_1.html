@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 3.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -792,6 +807,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 3.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -813,47 +829,47 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aandeel, het", def:"een deel van een geheel; ook: een stukje van een bedrijf", wrong:["weer gezond worden of gezond maken","een hartaanval doordat een bloedvat naar het hart verstopt raakt","veel waard; heel nuttig"] },
-  { term:"beleving, de", def:"hoe je iets ervaart of voelt", wrong:["een professor aan de universiteit","in het echt; niet alleen in theorie","ergens niets meer mee te maken willen hebben"] },
-  { term:"bestuderen", def:"lang en goed onderzoeken", wrong:["een vaste regelmaat","een deel van een geheel; ook: een stukje van een bedrijf","volgens mij"] },
-  { term:"bevinding, de", def:"wat je hebt ontdekt bij een onderzoek", wrong:["anders dan je had gedacht","iemand die producten koopt en gebruikt","een grote vraag naar een product"] },
-  { term:"bewering, de", def:"iets wat iemand zegt of beweert, zonder dat het bewezen is", wrong:["weer gezond worden of gezond maken","het maken van producten in fabrieken; ook: een bedrijfstak","nadoen of nabootsen, bijvoorbeeld met een computer"] },
-  { term:"circuleren", def:"rondgaan; in omloop zijn", wrong:["met een instrument bepalen hoe groot, lang of hoeveel iets is","ziektes van het hart en de bloedvaten","ergens niets meer mee te maken willen hebben"] },
-  { term:"consument, de", def:"iemand die producten koopt en gebruikt", wrong:["ergens niets meer mee te maken willen hebben","met een instrument bepalen hoe groot, lang of hoeveel iets is","een vaste regelmaat"] },
-  { term:"consumptie, de", def:"het eten, drinken of gebruiken van iets", wrong:["nadoen of nabootsen, bijvoorbeeld met een computer","koppelen aan; een verband leggen met","het maken van producten in fabrieken; ook: een bedrijfstak"] },
-  { term:"definitief", def:"zeker en niet meer te veranderen", wrong:["rondgaan; in omloop zijn","in het echt; niet alleen in theorie","wat je hebt ontdekt bij een onderzoek"] },
-  { term:"dosis, de", def:"een bepaalde hoeveelheid van een middel", wrong:["een gevecht; hard werken tegen iets","anders dan je had gedacht","koppelen aan; een verband leggen met"] },
-  { term:"figuurlijk", def:"niet letterlijk bedoeld", wrong:["heel erg gezond zijn (titel van hoofdstuk 3)","lang en goed onderzoeken","eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren"] },
-  { term:"genezen*", def:"weer gezond worden of gezond maken", wrong:["wat je hebt ontdekt bij een onderzoek","een eind maken aan iets","volgens mij"] },
-  { term:"hart- en vaatziekten, de", def:"ziektes van het hart en de bloedvaten", wrong:["rondgaan; in omloop zijn","niet letterlijk bedoeld","in het echt; niet alleen in theorie"] },
-  { term:"hartinfarct, het", def:"een hartaanval doordat een bloedvat naar het hart verstopt raakt", wrong:["eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren","iemand die producten koopt en gebruikt","een relatie tussen twee dingen; ook: een stuk stof om een wond"] },
-  { term:"hoogleraar, de", def:"een professor aan de universiteit", wrong:["wat je hebt ontdekt bij een onderzoek","de oorzaak zijn van iets","een hartaanval doordat een bloedvat naar het hart verstopt raakt"] },
-  { term:"hype, de", def:"iets wat korte tijd heel populair is en veel aandacht krijgt", wrong:["de werkelijkheid","heel erg gezond zijn (titel van hoofdstuk 3)","iets wat niet goed werkt in het lichaam of in de geest"] },
-  { term:"industrie, de", def:"het maken van producten in fabrieken; ook: een bedrijfstak", wrong:["een gevecht; hard werken tegen iets","heel erg gezond zijn (titel van hoofdstuk 3)","wat je hebt ontdekt bij een onderzoek"] },
-  { term:"isoleren", def:"afzonderen; apart zetten of halen", wrong:["de werkelijkheid","uit iets een conclusie trekken","niet letterlijk bedoeld"] },
-  { term:"kans, de", def:"hoe groot de mogelijkheid is dat iets gebeurt", wrong:["een bepaalde hoeveelheid van een middel","een grote vraag naar een product","ergens niets meer mee te maken willen hebben"] },
-  { term:"meten*", def:"met een instrument bepalen hoe groot, lang of hoeveel iets is", wrong:["koppelen aan; een verband leggen met","weer gezond worden of gezond maken","anders dan je had gedacht"] },
-  { term:"realiteit, de", def:"de werkelijkheid", wrong:["een bepaalde hoeveelheid van een middel","de oorzaak zijn van iets","eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren"] },
-  { term:"ritme, het", def:"een vaste regelmaat", wrong:["hoe je iets ervaart of voelt","veel waard; heel nuttig","een relatie tussen twee dingen; ook: een stuk stof om een wond"] },
-  { term:"simuleren", def:"nadoen of nabootsen, bijvoorbeeld met een computer", wrong:["een deel van een geheel; ook: een stukje van een bedrijf","anders dan je had gedacht","wat je hebt ontdekt bij een onderzoek"] },
-  { term:"stoornis, de", def:"iets wat niet goed werkt in het lichaam of in de geest", wrong:["eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren","afzonderen; apart zetten of halen","ziektes van het hart en de bloedvaten"] },
-  { term:"strijd, de", def:"een gevecht; hard werken tegen iets", wrong:["een grote vraag naar een product","een hartaanval doordat een bloedvat naar het hart verstopt raakt","verschil zien of maken tussen dingen"] },
-  { term:"verband, het", def:"een relatie tussen twee dingen; ook: een stuk stof om een wond", wrong:["een bepaalde hoeveelheid van een middel","een deel van een geheel; ook: een stukje van een bedrijf","iets wat iemand zegt of beweert, zonder dat het bewezen is"] },
-  { term:"verbinden aan*", def:"koppelen aan; een verband leggen met", wrong:["een relatie tussen twee dingen; ook: een stuk stof om een wond","een professor aan de universiteit","hoe groot de mogelijkheid is dat iets gebeurt"] },
-  { term:"veroorzaken", def:"de oorzaak zijn van iets", wrong:["een gevecht; hard werken tegen iets","ziektes van het hart en de bloedvaten","niet letterlijk bedoeld"] },
-  { term:"voeren", def:"eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren", wrong:["een eind maken aan iets","nadoen of nabootsen, bijvoorbeeld met een computer","een deel van een geheel; ook: een stukje van een bedrijf"] },
-  { term:"waardevol", def:"veel waard; heel nuttig", wrong:["lang en goed onderzoeken","de oorzaak zijn van iets","ergens niets meer mee te maken willen hebben"] },
-  { term:"wetenschapper, de", def:"iemand die wetenschappelijk onderzoek doet", wrong:["koppelen aan; een verband leggen met","het eten, drinken of gebruiken van iets","lang en goed onderzoeken"] },
-  { term:"afrekenen met", def:"een eind maken aan iets", wrong:["iets wat iemand zegt of beweert, zonder dat het bewezen is","een gevecht; hard werken tegen iets","de werkelijkheid"] },
-  { term:"conclusies verbinden aan iets", def:"uit iets een conclusie trekken", wrong:["niet letterlijk bedoeld","eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren","nadoen of nabootsen, bijvoorbeeld met een computer"] },
-  { term:"gevoelig zijn voor iets/iemand", def:"snel beïnvloed of geraakt worden door iets of iemand", wrong:["koppelen aan; een verband leggen met","iemand die wetenschappelijk onderzoek doet","weer gezond worden of gezond maken"] },
-  { term:"in de praktijk", def:"in het echt; niet alleen in theorie", wrong:["anders dan je had gedacht","hoe je iets ervaart of voelt","iets wat korte tijd heel populair is en veel aandacht krijgt"] },
-  { term:"onderscheid maken", def:"verschil zien of maken tussen dingen", wrong:["een relatie tussen twee dingen; ook: een stuk stof om een wond","koppelen aan; een verband leggen met","zeker en niet meer te veranderen"] },
-  { term:"tegen de verwachting in", def:"anders dan je had gedacht", wrong:["hoe je iets ervaart of voelt","het maken van producten in fabrieken; ook: een bedrijfstak","nadoen of nabootsen, bijvoorbeeld met een computer"] },
-  { term:"zo gezond zijn als een vis", def:"heel erg gezond zijn (titel van hoofdstuk 3)", wrong:["rondgaan; in omloop zijn","de oorzaak zijn van iets","zeker en niet meer te veranderen"] },
-  { term:"een stormloop", def:"een grote vraag naar een product", wrong:["afzonderen; apart zetten of halen","koppelen aan; een verband leggen met","een deel van een geheel; ook: een stukje van een bedrijf"] },
-  { term:"in mijn beleving", def:"volgens mij", wrong:["iets wat niet goed werkt in het lichaam of in de geest","verschil zien of maken tussen dingen","in het echt; niet alleen in theorie"] },
-  { term:"zich ergens van afkeren", def:"ergens niets meer mee te maken willen hebben", wrong:["een grote vraag naar een product","een eind maken aan iets","in het echt; niet alleen in theorie"] }
+  { term:"aandeel, het", def:"een deel van een geheel; ook: een stukje van een bedrijf", wrong:["volgens mij", "het geheel van iets; ook: het hele bedrijf", "de winst van iets; ook: het salaris in een bedrijf"] },
+  { term:"beleving, de", def:"hoe je iets ervaart of voelt", wrong:["iets wat korte tijd heel populair is en veel aandacht krijgt", "hoe iets er in werkelijkheid uitziet", "wat andere mensen over iets zeggen"] },
+  { term:"bestuderen", def:"lang en goed onderzoeken", wrong:["snel beïnvloed of geraakt worden door iets of iemand", "snel en oppervlakkig bekijken", "aan anderen uitleggen"] },
+  { term:"bevinding, de", def:"wat je hebt ontdekt bij een onderzoek", wrong:["een gevecht; hard werken tegen iets", "de vraag waarmee je een onderzoek begint", "het plan voor een onderzoek"] },
+  { term:"bewering, de", def:"iets wat iemand zegt of beweert, zonder dat het bewezen is", wrong:["met een instrument bepalen hoe groot, lang of hoeveel iets is", "iets wat wetenschappelijk bewezen is", "een vraag die iemand stelt"] },
+  { term:"circuleren", def:"rondgaan; in omloop zijn", wrong:["volgens mij", "stilstaan; op één plek blijven", "verdwijnen; niet meer te vinden zijn"] },
+  { term:"consument, de", def:"iemand die producten koopt en gebruikt", wrong:["volgens mij", "iemand die producten maakt en verkoopt", "iemand die producten controleert"] },
+  { term:"consumptie, de", def:"het eten, drinken of gebruiken van iets", wrong:["een gevecht; hard werken tegen iets", "het maken of produceren van iets", "het weggooien van iets"] },
+  { term:"definitief", def:"zeker en niet meer te veranderen", wrong:["rondgaan; in omloop zijn", "tijdelijk en nog te veranderen", "onzeker en nog niet besloten"] },
+  { term:"dosis, de", def:"een bepaalde hoeveelheid van een middel", wrong:["ergens niets meer mee te maken willen hebben", "een soort middel", "het effect van een middel"] },
+  { term:"figuurlijk", def:"niet letterlijk bedoeld", wrong:["met een instrument bepalen hoe groot, lang of hoeveel iets is", "precies zoals het er staat", "met een plaatje erbij"] },
+  { term:"genezen*", def:"weer gezond worden of gezond maken", wrong:["een hartaanval doordat een bloedvat naar het hart verstopt raakt", "ziek worden of ziek maken", "onderzoeken of iemand ziek is"] },
+  { term:"hart- en vaatziekten, de", def:"ziektes van het hart en de bloedvaten", wrong:["zeker en niet meer te veranderen", "ziektes van de longen en de luchtwegen", "ziektes van de maag en de darmen"] },
+  { term:"hartinfarct, het", def:"een hartaanval doordat een bloedvat naar het hart verstopt raakt", wrong:["iemand die wetenschappelijk onderzoek doet", "een hoge bloeddruk doordat je te veel zout eet", "een snelle hartslag door schrik of angst"] },
+  { term:"hoogleraar, de", def:"een professor aan de universiteit", wrong:["een bepaalde hoeveelheid van een middel", "een student aan de universiteit", "een leraar op een middelbare school"] },
+  { term:"hype, de", def:"iets wat korte tijd heel populair is en veel aandacht krijgt", wrong:["eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren", "iets wat al heel lang populair is en blijft", "iets wat niemand interessant vindt"] },
+  { term:"industrie, de", def:"het maken van producten in fabrieken; ook: een bedrijfstak", wrong:["eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren", "het verkopen van producten in winkels; ook: een winkelketen", "het verbouwen van groente op het land; ook: een boerderij"] },
+  { term:"isoleren", def:"afzonderen; apart zetten of halen", wrong:["een eind maken aan iets", "samenvoegen; bij elkaar zetten", "verbinden; aan elkaar vastmaken"] },
+  { term:"kans, de", def:"hoe groot de mogelijkheid is dat iets gebeurt", wrong:["de oorzaak zijn van iets", "hoe zeker het is dat iets al gebeurd is", "hoe vaak iets gebeurd is"] },
+  { term:"meten*", def:"met een instrument bepalen hoe groot, lang of hoeveel iets is", wrong:["ergens niets meer mee te maken willen hebben", "met je ogen schatten hoe groot iets is", "opschrijven hoe iets eruitziet"] },
+  { term:"realiteit, de", def:"de werkelijkheid", wrong:["een relatie tussen twee dingen; ook: een stuk stof om een wond", "de verbeelding", "de toekomst"] },
+  { term:"ritme, het", def:"een vaste regelmaat", wrong:["verschil zien of maken tussen dingen", "een plotselinge verandering", "een harde klap"] },
+  { term:"simuleren", def:"nadoen of nabootsen, bijvoorbeeld met een computer", wrong:["lang en goed onderzoeken", "echt doen in het echte leven", "uitvinden of bedenken"] },
+  { term:"stoornis, de", def:"iets wat niet goed werkt in het lichaam of in de geest", wrong:["iets wat korte tijd heel populair is en veel aandacht krijgt", "iets wat extra goed werkt in het lichaam", "een gezonde gewoonte"] },
+  { term:"strijd, de", def:"een gevecht; hard werken tegen iets", wrong:["een deel van een geheel; ook: een stukje van een bedrijf", "een overeenkomst; samen iets afspreken", "een rustpauze; even niets doen"] },
+  { term:"verband, het", def:"een relatie tussen twee dingen; ook: een stuk stof om een wond", wrong:["een hartaanval doordat een bloedvat naar het hart verstopt raakt", "een verschil tussen twee dingen; ook: een pleister", "een lijst van dingen; ook: een medicijn voor een wond"] },
+  { term:"verbinden aan*", def:"koppelen aan; een verband leggen met", wrong:["het maken van producten in fabrieken; ook: een bedrijfstak", "loskoppelen van; geen verband zien met", "vergelijken met; naast elkaar zetten"] },
+  { term:"veroorzaken", def:"de oorzaak zijn van iets", wrong:["een vaste regelmaat", "het gevolg zijn van iets", "iets tegenhouden"] },
+  { term:"voeren", def:"eten geven aan een dier; ook: leiden of uitvoeren, zoals een gesprek voeren", wrong:["iets wat iemand zegt of beweert, zonder dat het bewezen is", "eten geven aan een mens; ook: stoppen, zoals een gesprek stoppen", "een dier laten lopen; ook: volgen, zoals een gesprek volgen"] },
+  { term:"waardevol", def:"veel waard; heel nuttig", wrong:["een vaste regelmaat", "weinig waard; niet nuttig", "duur, maar niet nuttig"] },
+  { term:"wetenschapper, de", def:"iemand die wetenschappelijk onderzoek doet", wrong:["een grote vraag naar een product", "iemand die over onderzoek schrijft in de krant", "iemand die een bedrijf leidt"] },
+  { term:"afrekenen met", def:"een eind maken aan iets", wrong:["wat je hebt ontdekt bij een onderzoek", "opnieuw beginnen met iets", "betalen voor iets"] },
+  { term:"conclusies verbinden aan iets", def:"uit iets een conclusie trekken", wrong:["niet letterlijk bedoeld", "iets onderzoeken zonder conclusie", "een conclusie van iemand anders overnemen"] },
+  { term:"gevoelig zijn voor iets/iemand", def:"snel beïnvloed of geraakt worden door iets of iemand", wrong:["een relatie tussen twee dingen; ook: een stuk stof om een wond", "niet geraakt worden door iets of iemand", "iets of iemand goed kennen"] },
+  { term:"in de praktijk", def:"in het echt; niet alleen in theorie", wrong:["een hartaanval doordat een bloedvat naar het hart verstopt raakt", "alleen in theorie; op papier", "in het begin; eerst"] },
+  { term:"onderscheid maken", def:"verschil zien of maken tussen dingen", wrong:["afzonderen; apart zetten of halen", "alles hetzelfde behandelen", "dingen bij elkaar optellen"] },
+  { term:"tegen de verwachting in", def:"anders dan je had gedacht", wrong:["een grote vraag naar een product", "precies zoals je had gedacht", "later dan je had gedacht"] },
+  { term:"zo gezond zijn als een vis", def:"heel erg gezond zijn (titel van hoofdstuk 3)", wrong:["een hartaanval doordat een bloedvat naar het hart verstopt raakt", "heel erg ziek zijn", "graag vis eten"] },
+  { term:"een stormloop", def:"een grote vraag naar een product", wrong:["ziektes van het hart en de bloedvaten", "een kleine vraag naar een product", "slecht weer met veel wind"] },
+  { term:"in mijn beleving", def:"volgens mij", wrong:["iets wat niet goed werkt in het lichaam of in de geest", "volgens de wetenschap", "in mijn dromen"] },
+  { term:"zich ergens van afkeren", def:"ergens niets meer mee te maken willen hebben", wrong:["iets wat iemand zegt of beweert, zonder dat het bewezen is", "zich ergens heel graag mee bezighouden", "ergens voor het eerst van horen"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -885,6 +901,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

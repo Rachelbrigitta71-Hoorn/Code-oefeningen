@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 3.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -748,6 +763,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 3.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -769,43 +785,43 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"afhankelijkheid, de", def:"het niet zonder iets of iemand kunnen", wrong:["zeker; zonder twijfel","net alsof","in vuur staan; ook: een pijnlijk, heet gevoel geven"] },
-  { term:"afkomen van*", def:"ergens vanaf raken; iets kwijtraken", wrong:["langdurig of steeds terugkerend, van een ziekte","heel erg zenuwachtig zijn","een heel sterk middel tegen pijn"] },
-  { term:"baat, de", def:"voordeel of nut", wrong:["een rol spelen","in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar","iemand laten kiezen"] },
-  { term:"bacterie, de", def:"een heel klein levend organisme, dat soms ziek maakt", wrong:["een rol spelen","voordeel of nut","met je neus waarnemen"] },
-  { term:"beduidend", def:"duidelijk; flink", wrong:["een buisje met een naald waarmee je een vloeistof in het lichaam spuit","langdurig of steeds terugkerend, van een ziekte","een bedrijf dat producten maakt"] },
-  { term:"beïnvloeden", def:"invloed hebben op iets of iemand", wrong:["heel erg zenuwachtig zijn","een extra middel, zoals vitaminepillen","voordeel of nut"] },
-  { term:"beperkt", def:"niet groot; met een grens", wrong:["iets door je keel naar binnen laten gaan","met effect; ook: aan het werk","een idee of voorstel"] },
-  { term:"branden", def:"in vuur staan; ook: een pijnlijk, heet gevoel geven", wrong:["met kracht een vloeistof naar buiten laten komen; ook: een injectie geven","laten vallen; figuurlijk: laten zien dat iets niet klopt","maken of laten ontstaan; ook: met een schep oppakken"] },
-  { term:"chronisch", def:"langdurig of steeds terugkerend, van een ziekte", wrong:["in vuur staan; ook: een pijnlijk, heet gevoel geven","laten vallen; figuurlijk: laten zien dat iets niet klopt","een (kleine) operatie"] },
-  { term:"dergelijk", def:"zo een; van die soort", wrong:["een rol spelen","hier: geen voorraad meer hebben","heel erg zenuwachtig zijn"] },
-  { term:"fabrikant, de", def:"een bedrijf dat producten maakt", wrong:["duidelijk; flink","heel erg zenuwachtig zijn","met effect; ook: aan het werk"] },
-  { term:"ingreep, de", def:"een (kleine) operatie", wrong:["niet meer nodig hebben dan dat","in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar","uit laten gaan, zoals een apparaat; ook: groter worden"] },
-  { term:"injectiespuit, de", def:"een buisje met een naald waarmee je een vloeistof in het lichaam spuit", wrong:["een goed doel","niet de waarheid zeggen; een licht woord voor liegen","minder maken of minder worden"] },
-  { term:"jokken", def:"niet de waarheid zeggen; een licht woord voor liegen", wrong:["een buisje met een naald waarmee je een vloeistof in het lichaam spuit","ergens vanaf raken; iets kwijtraken","het niet zonder iets of iemand kunnen"] },
-  { term:"magisch", def:"met toverkracht; ook: heel bijzonder", wrong:["een heel klein levend organisme, dat soms ziek maakt","iets door je keel naar binnen laten gaan","een heel sterk middel tegen pijn"] },
-  { term:"middelbaar", def:"in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar", wrong:["een goed doel","minder maken of minder worden","niet meer nodig hebben dan dat"] },
-  { term:"morfine, de", def:"een heel sterk middel tegen pijn", wrong:["niet groot; met een grens","ergens vanaf raken; iets kwijtraken","net alsof"] },
-  { term:"onderuithalen", def:"laten vallen; figuurlijk: laten zien dat iets niet klopt", wrong:["in vuur staan; ook: een pijnlijk, heet gevoel geven","minder maken of minder worden","zo een; van die soort"] },
-  { term:"ongetwijfeld", def:"zeker; zonder twijfel", wrong:["invloed hebben op iets of iemand","iemand laten kiezen","een heel sterk middel tegen pijn"] },
-  { term:"ruiken*", def:"met je neus waarnemen", wrong:["bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt","een goed doel","maken of laten ontstaan; ook: met een schep oppakken"] },
-  { term:"scheppen*", def:"maken of laten ontstaan; ook: met een schep oppakken", wrong:["een buisje met een naald waarmee je een vloeistof in het lichaam spuit","bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt","een goed doel"] },
-  { term:"slikken", def:"iets door je keel naar binnen laten gaan", wrong:["niet meer nodig hebben dan dat","laten vallen; figuurlijk: laten zien dat iets niet klopt","niet de waarheid zeggen; een licht woord voor liegen"] },
-  { term:"spuiten*", def:"met kracht een vloeistof naar buiten laten komen; ook: een injectie geven", wrong:["met toverkracht; ook: heel bijzonder","iemand laten kiezen","een (kleine) operatie"] },
-  { term:"stroom, de", def:"bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt", wrong:["uit laten gaan, zoals een apparaat; ook: groter worden","net alsof","voordeel of nut"] },
-  { term:"suggestie, de", def:"een idee of voorstel", wrong:["in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar","een (kleine) operatie","een heel sterk middel tegen pijn"] },
-  { term:"supplement, het", def:"een extra middel, zoals vitaminepillen", wrong:["duidelijk; flink","niet groot; met een grens","langdurig of steeds terugkerend, van een ziekte"] },
-  { term:"uitzetten", def:"uit laten gaan, zoals een apparaat; ook: groter worden", wrong:["voordeel of nut","heel erg zenuwachtig zijn","het niet zonder iets of iemand kunnen"] },
-  { term:"verminderen", def:"minder maken of minder worden", wrong:["in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar","een goed doel","bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt"] },
-  { term:"werkzaam", def:"met effect; ook: aan het werk", wrong:["een heel sterk middel tegen pijn","een rol spelen","met je neus waarnemen"] },
-  { term:"genoeg hebben aan iets/iemand", def:"niet meer nodig hebben dan dat", wrong:["ergens vanaf raken; iets kwijtraken","een extra middel, zoals vitaminepillen","hier: geen voorraad meer hebben"] },
-  { term:"in vergelijking met iets/iemand", def:"als je het naast iets of iemand anders zet", wrong:["zeker; zonder twijfel","invloed hebben op iets of iemand","een idee of voorstel"] },
-  { term:"voor een keuze stellen", def:"iemand laten kiezen", wrong:["zo een; van die soort","maken of laten ontstaan; ook: met een schep oppakken","met je neus waarnemen"] },
-  { term:"als het ware", def:"net alsof", wrong:["een heel klein levend organisme, dat soms ziek maakt","een (kleine) operatie","een goed doel"] },
-  { term:"de goede zaak", def:"een goed doel", wrong:["niet de waarheid zeggen; een licht woord voor liegen","ergens vanaf raken; iets kwijtraken","invloed hebben op iets of iemand"] },
-  { term:"ergens doorheen zijn", def:"hier: geen voorraad meer hebben", wrong:["een extra middel, zoals vitaminepillen","in vuur staan; ook: een pijnlijk, heet gevoel geven","voordeel of nut"] },
-  { term:"in het spel zijn", def:"een rol spelen", wrong:["iets door je keel naar binnen laten gaan","een bedrijf dat producten maakt","met effect; ook: aan het werk"] },
-  { term:"op zijn van de zenuwen", def:"heel erg zenuwachtig zijn", wrong:["het niet zonder iets of iemand kunnen","langdurig of steeds terugkerend, van een ziekte","minder maken of minder worden"] }
+  { term:"afhankelijkheid, de", def:"het niet zonder iets of iemand kunnen", wrong:["maken of laten ontstaan; ook: met een schep oppakken", "het zelf kunnen, zonder hulp van anderen", "het graag samen met anderen doen"] },
+  { term:"afkomen van*", def:"ergens vanaf raken; iets kwijtraken", wrong:["met kracht een vloeistof naar buiten laten komen; ook: een injectie geven", "ergens naartoe gaan; iets krijgen", "ergens aan wennen; iets houden"] },
+  { term:"baat, de", def:"voordeel of nut", wrong:["een buisje met een naald waarmee je een vloeistof in het lichaam spuit", "nadeel of schade", "kosten of prijs"] },
+  { term:"bacterie, de", def:"een heel klein levend organisme, dat soms ziek maakt", wrong:["niet meer nodig hebben dan dat", "een klein insect dat ziektes overbrengt", "een medicijn tegen ziektes"] },
+  { term:"beduidend", def:"duidelijk; flink", wrong:["invloed hebben op iets of iemand", "een beetje; nauwelijks", "precies; exact"] },
+  { term:"beïnvloeden", def:"invloed hebben op iets of iemand", wrong:["met effect; ook: aan het werk", "geen invloed hebben op iets of iemand", "iets of iemand controleren"] },
+  { term:"beperkt", def:"niet groot; met een grens", wrong:["laten vallen; figuurlijk: laten zien dat iets niet klopt", "heel groot; zonder grens", "gesloten; niet toegankelijk"] },
+  { term:"branden", def:"in vuur staan; ook: een pijnlijk, heet gevoel geven", wrong:["duidelijk; flink", "koud zijn; ook: een prettig, koel gevoel geven", "smelten; ook: een jeukend gevoel geven"] },
+  { term:"chronisch", def:"langdurig of steeds terugkerend, van een ziekte", wrong:["uit laten gaan, zoals een apparaat; ook: groter worden", "kort en snel over, van een ziekte", "besmettelijk, van een ziekte"] },
+  { term:"dergelijk", def:"zo een; van die soort", wrong:["met kracht een vloeistof naar buiten laten komen; ook: een injectie geven", "helemaal anders; niet zo", "groot; veel"] },
+  { term:"fabrikant, de", def:"een bedrijf dat producten maakt", wrong:["zo een; van die soort", "een winkel die producten verkoopt", "een klant die producten koopt"] },
+  { term:"ingreep, de", def:"een (kleine) operatie", wrong:["in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar", "een controle bij de huisarts", "een recept voor medicijnen"] },
+  { term:"injectiespuit, de", def:"een buisje met een naald waarmee je een vloeistof in het lichaam spuit", wrong:["in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar", "een flesje met druppels voor je ogen", "een buisje waarmee je je temperatuur meet"] },
+  { term:"jokken", def:"niet de waarheid zeggen; een licht woord voor liegen", wrong:["met je neus waarnemen", "de waarheid zeggen", "heel erg liegen om iemand pijn te doen"] },
+  { term:"magisch", def:"met toverkracht; ook: heel bijzonder", wrong:["niet meer nodig hebben dan dat", "heel gewoon; ook: saai", "heel gevaarlijk; ook: verboden"] },
+  { term:"middelbaar", def:"in het midden; middelbare leeftijd is ongeveer tussen 40 en 60 jaar", wrong:["niet groot; met een grens", "aan het begin; middelbare leeftijd is ongeveer tussen 10 en 20 jaar", "aan het eind; middelbare leeftijd is ongeveer boven 75 jaar"] },
+  { term:"morfine, de", def:"een heel sterk middel tegen pijn", wrong:["het niet zonder iets of iemand kunnen", "een licht middel tegen hoofdpijn", "een middel om beter te slapen"] },
+  { term:"onderuithalen", def:"laten vallen; figuurlijk: laten zien dat iets niet klopt", wrong:["maken of laten ontstaan; ook: met een schep oppakken", "overeind helpen; figuurlijk: laten zien dat iets klopt", "omhoog halen; figuurlijk: iets belangrijker maken"] },
+  { term:"ongetwijfeld", def:"zeker; zonder twijfel", wrong:["bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt", "misschien; je weet het niet", "zeker niet; dat kan niet"] },
+  { term:"ruiken*", def:"met je neus waarnemen", wrong:["niet meer nodig hebben dan dat", "met je tong proeven", "met je oren horen"] },
+  { term:"scheppen*", def:"maken of laten ontstaan; ook: met een schep oppakken", wrong:["zeker; zonder twijfel", "kapotmaken of laten verdwijnen; ook: iets uitgieten", "kopiëren; ook: met een lepel roeren"] },
+  { term:"slikken", def:"iets door je keel naar binnen laten gaan", wrong:["duidelijk; flink", "iets uit je mond spugen", "iets langzaam kauwen"] },
+  { term:"spuiten*", def:"met kracht een vloeistof naar buiten laten komen; ook: een injectie geven", wrong:["het niet zonder iets of iemand kunnen", "langzaam een vloeistof opzuigen; ook: een pil geven", "druppel voor druppel laten lekken; ook: bloed afnemen"] },
+  { term:"stroom, de", def:"bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt", wrong:["met effect; ook: aan het werk", "stilstaand water; ook: gas; ook: een kleine groep die wacht", "een plas regenwater; ook: een batterij; ook: één persoon"] },
+  { term:"suggestie, de", def:"een idee of voorstel", wrong:["niet meer nodig hebben dan dat", "een opdracht of bevel", "een vraag of klacht"] },
+  { term:"supplement, het", def:"een extra middel, zoals vitaminepillen", wrong:["minder maken of minder worden", "een vervanging voor een maaltijd", "een medicijn dat je van de dokter moet nemen"] },
+  { term:"uitzetten", def:"uit laten gaan, zoals een apparaat; ook: groter worden", wrong:["minder maken of minder worden", "aan laten gaan, zoals een apparaat; ook: kleiner worden", "harder zetten, zoals een radio; ook: smelten"] },
+  { term:"verminderen", def:"minder maken of minder worden", wrong:["bewegend water of lucht; ook: elektriciteit; ook: een grote groep die beweegt", "meer maken of meer worden", "gelijk houden"] },
+  { term:"werkzaam", def:"met effect; ook: aan het werk", wrong:["met je neus waarnemen", "zonder effect; ook: werkloos", "gevaarlijk; ook: met vakantie"] },
+  { term:"genoeg hebben aan iets/iemand", def:"niet meer nodig hebben dan dat", wrong:["als je het naast iets of iemand anders zet", "veel meer nodig hebben dan dat", "moe zijn van iets of iemand"] },
+  { term:"in vergelijking met iets/iemand", def:"als je het naast iets of iemand anders zet", wrong:["een (kleine) operatie", "zonder te kijken naar iets of iemand anders", "samen met iets of iemand anders"] },
+  { term:"voor een keuze stellen", def:"iemand laten kiezen", wrong:["heel erg zenuwachtig zijn", "voor iemand kiezen", "iemand geen keuze geven"] },
+  { term:"als het ware", def:"net alsof", wrong:["laten vallen; figuurlijk: laten zien dat iets niet klopt", "in het echt", "zeker weten"] },
+  { term:"de goede zaak", def:"een goed doel", wrong:["in vuur staan; ook: een pijnlijk, heet gevoel geven", "een goede winkel", "een slecht plan"] },
+  { term:"ergens doorheen zijn", def:"hier: geen voorraad meer hebben", wrong:["uit laten gaan, zoals een apparaat; ook: groter worden", "nog veel voorraad hebben", "ergens doorheen lopen"] },
+  { term:"in het spel zijn", def:"een rol spelen", wrong:["een bedrijf dat producten maakt", "geen rol spelen", "een spelletje doen"] },
+  { term:"op zijn van de zenuwen", def:"heel erg zenuwachtig zijn", wrong:["met kracht een vloeistof naar buiten laten komen; ook: een injectie geven", "heel erg rustig zijn", "heel erg moe zijn"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -837,6 +853,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

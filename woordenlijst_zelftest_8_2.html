@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 8.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -891,70 +906,86 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 8.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 <script>
 const ALL = [
-  { term:"aangelegenheid, de", def:"een zaak of kwestie die iemand aangaat", wrong:["zich houden aan iets; niet verder gaan dan","producten of waren die verhandeld worden","de werkruimte van een kunstenaar"] },
-  { term:"afbeelding, de", def:"een foto, tekening of reproductie van iets", wrong:["de dingen zijn anders dan ze lijken","niet te zien; niet waarneembaar met het oog","een drassig, nat stuk land"] },
-  { term:"atelier, het", def:"de werkruimte van een kunstenaar", wrong:["iemand of iets op slimme maar oneerlijke wijze beïnvloeden","een aangename samenhang of evenwicht tussen dingen","de dingen zijn anders dan ze lijken"] },
-  { term:"bodem, de", def:"de onderste laag; de grond of vloer van iets", wrong:["wat te maken heeft met schoonheid en kunst","belangrijk zijn; een centrale rol spelen","de dingen zijn anders dan ze lijken"] },
-  { term:"borst, de", def:"het voorste deel van de romp; ook: de borstkas", wrong:["niet vaak; bijna nooit","voor altijd durend; tijdloos","een stuk of beet van iets eten"] },
-  { term:"contrast, het", def:"een sterk verschil tussen twee dingen", wrong:["een volwassen mannelijk rund","de werkruimte van een kunstenaar","een foto, tekening of reproductie van iets"] },
-  { term:"eeuwig", def:"voor altijd durend; tijdloos", wrong:["een sterk verschil tussen twee dingen","een permanente plek op de huid na een wond of operatie","iemand of iets op slimme maar oneerlijke wijze beïnvloeden"] },
-  { term:"esthetisch", def:"wat te maken heeft met schoonheid en kunst", wrong:["niet getemd; ook: woest en ongecontroleerd","anders dan; het tegenovergestelde van","een foto, tekening of reproductie van iets"] },
-  { term:"goederen, de", def:"producten of waren die verhandeld worden", wrong:["als ik nog genoeg tijd heb; als het me gegund is","een stuk kleding dat het been en de voet bedekt","als je aan het sterven bent; vlak voor je dood"] },
-  { term:"harmonie, de", def:"een aangename samenhang of evenwicht tussen dingen", wrong:["de aandacht vestigen op iets; aanwijzen","de eerste keer dat je naar iets kijkt; in eerste instantie","niet vaak; bijna nooit"] },
-  { term:"historicus, de", def:"iemand die de geschiedenis bestudeert en onderzoekt", wrong:["hard mineraalmateriaal; ook: een bouwmateriaal","iemand of iets op slimme maar oneerlijke wijze beïnvloeden","de indruk die iemand of iets maakt op anderen"] },
-  { term:"kostbaar", def:"heel waardevol; duur of zeldzaam", wrong:["een stuk of beet van iets eten","niet te zien; niet waarneembaar met het oog","een zaak of kwestie die iemand aangaat"] },
-  { term:"koopkracht, de", def:"het vermogen om dingen te kopen met geld", wrong:["zichtbaar worden; uit het verborgen komen","iemand die de geschiedenis bestudeert en onderzoekt","de eerste keer dat je naar iets kijkt; in eerste instantie"] },
-  { term:"kous, de", def:"een stuk kleding dat het been en de voet bedekt", wrong:["een volwassen mannelijk rund","een kleine ontsteking op de huid","niet te zien; niet waarneembaar met het oog"] },
-  { term:"litteken, het", def:"een permanente plek op de huid na een wond of operatie", wrong:["een aangename samenhang of evenwicht tussen dingen","een stuk kleding dat het been en de voet bedekt","zichtbaar worden; uit het verborgen komen"] },
-  { term:"manipuleren", def:"iemand of iets op slimme maar oneerlijke wijze beïnvloeden", wrong:["een kleine ontsteking op de huid","voor altijd durend; tijdloos","een sterk verschil tussen twee dingen"] },
-  { term:"moeras, het", def:"een drassig, nat stuk land", wrong:["het vervoer over zee met schepen; de zeehandel","voor altijd durend; tijdloos","wat te maken heeft met godsdienst of geloof"] },
-  { term:"ontroerend", def:"iets wat sterke emoties oproept; roerend en aangrijpend", wrong:["wat te maken heeft met godsdienst of geloof","anders dan; het tegenovergestelde van","een drassig, nat stuk land"] },
-  { term:"onzichtbaar", def:"niet te zien; niet waarneembaar met het oog", wrong:["de werkruimte van een kunstenaar","onderweg naar iets of iemand toe gaan","een sterk gevoel van wens of behoefte naar iets"] },
-  { term:"opdracht, de", def:"een taak die iemand moet uitvoeren; ook: een bestelling aan een kunstenaar", wrong:["niet vaak; bijna nooit","wat te maken heeft met schoonheid en kunst","het vervoer over zee met schepen; de zeehandel"] },
-  { term:"opdrachtgever, de", def:"degene die een kunstenaar of werknemer een taak geeft", wrong:["een sterk verschil tussen twee dingen","als ik nog genoeg tijd heb; als het me gegund is","niet te zien; niet waarneembaar met het oog"] },
-  { term:"origineel, het", def:"het echte, oorspronkelijke werk; niet een kopie", wrong:["zich houden aan iets; niet verder gaan dan","gedurende al je levensjaren; altijd al","een staatsvorm zonder koning, geregeerd door gekozen vertegenwoordigers"] },
-  { term:"puist, de", def:"een kleine ontsteking op de huid", wrong:["iemand direct met iets moeilijks of onaangenaams laten te maken krijgen","het vermogen om dingen te kopen met geld","als je aan het sterven bent; vlak voor je dood"] },
-  { term:"religieus", def:"wat te maken heeft met godsdienst of geloof", wrong:["het voorste deel van de romp; ook: de borstkas","de werkruimte van een kunstenaar","iets wat een tweede, verborgen betekenis heeft"] },
-  { term:"republiek, de", def:"een staatsvorm zonder koning, geregeerd door gekozen vertegenwoordigers", wrong:["een permanente plek op de huid na een wond of operatie","niet te zien; niet waarneembaar met het oog","een sterk verschil tussen twee dingen"] },
-  { term:"scheepvaart, de", def:"het vervoer over zee met schepen; de zeehandel", wrong:["een permanente plek op de huid na een wond of operatie","voor altijd durend; tijdloos","een staatsvorm zonder koning, geregeerd door gekozen vertegenwoordigers"] },
-  { term:"schetsen", def:"een ruwe tekening maken; ook: in grote lijnen beschrijven", wrong:["iets wat sterke emoties oproept; roerend en aangrijpend","een sterk gevoel van wens of behoefte naar iets","zich houden aan iets; niet verder gaan dan"] },
-  { term:"steen, de", def:"hard mineraalmateriaal; ook: een bouwmateriaal", wrong:["wat te maken heeft met godsdienst of geloof","iemand die de geschiedenis bestudeert en onderzoekt","een kleine ontsteking op de huid"] },
-  { term:"stier, de", def:"een volwassen mannelijk rund", wrong:["een stuk kleding dat het been en de voet bedekt","iets wat een tweede, verborgen betekenis heeft","iets wat sterke emoties oproept; roerend en aangrijpend"] },
-  { term:"uitstraling, de", def:"de indruk die iemand of iets maakt op anderen", wrong:["de eerste keer dat je naar iets kijkt; in eerste instantie","belangrijk zijn; een centrale rol spelen","de aandacht vestigen op iets; aanwijzen"] },
-  { term:"verlangen", def:"een sterk gevoel van wens of behoefte naar iets", wrong:["het voorste deel van de romp; ook: de borstkas","anders dan; het tegenovergestelde van","zich houden aan iets; niet verder gaan dan"] },
-  { term:"vlieg, de", def:"een klein vliegend insect; ook: een detail in een schilderij", wrong:["iemand die de geschiedenis bestudeert en onderzoekt","niet vaak; bijna nooit","onderweg naar iets of iemand toe gaan"] },
-  { term:"voorgrond, de", def:"het deel van een schilderij of foto dat het dichtst bij de kijker is", wrong:["iemand of iets op slimme maar oneerlijke wijze beïnvloeden","iemand die de geschiedenis bestudeert en onderzoekt","de indruk die iemand of iets maakt op anderen"] },
-  { term:"wild", def:"niet getemd; ook: woest en ongecontroleerd", wrong:["een staatsvorm zonder koning, geregeerd door gekozen vertegenwoordigers","iets wat sterke emoties oproept; roerend en aangrijpend","zich houden aan iets; niet verder gaan dan"] },
-  { term:"wrat, de", def:"een kleine harde bult op de huid", wrong:["de eerste keer dat je naar iets kijkt; in eerste instantie","als ik nog genoeg tijd heb; als het me gegund is","een permanente plek op de huid na een wond of operatie"] },
-  { term:"zelden", def:"niet vaak; bijna nooit", wrong:["belangrijk zijn; een centrale rol spelen","degene die een kunstenaar of werknemer een taak geeft","de onderste laag; de grond of vloer van iets"] },
-  { term:"als de tijd me vergund is", def:"als ik nog genoeg tijd heb; als het me gegund is", wrong:["een permanente plek op de huid na een wond of operatie","de werkruimte van een kunstenaar","degene die een kunstenaar of werknemer een taak geeft"] },
-  { term:"confronteren met iets/iemand", def:"iemand direct met iets moeilijks of onaangenaams laten te maken krijgen", wrong:["het vervoer over zee met schepen; de zeehandel","iets wat sterke emoties oproept; roerend en aangrijpend","het voorste deel van de romp; ook: de borstkas"] },
-  { term:"een hap nemen", def:"een stuk of beet van iets eten", wrong:["een stuk kleding dat het been en de voet bedekt","als ik nog genoeg tijd heb; als het me gegund is","als je aan het sterven bent; vlak voor je dood"] },
-  { term:"in tegenstelling tot iets/iemand", def:"anders dan; het tegenovergestelde van", wrong:["degene die een kunstenaar of werknemer een taak geeft","een stuk kleding dat het been en de voet bedekt","de aandacht vestigen op iets; aanwijzen"] },
-  { term:"je hele leven", def:"gedurende al je levensjaren; altijd al", wrong:["een klein vliegend insect; ook: een detail in een schilderij","het vervoer over zee met schepen; de zeehandel","de aandacht vestigen op iets; aanwijzen"] },
-  { term:"zich beperken tot iets", def:"zich houden aan iets; niet verder gaan dan", wrong:["de indruk die iemand of iets maakt op anderen","een aangename samenhang of evenwicht tussen dingen","een drassig, nat stuk land"] },
-  { term:"wijzen op iets/iemand", def:"de aandacht vestigen op iets; aanwijzen", wrong:["producten of waren die verhandeld worden","iemand of iets op slimme maar oneerlijke wijze beïnvloeden","de dingen zijn anders dan ze lijken"] },
-  { term:"een dubbele bodem", def:"iets wat een tweede, verborgen betekenis heeft", wrong:["niet vaak; bijna nooit","een kleine harde bult op de huid","een drassig, nat stuk land"] },
-  { term:"een belangrijke plaats innemen", def:"belangrijk zijn; een centrale rol spelen", wrong:["de dingen zijn anders dan ze lijken","iemand direct met iets moeilijks of onaangenaams laten te maken krijgen","hard mineraalmateriaal; ook: een bouwmateriaal"] },
-  { term:"op het eerste gezicht", def:"de eerste keer dat je naar iets kijkt; in eerste instantie", wrong:["iemand direct met iets moeilijks of onaangenaams laten te maken krijgen","het vervoer over zee met schepen; de zeehandel","wat te maken heeft met godsdienst of geloof"] },
-  { term:"op je sterfbed", def:"als je aan het sterven bent; vlak voor je dood", wrong:["een permanente plek op de huid na een wond of operatie","producten of waren die verhandeld worden","het deel van een schilderij of foto dat het dichtst bij de kijker is"] },
-  { term:"op weg", def:"onderweg naar iets of iemand toe gaan", wrong:["een klein vliegend insect; ook: een detail in een schilderij","een sterk verschil tussen twee dingen","zichtbaar worden; uit het verborgen komen"] },
-  { term:"schijn bedriegt", def:"de dingen zijn anders dan ze lijken", wrong:["de onderste laag; de grond of vloer van iets","wat te maken heeft met schoonheid en kunst","een aangename samenhang of evenwicht tussen dingen"] },
-  { term:"tevoorschijn komen", def:"zichtbaar worden; uit het verborgen komen", wrong:["gedurende al je levensjaren; altijd al","iemand die de geschiedenis bestudeert en onderzoekt","iets wat een tweede, verborgen betekenis heeft"] }
+  { term:"aangelegenheid, de", def:"een zaak of kwestie die iemand aangaat", wrong:["de onderste laag; de grond of vloer van iets", "een gebouw waar iemand werkt", "iets wat iemand helemaal niet aangaat"] },
+  { term:"afbeelding, de", def:"een foto, tekening of reproductie van iets", wrong:["hard mineraalmateriaal; ook: een bouwmateriaal", "een beschrijving in woorden van iets", "een lijst om iets op te zetten"] },
+  { term:"atelier, het", def:"de werkruimte van een kunstenaar", wrong:["anders dan; het tegenovergestelde van", "de winkel waar een kunstenaar zijn werk verkoopt", "het museum waar kunst hangt"] },
+  { term:"bodem, de", def:"de onderste laag; de grond of vloer van iets", wrong:["een permanente plek op de huid na een wond of operatie", "de bovenste laag; het dak of deksel van iets", "de zijkant; de muur van iets"] },
+  { term:"borst, de", def:"het voorste deel van de romp; ook: de borstkas", wrong:["een taak die iemand moet uitvoeren; ook: een bestelling aan een kunstenaar", "het achterste deel van de romp; ook: de rug", "het onderste deel van de romp; ook: de buik"] },
+  { term:"contrast, het", def:"een sterk verschil tussen twee dingen", wrong:["een ruwe tekening maken; ook: in grote lijnen beschrijven", "een sterke overeenkomst tussen twee dingen", "een afspraak tussen twee mensen"] },
+  { term:"eeuwig", def:"voor altijd durend; tijdloos", wrong:["heel waardevol; duur of zeldzaam", "kort durend; snel voorbij", "honderd jaar durend"] },
+  { term:"esthetisch", def:"wat te maken heeft met schoonheid en kunst", wrong:["degene die een kunstenaar of werknemer een taak geeft", "wat te maken heeft met geld en handel", "wat te maken heeft met regels en wetten"] },
+  { term:"goederen, de", def:"producten of waren die verhandeld worden", wrong:["de aandacht vestigen op iets; aanwijzen", "diensten die mensen voor elkaar doen", "het geld dat bij handel verdiend wordt"] },
+  { term:"harmonie, de", def:"een aangename samenhang of evenwicht tussen dingen", wrong:["heel waardevol; duur of zeldzaam", "een conflict of onrust tussen dingen", "een herhaling van dingen"] },
+  { term:"historicus, de", def:"iemand die de geschiedenis bestudeert en onderzoekt", wrong:["een klein vliegend insect; ook: een detail in een schilderij", "iemand die verhalen verzint over vroeger", "iemand die oude spullen verkoopt"] },
+  { term:"kostbaar", def:"heel waardevol; duur of zeldzaam", wrong:["een volwassen mannelijk rund", "weinig waard; goedkoop en gewoon", "kapot; niet meer te gebruiken"] },
+  { term:"koopkracht, de", def:"het vermogen om dingen te kopen met geld", wrong:["de aandacht vestigen op iets; aanwijzen", "het aantal winkels in een stad", "de kracht om zware boodschappen te dragen"] },
+  { term:"kous, de", def:"een stuk kleding dat het been en de voet bedekt", wrong:["de werkruimte van een kunstenaar", "een stuk kleding dat je om je nek draagt", "een schoen van leer"] },
+  { term:"litteken, het", def:"een permanente plek op de huid na een wond of operatie", wrong:["het voorste deel van de romp; ook: de borstkas", "een tijdelijke blauwe plek na een klap", "een tekening op de huid met inkt"] },
+  { term:"manipuleren", def:"iemand of iets op slimme maar oneerlijke wijze beïnvloeden", wrong:["een kleine harde bult op de huid", "iemand eerlijk en open overtuigen", "iemand met je handen helpen"] },
+  { term:"moeras, het", def:"een drassig, nat stuk land", wrong:["als je aan het sterven bent; vlak voor je dood", "een droog, zanderig stuk land", "een hoge berg met bos"] },
+  { term:"ontroerend", def:"iets wat sterke emoties oproept; roerend en aangrijpend", wrong:["zich houden aan iets; niet verder gaan dan", "iets wat helemaal geen gevoel oproept; saai", "iets wat boosheid oproept"] },
+  { term:"onzichtbaar", def:"niet te zien; niet waarneembaar met het oog", wrong:["iets wat sterke emoties oproept; roerend en aangrijpend", "goed te zien; duidelijk", "moeilijk te begrijpen"] },
+  { term:"opdracht, de", def:"een taak die iemand moet uitvoeren; ook: een bestelling aan een kunstenaar", wrong:["een kleine harde bult op de huid", "een vrije keuze die iemand zelf maakt; ook: een cadeau van een kunstenaar", "een beloning voor een taak; ook: een tentoonstelling"] },
+  { term:"opdrachtgever, de", def:"degene die een kunstenaar of werknemer een taak geeft", wrong:["een sterk gevoel van wens of behoefte naar iets", "degene die een taak uitvoert voor een ander", "degene die een kunstwerk koopt in een winkel"] },
+  { term:"origineel, het", def:"het echte, oorspronkelijke werk; niet een kopie", wrong:["het deel van een schilderij of foto dat het dichtst bij de kijker is", "een kopie of namaak van een werk", "een eerste schets van een werk"] },
+  { term:"puist, de", def:"een kleine ontsteking op de huid", wrong:["het deel van een schilderij of foto dat het dichtst bij de kijker is", "een litteken op de huid", "een moedervlek op de huid"] },
+  { term:"religieus", def:"wat te maken heeft met godsdienst of geloof", wrong:["het echte, oorspronkelijke werk; niet een kopie", "wat te maken heeft met wetenschap", "wat te maken heeft met politiek"] },
+  { term:"republiek, de", def:"een staatsvorm zonder koning, geregeerd door gekozen vertegenwoordigers", wrong:["niet te zien; niet waarneembaar met het oog", "een staatsvorm met een koning of koningin", "een staatsvorm zonder regering"] },
+  { term:"scheepvaart, de", def:"het vervoer over zee met schepen; de zeehandel", wrong:["belangrijk zijn; een centrale rol spelen", "het vervoer door de lucht met vliegtuigen", "het vissen op zee"] },
+  { term:"schetsen", def:"een ruwe tekening maken; ook: in grote lijnen beschrijven", wrong:["de eerste keer dat je naar iets kijkt; in eerste instantie", "een heel precieze, afgemaakte tekening maken; ook: in detail beschrijven", "een tekening uitgummen; ook: iets vergeten"] },
+  { term:"steen, de", def:"hard mineraalmateriaal; ook: een bouwmateriaal", wrong:["zich houden aan iets; niet verder gaan dan", "zacht materiaal; ook: een stof voor kleding", "vloeibaar materiaal; ook: verf"] },
+  { term:"stier, de", def:"een volwassen mannelijk rund", wrong:["een permanente plek op de huid na een wond of operatie", "een volwassen vrouwelijk rund", "een jong paard"] },
+  { term:"uitstraling, de", def:"de indruk die iemand of iets maakt op anderen", wrong:["de dingen zijn anders dan ze lijken", "de kleren die iemand draagt", "het geluid dat iemand maakt"] },
+  { term:"verlangen", def:"een sterk gevoel van wens of behoefte naar iets", wrong:["de dingen zijn anders dan ze lijken", "een sterk gevoel van afkeer van iets", "een gevoel van tevredenheid"] },
+  { term:"vlieg, de", def:"een klein vliegend insect; ook: een detail in een schilderij", wrong:["de werkruimte van een kunstenaar", "een klein kruipend insect; ook: een fout in een schilderij", "een kleine vogel; ook: de achtergrond van een schilderij"] },
+  { term:"voorgrond, de", def:"het deel van een schilderij of foto dat het dichtst bij de kijker is", wrong:["een klein vliegend insect; ook: een detail in een schilderij", "het deel van een schilderij dat het verst weg is", "de lijst om een schilderij"] },
+  { term:"wild", def:"niet getemd; ook: woest en ongecontroleerd", wrong:["iemand of iets op slimme maar oneerlijke wijze beïnvloeden", "tam en rustig; ook: gecontroleerd", "zeldzaam en duur"] },
+  { term:"wrat, de", def:"een kleine harde bult op de huid", wrong:["het vermogen om dingen te kopen met geld", "een kleine wond op de huid", "een sproet op de huid"] },
+  { term:"zelden", def:"niet vaak; bijna nooit", wrong:["anders dan; het tegenovergestelde van", "heel vaak; bijna altijd", "op tijd"] },
+  { term:"als de tijd me vergund is", def:"als ik nog genoeg tijd heb; als het me gegund is", wrong:["zichtbaar worden; uit het verborgen komen", "als ik geen tijd heb", "als ik op tijd ben"] },
+  { term:"confronteren met iets/iemand", def:"iemand direct met iets moeilijks of onaangenaams laten te maken krijgen", wrong:["onderweg naar iets of iemand toe gaan", "iemand iets moeilijks besparen", "iemand vergelijken met een ander"] },
+  { term:"een hap nemen", def:"een stuk of beet van iets eten", wrong:["een zaak of kwestie die iemand aangaat", "een slok drinken", "een pauze nemen"] },
+  { term:"in tegenstelling tot iets/iemand", def:"anders dan; het tegenovergestelde van", wrong:["een drassig, nat stuk land", "net als iets of iemand", "samen met iets of iemand"] },
+  { term:"je hele leven", def:"gedurende al je levensjaren; altijd al", wrong:["het vermogen om dingen te kopen met geld", "een korte periode van je leven", "het leven van iemand anders"] },
+  { term:"zich beperken tot iets", def:"zich houden aan iets; niet verder gaan dan", wrong:["het voorste deel van de romp; ook: de borstkas", "veel verder gaan dan iets", "iets verbieden"] },
+  { term:"wijzen op iets/iemand", def:"de aandacht vestigen op iets; aanwijzen", wrong:["de indruk die iemand of iets maakt op anderen", "de aandacht afleiden van iets", "iets of iemand kiezen"] },
+  { term:"een dubbele bodem", def:"iets wat een tweede, verborgen betekenis heeft", wrong:["niet getemd; ook: woest en ongecontroleerd", "iets wat heel eenvoudig en duidelijk is", "iets wat twee keer zo groot is"] },
+  { term:"een belangrijke plaats innemen", def:"belangrijk zijn; een centrale rol spelen", wrong:["zich houden aan iets; niet verder gaan dan", "onbelangrijk zijn; geen rol spelen", "een grote ruimte gebruiken"] },
+  { term:"op het eerste gezicht", def:"de eerste keer dat je naar iets kijkt; in eerste instantie", wrong:["zichtbaar worden; uit het verborgen komen", "na lang en goed kijken", "bij de eerste ontmoeting verliefd worden"] },
+  { term:"op je sterfbed", def:"als je aan het sterven bent; vlak voor je dood", wrong:["de onderste laag; de grond of vloer van iets", "als je net geboren bent", "als je ziek in bed ligt"] },
+  { term:"op weg", def:"onderweg naar iets of iemand toe gaan", wrong:["voor altijd durend; tijdloos", "thuis; nergens heen gaan", "op straat staan"] },
+  { term:"schijn bedriegt", def:"de dingen zijn anders dan ze lijken", wrong:["belangrijk zijn; een centrale rol spelen", "de dingen zijn precies zoals ze lijken", "het licht schijnt fel"] },
+  { term:"tevoorschijn komen", def:"zichtbaar worden; uit het verborgen komen", wrong:["als ik nog genoeg tijd heb; als het me gegund is", "onzichtbaar worden; verdwijnen", "vooraan komen staan"] }
 ];
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do { shuffled = shuffle(opts); attempts++; }
+  while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
 function render(){
   const root=document.getElementById('quiz-root');
   if(current>=questions.length){ renderScore(); return; }
   const q=questions[current];
-  const opts=shuffle([q.def,...q.wrong]);
+  const opts=shuffleOpts([q.def,...q.wrong], q.def);
   const pct=Math.round((current/questions.length)*100);
   root.innerHTML=`<div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="quiz-card"><div class="quiz-label">Wat betekent:</div><div class="quiz-word">${q.term}</div><div class="options">${opts.map(o=>`<button class="opt" onclick="check(this,'${o.replace(/'/g,"\'")}', ${o===q.def})">${o}</button>`).join('')}</div><div class="feedback" id="fb" style="display:none"></div><button class="next-btn" id="nxt" style="display:none" onclick="next()">Volgende →</button></div>`;
 }
@@ -978,6 +1009,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

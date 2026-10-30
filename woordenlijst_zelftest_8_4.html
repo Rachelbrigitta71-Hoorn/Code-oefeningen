@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 8.4 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -693,43 +708,44 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 8.4 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 <script>
 const ALL = [
-  { term:"aanvankelijk", def:"in het begin; eerst", wrong:["plezier en amusement; ontspanning","de exacte woorden van iemand anders herhalen","gewoon en normaal; niet bijzonder"] },
-  { term:"alledaags", def:"gewoon en normaal; niet bijzonder", wrong:["een moreel verkeerde daad; ook: jammer (informeel)","wat gedeeld wordt door meerdere mensen; gezamenlijk","hoe vaak iets voorkomt of herhaald wordt"] },
-  { term:"bijbehorend", def:"wat erbij hoort; wat daarmee samenhangt", wrong:["hoe vaak iets voorkomt of herhaald wordt","moedig en zonder angst handelen","een moreel verkeerde daad; ook: jammer (informeel)"] },
-  { term:"bundel, de", def:"een verzameling gedichten of verhalen in één boek", wrong:["de exacte woorden van iemand anders herhalen","iemand of iets dat eerder bestond en de weg vrijmaakte voor iets anders","een moreel verkeerde daad; ook: jammer (informeel)"] },
-  { term:"citeren", def:"de exacte woorden van iemand anders herhalen", wrong:["de tijd gaat voorbij","wat betreft; met betrekking tot","wat erbij hoort; wat daarmee samenhangt"] },
-  { term:"dapper", def:"moedig en zonder angst handelen", wrong:["het nadenken over jezelf of over iets; bezinning","wat te maken heeft met normen en waarden; ethisch","gewoon en normaal; niet bijzonder"] },
-  { term:"executie, de", def:"het officieel terechtstellen van iemand; ook: de uitvoering van iets", wrong:["in het begin; eerst","wat erbij hoort; wat daarmee samenhangt","een groot, speciaal georganiseerd evenement of happening"] },
-  { term:"evenement, het", def:"een groot, speciaal georganiseerd evenement of happening", wrong:["hoe vaak iets voorkomt of herhaald wordt","een uiting van verzet of afkeuring tegen iets","een hoop van dingen op elkaar gelegd"] },
-  { term:"frequentie, de", def:"hoe vaak iets voorkomt of herhaald wordt", wrong:["in het begin; eerst","wat betreft; met betrekking tot","het officieel terechtstellen van iemand; ook: de uitvoering van iets"] },
-  { term:"gemeenschappelijk", def:"wat gedeeld wordt door meerdere mensen; gezamenlijk", wrong:["te zien; merkbaar aanwezig","plezier en amusement; ontspanning","wat betreft; met betrekking tot"] },
-  { term:"in gedachten hebben", def:"aan iets denken; iets voor ogen hebben", wrong:["wat te maken heeft met normen en waarden; ethisch","een groot, speciaal georganiseerd evenement of happening","van nut; praktisch bruikbaar"] },
-  { term:"inzicht, het", def:"een dieper begrip van iets; nieuwe kennis", wrong:["het nadenken over jezelf of over iets; bezinning","hoe vaak iets voorkomt of herhaald wordt","voordeel of nut hebben van iets of iemand"] },
-  { term:"karton, het", def:"dik, stevig papiermateriaal", wrong:["iemand die nog leeft maar over wie al veel verhalen verteld worden","in het begin; eerst","emoties opwekken bij iemand"] },
-  { term:"loodgieter, de", def:"iemand die water- en gasleidingen aanlegt en repareert", wrong:["voordeel of nut hebben van iets of iemand","moedig en zonder angst handelen","te zien; merkbaar aanwezig"] },
-  { term:"moreel", def:"wat te maken heeft met normen en waarden; ethisch", wrong:["iemand die water- en gasleidingen aanlegt en repareert","aan iets denken; iets voor ogen hebben","hoe vaak iets voorkomt of herhaald wordt"] },
-  { term:"nuttig", def:"van nut; praktisch bruikbaar", wrong:["de exacte woorden van iemand anders herhalen","het officieel terechtstellen van iemand; ook: de uitvoering van iets","dat betekent niet dat; desondanks"] },
-  { term:"poëzie, de", def:"de kunst van het schrijven van gedichten", wrong:["emoties opwekken bij iemand","aan iets denken; iets voor ogen hebben","een verzameling gedichten of verhalen in één boek"] },
-  { term:"protest, het", def:"een uiting van verzet of afkeuring tegen iets", wrong:["wat erbij hoort; wat daarmee samenhangt","dik, stevig papiermateriaal","een verzameling gedichten of verhalen in één boek"] },
-  { term:"qua", def:"wat betreft; met betrekking tot", wrong:["een dieper begrip van iets; nieuwe kennis","iemand die nog leeft maar over wie al veel verhalen verteld worden","een hoop van dingen op elkaar gelegd"] },
-  { term:"reflectie, de", def:"het nadenken over jezelf of over iets; bezinning", wrong:["hoe vaak iets voorkomt of herhaald wordt","voordeel of nut hebben van iets of iemand","gewoon en normaal; niet bijzonder"] },
-  { term:"stapel, de", def:"een hoop van dingen op elkaar gelegd", wrong:["een moreel verkeerde daad; ook: jammer (informeel)","wat te maken heeft met normen en waarden; ethisch","een uiting van verzet of afkeuring tegen iets"] },
-  { term:"vermaak, het", def:"plezier en amusement; ontspanning", wrong:["een verzameling gedichten of verhalen in één boek","iets is heel snel voorbijgegaan","dik, stevig papiermateriaal"] },
-  { term:"voorloper, de", def:"iemand of iets dat eerder bestond en de weg vrijmaakte voor iets anders", wrong:["wat erbij hoort; wat daarmee samenhangt","een uiting van verzet of afkeuring tegen iets","wat gedeeld wordt door meerdere mensen; gezamenlijk"] },
-  { term:"zichtbaar", def:"te zien; merkbaar aanwezig", wrong:["de indruk wekken van; lijken op","een hoop van dingen op elkaar gelegd","het nadenken over jezelf of over iets; bezinning"] },
-  { term:"zonde, de", def:"een moreel verkeerde daad; ook: jammer (informeel)", wrong:["de tijd gaat voorbij","iemand die nog leeft maar over wie al veel verhalen verteld worden","een dieper begrip van iets; nieuwe kennis"] },
-  { term:"gevoelens losmaken", def:"emoties opwekken bij iemand", wrong:["wat betreft; met betrekking tot","het officieel terechtstellen van iemand; ook: de uitvoering van iets","iemand of iets dat eerder bestond en de weg vrijmaakte voor iets anders"] },
-  { term:"iets hebben aan iets/iemand", def:"voordeel of nut hebben van iets of iemand", wrong:["wat erbij hoort; wat daarmee samenhangt","gewoon en normaal; niet bijzonder","plezier en amusement; ontspanning"] },
-  { term:"overkomen als", def:"de indruk wekken van; lijken op", wrong:["een groot, speciaal georganiseerd evenement of happening","een moreel verkeerde daad; ook: jammer (informeel)","wat gedeeld wordt door meerdere mensen; gezamenlijk"] },
-  { term:"de levende legende", def:"iemand die nog leeft maar over wie al veel verhalen verteld worden", wrong:["wat erbij hoort; wat daarmee samenhangt","de indruk wekken van; lijken op","een groot, speciaal georganiseerd evenement of happening"] },
-  { term:"de tijd verstrijkt", def:"de tijd gaat voorbij", wrong:["de indruk wekken van; lijken op","een verzameling gedichten of verhalen in één boek","dik, stevig papiermateriaal"] },
-  { term:"iets vliegt om", def:"iets is heel snel voorbijgegaan", wrong:["hoe vaak iets voorkomt of herhaald wordt","wat te maken heeft met normen en waarden; ethisch","een hoop van dingen op elkaar gelegd"] },
-  { term:"niet wegnemen dat", def:"dat betekent niet dat; desondanks", wrong:["voordeel of nut hebben van iets of iemand","een dieper begrip van iets; nieuwe kennis","moedig en zonder angst handelen"] }
+  { term:"aanvankelijk", def:"in het begin; eerst", wrong:["aan iets denken; iets voor ogen hebben", "aan het eind; uiteindelijk", "steeds; altijd"] },
+  { term:"alledaags", def:"gewoon en normaal; niet bijzonder", wrong:["wat te maken heeft met normen en waarden; ethisch", "bijzonder en uitzonderlijk", "elke dag opnieuw"] },
+  { term:"bijbehorend", def:"wat erbij hoort; wat daarmee samenhangt", wrong:["een moreel verkeerde daad; ook: jammer (informeel)", "wat er los van staat", "wat ernaast staat"] },
+  { term:"bundel, de", def:"een verzameling gedichten of verhalen in één boek", wrong:["hoe vaak iets voorkomt of herhaald wordt", "één los gedicht of verhaal", "een tijdschrift met nieuws"] },
+  { term:"citeren", def:"de exacte woorden van iemand anders herhalen", wrong:["wat erbij hoort; wat daarmee samenhangt", "iets in je eigen woorden navertellen", "iemand roepen"] },
+  { term:"dapper", def:"moedig en zonder angst handelen", wrong:["dat betekent niet dat; desondanks", "bang en voorzichtig", "sterk en groot"] },
+  { term:"executie, de", def:"het officieel terechtstellen van iemand; ook: de uitvoering van iets", wrong:["een uiting van verzet of afkeuring tegen iets", "het vrijlaten van een gevangene; ook: het plannen van iets", "een rechtszaak; ook: het uitstellen van iets"] },
+  { term:"evenement, het", def:"een groot, speciaal georganiseerd evenement of happening", wrong:["een dieper begrip van iets; nieuwe kennis", "een kleine, gewone gebeurtenis", "een gebouw voor feesten"] },
+  { term:"frequentie, de", def:"hoe vaak iets voorkomt of herhaald wordt", wrong:["een hoop van dingen op elkaar gelegd", "hoe lang iets duurt", "hoe hard iets klinkt"] },
+  { term:"gemeenschappelijk", def:"wat gedeeld wordt door meerdere mensen; gezamenlijk", wrong:["hoe vaak iets voorkomt of herhaald wordt", "van één persoon alleen; privé", "gemeen en onaardig"] },
+  { term:"in gedachten hebben", def:"aan iets denken; iets voor ogen hebben", wrong:["dat betekent niet dat; desondanks", "iets vergeten zijn", "iets vervelend vinden"] },
+  { term:"inzicht, het", def:"een dieper begrip van iets; nieuwe kennis", wrong:["plezier en amusement; ontspanning", "een mening zonder kennis", "een uitzicht door een raam"] },
+  { term:"karton, het", def:"dik, stevig papiermateriaal", wrong:["een uiting van verzet of afkeuring tegen iets", "dun, zacht papier om op te schrijven", "plastic om iets in te pakken"] },
+  { term:"loodgieter, de", def:"iemand die water- en gasleidingen aanlegt en repareert", wrong:["de kunst van het schrijven van gedichten", "iemand die elektriciteit aanlegt en repareert", "iemand die daken repareert"] },
+  { term:"moreel", def:"wat te maken heeft met normen en waarden; ethisch", wrong:["wat gedeeld wordt door meerdere mensen; gezamenlijk", "wat te maken heeft met geld en handel", "wat te maken heeft met het lichaam"] },
+  { term:"nuttig", def:"van nut; praktisch bruikbaar", wrong:["een hoop van dingen op elkaar gelegd", "zonder nut; overbodig", "lekker; smakelijk"] },
+  { term:"poëzie, de", def:"de kunst van het schrijven van gedichten", wrong:["hoe vaak iets voorkomt of herhaald wordt", "de kunst van het schrijven van romans", "de kunst van het schilderen"] },
+  { term:"protest, het", def:"een uiting van verzet of afkeuring tegen iets", wrong:["een moreel verkeerde daad; ook: jammer (informeel)", "een uiting van steun of goedkeuring", "een feest op straat"] },
+  { term:"qua", def:"wat betreft; met betrekking tot", wrong:["gewoon en normaal; niet bijzonder", "zonder; los van", "omdat; want"] },
+  { term:"reflectie, de", def:"het nadenken over jezelf of over iets; bezinning", wrong:["hoe vaak iets voorkomt of herhaald wordt", "het snel handelen zonder na te denken", "een foto van jezelf"] },
+  { term:"stapel, de", def:"een hoop van dingen op elkaar gelegd", wrong:["het nadenken over jezelf of over iets; bezinning", "een rij van dingen naast elkaar", "één los ding"] },
+  { term:"vermaak, het", def:"plezier en amusement; ontspanning", wrong:["aan iets denken; iets voor ogen hebben", "verveling; saaiheid", "werk; inspanning"] },
+  { term:"voorloper, de", def:"iemand of iets dat eerder bestond en de weg vrijmaakte voor iets anders", wrong:["dat betekent niet dat; desondanks", "iemand of iets dat later kwam en iets kopieerde", "iemand die voorop loopt in een wedstrijd"] },
+  { term:"zichtbaar", def:"te zien; merkbaar aanwezig", wrong:["iemand die nog leeft maar over wie al veel verhalen verteld worden", "verborgen; niet te zien", "doorzichtig; zoals glas"] },
+  { term:"zonde, de", def:"een moreel verkeerde daad; ook: jammer (informeel)", wrong:["plezier en amusement; ontspanning", "een goede daad; ook: fijn (informeel)", "een fout bij een examen; ook: handig (informeel)"] },
+  { term:"gevoelens losmaken", def:"emoties opwekken bij iemand", wrong:["dik, stevig papiermateriaal", "emoties verbergen bij iemand", "iets losmaken met je handen"] },
+  { term:"iets hebben aan iets/iemand", def:"voordeel of nut hebben van iets of iemand", wrong:["iemand die nog leeft maar over wie al veel verhalen verteld worden", "last hebben van iets of iemand", "iets bezitten"] },
+  { term:"overkomen als", def:"de indruk wekken van; lijken op", wrong:["te zien; merkbaar aanwezig", "iets overkomen; gebeuren met", "ergens naartoe komen"] },
+  { term:"de levende legende", def:"iemand die nog leeft maar over wie al veel verhalen verteld worden", wrong:["hoe vaak iets voorkomt of herhaald wordt", "iemand die al lang dood is", "iemand die niemand kent"] },
+  { term:"de tijd verstrijkt", def:"de tijd gaat voorbij", wrong:["moedig en zonder angst handelen", "de tijd staat stil", "de tijd is te kort"] },
+  { term:"iets vliegt om", def:"iets is heel snel voorbijgegaan", wrong:["wat gedeeld wordt door meerdere mensen; gezamenlijk", "iets duurt heel lang", "iets vliegt weg"] },
+  { term:"niet wegnemen dat", def:"dat betekent niet dat; desondanks", wrong:["een moreel verkeerde daad; ook: jammer (informeel)", "daarom; dus", "omdat; want"] }
 ];
 function shuffle(a) {
   const arr = [...a];
@@ -779,6 +795,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

@@ -85,6 +85,17 @@
 .header { margin-top: 3rem !important; }
 .filter-btn.idioom { background: #fce7f3; color: #be185d; border-color: #be185d; }
 </style>
+<style id="richting-css">
+.richting-row { display:flex; justify-content:center; margin:0 auto 1rem; }
+.richting-btn { border:2px solid currentColor; border-radius:20px; padding:.35rem 1rem; background:#fff; color:#4338ca; font-family:inherit; font-size:.82rem; font-weight:700; cursor:pointer; }
+.richting-btn.on { background:#4338ca; color:#fff; border-color:#4338ca; }
+.card-front .term.als-betekenis { font-size:clamp(1rem,3.8vw,1.35rem); font-style:italic; font-weight:500; line-height:1.5; }
+.card-back .def.als-woord { font-size:clamp(1.3rem,4.5vw,1.9rem); font-style:normal; font-weight:600; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -97,6 +108,7 @@
     <p>Code+ Deel 4 · Klik op de kaart om te draaien</p>
   </div>
 </div>
+<div class="doelzin-wrap" style="max-width:640px;margin:0 auto;padding:0 1rem"><div class="doelzin"><b>🎯 Doel:</b> je oefent de woorden van hoofdstuk 10.1 tot je ze snel herkent. Met “Omschrijving voorop” oefen je ook om het woord zelf te bedenken.</div></div>
 <div class="controls">
   <div class="filter-btns">
     <button class="filter-btn all active" onclick="setFilter('all',this)">Alles</button>
@@ -184,6 +196,41 @@ function showScore(){document.getElementById('scorePanel').classList.add('show')
 function restart(){current=0;known=0;reviewed.clear();isFlipped=false;document.getElementById('scorePanel').classList.remove('show');document.getElementById('scene').style.display='';document.querySelectorAll('.nav-row,.progress-bar-wrap').forEach(el=>el.style.display='');document.getElementById('fbHint').style.display='block';renderCard();}
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')nextCard();else if(e.key==='ArrowLeft')prevCard();else if(e.key===' '){e.preventDefault();flipCard();}else if((e.key==='k'||e.key==='K')&&isFlipped)markCard(true);else if((e.key==='o'||e.key==='O')&&isFlipped)markCard(false);});
 renderCard();
+</script>
+<script id="richting-extra">
+(function(){
+  var omgekeerd = false;
+  var controls = document.querySelector('.controls');
+  var row = document.createElement('div');
+  row.className = 'richting-row';
+  row.innerHTML = '<button class="richting-btn" type="button">🔁 Omschrijving voorop</button>';
+  controls.parentNode.insertBefore(row, controls.nextSibling);
+  var btn = row.querySelector('button');
+  var hint = document.querySelector('.card-front .hint');
+  var hintTekst = hint ? hint.textContent : '';
+  btn.addEventListener('click', function(){
+    omgekeerd = !omgekeerd;
+    btn.classList.toggle('on', omgekeerd);
+    btn.textContent = omgekeerd ? '🔁 Woord voorop' : '🔁 Omschrijving voorop';
+    renderCard();
+  });
+  var orig = renderCard;
+  renderCard = function(){
+    orig();
+    if (!cards.length) return;
+    var c = cards[current];
+    var t = document.getElementById('cardTerm'), d = document.getElementById('cardDef');
+    t.classList.toggle('als-betekenis', omgekeerd);
+    d.classList.toggle('als-woord', omgekeerd);
+    if (omgekeerd) {
+      t.textContent = c.def;
+      d.textContent = c.term;
+      if (hint) hint.textContent = 'Welk woord is dit? Denk na en klik dan';
+    } else if (hint) {
+      hint.textContent = hintTekst;
+    }
+  };
+})();
 </script>
 </body>
 </html>

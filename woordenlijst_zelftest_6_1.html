@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 6.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -1045,6 +1060,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 6.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -1066,70 +1082,70 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aanzienlijk", def:"flink; groot", wrong:["bloemen hebben; ook: goed gaan en groeien","eten en drinken dat je koopt","met koken en eten te maken"] },
-  { term:"althans", def:"in ieder geval; tenminste", wrong:["het overgeven van iets aan iemand anders","aandacht hebben voor iets/iemand","genoeg of goed genoeg zijn"] },
-  { term:"bedrijfsleven, het", def:"alle bedrijven samen", wrong:["een regel of iets nieuws gaan gebruiken; ook: importeren","je handtekening onder iets zetten","een bruinachtig metaal, een mengsel van koper en tin"] },
-  { term:"behouden*", def:"houden; niet kwijtraken", wrong:["een bak van gevlochten materiaal","een groep van dingen die bij elkaar horen","flink; groot"] },
-  { term:"bloeien", def:"bloemen hebben; ook: goed gaan en groeien", wrong:["een plotselinge, grote verandering","iets is het belangrijkst","iemand met een eigen bedrijf"] },
-  { term:"brons", def:"een bruinachtig metaal, een mengsel van koper en tin", wrong:["binnen een organisatie","heel enthousiast en vol energie werken","hard met je voeten op de grond slaan; ook: fijnmaken"] },
-  { term:"brouwerij, de", def:"een bedrijf waar bier wordt gemaakt", wrong:["een bak van gevlochten materiaal","iemand met een eigen bedrijf","het goed zijn voor het milieu; ook: het lang meegaan"] },
-  { term:"categorie, de", def:"een groep van dingen die bij elkaar horen", wrong:["geld of bezit dat je kunt gebruiken om te investeren","iets heel bijzonder vinden","met koken en eten te maken"] },
-  { term:"chirurg, de", def:"een arts die opereert", wrong:["het werk doorgeven aan iemand anders","passend bij de situatie","geld of bezit dat je kunt gebruiken om te investeren"] },
-  { term:"commotie, de", def:"opschudding; onrust", wrong:["iets nodig hebben","rustig afwachten","een regel of iets nieuws gaan gebruiken; ook: importeren"] },
-  { term:"culinair", def:"met koken en eten te maken", wrong:["heel belangrijk; noodzakelijk","een materiaal waarvan je iets maakt","iets definitief beëindigen"] },
-  { term:"duurzaamheid, de", def:"het goed zijn voor het milieu; ook: het lang meegaan", wrong:["je handtekening onder iets zetten","een bruinachtig metaal, een mengsel van koper en tin","een groep van dingen die bij elkaar horen"] },
-  { term:"essentieel", def:"heel belangrijk; noodzakelijk", wrong:["de mate waarin mensen genoeg geld en spullen hebben","officieel opschrijven of registreren","een oud verhaal; ook: iemand die heel beroemd is"] },
-  { term:"grondstof, de", def:"een materiaal waarvan je iets maakt", wrong:["een weg of route; ook: een periode met een bepaald doel","houden; niet kwijtraken","rustig afwachten"] },
-  { term:"inspireren", def:"iemand op ideeën brengen of motiveren", wrong:["het overgeven van iets aan iemand anders","alle bedrijven samen","binnen een organisatie"] },
-  { term:"intern", def:"binnen een organisatie", wrong:["hard met je voeten op de grond slaan; ook: fijnmaken","iets is het belangrijkst","een groep van dingen die bij elkaar horen"] },
-  { term:"invoeren", def:"een regel of iets nieuws gaan gebruiken; ook: importeren", wrong:["alle details (van een beroep)","nu ga je iets bijzonders horen","genoeg of goed genoeg zijn"] },
-  { term:"kapitaal, het", def:"geld of bezit dat je kunt gebruiken om te investeren", wrong:["het uitstoten van gassen, zoals CO2","belangrijk en bekend","een klein verschil; een kleine aanvulling op een mening"] },
-  { term:"keten, de", def:"een groep winkels of bedrijven onder dezelfde naam", wrong:["opschudding; onrust","belangrijk en bekend","iemand met een eigen bedrijf"] },
-  { term:"kruidenier, de", def:"iemand met een kleine winkel in levensmiddelen", wrong:["voordeel hebben van iets","officieel opschrijven of registreren","een grote hoeveelheid; ook: een grote groep mensen"] },
-  { term:"legende, de", def:"een oud verhaal; ook: iemand die heel beroemd is", wrong:["het met geweld meenemen en vasthouden van iemand","verkeerd of oneerlijk gebruik van iets","het belangrijkste is"] },
-  { term:"levensmiddelen, de", def:"eten en drinken dat je koopt", wrong:["een materiaal waarvan je iets maakt","opschudding; onrust","een realist zijn"] },
-  { term:"mand, de", def:"een bak van gevlochten materiaal", wrong:["het karakter van iemand","in ieder geval; tenminste","flink; groot"] },
-  { term:"massa, de", def:"een grote hoeveelheid; ook: een grote groep mensen", wrong:["het karakter van iemand","de mate waarin mensen genoeg geld en spullen hebben","met koken en eten te maken"] },
-  { term:"misbruik, het", def:"verkeerd of oneerlijk gebruik van iets", wrong:["aandacht hebben voor iets/iemand","het belangrijkste onderwerp zijn","iets definitief beëindigen"] },
-  { term:"nuance, de", def:"een klein verschil; een kleine aanvulling op een mening", wrong:["de mate waarin mensen genoeg geld en spullen hebben","iemand met een kleine winkel in levensmiddelen","nu ga je iets bijzonders horen"] },
-  { term:"ondernemer, de", def:"iemand met een eigen bedrijf", wrong:["voorbereid zijn op iets","met koken en eten te maken","aandacht hebben voor iets/iemand"] },
-  { term:"ondertekenen", def:"je handtekening onder iets zetten", wrong:["iemand met een eigen bedrijf","een realist zijn","rustig afwachten"] },
-  { term:"ontvoering, de", def:"het met geweld meenemen en vasthouden van iemand", wrong:["een grote hoeveelheid; ook: een grote groep mensen","alle bedrijven samen","een voertuig op wielen, zoals een kar of auto"] },
-  { term:"onvergeeflijk", def:"zo erg dat je het niet kunt vergeven", wrong:["alle details (van een beroep)","een klein verschil; een kleine aanvulling op een mening","beantwoorden aan eisen of wensen"] },
-  { term:"oprichter, de", def:"iemand die een bedrijf of organisatie begint", wrong:["het goed zijn voor het milieu; ook: het lang meegaan","voordeel hebben van iets","hard met je voeten op de grond slaan; ook: fijnmaken"] },
-  { term:"overdracht, de", def:"het overgeven van iets aan iemand anders", wrong:["alle details (van een beroep)","iemand die een bedrijf of organisatie begint","een weg of route; ook: een periode met een bepaald doel"] },
-  { term:"persoonlijkheid, de", def:"het karakter van iemand", wrong:["het met geweld meenemen en vasthouden van iemand","met koken en eten te maken","verkeerd of oneerlijk gebruik van iets"] },
-  { term:"profiteren", def:"voordeel hebben van iets", wrong:["voldoende inkomen (titel van hoofdstuk 6)","iemand met een kleine winkel in levensmiddelen","een plotselinge, grote verandering"] },
-  { term:"revolutie, de", def:"een plotselinge, grote verandering", wrong:["iets definitief beëindigen","een voertuig op wielen, zoals een kar of auto","nu ga je iets bijzonders horen"] },
-  { term:"stampen", def:"hard met je voeten op de grond slaan; ook: fijnmaken", wrong:["het belangrijkste onderwerp zijn","het overgeven van iets aan iemand anders","voldoende inkomen (titel van hoofdstuk 6)"] },
-  { term:"stok, de", def:"een lang, dun stuk hout", wrong:["het uitstoten van gassen, zoals CO2","met koken en eten te maken","iets heel bijzonder vinden"] },
-  { term:"toepasselijk", def:"passend bij de situatie", wrong:["het met geweld meenemen en vasthouden van iemand","met koken en eten te maken","voorbereid zijn op iets"] },
-  { term:"traject, het", def:"een weg of route; ook: een periode met een bepaald doel", wrong:["iemand die een bedrijf of organisatie begint","aandacht hebben voor iets/iemand","alle bedrijven samen"] },
-  { term:"uitstoot, de", def:"het uitstoten van gassen, zoals CO2", wrong:["een klein verschil; een kleine aanvulling op een mening","een lang, dun stuk hout","genoeg of goed genoeg zijn"] },
-  { term:"vastleggen", def:"officieel opschrijven of registreren", wrong:["een bak van gevlochten materiaal","een weg of route; ook: een periode met een bepaald doel","ergens tijd en aandacht aan besteden"] },
-  { term:"verbond, het", def:"een samenwerking of afspraak tussen partijen", wrong:["een groep winkels of bedrijven onder dezelfde naam","iemand met een eigen bedrijf","genoeg of goed genoeg zijn"] },
-  { term:"voldoen", def:"genoeg of goed genoeg zijn", wrong:["voldoende inkomen (titel van hoofdstuk 6)","heel belangrijk; noodzakelijk","het belangrijkste onderwerp zijn"] },
-  { term:"vooraanstaand", def:"belangrijk en bekend", wrong:["een voertuig op wielen, zoals een kar of auto","officieel opschrijven of registreren","flink; groot"] },
-  { term:"wagen, de", def:"een voertuig op wielen, zoals een kar of auto", wrong:["ergens tijd en aandacht aan besteden","een lang, dun stuk hout","het werk doorgeven aan iemand anders"] },
-  { term:"welvaart, de", def:"de mate waarin mensen genoeg geld en spullen hebben", wrong:["het werk doorgeven aan iemand anders","hard met je voeten op de grond slaan; ook: fijnmaken","je handtekening onder iets zetten"] },
-  { term:"centraal staan", def:"het belangrijkste onderwerp zijn", wrong:["houden; niet kwijtraken","een lang, dun stuk hout","het goed zijn voor het milieu; ook: het lang meegaan"] },
-  { term:"gedreven zijn", def:"heel enthousiast en vol energie werken", wrong:["voordeel hebben van iets","iets definitief beëindigen","de mate waarin mensen genoeg geld en spullen hebben"] },
-  { term:"het gaat om", def:"het belangrijkste is", wrong:["officieel opschrijven of registreren","bloemen hebben; ook: goed gaan en groeien","iets heel bijzonder vinden"] },
-  { term:"klaar zijn voor iets", def:"voorbereid zijn op iets", wrong:["houden; niet kwijtraken","flink; groot","opschudding; onrust"] },
-  { term:"onder de indruk zijn", def:"iets heel bijzonder vinden", wrong:["heel belangrijk; noodzakelijk","aandacht hebben voor iets/iemand","iets is het belangrijkst"] },
-  { term:"toe zijn aan iets", def:"iets nodig hebben", wrong:["alle bedrijven samen","nu ga je iets bijzonders horen","eten en drinken dat je koopt"] },
-  { term:"vandaag de dag", def:"tegenwoordig", wrong:["verkeerd of oneerlijk gebruik van iets","voordeel hebben van iets","iemand met een eigen bedrijf"] },
-  { term:"voldoen aan", def:"beantwoorden aan eisen of wensen", wrong:["een arts die opereert","het goed zijn voor het milieu; ook: het lang meegaan","in ieder geval; tenminste"] },
-  { term:"brood op de plank", def:"voldoende inkomen (titel van hoofdstuk 6)", wrong:["eten en drinken dat je koopt","geld of bezit dat je kunt gebruiken om te investeren","het werk doorgeven aan iemand anders"] },
-  { term:"achterover gaan liggen", def:"rustig afwachten", wrong:["een plotselinge, grote verandering","het karakter van iemand","een realist zijn"] },
-  { term:"de kneepjes van het vak", def:"alle details (van een beroep)", wrong:["de mate waarin mensen genoeg geld en spullen hebben","een realist zijn","het met geweld meenemen en vasthouden van iemand"] },
-  { term:"een punt zetten achter", def:"iets definitief beëindigen", wrong:["een voertuig op wielen, zoals een kar of auto","het belangrijkste onderwerp zijn","aandacht hebben voor iets/iemand"] },
-  { term:"gaan zitten voor iets/iemand", def:"ergens tijd en aandacht aan besteden", wrong:["met koken en eten te maken","nu ga je iets bijzonders horen","iemand die een bedrijf of organisatie begint"] },
-  { term:"het stokje doorgeven", def:"het werk doorgeven aan iemand anders", wrong:["opschudding; onrust","aandacht hebben voor iets/iemand","het belangrijkste onderwerp zijn"] },
-  { term:"hou je vast", def:"nu ga je iets bijzonders horen", wrong:["een plotselinge, grote verandering","een klein verschil; een kleine aanvulling op een mening","voorbereid zijn op iets"] },
-  { term:"iets/iemand voorop stellen", def:"iets is het belangrijkst", wrong:["een voertuig op wielen, zoals een kar of auto","met koken en eten te maken","een lang, dun stuk hout"] },
-  { term:"met beide benen op de grond staan", def:"een realist zijn", wrong:["heel belangrijk; noodzakelijk","het met geweld meenemen en vasthouden van iemand","een materiaal waarvan je iets maakt"] },
-  { term:"oog hebben voor iets/iemand", def:"aandacht hebben voor iets/iemand", wrong:["het uitstoten van gassen, zoals CO2","voldoende inkomen (titel van hoofdstuk 6)","iets definitief beëindigen"] }
+  { term:"aanzienlijk", def:"flink; groot", wrong:["een bruinachtig metaal, een mengsel van koper en tin", "klein; een beetje", "zichtbaar; je kunt het zien"] },
+  { term:"althans", def:"in ieder geval; tenminste", wrong:["verkeerd of oneerlijk gebruik van iets", "bovendien; ook nog", "daarom; om die reden"] },
+  { term:"bedrijfsleven, het", def:"alle bedrijven samen", wrong:["houden; niet kwijtraken", "alle medewerkers van één bedrijf", "alle overheidsinstellingen samen"] },
+  { term:"behouden*", def:"houden; niet kwijtraken", wrong:["iemand op ideeën brengen of motiveren", "verliezen; kwijtraken", "lenen; even gebruiken"] },
+  { term:"bloeien", def:"bloemen hebben; ook: goed gaan en groeien", wrong:["een regel of iets nieuws gaan gebruiken; ook: importeren", "verwelken; ook: slecht gaan en krimpen", "bladeren verliezen; ook: stilstaan"] },
+  { term:"brons", def:"een bruinachtig metaal, een mengsel van koper en tin", wrong:["het goed zijn voor het milieu; ook: het lang meegaan", "een geelachtig edelmetaal, zoals goud", "een grijs metaal, een mengsel van ijzer en koolstof"] },
+  { term:"brouwerij, de", def:"een bedrijf waar bier wordt gemaakt", wrong:["een bruinachtig metaal, een mengsel van koper en tin", "een bedrijf waar wijn wordt gemaakt", "een café waar bier wordt geschonken"] },
+  { term:"categorie, de", def:"een groep van dingen die bij elkaar horen", wrong:["zo erg dat je het niet kunt vergeven", "één los ding dat nergens bij hoort", "een lijst met namen op volgorde"] },
+  { term:"chirurg, de", def:"een arts die opereert", wrong:["een groep van dingen die bij elkaar horen", "een arts die medicijnen voorschrijft", "een verpleegkundige die helpt bij operaties"] },
+  { term:"commotie, de", def:"opschudding; onrust", wrong:["alle bedrijven samen", "rust; kalmte", "een vergadering; overleg"] },
+  { term:"culinair", def:"met koken en eten te maken", wrong:["alle bedrijven samen", "met sport en bewegen te maken", "met kunst en cultuur te maken"] },
+  { term:"duurzaamheid, de", def:"het goed zijn voor het milieu; ook: het lang meegaan", wrong:["voldoende inkomen (titel van hoofdstuk 6)", "het slecht zijn voor het milieu; ook: snel kapotgaan", "het duur zijn; ook: de hoge kwaliteit"] },
+  { term:"essentieel", def:"heel belangrijk; noodzakelijk", wrong:["beantwoorden aan eisen of wensen", "onbelangrijk; overbodig", "handig; leuk om te hebben"] },
+  { term:"grondstof, de", def:"een materiaal waarvan je iets maakt", wrong:["hard met je voeten op de grond slaan; ook: fijnmaken", "een product dat klaar is om te verkopen", "het afval van een fabriek"] },
+  { term:"inspireren", def:"iemand op ideeën brengen of motiveren", wrong:["flink; groot", "iemand ontmoedigen of afremmen", "iemand een opdracht geven"] },
+  { term:"intern", def:"binnen een organisatie", wrong:["verkeerd of oneerlijk gebruik van iets", "buiten een organisatie", "tussen verschillende organisaties"] },
+  { term:"invoeren", def:"een regel of iets nieuws gaan gebruiken; ook: importeren", wrong:["het uitstoten van gassen, zoals CO2", "een regel afschaffen; ook: exporteren", "een regel bespreken; ook: vervoeren"] },
+  { term:"kapitaal, het", def:"geld of bezit dat je kunt gebruiken om te investeren", wrong:["een oud verhaal; ook: iemand die heel beroemd is", "schulden die je moet terugbetalen", "het salaris dat je elke maand krijgt"] },
+  { term:"keten, de", def:"een groep winkels of bedrijven onder dezelfde naam", wrong:["heel belangrijk; noodzakelijk", "één losse winkel met een eigen naam", "een markt met veel kraampjes"] },
+  { term:"kruidenier, de", def:"iemand met een kleine winkel in levensmiddelen", wrong:["je handtekening onder iets zetten", "iemand met een grote supermarkt", "iemand die kruiden kweekt"] },
+  { term:"legende, de", def:"een oud verhaal; ook: iemand die heel beroemd is", wrong:["iets definitief beëindigen", "een nieuw nieuwsbericht; ook: iemand die niemand kent", "een waargebeurd verslag; ook: een beginner"] },
+  { term:"levensmiddelen, de", def:"eten en drinken dat je koopt", wrong:["iets nodig hebben", "kleren en schoenen die je koopt", "medicijnen die je koopt"] },
+  { term:"mand, de", def:"een bak van gevlochten materiaal", wrong:["het overgeven van iets aan iemand anders", "een doos van karton", "een zak van plastic"] },
+  { term:"massa, de", def:"een grote hoeveelheid; ook: een grote groep mensen", wrong:["het goed zijn voor het milieu; ook: het lang meegaan", "een kleine hoeveelheid; ook: een paar mensen", "het gewicht van iets; ook: een vergadering"] },
+  { term:"misbruik, het", def:"verkeerd of oneerlijk gebruik van iets", wrong:["een grote hoeveelheid; ook: een grote groep mensen", "goed en eerlijk gebruik van iets", "het niet gebruiken van iets"] },
+  { term:"nuance, de", def:"een klein verschil; een kleine aanvulling op een mening", wrong:["een arts die opereert", "een groot verschil; een totaal andere mening", "een fout in een mening"] },
+  { term:"ondernemer, de", def:"iemand met een eigen bedrijf", wrong:["verkeerd of oneerlijk gebruik van iets", "iemand die in loondienst werkt", "iemand die een bedrijf controleert"] },
+  { term:"ondertekenen", def:"je handtekening onder iets zetten", wrong:["in ieder geval; tenminste", "je naam doorstrepen", "een tekst voorlezen"] },
+  { term:"ontvoering, de", def:"het met geweld meenemen en vasthouden van iemand", wrong:["het werk doorgeven aan iemand anders", "het vrijlaten van iemand", "het stelen van een auto"] },
+  { term:"onvergeeflijk", def:"zo erg dat je het niet kunt vergeven", wrong:["de mate waarin mensen genoeg geld en spullen hebben", "zo klein dat je het snel vergeet", "zo erg dat je het niet kunt vergeten"] },
+  { term:"oprichter, de", def:"iemand die een bedrijf of organisatie begint", wrong:["een lang, dun stuk hout", "iemand die een bedrijf of organisatie sluit", "iemand die in een bedrijf werkt"] },
+  { term:"overdracht, de", def:"het overgeven van iets aan iemand anders", wrong:["iets heel bijzonder vinden", "het houden van iets voor jezelf", "het lenen van iets aan iemand"] },
+  { term:"persoonlijkheid, de", def:"het karakter van iemand", wrong:["een lang, dun stuk hout", "het uiterlijk van iemand", "de naam van iemand"] },
+  { term:"profiteren", def:"voordeel hebben van iets", wrong:["een regel of iets nieuws gaan gebruiken; ook: importeren", "nadeel hebben van iets", "betalen voor iets"] },
+  { term:"revolutie, de", def:"een plotselinge, grote verandering", wrong:["verkeerd of oneerlijk gebruik van iets", "een langzame, kleine verandering", "een terugkeer naar vroeger"] },
+  { term:"stampen", def:"hard met je voeten op de grond slaan; ook: fijnmaken", wrong:["iemand met een eigen bedrijf", "zachtjes op je tenen lopen; ook: mengen", "springen met beide benen; ook: snijden"] },
+  { term:"stok, de", def:"een lang, dun stuk hout", wrong:["een groep van dingen die bij elkaar horen", "een kort, dik stuk metaal", "een lang touw"] },
+  { term:"toepasselijk", def:"passend bij de situatie", wrong:["iemand die een bedrijf of organisatie begint", "niet passend bij de situatie", "toevallig bij de situatie"] },
+  { term:"traject, het", def:"een weg of route; ook: een periode met een bepaald doel", wrong:["zo erg dat je het niet kunt vergeven", "een plek of gebouw; ook: één moment", "een vervoermiddel; ook: een einddoel"] },
+  { term:"uitstoot, de", def:"het uitstoten van gassen, zoals CO2", wrong:["een weg of route; ook: een periode met een bepaald doel", "het opnemen van gassen, zoals zuurstof", "het opslaan van energie"] },
+  { term:"vastleggen", def:"officieel opschrijven of registreren", wrong:["de mate waarin mensen genoeg geld en spullen hebben", "officieel uitwissen of verwijderen", "iets met een touw vastbinden"] },
+  { term:"verbond, het", def:"een samenwerking of afspraak tussen partijen", wrong:["iets heel bijzonder vinden", "een ruzie tussen partijen", "een verbod van de overheid"] },
+  { term:"voldoen", def:"genoeg of goed genoeg zijn", wrong:["het overgeven van iets aan iemand anders", "te weinig of niet goed genoeg zijn", "te veel zijn"] },
+  { term:"vooraanstaand", def:"belangrijk en bekend", wrong:["beantwoorden aan eisen of wensen", "onbekend en onbelangrijk", "vooraan in de rij staand"] },
+  { term:"wagen, de", def:"een voertuig op wielen, zoals een kar of auto", wrong:["voldoende inkomen (titel van hoofdstuk 6)", "een schip of boot", "een paard"] },
+  { term:"welvaart, de", def:"de mate waarin mensen genoeg geld en spullen hebben", wrong:["een arts die opereert", "de mate waarin mensen gezond zijn", "de mate waarin mensen gelukkig zijn"] },
+  { term:"centraal staan", def:"het belangrijkste onderwerp zijn", wrong:["binnen een organisatie", "een bijzaak zijn", "in het midden van een plein staan"] },
+  { term:"gedreven zijn", def:"heel enthousiast en vol energie werken", wrong:["een bak van gevlochten materiaal", "lui en zonder energie werken", "door iemand gedwongen worden"] },
+  { term:"het gaat om", def:"het belangrijkste is", wrong:["een weg of route; ook: een periode met een bepaald doel", "het is niet belangrijk", "het gaat over in"] },
+  { term:"klaar zijn voor iets", def:"voorbereid zijn op iets", wrong:["hard met je voeten op de grond slaan; ook: fijnmaken", "ergens mee gestopt zijn", "ergens geen zin in hebben"] },
+  { term:"onder de indruk zijn", def:"iets heel bijzonder vinden", wrong:["passend bij de situatie", "iets heel gewoon vinden", "ergens bang voor zijn"] },
+  { term:"toe zijn aan iets", def:"iets nodig hebben", wrong:["het goed zijn voor het milieu; ook: het lang meegaan", "iets niet meer nodig hebben", "iets dichtdoen"] },
+  { term:"vandaag de dag", def:"tegenwoordig", wrong:["iemand met een eigen bedrijf", "vroeger", "alleen vandaag"] },
+  { term:"voldoen aan", def:"beantwoorden aan eisen of wensen", wrong:["zo erg dat je het niet kunt vergeven", "niet beantwoorden aan eisen of wensen", "betalen voor iets"] },
+  { term:"brood op de plank", def:"voldoende inkomen (titel van hoofdstuk 6)", wrong:["een weg of route; ook: een periode met een bepaald doel", "te weinig inkomen", "eten in de keuken"] },
+  { term:"achterover gaan liggen", def:"rustig afwachten", wrong:["iets is het belangrijkst", "hard aan het werk gaan", "ziek worden"] },
+  { term:"de kneepjes van het vak", def:"alle details (van een beroep)", wrong:["nu ga je iets bijzonders horen", "alleen de basis (van een beroep)", "de fouten (van een beroep)"] },
+  { term:"een punt zetten achter", def:"iets definitief beëindigen", wrong:["een materiaal waarvan je iets maakt", "iets opnieuw beginnen", "iets kort onderbreken"] },
+  { term:"gaan zitten voor iets/iemand", def:"ergens tijd en aandacht aan besteden", wrong:["het met geweld meenemen en vasthouden van iemand", "iets of iemand snel afhandelen", "op een stoel gaan zitten voor iemand"] },
+  { term:"het stokje doorgeven", def:"het werk doorgeven aan iemand anders", wrong:["heel enthousiast en vol energie werken", "al het werk zelf blijven doen", "een cadeau geven aan iemand"] },
+  { term:"hou je vast", def:"nu ga je iets bijzonders horen", wrong:["zo erg dat je het niet kunt vergeven", "laat maar los", "pas op dat je niet valt"] },
+  { term:"iets/iemand voorop stellen", def:"iets is het belangrijkst", wrong:["voorbereid zijn op iets", "iets is het minst belangrijk", "iets of iemand voor je uit duwen"] },
+  { term:"met beide benen op de grond staan", def:"een realist zijn", wrong:["het met geweld meenemen en vasthouden van iemand", "een dromer zijn", "niet kunnen dansen"] },
+  { term:"oog hebben voor iets/iemand", def:"aandacht hebben voor iets/iemand", wrong:["genoeg of goed genoeg zijn", "iets of iemand negeren", "iets of iemand bekijken met één oog"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -1161,6 +1177,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

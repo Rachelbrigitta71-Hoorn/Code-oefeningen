@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 10.3 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -726,6 +741,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 10.3 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -747,41 +763,41 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"af", def:"klaar; beëindigd; ook: weg van iets", wrong:["een groot verschil of diepe scheiding tussen twee groepen","een weerspiegeling; iets dat een ander geheel vertegenwoordigt","een grote hoeveelheid die blijft stromen; ook: elektriciteit"] },
-  { term:"afschermen", def:"iets of iemand beschermen tegen de buitenwereld; afbakenen", wrong:["actief worden; zich laten horen","opvallend aanwezig; bekend en invloedrijk","heel groot en zwaar; enorm in omvang"] },
-  { term:"afspiegeling, de", def:"een weerspiegeling; iets dat een ander geheel vertegenwoordigt", wrong:["de moeite en energie die iemand ergens in steekt","heel sterk en diepgaand; zeer intensief","zich verzetten tegen iets; iets tegenspreken"] },
-  { term:"alsmaar", def:"steeds maar; voortdurend zonder ophouden", wrong:["een weerspiegeling; iets dat een ander geheel vertegenwoordigt","iets of iemand beschermen tegen de buitenwereld; afbakenen","heel sterk en diepgaand; zeer intensief"] },
-  { term:"buffer, de", def:"iets of iemand dat als bescherming of tussenlaag dient", wrong:["iets ergens neerzetten; ook: iets in een context begrijpen","opvallend aanwezig; bekend en invloedrijk","altijd al zo geweest; niet gebonden aan één periode"] },
-  { term:"drijven*", def:"iets of iemand ergens toe aanzetten; ook: op het water drijven", wrong:["iets of iemand beschermen tegen de buitenwereld; afbakenen","het aantal gedrukte exemplaren van een krant of boek","met moeite ergens mee omgaan; ergens zwaar aan tillen"] },
-  { term:"intens", def:"heel sterk en diepgaand; zeer intensief", wrong:["opvallend aanwezig; bekend en invloedrijk","veel mensen aantrekken; populair zijn bij het grote publiek","een grote hoeveelheid die blijft stromen; ook: elektriciteit"] },
-  { term:"inzet, de", def:"de moeite en energie die iemand ergens in steekt", wrong:["klaar; beëindigd; ook: weg van iets","een langere route dan noodzakelijk; ook: een indirecte aanpak","zich verzetten tegen iets; iets tegenspreken"] },
-  { term:"kloof, de", def:"een groot verschil of diepe scheiding tussen twee groepen", wrong:["steeds groter worden; uitbreiden","een grote hoeveelheid die blijft stromen; ook: elektriciteit","een aanleg of tendens om iets te doen"] },
-  { term:"massief", def:"heel groot en zwaar; enorm in omvang", wrong:["iets ergens neerzetten; ook: iets in een context begrijpen","steeds groter worden; uitbreiden","heel sterk en diepgaand; zeer intensief"] },
-  { term:"neiging, de", def:"een aanleg of tendens om iets te doen", wrong:["iets of iemand ergens toe aanzetten; ook: op het water drijven","iemand die namens een organisatie informatie verstrekt aan de pers","heel sterk en diepgaand; zeer intensief"] },
-  { term:"omweg, de", def:"een langere route dan noodzakelijk; ook: een indirecte aanpak", wrong:["iets in een bepaalde vorm presenteren; een boodschap omhullen","precies en concreet; gericht op één bepaald onderwerp","een weerspiegeling; iets dat een ander geheel vertegenwoordigt"] },
-  { term:"ontwijken*", def:"iets of iemand vermijden; een vraag niet direct beantwoorden", wrong:["iets of iemand staat centraal; dat is waar het om gaat","de moeite en energie die iemand ergens in steekt","iemand die namens een organisatie informatie verstrekt aan de pers"] },
-  { term:"oplage, de", def:"het aantal gedrukte exemplaren van een krant of boek", wrong:["iets of iemand ergens toe aanzetten; ook: op het water drijven","kenmerkend; veelzeggend voor een situatie","de relatie en verhouding tussen mensen of groepen"] },
-  { term:"plaatsen", def:"iets ergens neerzetten; ook: iets in een context begrijpen", wrong:["iets of iemand vermijden; een vraag niet direct beantwoorden","iets of iemand dat als bescherming of tussenlaag dient","een weerspiegeling; iets dat een ander geheel vertegenwoordigt"] },
-  { term:"prominent", def:"opvallend aanwezig; bekend en invloedrijk", wrong:["iets ergens neerzetten; ook: iets in een context begrijpen","kenmerkend; veelzeggend voor een situatie","iets of iemand ergens toe aanzetten; ook: op het water drijven"] },
-  { term:"roeren, zich", def:"actief worden; zich laten horen", wrong:["iets ergens neerzetten; ook: iets in een context begrijpen","heel sterk en diepgaand; zeer intensief","iemand die namens een organisatie informatie verstrekt aan de pers"] },
-  { term:"specifiek", def:"precies en concreet; gericht op één bepaald onderwerp", wrong:["een grote hoeveelheid die blijft stromen; ook: elektriciteit","iets of iemand staat centraal; dat is waar het om gaat","de relatie en verhouding tussen mensen of groepen"] },
-  { term:"stroom, de", def:"een grote hoeveelheid die blijft stromen; ook: elektriciteit", wrong:["een aanleg of tendens om iets te doen","de relatie en verhouding tussen mensen of groepen","iets in een bepaalde vorm presenteren; een boodschap omhullen"] },
-  { term:"tekenend", def:"kenmerkend; veelzeggend voor een situatie", wrong:["het aantal gedrukte exemplaren van een krant of boek","precies en concreet; gericht op één bepaald onderwerp","iets of iemand dat als bescherming of tussenlaag dient"] },
-  { term:"trachten", def:"proberen; moeite doen om iets te bereiken", wrong:["een aanleg of tendens om iets te doen","opvallend aanwezig; bekend en invloedrijk","iets of iemand staat centraal; dat is waar het om gaat"] },
-  { term:"trekken*", def:"aantrekken; ook: bewegen in een richting", wrong:["iemand die namens een organisatie informatie verstrekt aan de pers","precies en concreet; gericht op één bepaald onderwerp","iets ergens neerzetten; ook: iets in een context begrijpen"] },
-  { term:"uitdijen", def:"steeds groter worden; uitbreiden", wrong:["proberen; moeite doen om iets te bereiken","steeds maar; voortdurend zonder ophouden","iets ergens neerzetten; ook: iets in een context begrijpen"] },
-  { term:"verpakken", def:"iets in een bepaalde vorm presenteren; een boodschap omhullen", wrong:["een weerspiegeling; iets dat een ander geheel vertegenwoordigt","proberen; moeite doen om iets te bereiken","als eerste; op de eerste plaats"] },
-  { term:"verstandhouding, de", def:"de relatie en verhouding tussen mensen of groepen", wrong:["precies en concreet; gericht op één bepaald onderwerp","iets of iemand dat als bescherming of tussenlaag dient","het aantal gedrukte exemplaren van een krant of boek"] },
-  { term:"voorlichter, de", def:"iemand die namens een organisatie informatie verstrekt aan de pers", wrong:["proberen; moeite doen om iets te bereiken","het aantal gedrukte exemplaren van een krant of boek","iets in weinig woorden kunnen samenvatten"] },
-  { term:"voorop", def:"als eerste; op de eerste plaats", wrong:["iemand die namens een organisatie informatie verstrekt aan de pers","iets of iemand staat centraal; dat is waar het om gaat","heel groot en zwaar; enorm in omvang"] },
-  { term:"worstelen", def:"met moeite ergens mee omgaan; ergens zwaar aan tillen", wrong:["actief worden; zich laten horen","een groot verschil of diepe scheiding tussen twee groepen","opvallend aanwezig; bekend en invloedrijk"] },
-  { term:"ingaan tegen iets/iemand", def:"zich verzetten tegen iets; iets tegenspreken", wrong:["actief worden; zich laten horen","met moeite ergens mee omgaan; ergens zwaar aan tillen","iemand die namens een organisatie informatie verstrekt aan de pers"] },
-  { term:"publiek trekken", def:"veel mensen aantrekken; populair zijn bij het grote publiek", wrong:["iets in een bepaalde vorm presenteren; een boodschap omhullen","iets ergens neerzetten; ook: iets in een context begrijpen","een groot verschil of diepe scheiding tussen twee groepen"] },
-  { term:"het draait om iets/iemand", def:"iets of iemand staat centraal; dat is waar het om gaat", wrong:["altijd al zo geweest; niet gebonden aan één periode","iets in weinig woorden kunnen samenvatten","iets of iemand ergens toe aanzetten; ook: op het water drijven"] },
-  { term:"je ei kwijt willen", def:"graag iets willen zeggen; je mening kwijt willen", wrong:["steeds maar; voortdurend zonder ophouden","de moeite en energie die iemand ergens in steekt","heel groot en zwaar; enorm in omvang"] },
-  { term:"kort kunnen zijn over iets", def:"iets in weinig woorden kunnen samenvatten", wrong:["een aanleg of tendens om iets te doen","met moeite ergens mee omgaan; ergens zwaar aan tillen","iets of iemand dat als bescherming of tussenlaag dient"] },
-  { term:"van alle tijden", def:"altijd al zo geweest; niet gebonden aan één periode", wrong:["de relatie en verhouding tussen mensen of groepen","veel mensen aantrekken; populair zijn bij het grote publiek","het belangrijkst zijn; op de eerste plaats komen"] },
-  { term:"vooropstaan", def:"het belangrijkst zijn; op de eerste plaats komen", wrong:["actief worden; zich laten horen","klaar; beëindigd; ook: weg van iets","de moeite en energie die iemand ergens in steekt"] }
+  { term:"af", def:"klaar; beëindigd; ook: weg van iets", wrong:["zich verzetten tegen iets; iets tegenspreken", "nog niet klaar; net begonnen; ook: dichtbij iets", "half; ook: aan iets vast"] },
+  { term:"afschermen", def:"iets of iemand beschermen tegen de buitenwereld; afbakenen", wrong:["altijd al zo geweest; niet gebonden aan één periode", "iets of iemand blootstellen aan de buitenwereld", "iets of iemand op een scherm laten zien"] },
+  { term:"afspiegeling, de", def:"een weerspiegeling; iets dat een ander geheel vertegenwoordigt", wrong:["een groot verschil of diepe scheiding tussen twee groepen", "een groep die heel anders is dan het geheel", "een spiegel aan de muur"] },
+  { term:"alsmaar", def:"steeds maar; voortdurend zonder ophouden", wrong:["een grote hoeveelheid die blijft stromen; ook: elektriciteit", "nu en dan; soms", "voor het laatst"] },
+  { term:"buffer, de", def:"iets of iemand dat als bescherming of tussenlaag dient", wrong:["het belangrijkst zijn; op de eerste plaats komen", "iets wat juist botsingen of conflicten veroorzaakt", "een snack tussen de maaltijden"] },
+  { term:"drijven*", def:"iets of iemand ergens toe aanzetten; ook: op het water drijven", wrong:["precies en concreet; gericht op één bepaald onderwerp", "iemand tegenhouden; ook: zinken in het water", "iemand volgen; ook: zwemmen"] },
+  { term:"intens", def:"heel sterk en diepgaand; zeer intensief", wrong:["iets in een bepaalde vorm presenteren; een boodschap omhullen", "oppervlakkig en zwak", "kort en snel"] },
+  { term:"inzet, de", def:"de moeite en energie die iemand ergens in steekt", wrong:["iets in een bepaalde vorm presenteren; een boodschap omhullen", "het geld dat je verdient met iets", "het resultaat van iemands werk"] },
+  { term:"kloof, de", def:"een groot verschil of diepe scheiding tussen twee groepen", wrong:["zich verzetten tegen iets; iets tegenspreken", "een kleine overeenkomst tussen twee groepen", "een brug tussen twee groepen"] },
+  { term:"massief", def:"heel groot en zwaar; enorm in omvang", wrong:["de relatie en verhouding tussen mensen of groepen", "klein en licht; hol van binnen", "zacht en buigzaam"] },
+  { term:"neiging, de", def:"een aanleg of tendens om iets te doen", wrong:["met moeite ergens mee omgaan; ergens zwaar aan tillen", "een vaste regel die je moet volgen", "een kleine helling"] },
+  { term:"omweg, de", def:"een langere route dan noodzakelijk; ook: een indirecte aanpak", wrong:["zich verzetten tegen iets; iets tegenspreken", "de kortste en meest directe route; ook: een directe aanpak", "een rotonde"] },
+  { term:"ontwijken*", def:"iets of iemand vermijden; een vraag niet direct beantwoorden", wrong:["de relatie en verhouding tussen mensen of groepen", "iets of iemand opzoeken; een vraag direct beantwoorden", "iets of iemand wegduwen"] },
+  { term:"oplage, de", def:"het aantal gedrukte exemplaren van een krant of boek", wrong:["een langere route dan noodzakelijk; ook: een indirecte aanpak", "het aantal lezers van een krant op één dag", "de prijs van een krant of boek"] },
+  { term:"plaatsen", def:"iets ergens neerzetten; ook: iets in een context begrijpen", wrong:["graag iets willen zeggen; je mening kwijt willen", "iets weghalen; ook: iets niet begrijpen", "iets verkopen; ook: iets vergeten"] },
+  { term:"prominent", def:"opvallend aanwezig; bekend en invloedrijk", wrong:["een langere route dan noodzakelijk; ook: een indirecte aanpak", "onopvallend en onbekend", "voorlopig en tijdelijk"] },
+  { term:"roeren, zich", def:"actief worden; zich laten horen", wrong:["met moeite ergens mee omgaan; ergens zwaar aan tillen", "stil en passief blijven", "in een pan roeren"] },
+  { term:"specifiek", def:"precies en concreet; gericht op één bepaald onderwerp", wrong:["veel mensen aantrekken; populair zijn bij het grote publiek", "algemeen en vaag", "speciaal en duur"] },
+  { term:"stroom, de", def:"een grote hoeveelheid die blijft stromen; ook: elektriciteit", wrong:["iets ergens neerzetten; ook: iets in een context begrijpen", "een kleine hoeveelheid die stilstaat; ook: gas", "een plotselinge stop; ook: batterij"] },
+  { term:"tekenend", def:"kenmerkend; veelzeggend voor een situatie", wrong:["het belangrijkst zijn; op de eerste plaats komen", "onbelangrijk; zegt niets over een situatie", "met tekeningen erbij"] },
+  { term:"trachten", def:"proberen; moeite doen om iets te bereiken", wrong:["iets of iemand beschermen tegen de buitenwereld; afbakenen", "opgeven; geen moeite doen", "verwachten; hopen"] },
+  { term:"trekken*", def:"aantrekken; ook: bewegen in een richting", wrong:["opvallend aanwezig; bekend en invloedrijk", "afstoten; ook: stilstaan op één plek", "duwen; ook: rennen"] },
+  { term:"uitdijen", def:"steeds groter worden; uitbreiden", wrong:["veel mensen aantrekken; populair zijn bij het grote publiek", "steeds kleiner worden; krimpen", "uit elkaar vallen"] },
+  { term:"verpakken", def:"iets in een bepaalde vorm presenteren; een boodschap omhullen", wrong:["precies en concreet; gericht op één bepaald onderwerp", "een boodschap direct en zonder omhaal brengen", "iets uitpakken"] },
+  { term:"verstandhouding, de", def:"de relatie en verhouding tussen mensen of groepen", wrong:["zich verzetten tegen iets; iets tegenspreken", "het verstand of de intelligentie van iemand", "een contract tussen bedrijven"] },
+  { term:"voorlichter, de", def:"iemand die namens een organisatie informatie verstrekt aan de pers", wrong:["heel groot en zwaar; enorm in omvang", "iemand die informatie geheimhoudt voor de pers", "een journalist die vragen stelt"] },
+  { term:"voorop", def:"als eerste; op de eerste plaats", wrong:["steeds groter worden; uitbreiden", "als laatste; achteraan", "boven op iets"] },
+  { term:"worstelen", def:"met moeite ergens mee omgaan; ergens zwaar aan tillen", wrong:["iemand die namens een organisatie informatie verstrekt aan de pers", "iets makkelijk afhandelen", "samen sporten voor plezier"] },
+  { term:"ingaan tegen iets/iemand", def:"zich verzetten tegen iets; iets tegenspreken", wrong:["iets of iemand beschermen tegen de buitenwereld; afbakenen", "het eens zijn met iets of iemand", "ergens naar binnen gaan"] },
+  { term:"publiek trekken", def:"veel mensen aantrekken; populair zijn bij het grote publiek", wrong:["iets in een bepaalde vorm presenteren; een boodschap omhullen", "mensen wegjagen; onpopulair zijn", "een prijs winnen"] },
+  { term:"het draait om iets/iemand", def:"iets of iemand staat centraal; dat is waar het om gaat", wrong:["veel mensen aantrekken; populair zijn bij het grote publiek", "iets of iemand is onbelangrijk", "iets of iemand draait rond"] },
+  { term:"je ei kwijt willen", def:"graag iets willen zeggen; je mening kwijt willen", wrong:["steeds groter worden; uitbreiden", "liever niets zeggen", "je ontbijt vergeten"] },
+  { term:"kort kunnen zijn over iets", def:"iets in weinig woorden kunnen samenvatten", wrong:["klaar; beëindigd; ook: weg van iets", "heel lang over iets moeten praten", "weinig tijd hebben"] },
+  { term:"van alle tijden", def:"altijd al zo geweest; niet gebonden aan één periode", wrong:["aantrekken; ook: bewegen in een richting", "alleen van deze tijd", "voor even"] },
+  { term:"vooropstaan", def:"het belangrijkst zijn; op de eerste plaats komen", wrong:["opvallend aanwezig; bekend en invloedrijk", "het minst belangrijk zijn", "vooraan in een rij staan"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -813,6 +829,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

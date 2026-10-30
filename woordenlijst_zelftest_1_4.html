@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 1.4 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -671,6 +686,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 1.4 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -692,36 +708,36 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"achteloos", def:"zonder op te letten; onverschillig", wrong:["steeds; zonder te stoppen","met een voorbeeld of plaatje duidelijk maken","iemand veel vragen stellen, bijvoorbeeld bij de politie"] },
-  { term:"achterlaten*", def:"iets of iemand ergens laten blijven als je weggaat", wrong:["saai en slaperig; zonder energie","iets afmaken zodat het weg is; ook: iets verbergen","als resultaat hebben"] },
-  { term:"afleiden", def:"de aandacht van iemand ergens anders op richten; ook: een conclusie trekken", wrong:["niet nodig; te veel","iemand van wie je houdt; je vriend of vriendin","als resultaat hebben"] },
-  { term:"berekenen", def:"met getallen uitrekenen", wrong:["iemand van wie je houdt; je vriend of vriendin","iemand veel vragen stellen, bijvoorbeeld bij de politie","als resultaat hebben"] },
-  { term:"duf", def:"saai en slaperig; zonder energie", wrong:["als resultaat hebben","iets of iemand ergens laten blijven als je weggaat","zoals een kind; niet volwassen"] },
-  { term:"efficiënt", def:"snel en zonder tijd of moeite te verspillen", wrong:["het gevoel dat iets je irriteert","veel werk doen of veel resultaat hebben","seksueel contact hebben met iemand anders dan je eigen partner"] },
-  { term:"ergernis, de", def:"het gevoel dat iets je irriteert", wrong:["met getallen uitrekenen","saai en slaperig; zonder energie","als resultaat hebben"] },
-  { term:"eveneens", def:"ook; op dezelfde manier", wrong:["het voordeel of de zin van iets","iets of iemand ergens laten blijven als je weggaat","erbij horen en belangrijk gevonden worden; ook: meegerekend worden"] },
-  { term:"geliefde, de", def:"iemand van wie je houdt; je vriend of vriendin", wrong:["zonder nut; het helpt niets","informeel woord voor een vrouw, vaak met medelijden of afkeuring","erbij horen en belangrijk gevonden worden; ook: meegerekend worden"] },
-  { term:"illustreren", def:"met een voorbeeld of plaatje duidelijk maken", wrong:["iemand van wie je houdt; je vriend of vriendin","zoals een kind; niet volwassen","met getallen uitrekenen"] },
-  { term:"kinderachtig", def:"zoals een kind; niet volwassen", wrong:["met andere woorden; dat betekent","iets vol maken","niet zeker weten wat je moet doen of geloven"] },
-  { term:"meetellen", def:"erbij horen en belangrijk gevonden worden; ook: meegerekend worden", wrong:["iemand van wie je houdt; je vriend of vriendin","snel en zonder tijd of moeite te verspillen","als resultaat hebben"] },
-  { term:"mens, het", def:"informeel woord voor een vrouw, vaak met medelijden of afkeuring", wrong:["iemand zijn baan afnemen","als resultaat hebben","de aandacht van iemand ergens anders op richten; ook: een conclusie trekken"] },
-  { term:"nut, het", def:"het voordeel of de zin van iets", wrong:["als resultaat hebben","niet netjes; zonder zorg","zonder nut; het helpt niets"] },
-  { term:"nutteloos", def:"zonder nut; het helpt niets", wrong:["seksueel contact hebben met iemand anders dan je eigen partner","zorgen dat iets in goede staat blijft; ook: contact houden","ook; op dezelfde manier"] },
-  { term:"onderhouden*", def:"zorgen dat iets in goede staat blijft; ook: contact houden", wrong:["informeel woord voor een vrouw, vaak met medelijden of afkeuring","iemand zijn baan afnemen","het gevoel dat iets je irriteert"] },
-  { term:"ondervragen*", def:"iemand veel vragen stellen, bijvoorbeeld bij de politie", wrong:["het voordeel of de zin van iets","het gevoel dat iets je irriteert","zonder op te letten; onverschillig"] },
-  { term:"ontslaan*", def:"iemand zijn baan afnemen", wrong:["zonder op te letten; onverschillig","moe en niet helder in je hoofd; ook: dom of saai","niet netjes; zonder zorg"] },
-  { term:"opleveren", def:"als resultaat hebben", wrong:["iets of iemand ergens laten blijven als je weggaat","steeds; zonder te stoppen","niet zeker weten wat je moet doen of geloven"] },
-  { term:"overbodig", def:"niet nodig; te veel", wrong:["seksueel contact hebben met iemand anders dan je eigen partner","steeds; zonder te stoppen","zoals een kind; niet volwassen"] },
-  { term:"productief", def:"veel werk doen of veel resultaat hebben", wrong:["iets afmaken zodat het weg is; ook: iets verbergen","ook; op dezelfde manier","moe en niet helder in je hoofd; ook: dom of saai"] },
-  { term:"slordig", def:"niet netjes; zonder zorg", wrong:["iemand veel vragen stellen, bijvoorbeeld bij de politie","het voordeel of de zin van iets","zonder nut; het helpt niets"] },
-  { term:"suf", def:"moe en niet helder in je hoofd; ook: dom of saai", wrong:["steeds; zonder te stoppen","met getallen uitrekenen","zonder op te letten; onverschillig"] },
-  { term:"twijfelen", def:"niet zeker weten wat je moet doen of geloven", wrong:["seksueel contact hebben met iemand anders dan je eigen partner","niet netjes; zonder zorg","steeds; zonder te stoppen"] },
-  { term:"voortdurend", def:"steeds; zonder te stoppen", wrong:["niet zeker weten wat je moet doen of geloven","veel werk doen of veel resultaat hebben","zorgen dat iets in goede staat blijft; ook: contact houden"] },
-  { term:"vullen", def:"iets vol maken", wrong:["met getallen uitrekenen","het voordeel of de zin van iets","saai en slaperig; zonder energie"] },
-  { term:"wegwerken", def:"iets afmaken zodat het weg is; ook: iets verbergen", wrong:["de aandacht van iemand ergens anders op richten; ook: een conclusie trekken","seksueel contact hebben met iemand anders dan je eigen partner","zorgen dat iets in goede staat blijft; ook: contact houden"] },
-  { term:"dat wil zeggen (d.w.z.)", def:"met andere woorden; dat betekent", wrong:["iemand van wie je houdt; je vriend of vriendin","erbij horen en belangrijk gevonden worden; ook: meegerekend worden","iemand veel vragen stellen, bijvoorbeeld bij de politie"] },
-  { term:"onder druk staan", def:"gedwongen worden iets snel te doen", wrong:["met een voorbeeld of plaatje duidelijk maken","seksueel contact hebben met iemand anders dan je eigen partner","het gevoel dat iets je irriteert"] },
-  { term:"vreemdgaan", def:"seksueel contact hebben met iemand anders dan je eigen partner", wrong:["erbij horen en belangrijk gevonden worden; ook: meegerekend worden","iemand veel vragen stellen, bijvoorbeeld bij de politie","gedwongen worden iets snel te doen"] }
+  { term:"achteloos", def:"zonder op te letten; onverschillig", wrong:["zoals een kind; niet volwassen", "heel zorgvuldig; met veel aandacht", "met opzet; omdat je iemand wilt plagen"] },
+  { term:"achterlaten*", def:"iets of iemand ergens laten blijven als je weggaat", wrong:["met andere woorden; dat betekent", "iets of iemand meenemen als je weggaat", "iets of iemand ophalen als je terugkomt"] },
+  { term:"afleiden", def:"de aandacht van iemand ergens anders op richten; ook: een conclusie trekken", wrong:["iets vol maken", "de aandacht van iemand ergens op houden; ook: een vraag stellen", "iemand ergens naartoe brengen; ook: een regel leren"] },
+  { term:"berekenen", def:"met getallen uitrekenen", wrong:["ook; op dezelfde manier", "met woorden beschrijven", "schatten zonder te rekenen"] },
+  { term:"duf", def:"saai en slaperig; zonder energie", wrong:["iemand veel vragen stellen, bijvoorbeeld bij de politie", "vrolijk en vol energie", "zenuwachtig en onrustig"] },
+  { term:"efficiënt", def:"snel en zonder tijd of moeite te verspillen", wrong:["niet zeker weten wat je moet doen of geloven", "langzaam en met veel moeite", "duur maar wel van goede kwaliteit"] },
+  { term:"ergernis, de", def:"het gevoel dat iets je irriteert", wrong:["de aandacht van iemand ergens anders op richten; ook: een conclusie trekken", "het gevoel dat iets je blij maakt", "het gevoel dat je ergens bang voor bent"] },
+  { term:"eveneens", def:"ook; op dezelfde manier", wrong:["erbij horen en belangrijk gevonden worden; ook: meegerekend worden", "juist niet; op een andere manier", "eerder; vóór iets anders"] },
+  { term:"geliefde, de", def:"iemand van wie je houdt; je vriend of vriendin", wrong:["saai en slaperig; zonder energie", "iemand met wie je samenwerkt; je collega", "iemand die je niet kent"] },
+  { term:"illustreren", def:"met een voorbeeld of plaatje duidelijk maken", wrong:["gedwongen worden iets snel te doen", "met veel woorden ingewikkeld maken", "een tekening kopiëren"] },
+  { term:"kinderachtig", def:"zoals een kind; niet volwassen", wrong:["snel en zonder tijd of moeite te verspillen", "zoals een volwassene; heel serieus", "lief en zorgzaam voor kinderen"] },
+  { term:"meetellen", def:"erbij horen en belangrijk gevonden worden; ook: meegerekend worden", wrong:["iets of iemand ergens laten blijven als je weggaat", "niet belangrijk gevonden worden; ook: vergeten worden", "hardop tellen; ook: de rekening betalen"] },
+  { term:"mens, het", def:"informeel woord voor een vrouw, vaak met medelijden of afkeuring", wrong:["snel en zonder tijd of moeite te verspillen", "formeel woord voor een man, vaak met respect", "informeel woord voor een kind, vaak met liefde"] },
+  { term:"nut, het", def:"het voordeel of de zin van iets", wrong:["informeel woord voor een vrouw, vaak met medelijden of afkeuring", "het nadeel of de schade van iets", "de prijs of de kosten van iets"] },
+  { term:"nutteloos", def:"zonder nut; het helpt niets", wrong:["saai en slaperig; zonder energie", "heel handig; het helpt veel", "heel duur; het kost veel"] },
+  { term:"onderhouden*", def:"zorgen dat iets in goede staat blijft; ook: contact houden", wrong:["iets vol maken", "iets kapot laten gaan; ook: contact verbreken", "iets nieuws kopen; ook: iemand bellen"] },
+  { term:"ondervragen*", def:"iemand veel vragen stellen, bijvoorbeeld bij de politie", wrong:["niet netjes; zonder zorg", "iemand veel vertellen, bijvoorbeeld bij de politie", "iemand helpen met vragen, bijvoorbeeld bij een test"] },
+  { term:"ontslaan*", def:"iemand zijn baan afnemen", wrong:["als resultaat hebben", "iemand een baan geven", "iemand een hoger salaris geven"] },
+  { term:"opleveren", def:"als resultaat hebben", wrong:["iets afmaken zodat het weg is; ook: iets verbergen", "als probleem hebben", "als begin hebben"] },
+  { term:"overbodig", def:"niet nodig; te veel", wrong:["met een voorbeeld of plaatje duidelijk maken", "heel nodig; belangrijk", "te weinig; niet genoeg"] },
+  { term:"productief", def:"veel werk doen of veel resultaat hebben", wrong:["ook; op dezelfde manier", "weinig werk doen of weinig resultaat hebben", "veel praten over werk"] },
+  { term:"slordig", def:"niet netjes; zonder zorg", wrong:["steeds; zonder te stoppen", "netjes; met veel zorg", "langzaam; met veel tijd"] },
+  { term:"suf", def:"moe en niet helder in je hoofd; ook: dom of saai", wrong:["als resultaat hebben", "fit en helder in je hoofd; ook: slim", "boos en geïrriteerd; ook: onbeleefd"] },
+  { term:"twijfelen", def:"niet zeker weten wat je moet doen of geloven", wrong:["moe en niet helder in je hoofd; ook: dom of saai", "zeker weten wat je moet doen", "iets twee keer doen"] },
+  { term:"voortdurend", def:"steeds; zonder te stoppen", wrong:["iemand veel vragen stellen, bijvoorbeeld bij de politie", "af en toe; soms", "één keer; daarna niet meer"] },
+  { term:"vullen", def:"iets vol maken", wrong:["zoals een kind; niet volwassen", "iets leeg maken", "iets in stukken snijden"] },
+  { term:"wegwerken", def:"iets afmaken zodat het weg is; ook: iets verbergen", wrong:["het gevoel dat iets je irriteert", "iets laten liggen zodat het blijft; ook: iets laten zien", "iets weggooien zonder het te bekijken; ook: iets verliezen"] },
+  { term:"dat wil zeggen (d.w.z.)", def:"met andere woorden; dat betekent", wrong:["iemand van wie je houdt; je vriend of vriendin", "bijvoorbeeld; als voorbeeld", "maar; toch"] },
+  { term:"onder druk staan", def:"gedwongen worden iets snel te doen", wrong:["zorgen dat iets in goede staat blijft; ook: contact houden", "alle tijd hebben om iets te doen", "ergens niet zeker van zijn"] },
+  { term:"vreemdgaan", def:"seksueel contact hebben met iemand anders dan je eigen partner", wrong:["zonder nut; het helpt niets", "trouwen met iemand uit een ander land", "op reis gaan naar een onbekende plek"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -753,6 +769,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 5.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -935,6 +950,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 5.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -956,60 +972,60 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"beeld, het", def:"wat je ziet; ook: het idee dat je van iets of iemand hebt", wrong:["anders doen dan anderen (introductie)","in welke mate (introductie)","je naam zeggen als je iemand ontmoet; ook: je iets inbeelden"] },
-  { term:"extravert", def:"open en naar buiten gericht; graag met andere mensen", wrong:["denken dat iets zo is; ook: accepteren","nerveus en onrustig","ergens goed mee om kunnen gaan (introductie)"] },
-  { term:"gespannen", def:"nerveus en onrustig", wrong:["het vermogen om dingen te onthouden","de hersenen","iets hangt vooral af van iets"] },
-  { term:"initiatief, het", def:"het als eerste iets doen of bedenken", wrong:["in welke mate (introductie)","het gevoel van schaamte","geen correct beeld geven van iets"] },
-  { term:"introvert", def:"naar binnen gericht; rustig en graag alleen", wrong:["het been van een dier","wat je met je zintuigen opmerkt","scheidbaar werkwoord (de zon gaat onder): zakken onder de horizon"] },
-  { term:"levendig", def:"vol leven en energie; ook: duidelijk en echt, van een beschrijving", wrong:["naar binnen gericht; rustig en graag alleen","het vermogen om dingen te onthouden","heel erg interessant zijn; je aandacht helemaal vasthouden"] },
-  { term:"stabiliteit, de", def:"het rustig en gelijk blijven; geen grote veranderingen", wrong:["iets weten en eraan denken","wat je met je zintuigen opmerkt","een plat groen deel van een plant; ook: een vel papier"] },
-  { term:"voorstellen, zich", def:"je naam zeggen als je iemand ontmoet; ook: je iets inbeelden", wrong:["geen correct beeld geven van iets","iets wat je zintuigen of zenuwen laat reageren","een teken dat iets laat zien of vermoeden; ook: een instructie"] },
-  { term:"aanbrengen*", def:"ergens op of in zetten; ook: een verandering maken", wrong:["niet zo veel dit, maar vooral dat","veel aandacht krijgen (introductie)","vol leven en energie; ook: duidelijk en echt, van een beschrijving"] },
-  { term:"aannemen*", def:"denken dat iets zo is; ook: accepteren", wrong:["niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen","iets weten en eraan denken","een rond stukje glas of plastic dat licht breekt; ook: een deel van het oog"] },
-  { term:"aanwijzing, de", def:"een teken dat iets laat zien of vermoeden; ook: een instructie", wrong:["niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen","wat je ziet; ook: het idee dat je van iets of iemand hebt","geen correct beeld geven van iets"] },
-  { term:"afzonderlijk", def:"apart; los van elkaar", wrong:["iets hangt vooral af van iets","vol leven en energie; ook: duidelijk en echt, van een beschrijving","wat je met je zintuigen opmerkt"] },
-  { term:"blad, het", def:"een plat groen deel van een plant; ook: een vel papier", wrong:["wat je met je zintuigen opmerkt","niets zeggen","heel erg interessant zijn; je aandacht helemaal vasthouden"] },
-  { term:"brein, het", def:"de hersenen", wrong:["de verhoging onder een deur; ook: een grens die je moet overgaan","vol leven en energie; ook: duidelijk en echt, van een beschrijving","verliezen"] },
-  { term:"drempel, de", def:"de verhoging onder een deur; ook: een grens die je moet overgaan", wrong:["hoe het echt is","vrolijk en vol energie","je naam zeggen als je iemand ontmoet; ook: je iets inbeelden"] },
-  { term:"duim, de", def:"de korte, dikke vinger aan je hand", wrong:["vrolijk en vol energie","de verhoging onder een deur; ook: een grens die je moet overgaan","het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw"] },
-  { term:"fascineren", def:"heel erg interessant zijn; je aandacht helemaal vasthouden", wrong:["verliezen","hoe het echt is","het als eerste iets doen of bedenken"] },
-  { term:"feilbaar", def:"kan fouten maken", wrong:["hoe het echt is","het rustig en gelijk blijven; geen grote veranderingen","misschien"] },
-  { term:"geheugen, het", def:"het vermogen om dingen te onthouden", wrong:["het been van een dier","een lichaamsdeel recht maken","je naam zeggen als je iemand ontmoet; ook: je iets inbeelden"] },
-  { term:"gêne, de", def:"het gevoel van schaamte", wrong:["iets weten en eraan denken","ergens goed mee om kunnen gaan (introductie)","niets zeggen"] },
-  { term:"gering", def:"klein; weinig", wrong:["een teken dat iets laat zien of vermoeden; ook: een instructie","het anders worden","het been van een dier"] },
-  { term:"geur, de", def:"wat je ruikt", wrong:["klein; weinig","wat je met je zintuigen opmerkt","anders doen dan anderen (introductie)"] },
-  { term:"globaal", def:"in grote lijnen; niet precies", wrong:["klein; weinig","iets weten en eraan denken","niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen"] },
-  { term:"indringend", def:"heel sterk en doordringend", wrong:["apart; los van elkaar","wat je ziet; ook: het idee dat je van iets of iemand hebt","niets zeggen"] },
-  { term:"kwijtraken", def:"verliezen", wrong:["het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw","vol leven en energie; ook: duidelijk en echt, van een beschrijving","geen correct beeld geven van iets"] },
-  { term:"lens, de", def:"een rond stukje glas of plastic dat licht breekt; ook: een deel van het oog", wrong:["opvallen; duidelijk zichtbaar worden (introductie)","vrolijk en vol energie","het gevoel van schaamte"] },
-  { term:"luiden", def:"klinken, van een bel; ook: als tekst hebben", wrong:["niets zeggen","heel sterk en doordringend","in grote lijnen; niet precies"] },
-  { term:"ondergaan* (óndergaan)", def:"scheidbaar werkwoord (de zon gaat onder): zakken onder de horizon", wrong:["misschien","het gevoel van schaamte","iets weten en eraan denken"] },
-  { term:"ondergaan* (ondergáán)", def:"niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen", wrong:["heel hard en vervelend klinken","heel erg interessant zijn; je aandacht helemaal vasthouden","naar binnen gericht; rustig en graag alleen"] },
-  { term:"opgewekt", def:"vrolijk en vol energie", wrong:["verliezen","de korte, dikke vinger aan je hand","hoe het echt is"] },
-  { term:"poot, de", def:"het been van een dier", wrong:["je naam zeggen als je iemand ontmoet; ook: je iets inbeelden","scheidbaar werkwoord (de zon gaat onder): zakken onder de horizon","anders doen dan anderen (introductie)"] },
-  { term:"prikkel, de", def:"iets wat je zintuigen of zenuwen laat reageren", wrong:["apart; los van elkaar","heel hard en vervelend klinken","iets hangt vooral af van iets"] },
-  { term:"strekken", def:"een lichaamsdeel recht maken", wrong:["denken dat iets zo is; ook: accepteren","niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen","wat je ziet; ook: het idee dat je van iets of iemand hebt"] },
-  { term:"ultiem", def:"het allerhoogste of laatste; uiteindelijk", wrong:["de hersenen","iets hangt vooral af van iets","het been van een dier"] },
-  { term:"verandering, de", def:"het anders worden", wrong:["klinken, van een bel; ook: als tekst hebben","het allerhoogste of laatste; uiteindelijk","heel hard en vervelend klinken"] },
-  { term:"vleugel, de", def:"het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw", wrong:["met je zintuigen opmerken","het been van een dier","ergens goed mee om kunnen gaan (introductie)"] },
-  { term:"waarnemen*", def:"met je zintuigen opmerken", wrong:["iets hangt vooral af van iets","denken dat iets zo is; ook: accepteren","opvallen; duidelijk zichtbaar worden (introductie)"] },
-  { term:"waarneming, de", def:"wat je met je zintuigen opmerkt", wrong:["veel aandacht krijgen (introductie)","opvallen; duidelijk zichtbaar worden (introductie)","vrolijk en vol energie"] },
-  { term:"weliswaar", def:"het is waar dat ... (maar)", wrong:["iets weten en eraan denken","nerveus en onrustig","denken dat iets zo is; ook: accepteren"] },
-  { term:"wellicht", def:"misschien", wrong:["in welke mate (introductie)","open en naar buiten gericht; graag met andere mensen","klinken, van een bel; ook: als tekst hebben"] },
-  { term:"werkelijkheid, de", def:"hoe het echt is", wrong:["anders doen dan anderen (introductie)","niet zo veel dit, maar vooral dat","het allerhoogste of laatste; uiteindelijk"] },
-  { term:"ziel, de", def:"het niet-lichamelijke deel van een mens, met gevoelens en gedachten", wrong:["klinken, van een bel; ook: als tekst hebben","de verhoging onder een deur; ook: een grens die je moet overgaan","open en naar buiten gericht; graag met andere mensen"] },
-  { term:"zwijgen*", def:"niets zeggen", wrong:["het niet-lichamelijke deel van een mens, met gevoelens en gedachten","geen correct beeld geven van iets","de hersenen"] },
-  { term:"in de belangstelling staan", def:"veel aandacht krijgen (introductie)", wrong:["wat je ziet; ook: het idee dat je van iets of iemand hebt","anders doen dan anderen (introductie)","verliezen"] },
-  { term:"op de voorgrond treden", def:"opvallen; duidelijk zichtbaar worden (introductie)", wrong:["niet zo veel dit, maar vooral dat","het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw","hoe het echt is"] },
-  { term:"doordringen tot iets/iemand", def:"echt begrepen worden door iemand", wrong:["opvallen; duidelijk zichtbaar worden (introductie)","heel hard en vervelend klinken","wat je met je zintuigen opmerkt"] },
-  { term:"een kwestie van iets", def:"iets hangt vooral af van iets", wrong:["iets weten en eraan denken","een plat groen deel van een plant; ook: een vel papier","wat je met je zintuigen opmerkt"] },
-  { term:"niet zozeer ... maar meer", def:"niet zo veel dit, maar vooral dat", wrong:["nerveus en onrustig","het anders worden","iets hangt vooral af van iets"] },
-  { term:"zich bewust zijn van iets/iemand", def:"iets weten en eraan denken", wrong:["de korte, dikke vinger aan je hand","naar binnen gericht; rustig en graag alleen","klein; weinig"] },
-  { term:"buiten de gebaande paden treden", def:"anders doen dan anderen (introductie)", wrong:["het rustig en gelijk blijven; geen grote veranderingen","naar binnen gericht; rustig en graag alleen","wat je met je zintuigen opmerkt"] },
-  { term:"ergens tegen kunnen", def:"ergens goed mee om kunnen gaan (introductie)", wrong:["wat je ziet; ook: het idee dat je van iets of iemand hebt","de hersenen","wat je ruikt"] },
-  { term:"in hoeverre", def:"in welke mate (introductie)", wrong:["anders doen dan anderen (introductie)","nerveus en onrustig","het rustig en gelijk blijven; geen grote veranderingen"] },
-  { term:"door merg en been gaan", def:"heel hard en vervelend klinken", wrong:["in grote lijnen; niet precies","het rustig en gelijk blijven; geen grote veranderingen","de verhoging onder een deur; ook: een grens die je moet overgaan"] },
-  { term:"iets geweld aandoen", def:"geen correct beeld geven van iets", wrong:["een plat groen deel van een plant; ook: een vel papier","het rustig en gelijk blijven; geen grote veranderingen","ergens goed mee om kunnen gaan (introductie)"] }
+  { term:"beeld, het", def:"wat je ziet; ook: het idee dat je van iets of iemand hebt", wrong:["de hersenen", "wat je hoort; ook: het plan dat je voor iets of iemand hebt", "wat je voelt; ook: de mening die anderen over je hebben"] },
+  { term:"extravert", def:"open en naar buiten gericht; graag met andere mensen", wrong:["denken dat iets zo is; ook: accepteren", "verlegen en stil; graag alleen", "brutaal en onbeleefd; vaak in ruzie"] },
+  { term:"gespannen", def:"nerveus en onrustig", wrong:["heel erg interessant zijn; je aandacht helemaal vasthouden", "rustig en ontspannen", "boos en agressief"] },
+  { term:"initiatief, het", def:"het als eerste iets doen of bedenken", wrong:["kan fouten maken", "het als laatste iets doen; wachten op anderen", "het overnemen van een idee van een ander"] },
+  { term:"introvert", def:"naar binnen gericht; rustig en graag alleen", wrong:["scheidbaar werkwoord (de zon gaat onder): zakken onder de horizon", "naar buiten gericht; druk en graag met anderen", "onvriendelijk; liever niet met anderen praten"] },
+  { term:"levendig", def:"vol leven en energie; ook: duidelijk en echt, van een beschrijving", wrong:["open en naar buiten gericht; graag met andere mensen", "saai en zonder energie; ook: vaag, van een beschrijving", "lang en uitgebreid; ook: grappig, van een beschrijving"] },
+  { term:"stabiliteit, de", def:"het rustig en gelijk blijven; geen grote veranderingen", wrong:["de verhoging onder een deur; ook: een grens die je moet overgaan", "het steeds veranderen; geen rust", "het langzaam beter worden"] },
+  { term:"voorstellen, zich", def:"je naam zeggen als je iemand ontmoet; ook: je iets inbeelden", wrong:["heel erg interessant zijn; je aandacht helemaal vasthouden", "je naam opschrijven op een formulier; ook: je iets herinneren", "iemand anders aan een groep voorstellen; ook: iets van plan zijn"] },
+  { term:"aanbrengen*", def:"ergens op of in zetten; ook: een verandering maken", wrong:["misschien", "ergens af halen; ook: alles hetzelfde laten", "ergens naartoe brengen; ook: iets controleren"] },
+  { term:"aannemen*", def:"denken dat iets zo is; ook: accepteren", wrong:["opvallen; duidelijk zichtbaar worden (introductie)", "zeker weten dat iets zo is; ook: weigeren", "vergeten dat iets zo is; ook: weggeven"] },
+  { term:"aanwijzing, de", def:"een teken dat iets laat zien of vermoeden; ook: een instructie", wrong:["heel sterk en doordringend", "een bewijs dat iets zeker zo is; ook: een vraag", "een fout die laat zien dat je je vergiste; ook: een verbod"] },
+  { term:"afzonderlijk", def:"apart; los van elkaar", wrong:["heel sterk en doordringend", "samen; bij elkaar", "tegelijk; op hetzelfde moment"] },
+  { term:"blad, het", def:"een plat groen deel van een plant; ook: een vel papier", wrong:["de korte, dikke vinger aan je hand", "de stam van een boom; ook: een boek", "een bloem van een plant; ook: een envelop"] },
+  { term:"brein, het", def:"de hersenen", wrong:["kan fouten maken", "het hart", "de zenuwen in je rug"] },
+  { term:"drempel, de", def:"de verhoging onder een deur; ook: een grens die je moet overgaan", wrong:["nerveus en onrustig", "het kozijn boven een deur; ook: een doel dat je bereikt", "de deurklink; ook: een regel die je moet volgen"] },
+  { term:"duim, de", def:"de korte, dikke vinger aan je hand", wrong:["heel sterk en doordringend", "de langste vinger aan je hand", "de kleinste vinger aan je hand"] },
+  { term:"fascineren", def:"heel erg interessant zijn; je aandacht helemaal vasthouden", wrong:["misschien", "heel erg saai zijn; je aandacht kwijtraken", "een beetje storen; je aandacht afleiden"] },
+  { term:"feilbaar", def:"kan fouten maken", wrong:["nerveus en onrustig", "maakt nooit fouten", "kan makkelijk breken"] },
+  { term:"geheugen, het", def:"het vermogen om dingen te onthouden", wrong:["een teken dat iets laat zien of vermoeden; ook: een instructie", "het vermogen om dingen te leren", "het vermogen om goed op te letten"] },
+  { term:"gêne, de", def:"het gevoel van schaamte", wrong:["anders doen dan anderen (introductie)", "het gevoel van trots", "het gevoel van boosheid"] },
+  { term:"gering", def:"klein; weinig", wrong:["in grote lijnen; niet precies", "groot; veel", "gemiddeld; normaal"] },
+  { term:"geur, de", def:"wat je ruikt", wrong:["scheidbaar werkwoord (de zon gaat onder): zakken onder de horizon", "wat je proeft", "wat je hoort"] },
+  { term:"globaal", def:"in grote lijnen; niet precies", wrong:["iets hangt vooral af van iets", "heel precies; tot in detail", "snel en slordig; zonder aandacht"] },
+  { term:"indringend", def:"heel sterk en doordringend", wrong:["een lichaamsdeel recht maken", "zwak en nauwelijks merkbaar", "vriendelijk en zacht"] },
+  { term:"kwijtraken", def:"verliezen", wrong:["denken dat iets zo is; ook: accepteren", "vinden", "lenen"] },
+  { term:"lens, de", def:"een rond stukje glas of plastic dat licht breekt; ook: een deel van het oog", wrong:["vrolijk en vol energie", "een rond stukje metaal dat geluid versterkt; ook: een deel van het oor", "een vierkant stukje papier dat licht tegenhoudt; ook: een ooglid"] },
+  { term:"luiden", def:"klinken, van een bel; ook: als tekst hebben", wrong:["het niet-lichamelijke deel van een mens, met gevoelens en gedachten", "stil zijn, van een bel; ook: als titel hebben", "kapot zijn, van een bel; ook: voorlezen"] },
+  { term:"ondergaan* (óndergaan)", def:"scheidbaar werkwoord (de zon gaat onder): zakken onder de horizon", wrong:["het is waar dat ... (maar)", "scheidbaar werkwoord (de zon gaat onder): opkomen boven de horizon", "scheidbaar werkwoord (de zon gaat onder): achter de wolken verdwijnen"] },
+  { term:"ondergaan* (ondergáán)", def:"niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen", wrong:["opvallen; duidelijk zichtbaar worden (introductie)", "niet scheidbaar werkwoord (ik onderga): iets vermijden of weigeren", "niet scheidbaar werkwoord (ik onderga): iets onder water zetten"] },
+  { term:"opgewekt", def:"vrolijk en vol energie", wrong:["een teken dat iets laat zien of vermoeden; ook: een instructie", "somber en moe", "zenuwachtig en druk"] },
+  { term:"poot, de", def:"het been van een dier", wrong:["naar binnen gericht; rustig en graag alleen", "de vleugel van een vogel", "de staart van een dier"] },
+  { term:"prikkel, de", def:"iets wat je zintuigen of zenuwen laat reageren", wrong:["iets weten en eraan denken", "iets wat je zintuigen rustig maakt", "een kleine wond op je huid"] },
+  { term:"strekken", def:"een lichaamsdeel recht maken", wrong:["het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw", "een lichaamsdeel buigen", "een lichaamsdeel masseren"] },
+  { term:"ultiem", def:"het allerhoogste of laatste; uiteindelijk", wrong:["heel erg interessant zijn; je aandacht helemaal vasthouden", "het allerlaagste of eerste; in het begin", "gemiddeld; een tussenstap"] },
+  { term:"verandering, de", def:"het anders worden", wrong:["iets weten en eraan denken", "het hetzelfde blijven", "het beter worden"] },
+  { term:"vleugel, de", def:"het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw", wrong:["het vermogen om dingen te onthouden", "het deel van een vogel waarmee hij loopt; ook: het dak van een gebouw", "de staart van een vogel of vliegtuig; ook: de ingang van een gebouw"] },
+  { term:"waarnemen*", def:"met je zintuigen opmerken", wrong:["nerveus en onrustig", "met je gedachten bedenken", "met je stem uitspreken"] },
+  { term:"waarneming, de", def:"wat je met je zintuigen opmerkt", wrong:["in grote lijnen; niet precies", "wat je denkt zonder het te zien", "wat je van anderen hoort"] },
+  { term:"weliswaar", def:"het is waar dat ... (maar)", wrong:["open en naar buiten gericht; graag met andere mensen", "het is niet waar dat ...", "daarom; omdat het zo is"] },
+  { term:"wellicht", def:"misschien", wrong:["open en naar buiten gericht; graag met andere mensen", "zeker", "nooit"] },
+  { term:"werkelijkheid, de", def:"hoe het echt is", wrong:["je naam zeggen als je iemand ontmoet; ook: je iets inbeelden", "hoe het zou moeten zijn", "hoe je het je voorstelt"] },
+  { term:"ziel, de", def:"het niet-lichamelijke deel van een mens, met gevoelens en gedachten", wrong:["een plat groen deel van een plant; ook: een vel papier", "het lichamelijke deel van een mens, met spieren en botten", "het verstand van een mens, met kennis en feiten"] },
+  { term:"zwijgen*", def:"niets zeggen", wrong:["niet scheidbaar werkwoord (ik onderga): iets meemaken of moeten verdragen", "veel praten", "zachtjes praten"] },
+  { term:"in de belangstelling staan", def:"veel aandacht krijgen (introductie)", wrong:["vrolijk en vol energie", "geen aandacht krijgen", "zelf veel aandacht geven"] },
+  { term:"op de voorgrond treden", def:"opvallen; duidelijk zichtbaar worden (introductie)", wrong:["het deel van een vogel of vliegtuig waarmee het vliegt; ook: een deel van een gebouw", "op de achtergrond blijven; niet opvallen", "naar voren lopen op een podium"] },
+  { term:"doordringen tot iets/iemand", def:"echt begrepen worden door iemand", wrong:["wat je ziet; ook: het idee dat je van iets of iemand hebt", "niet begrepen worden door iemand", "ergens doorheen breken"] },
+  { term:"een kwestie van iets", def:"iets hangt vooral af van iets", wrong:["het vermogen om dingen te onthouden", "iets staat los van iets", "een vraag over iets"] },
+  { term:"niet zozeer ... maar meer", def:"niet zo veel dit, maar vooral dat", wrong:["heel hard en vervelend klinken", "zowel dit als dat", "niet dit en ook niet dat"] },
+  { term:"zich bewust zijn van iets/iemand", def:"iets weten en eraan denken", wrong:["een teken dat iets laat zien of vermoeden; ook: een instructie", "iets vergeten of er niet aan denken", "iets zeker willen weten"] },
+  { term:"buiten de gebaande paden treden", def:"anders doen dan anderen (introductie)", wrong:["een teken dat iets laat zien of vermoeden; ook: een instructie", "hetzelfde doen als iedereen", "verdwalen in het bos"] },
+  { term:"ergens tegen kunnen", def:"ergens goed mee om kunnen gaan (introductie)", wrong:["heel hard en vervelend klinken", "ergens niet tegen kunnen", "ergens tegen zijn"] },
+  { term:"in hoeverre", def:"in welke mate (introductie)", wrong:["het vermogen om dingen te onthouden", "hoe ver weg", "op welk moment"] },
+  { term:"door merg en been gaan", def:"heel hard en vervelend klinken", wrong:["heel sterk en doordringend", "heel zacht en prettig klinken", "pijn doen aan je botten"] },
+  { term:"iets geweld aandoen", def:"geen correct beeld geven van iets", wrong:["de korte, dikke vinger aan je hand", "een heel correct beeld geven van iets", "iets met geweld kapotmaken"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -1041,6 +1057,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

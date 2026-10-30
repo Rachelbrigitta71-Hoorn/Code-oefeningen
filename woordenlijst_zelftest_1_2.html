@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 1.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -803,6 +818,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 1.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -824,48 +840,48 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aarzelen", def:"twijfelen voordat je iets doet; niet meteen beslissen", wrong:["een officieel verslag of een bekeuring van de politie","een staaf van was met een lontje, die je aansteekt voor licht","iets goedmaken of aanvullen wat ontbreekt"] },
-  { term:"afstandelijk", def:"niet vriendelijk of open; koel in het contact", wrong:["dat kunt u niet doen","sterven; niet meer leven","een beweging met je hand of hoofd die iets betekent"] },
-  { term:"agent, de", def:"iemand die bij de politie werkt", wrong:["niet vriendelijk of open; koel in het contact","overal ter wereld hetzelfde; voor iedereen geldend","heel bijzonder; ook: in hoge mate, heel erg"] },
-  { term:"buitengewoon", def:"heel bijzonder; ook: in hoge mate, heel erg", wrong:["hoe je staat of zit; ook: hoe je je gedraagt tegenover iets","iets wat een recht of regel schendt","een beweging met je hand of hoofd die iets betekent"] },
-  { term:"compenseren", def:"iets goedmaken of aanvullen wat ontbreekt", wrong:["heel persoonlijk en vertrouwelijk","iemand iets niet gunnen omdat je het zelf ook wilt","je mening geven"] },
-  { term:"doodgaan*", def:"sterven; niet meer leven", wrong:["heel bijzonder; ook: in hoge mate, heel erg","met te veel alcohol in je lichaam","meestal; in de meeste gevallen"] },
-  { term:"doorgaans", def:"meestal; in de meeste gevallen", wrong:["informatie vragen over iets wat eerder gebeurd is","in één keer","een fout die je per ongeluk maakt"] },
-  { term:"dringen*", def:"duwen om ergens sneller te komen, bijvoorbeeld in een rij", wrong:["een deel van je lichaam waarmee je waarneemt, zoals je ogen of oren","weinig aandacht aan iets besteden","heel bijzonder; ook: in hoge mate, heel erg"] },
-  { term:"dronken", def:"met te veel alcohol in je lichaam", wrong:["een bepaalde indruk maken op anderen; ook: gebeuren met iemand","een fout die je per ongeluk maakt","een officieel verslag of een bekeuring van de politie"] },
-  { term:"fluisteren", def:"heel zacht praten, zodat anderen het niet horen", wrong:["meestal; in de meeste gevallen","dat kunt u niet doen","samengevat; in het kort"] },
-  { term:"gebaar, het", def:"een beweging met je hand of hoofd die iets betekent", wrong:["een teken zetten om iets aan te geven of op te laten vallen","samengevat; in het kort","een teken dat iets betekent of aankondigt"] },
-  { term:"houding, de", def:"hoe je staat of zit; ook: hoe je je gedraagt tegenover iets", wrong:["iemand niet te dichtbij laten komen; weinig contact toelaten","een teken dat iets betekent of aankondigt","dat kunt u niet doen"] },
-  { term:"impliciet", def:"niet direct gezegd, maar wel bedoeld", wrong:["samengevat; in het kort","zoeken en vinden, vaak door de politie","iets mogen; ergens aanspraak op kunnen maken"] },
-  { term:"inchecken", def:"je melden bij aankomst, bijvoorbeeld op het vliegveld of in een hotel", wrong:["een beweging met je hand of hoofd die iets betekent","hoe je staat of zit; ook: hoe je je gedraagt tegenover iets","iemand die bij de politie werkt"] },
-  { term:"intiem", def:"heel persoonlijk en vertrouwelijk", wrong:["iets goedmaken of aanvullen wat ontbreekt","heel bijzonder; ook: in hoge mate, heel erg","een cirkel; ook: een groep mensen die bij elkaar hoort"] },
-  { term:"jaloers", def:"boos of verdrietig omdat een ander iets heeft wat jij ook wilt", wrong:["meestal; in de meeste gevallen","een deel van je lichaam waarmee je waarneemt, zoals je ogen of oren","niets zeggen"] },
-  { term:"kaars, de", def:"een staaf van was met een lontje, die je aansteekt voor licht", wrong:["zoeken en vinden, vaak door de politie","boos of verdrietig omdat een ander iets heeft wat jij ook wilt","heel bijzonder; ook: in hoge mate, heel erg"] },
-  { term:"kortom", def:"samengevat; in het kort", wrong:["zoeken en vinden, vaak door de politie","een teken zetten om iets aan te geven of op te laten vallen","meestal; in de meeste gevallen"] },
-  { term:"kring, de", def:"een cirkel; ook: een groep mensen die bij elkaar hoort", wrong:["iemand niet te dichtbij laten komen; weinig contact toelaten","schrikken en een stap achteruit doen","iemand die bij de politie werkt"] },
-  { term:"markeren", def:"een teken zetten om iets aan te geven of op te laten vallen", wrong:["een beweging met je hand of hoofd die iets betekent","met te veel alcohol in je lichaam","het recht om je persoonlijke leven voor jezelf te houden"] },
-  { term:"misverstand, het", def:"een situatie waarin iemand iets verkeerd begrijpt", wrong:["iemand die bij de politie werkt","je mening geven","informatie vragen over iets wat eerder gebeurd is"] },
-  { term:"opsporen", def:"zoeken en vinden, vaak door de politie", wrong:["dat kunt u niet doen","sterven; niet meer leven","samengevat; in het kort"] },
-  { term:"overkomen*", def:"een bepaalde indruk maken op anderen; ook: gebeuren met iemand", wrong:["je mening geven","een teken zetten om iets aan te geven of op te laten vallen","schrikken en een stap achteruit doen"] },
-  { term:"privacy, de", def:"het recht om je persoonlijke leven voor jezelf te houden", wrong:["weinig aandacht aan iets besteden","je mening geven","twijfelen voordat je iets doet; niet meteen beslissen"] },
-  { term:"proces-verbaal, het", def:"een officieel verslag of een bekeuring van de politie", wrong:["heel persoonlijk en vertrouwelijk","iets goedmaken of aanvullen wat ontbreekt","het recht om je persoonlijke leven voor jezelf te houden"] },
-  { term:"signaal, het", def:"een teken dat iets betekent of aankondigt", wrong:["een beweging met je hand of hoofd die iets betekent","in één keer","boos of verdrietig omdat een ander iets heeft wat jij ook wilt"] },
-  { term:"terugdeinzen", def:"schrikken en een stap achteruit doen", wrong:["volgens de mening of opvatting van iemand","dat kunt u niet doen","overal ter wereld hetzelfde; voor iedereen geldend"] },
-  { term:"universeel", def:"overal ter wereld hetzelfde; voor iedereen geldend", wrong:["sterven; niet meer leven","heel zacht praten, zodat anderen het niet horen","iemand niet te dichtbij laten komen; weinig contact toelaten"] },
-  { term:"vergissing, de", def:"een fout die je per ongeluk maakt", wrong:["het recht om je persoonlijke leven voor jezelf te houden","iets goedmaken of aanvullen wat ontbreekt","volgens de mening of opvatting van iemand"] },
-  { term:"verontschuldigen, zich", def:"zeggen dat het je spijt; sorry zeggen", wrong:["niets zeggen","weinig aandacht aan iets besteden","volgens de mening of opvatting van iemand"] },
-  { term:"zintuig, het", def:"een deel van je lichaam waarmee je waarneemt, zoals je ogen of oren", wrong:["weinig aandacht aan iets besteden","zeggen dat het je spijt; sorry zeggen","je mening geven"] },
-  { term:"een inbreuk op", def:"iets wat een recht of regel schendt", wrong:["samengevat; in het kort","een situatie waarin iemand iets verkeerd begrijpt","zoeken en vinden, vaak door de politie"] },
-  { term:"iemand op afstand houden", def:"iemand niet te dichtbij laten komen; weinig contact toelaten", wrong:["weinig aandacht aan iets besteden","iets mogen; ergens aanspraak op kunnen maken","een cirkel; ook: een groep mensen die bij elkaar hoort"] },
-  { term:"het recht hebben", def:"iets mogen; ergens aanspraak op kunnen maken", wrong:["iets goedmaken of aanvullen wat ontbreekt","zoeken en vinden, vaak door de politie","duwen om ergens sneller te komen, bijvoorbeeld in een rij"] },
-  { term:"jaloers zijn op", def:"iemand iets niet gunnen omdat je het zelf ook wilt", wrong:["een staaf van was met een lontje, die je aansteekt voor licht","een cirkel; ook: een groep mensen die bij elkaar hoort","heel persoonlijk en vertrouwelijk"] },
-  { term:"dat kunt u niet maken", def:"dat kunt u niet doen", wrong:["volgens de mening of opvatting van iemand","een cirkel; ook: een groep mensen die bij elkaar hoort","duwen om ergens sneller te komen, bijvoorbeeld in een rij"] },
-  { term:"in de ogen van iemand", def:"volgens de mening of opvatting van iemand", wrong:["een bepaalde indruk maken op anderen; ook: gebeuren met iemand","in één keer","zoeken en vinden, vaak door de politie"] },
-  { term:"in één oogopslag", def:"in één keer", wrong:["heel bijzonder; ook: in hoge mate, heel erg","je mening geven","meestal; in de meeste gevallen"] },
-  { term:"je mond houden", def:"niets zeggen", wrong:["iemand iets niet gunnen omdat je het zelf ook wilt","zoeken en vinden, vaak door de politie","duwen om ergens sneller te komen, bijvoorbeeld in een rij"] },
-  { term:"je mond opendoen", def:"je mening geven", wrong:["heel bijzonder; ook: in hoge mate, heel erg","heel zacht praten, zodat anderen het niet horen","meestal; in de meeste gevallen"] },
-  { term:"navraag doen", def:"informatie vragen over iets wat eerder gebeurd is", wrong:["weinig aandacht aan iets besteden","je mening geven","met te veel alcohol in je lichaam"] },
-  { term:"op een laag pitje", def:"weinig aandacht aan iets besteden", wrong:["samengevat; in het kort","informatie vragen over iets wat eerder gebeurd is","een deel van je lichaam waarmee je waarneemt, zoals je ogen of oren"] }
+  { term:"aarzelen", def:"twijfelen voordat je iets doet; niet meteen beslissen", wrong:["duwen om ergens sneller te komen, bijvoorbeeld in een rij", "snel beslissen zonder na te denken", "iets uitstellen omdat je geen tijd hebt"] },
+  { term:"afstandelijk", def:"niet vriendelijk of open; koel in het contact", wrong:["iets wat een recht of regel schendt", "heel vriendelijk en open; warm in het contact", "verlegen; bang om iets fout te doen"] },
+  { term:"agent, de", def:"iemand die bij de politie werkt", wrong:["schrikken en een stap achteruit doen", "iemand die bij de brandweer werkt", "iemand die bij een rechtbank werkt"] },
+  { term:"buitengewoon", def:"heel bijzonder; ook: in hoge mate, heel erg", wrong:["je melden bij aankomst, bijvoorbeeld op het vliegveld of in een hotel", "heel gewoon; zoals altijd", "een beetje vreemd; ook: in lage mate"] },
+  { term:"compenseren", def:"iets goedmaken of aanvullen wat ontbreekt", wrong:["iemand die bij de politie werkt", "iets kapotmaken of weghalen wat er al was", "iets controleren om te zien of het klopt"] },
+  { term:"doodgaan*", def:"sterven; niet meer leven", wrong:["in één keer", "ziek worden; niet meer gezond zijn", "in slaap vallen; niet meer wakker zijn"] },
+  { term:"doorgaans", def:"meestal; in de meeste gevallen", wrong:["heel bijzonder; ook: in hoge mate, heel erg", "soms; een enkele keer", "nooit; in geen enkel geval"] },
+  { term:"dringen*", def:"duwen om ergens sneller te komen, bijvoorbeeld in een rij", wrong:["het recht om je persoonlijke leven voor jezelf te houden", "rustig wachten tot je aan de beurt bent", "iemand helpen om sneller vooraan te komen"] },
+  { term:"dronken", def:"met te veel alcohol in je lichaam", wrong:["een officieel verslag of een bekeuring van de politie", "met te veel eten in je maag", "heel moe na een lange dag"] },
+  { term:"fluisteren", def:"heel zacht praten, zodat anderen het niet horen", wrong:["heel persoonlijk en vertrouwelijk", "heel hard roepen, zodat iedereen het hoort", "zingen zonder woorden, alleen met de mond dicht"] },
+  { term:"gebaar, het", def:"een beweging met je hand of hoofd die iets betekent", wrong:["niet vriendelijk of open; koel in het contact", "een geluid dat je maakt als je iets niet begrijpt", "een woord dat je zegt om iemand te groeten"] },
+  { term:"houding, de", def:"hoe je staat of zit; ook: hoe je je gedraagt tegenover iets", wrong:["een officieel verslag of een bekeuring van de politie", "hoe je praat; ook: welke taal je spreekt", "hoe je eruitziet; ook: welke kleren je draagt"] },
+  { term:"impliciet", def:"niet direct gezegd, maar wel bedoeld", wrong:["heel persoonlijk en vertrouwelijk", "heel duidelijk en direct gezegd", "per ongeluk gezegd, zonder het te bedoelen"] },
+  { term:"inchecken", def:"je melden bij aankomst, bijvoorbeeld op het vliegveld of in een hotel", wrong:["schrikken en een stap achteruit doen", "je afmelden bij vertrek, bijvoorbeeld uit een hotel", "een kaartje kopen, bijvoorbeeld voor de trein"] },
+  { term:"intiem", def:"heel persoonlijk en vertrouwelijk", wrong:["heel zacht praten, zodat anderen het niet horen", "openbaar en voor iedereen bekend", "zakelijk en formeel"] },
+  { term:"jaloers", def:"boos of verdrietig omdat een ander iets heeft wat jij ook wilt", wrong:["een teken dat iets betekent of aankondigt", "blij omdat een ander iets heeft wat hij wilde", "verdrietig omdat je iets kwijt bent"] },
+  { term:"kaars, de", def:"een staaf van was met een lontje, die je aansteekt voor licht", wrong:["in één keer", "een lamp die op een batterij werkt", "een klein vuurtje dat je buiten maakt"] },
+  { term:"kortom", def:"samengevat; in het kort", wrong:["een beweging met je hand of hoofd die iets betekent", "bijvoorbeeld; als voorbeeld", "integendeel; juist het tegenovergestelde"] },
+  { term:"kring, de", def:"een cirkel; ook: een groep mensen die bij elkaar hoort", wrong:["niet vriendelijk of open; koel in het contact", "een rechte lijn; ook: een rij mensen die wacht", "een vierkant; ook: een team op het werk"] },
+  { term:"markeren", def:"een teken zetten om iets aan te geven of op te laten vallen", wrong:["niet vriendelijk of open; koel in het contact", "iets weghalen zodat het niet meer opvalt", "iets opschrijven zodat je het niet vergeet"] },
+  { term:"misverstand, het", def:"een situatie waarin iemand iets verkeerd begrijpt", wrong:["dat kunt u niet doen", "een situatie waarin iemand expres liegt", "een situatie waarin twee mensen ruzie maken"] },
+  { term:"opsporen", def:"zoeken en vinden, vaak door de politie", wrong:["in één keer", "verbergen zodat niemand het vindt", "opschrijven wat er gebeurd is, vaak door de politie"] },
+  { term:"overkomen*", def:"een bepaalde indruk maken op anderen; ook: gebeuren met iemand", wrong:["meestal; in de meeste gevallen", "iemand bezoeken die ver weg woont; ook: verhuizen", "iets beter maken dan het was; ook: herstellen"] },
+  { term:"privacy, de", def:"het recht om je persoonlijke leven voor jezelf te houden", wrong:["een cirkel; ook: een groep mensen die bij elkaar hoort", "de plicht om alles over jezelf te vertellen", "de regels voor het gedrag op een openbare plek"] },
+  { term:"proces-verbaal, het", def:"een officieel verslag of een bekeuring van de politie", wrong:["met te veel alcohol in je lichaam", "een gesprek met een advocaat over je rechten", "een brief van de gemeente over een vergunning"] },
+  { term:"signaal, het", def:"een teken dat iets betekent of aankondigt", wrong:["hoe je staat of zit; ook: hoe je je gedraagt tegenover iets", "een vraag die je stelt omdat je iets niet weet", "een geluid zonder betekenis"] },
+  { term:"terugdeinzen", def:"schrikken en een stap achteruit doen", wrong:["een staaf van was met een lontje, die je aansteekt voor licht", "blij verrast zijn en dichterbij komen", "boos worden en iemand duwen"] },
+  { term:"universeel", def:"overal ter wereld hetzelfde; voor iedereen geldend", wrong:["je mening geven", "alleen in één land of cultuur zo", "heel oud; al eeuwen hetzelfde"] },
+  { term:"vergissing, de", def:"een fout die je per ongeluk maakt", wrong:["een cirkel; ook: een groep mensen die bij elkaar hoort", "een fout die je met opzet maakt", "een regel die je niet kent"] },
+  { term:"verontschuldigen, zich", def:"zeggen dat het je spijt; sorry zeggen", wrong:["iets mogen; ergens aanspraak op kunnen maken", "zeggen dat iemand anders schuld heeft", "bedanken voor een cadeau"] },
+  { term:"zintuig, het", def:"een deel van je lichaam waarmee je waarneemt, zoals je ogen of oren", wrong:["een bepaalde indruk maken op anderen; ook: gebeuren met iemand", "een deel van je lichaam waarmee je beweegt, zoals je armen of benen", "een gevoel dat je hebt, zoals blijdschap of angst"] },
+  { term:"een inbreuk op", def:"iets wat een recht of regel schendt", wrong:["in één keer", "iets wat een recht of regel beschermt", "een uitzondering op een regel die mag"] },
+  { term:"iemand op afstand houden", def:"iemand niet te dichtbij laten komen; weinig contact toelaten", wrong:["sterven; niet meer leven", "iemand heel dichtbij laten komen; veel contact zoeken", "iemand van ver bellen of mailen"] },
+  { term:"het recht hebben", def:"iets mogen; ergens aanspraak op kunnen maken", wrong:["met te veel alcohol in je lichaam", "iets moeten; ergens verplicht toe zijn", "iets kunnen; ergens goed in zijn"] },
+  { term:"jaloers zijn op", def:"iemand iets niet gunnen omdat je het zelf ook wilt", wrong:["iets wat een recht of regel schendt", "iemand iets graag gunnen", "iemand bewonderen zonder iets te willen"] },
+  { term:"dat kunt u niet maken", def:"dat kunt u niet doen", wrong:["schrikken en een stap achteruit doen", "dat kunt u niet repareren", "dat lukt u vast niet"] },
+  { term:"in de ogen van iemand", def:"volgens de mening of opvatting van iemand", wrong:["een staaf van was met een lontje, die je aansteekt voor licht", "voor de ogen van iemand; zo dat hij het ziet", "achter de rug van iemand"] },
+  { term:"in één oogopslag", def:"in één keer", wrong:["een cirkel; ook: een groep mensen die bij elkaar hoort", "na lang kijken", "in het geheim"] },
+  { term:"je mond houden", def:"niets zeggen", wrong:["zoeken en vinden, vaak door de politie", "je mening geven", "eten zonder te praten"] },
+  { term:"je mond opendoen", def:"je mening geven", wrong:["hoe je staat of zit; ook: hoe je je gedraagt tegenover iets", "niets zeggen", "geeuwen omdat je moe bent"] },
+  { term:"navraag doen", def:"informatie vragen over iets wat eerder gebeurd is", wrong:["een bepaalde indruk maken op anderen; ook: gebeuren met iemand", "informatie geven over iets wat eerder gebeurd is", "een vraag stellen over iets wat nog komt"] },
+  { term:"op een laag pitje", def:"weinig aandacht aan iets besteden", wrong:["schrikken en een stap achteruit doen", "heel veel aandacht aan iets besteden", "iets langzaam koken"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -897,6 +913,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

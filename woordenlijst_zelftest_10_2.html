@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 10.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -759,6 +774,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 10.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -780,44 +796,44 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"affaire, de", def:"een schandaal of lastige kwestie die veel aandacht trekt", wrong:["het akkoord gaan met iets; goedkeuring","ergens zijn of zich in een bepaalde situatie verkeren","wat te maken heeft met het parlement"] },
-  { term:"benaderen", def:"contact opnemen met iemand; ook: ergens op een bepaalde manier tegenaan kijken", wrong:["opvallend en de moeite waard om te noteren","een keer meer; opnieuw","iemand die zich bezighoudt met wetenschap, cultuur en ideeën"] },
-  { term:"bevinden, zich*", def:"ergens zijn of zich in een bepaalde situatie verkeren", wrong:["in werkelijkheid; gebaseerd op feiten","iets is volledig afhankelijk van iets anders","iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen"] },
-  { term:"bijeen", def:"samen op één plek; verzameld", wrong:["opmerkelijk genoeg; verrassend","ergens zijn of zich in een bepaalde situatie verkeren","contact opnemen met iemand; ook: ergens op een bepaalde manier tegenaan kijken"] },
-  { term:"democraat, de", def:"iemand die gelooft in de democratie als staatsvorm", wrong:["iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen","naast iemand of iets; ook: behalve of bovendien","een keer meer; opnieuw"] },
-  { term:"erfelijk", def:"wat van ouder op kind wordt overgedragen; door geboorte verkregen", wrong:["buiten het zicht van het publiek; niet openbaar","contact opnemen met iemand; ook: ergens op een bepaalde manier tegenaan kijken","totaal anders denken dan iemand; volledig tegengesteld zijn"] },
-  { term:"erven", def:"iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen", wrong:["een verhaal of geloof dat niet op feiten is gebaseerd","iets is volledig afhankelijk van iets anders","te weinig hebben van iets; iets missen"] },
-  { term:"feitelijk", def:"in werkelijkheid; gebaseerd op feiten", wrong:["een keer meer; opnieuw","in theorie; als uitgangspunt; eigenlijk wel","wat te maken heeft met het parlement"] },
-  { term:"instemming, de", def:"het akkoord gaan met iets; goedkeuring", wrong:["een schandaal of lastige kwestie die veel aandacht trekt","met te veel moeite en spanning; geforceerd","opmerkelijk genoeg; verrassend"] },
-  { term:"intellectueel, de", def:"iemand die zich bezighoudt met wetenschap, cultuur en ideeën", wrong:["een zelfstandig land met eigen bestuur en wetten","wat te maken heeft met het parlement","luid uitdrukking geven aan vreugde; toejuichen"] },
-  { term:"juichen", def:"luid uitdrukking geven aan vreugde; toejuichen", wrong:["naast iemand of iets; ook: behalve of bovendien","een zelfstandig land met eigen bestuur en wetten","iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen"] },
-  { term:"krampachtig", def:"met te veel moeite en spanning; geforceerd", wrong:["wat van ouder op kind wordt overgedragen; door geboorte verkregen","een keuze maken; iets besluiten","iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen"] },
-  { term:"leven", def:"het bestaan; ook: levendigheid of drukte", wrong:["een monarch; een koning of koningin","een schijnbare tegenstrijdigheid die toch waar is","ergens zijn of zich in een bepaalde situatie verkeren"] },
-  { term:"mythe, de", def:"een verhaal of geloof dat niet op feiten is gebaseerd", wrong:["iets dat strijdig is met iets anders","iets is volledig afhankelijk van iets anders","in werkelijkheid; gebaseerd op feiten"] },
-  { term:"naast", def:"naast iemand of iets; ook: behalve of bovendien", wrong:["een keuze maken; iets besluiten","wat van ouder op kind wordt overgedragen; door geboorte verkregen","totaal anders denken dan iemand; volledig tegengesteld zijn"] },
-  { term:"nogmaals", def:"een keer meer; opnieuw", wrong:["wat te maken heeft met een republiek; geen monarchie","onderdeel zijn van een groter geheel","vanuit een bepaalde manier van denken of perspectief"] },
-  { term:"opmerkelijk", def:"opvallend en de moeite waard om te noteren", wrong:["het bestaan; ook: levendigheid of drukte","iemand die gelooft in de democratie als staatsvorm","ergens zijn of zich in een bepaalde situatie verkeren"] },
-  { term:"paradox, de", def:"een schijnbare tegenstrijdigheid die toch waar is", wrong:["naast iemand of iets; ook: behalve of bovendien","wat te maken heeft met een republiek; geen monarchie","wat van ouder op kind wordt overgedragen; door geboorte verkregen"] },
-  { term:"parlementair", def:"wat te maken heeft met het parlement", wrong:["naast iemand of iets; ook: behalve of bovendien","iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen","een keuze maken; iets besluiten"] },
-  { term:"republikeins", def:"wat te maken heeft met een republiek; geen monarchie", wrong:["een schijnbare tegenstrijdigheid die toch waar is","iets dat strijdig is met iets anders","onderdeel zijn van een groter geheel"] },
-  { term:"rijkdom, de", def:"grote welvaart en bezit; ook: overvloed aan iets", wrong:["luid uitdrukking geven aan vreugde; toejuichen","onderdeel zijn van een groter geheel","een monarch; een koning of koningin"] },
-  { term:"samenhang, de", def:"de verbinding tussen dingen; coherentie", wrong:["een verhaal of geloof dat niet op feiten is gebaseerd","een schijnbare tegenstrijdigheid die toch waar is","iemand die gelooft in de democratie als staatsvorm"] },
-  { term:"staat, de", def:"een zelfstandig land met eigen bestuur en wetten", wrong:["luid uitdrukking geven aan vreugde; toejuichen","iets is volledig afhankelijk van iets anders","een keer meer; opnieuw"] },
-  { term:"vorst, de", def:"een monarch; een koning of koningin", wrong:["luid uitdrukking geven aan vreugde; toejuichen","iets dat strijdig is met iets anders","een keuze maken; iets besluiten"] },
-  { term:"deel uitmaken van iets", def:"onderdeel zijn van een groter geheel", wrong:["een schijnbare tegenstrijdigheid die toch waar is","totaal anders denken dan iemand; volledig tegengesteld zijn","naast iemand of iets; ook: behalve of bovendien"] },
-  { term:"een beslissing nemen", def:"een keuze maken; iets besluiten", wrong:["grote welvaart en bezit; ook: overvloed aan iets","samen op één plek; verzameld","naast iemand of iets; ook: behalve of bovendien"] },
-  { term:"erdoor komen", def:"ergens doorheen komen; een moeilijke situatie overleven", wrong:["ergens zijn of zich in een bepaalde situatie verkeren","grote welvaart en bezit; ook: overvloed aan iets","een keuze maken; iets besluiten"] },
-  { term:"gebrek aan iets", def:"te weinig hebben van iets; iets missen", wrong:["een schijnbare tegenstrijdigheid die toch waar is","iemand die gelooft in de democratie als staatsvorm","een verhaal of geloof dat niet op feiten is gebaseerd"] },
-  { term:"gek genoeg", def:"opmerkelijk genoeg; verrassend", wrong:["vanuit een bepaalde manier van denken of perspectief","grote welvaart en bezit; ook: overvloed aan iets","een verhaal of geloof dat niet op feiten is gebaseerd"] },
-  { term:"in principe", def:"in theorie; als uitgangspunt; eigenlijk wel", wrong:["iets belangrijk vinden; iets waarderen","een keuze maken; iets besluiten","iets dat strijdig is met iets anders"] },
-  { term:"in tegenspraak met iets", def:"iets dat strijdig is met iets anders", wrong:["iemand die zich bezighoudt met wetenschap, cultuur en ideeën","opvallend en de moeite waard om te noteren","het akkoord gaan met iets; goedkeuring"] },
-  { term:"in wezen", def:"eigenlijk; in de kern van de zaak", wrong:["een keer meer; opnieuw","totaal anders denken dan iemand; volledig tegengesteld zijn","iets is volledig afhankelijk van iets anders"] },
-  { term:"waarde hechten aan", def:"iets belangrijk vinden; iets waarderen", wrong:["opvallend en de moeite waard om te noteren","te weinig hebben van iets; iets missen","een keuze maken; iets besluiten"] },
-  { term:"achter de schermen", def:"buiten het zicht van het publiek; niet openbaar", wrong:["een monarch; een koning of koningin","naast iemand of iets; ook: behalve of bovendien","het akkoord gaan met iets; goedkeuring"] },
-  { term:"iets rijmen met iets", def:"begrijpen hoe twee dingen samen kunnen gaan; iets in overeenstemming brengen", wrong:["iets belangrijk vinden; iets waarderen","eigenlijk; in de kern van de zaak","wat van ouder op kind wordt overgedragen; door geboorte verkregen"] },
-  { term:"iets staat of valt met", def:"iets is volledig afhankelijk van iets anders", wrong:["samen op één plek; verzameld","in werkelijkheid; gebaseerd op feiten","iemand die zich bezighoudt met wetenschap, cultuur en ideeën"] },
-  { term:"lijnrecht tegenover iets/iemand staan", def:"totaal anders denken dan iemand; volledig tegengesteld zijn", wrong:["luid uitdrukking geven aan vreugde; toejuichen","te weinig hebben van iets; iets missen","iemand die gelooft in de democratie als staatsvorm"] },
-  { term:"vanuit … oogpunt", def:"vanuit een bepaalde manier van denken of perspectief", wrong:["onderdeel zijn van een groter geheel","in theorie; als uitgangspunt; eigenlijk wel","buiten het zicht van het publiek; niet openbaar"] }
+  { term:"affaire, de", def:"een schandaal of lastige kwestie die veel aandacht trekt", wrong:["in werkelijkheid; gebaseerd op feiten", "een gewone, rustige gebeurtenis zonder aandacht", "een feest met veel gasten"] },
+  { term:"benaderen", def:"contact opnemen met iemand; ook: ergens op een bepaalde manier tegenaan kijken", wrong:["wat te maken heeft met een republiek; geen monarchie", "contact vermijden met iemand; ook: ergens niet over nadenken", "iemand naderen om te groeten; ook: iets precies uitrekenen"] },
+  { term:"bevinden, zich*", def:"ergens zijn of zich in een bepaalde situatie verkeren", wrong:["in werkelijkheid; gebaseerd op feiten", "ergens vandaan komen", "iets ontdekken of vinden"] },
+  { term:"bijeen", def:"samen op één plek; verzameld", wrong:["naast iemand of iets; ook: behalve of bovendien", "verspreid over verschillende plekken", "op weg"] },
+  { term:"democraat, de", def:"iemand die gelooft in de democratie als staatsvorm", wrong:["buiten het zicht van het publiek; niet openbaar", "iemand die gelooft in een koning als staatsvorm", "iemand die bij de regering werkt"] },
+  { term:"erfelijk", def:"wat van ouder op kind wordt overgedragen; door geboorte verkregen", wrong:["iemand die zich bezighoudt met wetenschap, cultuur en ideeën", "wat je zelf leert in je leven", "wat je koopt en bezit"] },
+  { term:"erven", def:"iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen", wrong:["een schijnbare tegenstrijdigheid die toch waar is", "iets geven aan iemand die je overleeft", "iets kopen van familie"] },
+  { term:"feitelijk", def:"in werkelijkheid; gebaseerd op feiten", wrong:["een monarch; een koning of koningin", "in theorie; op basis van meningen", "zeker in de toekomst"] },
+  { term:"instemming, de", def:"het akkoord gaan met iets; goedkeuring", wrong:["iets is volledig afhankelijk van iets anders", "het afwijzen van iets; afkeuring", "de stem waarmee je praat"] },
+  { term:"intellectueel, de", def:"iemand die zich bezighoudt met wetenschap, cultuur en ideeën", wrong:["te weinig hebben van iets; iets missen", "iemand die met zijn handen werkt", "iemand die geen opleiding heeft"] },
+  { term:"juichen", def:"luid uitdrukking geven aan vreugde; toejuichen", wrong:["begrijpen hoe twee dingen samen kunnen gaan; iets in overeenstemming brengen", "luid klagen of protesteren", "zacht huilen"] },
+  { term:"krampachtig", def:"met te veel moeite en spanning; geforceerd", wrong:["luid uitdrukking geven aan vreugde; toejuichen", "ontspannen en natuurlijk", "pijnlijk door een spierkramp"] },
+  { term:"leven", def:"het bestaan; ook: levendigheid of drukte", wrong:["ergens zijn of zich in een bepaalde situatie verkeren", "de dood; ook: stilte", "het werk; ook: het geld"] },
+  { term:"mythe, de", def:"een verhaal of geloof dat niet op feiten is gebaseerd", wrong:["ergens zijn of zich in een bepaalde situatie verkeren", "een bewezen feit uit de geschiedenis", "een nieuwsbericht"] },
+  { term:"naast", def:"naast iemand of iets; ook: behalve of bovendien", wrong:["een keuze maken; iets besluiten", "tegenover iemand of iets; ook: in plaats van", "achter iemand of iets; ook: zonder"] },
+  { term:"nogmaals", def:"een keer meer; opnieuw", wrong:["een schandaal of lastige kwestie die veel aandacht trekt", "nooit meer", "voor het eerst"] },
+  { term:"opmerkelijk", def:"opvallend en de moeite waard om te noteren", wrong:["een schijnbare tegenstrijdigheid die toch waar is", "gewoon en niet de moeite waard", "moeilijk te zien"] },
+  { term:"paradox, de", def:"een schijnbare tegenstrijdigheid die toch waar is", wrong:["in theorie; als uitgangspunt; eigenlijk wel", "een uitspraak die duidelijk en logisch is", "een fout in een berekening"] },
+  { term:"parlementair", def:"wat te maken heeft met het parlement", wrong:["iemand die zich bezighoudt met wetenschap, cultuur en ideeën", "wat te maken heeft met de koning", "wat te maken heeft met de rechtspraak"] },
+  { term:"republikeins", def:"wat te maken heeft met een republiek; geen monarchie", wrong:["de verbinding tussen dingen; coherentie", "wat te maken heeft met een monarchie; met een koning", "wat te maken heeft met de kerk"] },
+  { term:"rijkdom, de", def:"grote welvaart en bezit; ook: overvloed aan iets", wrong:["een schandaal of lastige kwestie die veel aandacht trekt", "armoede; ook: een tekort aan iets", "een rijk land; ook: een bank"] },
+  { term:"samenhang, de", def:"de verbinding tussen dingen; coherentie", wrong:["eigenlijk; in de kern van de zaak", "het los staan van dingen; chaos", "het samenwonen van mensen"] },
+  { term:"staat, de", def:"een zelfstandig land met eigen bestuur en wetten", wrong:["iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen", "een stad met een eigen burgemeester", "een provincie zonder eigen wetten"] },
+  { term:"vorst, de", def:"een monarch; een koning of koningin", wrong:["wat te maken heeft met een republiek; geen monarchie", "een minister-president; een gekozen leider", "een edelman; een graaf of baron"] },
+  { term:"deel uitmaken van iets", def:"onderdeel zijn van een groter geheel", wrong:["een schandaal of lastige kwestie die veel aandacht trekt", "los staan van iets", "iets in delen knippen"] },
+  { term:"een beslissing nemen", def:"een keuze maken; iets besluiten", wrong:["een keer meer; opnieuw", "een keuze uitstellen", "een beslissing doorgeven"] },
+  { term:"erdoor komen", def:"ergens doorheen komen; een moeilijke situatie overleven", wrong:["opvallend en de moeite waard om te noteren", "ergens in vastlopen", "ergens langskomen"] },
+  { term:"gebrek aan iets", def:"te weinig hebben van iets; iets missen", wrong:["ergens zijn of zich in een bepaalde situatie verkeren", "te veel hebben van iets", "een fout in iets"] },
+  { term:"gek genoeg", def:"opmerkelijk genoeg; verrassend", wrong:["iets belangrijk vinden; iets waarderen", "zoals verwacht; logisch", "heel gek; gestoord"] },
+  { term:"in principe", def:"in theorie; als uitgangspunt; eigenlijk wel", wrong:["wat te maken heeft met een republiek; geen monarchie", "in de praktijk zeker", "nooit"] },
+  { term:"in tegenspraak met iets", def:"iets dat strijdig is met iets anders", wrong:["iets is volledig afhankelijk van iets anders", "in overeenstemming met iets", "in gesprek met iets"] },
+  { term:"in wezen", def:"eigenlijk; in de kern van de zaak", wrong:["iets dat strijdig is met iets anders", "aan de buitenkant", "in het begin"] },
+  { term:"waarde hechten aan", def:"iets belangrijk vinden; iets waarderen", wrong:["naast iemand of iets; ook: behalve of bovendien", "iets onbelangrijk vinden", "iets aan elkaar vastmaken"] },
+  { term:"achter de schermen", def:"buiten het zicht van het publiek; niet openbaar", wrong:["in werkelijkheid; gebaseerd op feiten", "voor het oog van iedereen; openbaar", "in de bioscoop"] },
+  { term:"iets rijmen met iets", def:"begrijpen hoe twee dingen samen kunnen gaan; iets in overeenstemming brengen", wrong:["een keer meer; opnieuw", "twee dingen uit elkaar houden", "een gedicht schrijven"] },
+  { term:"iets staat of valt met", def:"iets is volledig afhankelijk van iets anders", wrong:["iets dat strijdig is met iets anders", "iets staat los van iets anders", "iets valt om"] },
+  { term:"lijnrecht tegenover iets/iemand staan", def:"totaal anders denken dan iemand; volledig tegengesteld zijn", wrong:["in theorie; als uitgangspunt; eigenlijk wel", "het helemaal eens zijn met iemand", "recht voor iemand staan"] },
+  { term:"vanuit … oogpunt", def:"vanuit een bepaalde manier van denken of perspectief", wrong:["iets krijgen van iemand die is gestorven; ook: iets doorgegeven krijgen", "zonder een bepaald perspectief", "met je eigen ogen"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -849,6 +865,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

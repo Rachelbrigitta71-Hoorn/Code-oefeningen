@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 4.4 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -693,6 +708,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 4.4 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -714,38 +730,38 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aanstaan*", def:"aan zijn, van een apparaat; ook: bevallen", wrong:["kwaad zijn op iemand","door een rechter: beslissen dat iemand niet schuldig is","het proberen"] },
-  { term:"afluisteren", def:"stiekem luisteren naar gesprekken van anderen", wrong:["in een bepaald beroep werken","wat dat punt betreft","een journalist die verslag doet van gebeurtenissen"] },
-  { term:"afvallen*", def:"lichter worden; ook: niet meer meedoen of wegvallen", wrong:["veel; meer dan één","kwaad zijn op iemand","een officiële lijst met de strafbare feiten die iemand heeft gepleegd"] },
-  { term:"arresteren", def:"aanhouden en meenemen naar het politiebureau", wrong:["juist; met een goede reden","iemand zomaar tegenkomen","in die tijd; toen"] },
-  { term:"bekentenis, de", def:"het toegeven dat je iets fout hebt gedaan", wrong:["kort geleden","heel erg; zeer","iemand zomaar tegenkomen"] },
-  { term:"delict, het", def:"een strafbaar feit", wrong:["het proberen","in die tijd; toen","aan zijn, van een apparaat; ook: bevallen"] },
-  { term:"destijds", def:"in die tijd; toen", wrong:["lichter worden; ook: niet meer meedoen of wegvallen","wat dat punt betreft","het iemand dwingen iets te doen"] },
-  { term:"dwang, de", def:"het iemand dwingen iets te doen", wrong:["aanhouden en meenemen naar het politiebureau","na een aantal jaren; met de tijd","in een bepaald beroep werken"] },
-  { term:"gewelddadig", def:"met geweld", wrong:["grote boosheid","een officiële lijst met de strafbare feiten die iemand heeft gepleegd","het proberen"] },
-  { term:"gruwelijk", def:"heel erg en afschuwelijk", wrong:["het iemand dwingen iets te doen","in die tijd; toen","kort geleden"] },
-  { term:"menig", def:"veel; meer dan één", wrong:["heel erg bang zijn","juist; met een goede reden","het proberen"] },
-  { term:"onlangs", def:"kort geleden", wrong:["heel erg bang zijn","door een rechter: beslissen dat iemand niet schuldig is","heel erg; zeer"] },
-  { term:"poging, de", def:"het proberen", wrong:["op het laatste moment","een mens maakt zich vooral zorgen om vervelende dingen die er (nog) niet zijn","na een aantal jaren; met de tijd"] },
-  { term:"strafblad, het", def:"een officiële lijst met de strafbare feiten die iemand heeft gepleegd", wrong:["het niet meer vervolgd kunnen worden omdat een misdrijf te lang geleden is","aan zijn, van een apparaat; ook: bevallen","een journalist die verslag doet van gebeurtenissen"] },
-  { term:"terecht", def:"juist; met een goede reden", wrong:["blijven houden; ook: iemand niet laten gaan","kort geleden","een strafbaar feit"] },
-  { term:"uiterst", def:"heel erg; zeer", wrong:["met geweld","blijven houden; ook: iemand niet laten gaan","grote boosheid"] },
-  { term:"vasthouden*", def:"blijven houden; ook: iemand niet laten gaan", wrong:["heel erg en afschuwelijk","het toegeven dat je iets fout hebt gedaan","kwaad zijn op iemand"] },
-  { term:"verjaring, de", def:"het niet meer vervolgd kunnen worden omdat een misdrijf te lang geleden is", wrong:["iemand zomaar tegenkomen","door een rechter: beslissen dat iemand niet schuldig is","heel erg en afschuwelijk"] },
-  { term:"veroordelen", def:"door een rechter: een straf geven", wrong:["aan zijn, van een apparaat; ook: bevallen","in een bepaald beroep werken","na een aantal jaren; met de tijd"] },
-  { term:"verslaggever, de", def:"een journalist die verslag doet van gebeurtenissen", wrong:["een officiële lijst met de strafbare feiten die iemand heeft gepleegd","grote boosheid","belangrijk zijn"] },
-  { term:"vrijspreken*", def:"door een rechter: beslissen dat iemand niet schuldig is", wrong:["na een aantal jaren; met de tijd","op het laatste moment","heel erg en afschuwelijk"] },
-  { term:"woede, de", def:"grote boosheid", wrong:["door een rechter: een straf geven","het niet meer vervolgd kunnen worden omdat een misdrijf te lang geleden is","een officiële lijst met de strafbare feiten die iemand heeft gepleegd"] },
-  { term:"in de loop der jaren", def:"na een aantal jaren; met de tijd", wrong:["het iemand dwingen iets te doen","een strafbaar feit","een journalist die verslag doet van gebeurtenissen"] },
-  { term:"in het vak zitten", def:"in een bepaald beroep werken", wrong:["het proberen","heel erg en afschuwelijk","het niet meer vervolgd kunnen worden omdat een misdrijf te lang geleden is"] },
-  { term:"in welk/dat opzicht", def:"wat dat punt betreft", wrong:["na een aantal jaren; met de tijd","grote boosheid","door een rechter: beslissen dat iemand niet schuldig is"] },
-  { term:"van belang zijn", def:"belangrijk zijn", wrong:["het proberen","in een bepaald beroep werken","in die tijd; toen"] },
-  { term:"werk verzetten", def:"veel werk doen", wrong:["lichter worden; ook: niet meer meedoen of wegvallen","iemand zomaar tegenkomen","een strafbaar feit"] },
-  { term:"een appeltje met iemand te schillen hebben", def:"kwaad zijn op iemand", wrong:["na een aantal jaren; met de tijd","kort geleden","het iemand dwingen iets te doen"] },
-  { term:"een mens lijdt het meest door het lijden dat hij vreest", def:"een mens maakt zich vooral zorgen om vervelende dingen die er (nog) niet zijn", wrong:["wat dat punt betreft","blijven houden; ook: iemand niet laten gaan","in een bepaald beroep werken"] },
-  { term:"iemand tegen het lijf lopen", def:"iemand zomaar tegenkomen", wrong:["stiekem luisteren naar gesprekken van anderen","blijven houden; ook: iemand niet laten gaan","juist; met een goede reden"] },
-  { term:"op de valreep", def:"op het laatste moment", wrong:["aanhouden en meenemen naar het politiebureau","het iemand dwingen iets te doen","het proberen"] },
-  { term:"peentjes zweten", def:"heel erg bang zijn", wrong:["een officiële lijst met de strafbare feiten die iemand heeft gepleegd","heel erg en afschuwelijk","grote boosheid"] }
+  { term:"aanstaan*", def:"aan zijn, van een apparaat; ook: bevallen", wrong:["een mens maakt zich vooral zorgen om vervelende dingen die er (nog) niet zijn", "uit zijn, van een apparaat; ook: tegenvallen", "kapot zijn, van een apparaat; ook: opvallen"] },
+  { term:"afluisteren", def:"stiekem luisteren naar gesprekken van anderen", wrong:["een journalist die verslag doet van gebeurtenissen", "openlijk een gesprek opnemen met toestemming", "een gesprek samenvatten voor anderen"] },
+  { term:"afvallen*", def:"lichter worden; ook: niet meer meedoen of wegvallen", wrong:["veel werk doen", "zwaarder worden; ook: meer gaan meedoen", "naar beneden vallen; ook: verliezen"] },
+  { term:"arresteren", def:"aanhouden en meenemen naar het politiebureau", wrong:["op het laatste moment", "vrijlaten en naar huis sturen", "verhoren op het politiebureau"] },
+  { term:"bekentenis, de", def:"het toegeven dat je iets fout hebt gedaan", wrong:["aan zijn, van een apparaat; ook: bevallen", "het ontkennen dat je iets fout hebt gedaan", "het beschuldigen van een ander"] },
+  { term:"delict, het", def:"een strafbaar feit", wrong:["veel; meer dan één", "een gerechtelijke uitspraak", "een officiële toestemming"] },
+  { term:"destijds", def:"in die tijd; toen", wrong:["het toegeven dat je iets fout hebt gedaan", "nu; tegenwoordig", "later; in de toekomst"] },
+  { term:"dwang, de", def:"het iemand dwingen iets te doen", wrong:["aanhouden en meenemen naar het politiebureau", "het vrijlaten van iemand om zelf te kiezen", "het overtuigen van iemand met argumenten"] },
+  { term:"gewelddadig", def:"met geweld", wrong:["na een aantal jaren; met de tijd", "rustig en vreedzaam", "met woorden"] },
+  { term:"gruwelijk", def:"heel erg en afschuwelijk", wrong:["een officiële lijst met de strafbare feiten die iemand heeft gepleegd", "een beetje vervelend", "heel mooi en bijzonder"] },
+  { term:"menig", def:"veel; meer dan één", wrong:["het proberen", "geen; niet één", "alle; zonder uitzondering"] },
+  { term:"onlangs", def:"kort geleden", wrong:["door een rechter: beslissen dat iemand niet schuldig is", "heel lang geleden", "binnenkort"] },
+  { term:"poging, de", def:"het proberen", wrong:["een journalist die verslag doet van gebeurtenissen", "het lukken", "het opgeven"] },
+  { term:"strafblad, het", def:"een officiële lijst met de strafbare feiten die iemand heeft gepleegd", wrong:["heel erg; zeer", "een officiële lijst met boetes voor verkeersovertredingen", "een document dat zegt dat je nooit iets fout hebt gedaan"] },
+  { term:"terecht", def:"juist; met een goede reden", wrong:["na een aantal jaren; met de tijd", "onterecht; zonder goede reden", "toevallig; zonder reden"] },
+  { term:"uiterst", def:"heel erg; zeer", wrong:["kwaad zijn op iemand", "een beetje; licht", "bijna niet"] },
+  { term:"vasthouden*", def:"blijven houden; ook: iemand niet laten gaan", wrong:["door een rechter: een straf geven", "loslaten; ook: iemand laten gaan", "omhooghouden; ook: iemand helpen"] },
+  { term:"verjaring, de", def:"het niet meer vervolgd kunnen worden omdat een misdrijf te lang geleden is", wrong:["kort geleden", "de verjaardag van een slachtoffer", "het extra zwaar straffen van een oud misdrijf"] },
+  { term:"veroordelen", def:"door een rechter: een straf geven", wrong:["stiekem luisteren naar gesprekken van anderen", "door een rechter: iemand vrijspreken", "door de politie: iemand arresteren"] },
+  { term:"verslaggever, de", def:"een journalist die verslag doet van gebeurtenissen", wrong:["aanhouden en meenemen naar het politiebureau", "een rechter die een uitspraak doet", "een schrijver van romans"] },
+  { term:"vrijspreken*", def:"door een rechter: beslissen dat iemand niet schuldig is", wrong:["veel; meer dan één", "door een rechter: beslissen dat iemand schuldig is", "door de politie: iemand vrijlaten na verhoor"] },
+  { term:"woede, de", def:"grote boosheid", wrong:["het proberen", "grote blijdschap", "lichte verveling"] },
+  { term:"in de loop der jaren", def:"na een aantal jaren; met de tijd", wrong:["veel werk doen", "in één keer; meteen", "elk jaar opnieuw"] },
+  { term:"in het vak zitten", def:"in een bepaald beroep werken", wrong:["in die tijd; toen", "in een klaslokaal zitten", "een beroep willen leren"] },
+  { term:"in welk/dat opzicht", def:"wat dat punt betreft", wrong:["veel werk doen", "op welke plek; daar", "met welke bedoeling; daarom"] },
+  { term:"van belang zijn", def:"belangrijk zijn", wrong:["het toegeven dat je iets fout hebt gedaan", "onbelangrijk zijn", "duur zijn"] },
+  { term:"werk verzetten", def:"veel werk doen", wrong:["een strafbaar feit", "werk uitstellen", "weigeren te werken"] },
+  { term:"een appeltje met iemand te schillen hebben", def:"kwaad zijn op iemand", wrong:["iemand zomaar tegenkomen", "samen met iemand fruit eten", "goede vrienden met iemand zijn"] },
+  { term:"een mens lijdt het meest door het lijden dat hij vreest", def:"een mens maakt zich vooral zorgen om vervelende dingen die er (nog) niet zijn", wrong:["door een rechter: een straf geven", "een mens lijdt vooral door de pijn die hij nu voelt", "een mens is nergens bang voor als hij niet lijdt"] },
+  { term:"iemand tegen het lijf lopen", def:"iemand zomaar tegenkomen", wrong:["het toegeven dat je iets fout hebt gedaan", "iemand expres opzoeken", "iemand per ongeluk duwen"] },
+  { term:"op de valreep", def:"op het laatste moment", wrong:["veel; meer dan één", "ruim van tevoren", "op het eerste moment"] },
+  { term:"peentjes zweten", def:"heel erg bang zijn", wrong:["stiekem luisteren naar gesprekken van anderen", "het heel warm hebben", "heel rustig zijn"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -777,6 +793,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

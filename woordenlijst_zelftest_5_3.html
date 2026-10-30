@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 5.3 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -660,6 +675,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 5.3 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -681,35 +697,35 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"associëren", def:"in gedachten verbinden met iets anders", wrong:["steun hebben aan iets/iemand","waardoor je je klein en beschaamd voelt","zonder interesse; het maakt je niet uit"] },
-  { term:"autobiografisch", def:"over je eigen leven", wrong:["nerveus en onrustig","door iets beïnvloed of veranderd kunnen worden","steeds weer; elke keer"] },
-  { term:"betrouwbaarheid, de", def:"hoeveel je op iets of iemand kunt vertrouwen", wrong:["zonder moeite","steun hebben aan iets/iemand","een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen"] },
-  { term:"bijten*", def:"met je tanden in iets zetten", wrong:["een schilderij of foto van iemand","iets wat je nog weet van vroeger","een korte zin die laat zien wat je belangrijk vindt"] },
-  { term:"collectief", def:"van of door een groep samen", wrong:["een stuk van een film of toneelstuk; ook: een gebeurtenis","zonder interesse; het maakt je niet uit","iets wat je nog weet van vroeger"] },
-  { term:"flard, de", def:"een klein stukje, bijvoorbeeld van een gesprek of herinnering", wrong:["iets wat je nog weet van vroeger","zonder interesse; het maakt je niet uit","in gedachten verbinden met iets anders"] },
-  { term:"herinnering, de", def:"iets wat je nog weet van vroeger", wrong:["hoeveel je op iets of iemand kunt vertrouwen","door iets beïnvloed of veranderd kunnen worden","een voorwerp om muziek mee te maken; ook: een hulpmiddel"] },
-  { term:"instrument, het", def:"een voorwerp om muziek mee te maken; ook: een hulpmiddel", wrong:["met je tanden in iets zetten","zonder twijfel; ook: een bepaald, zoals in: een zekere meneer","nerveus en onrustig"] },
-  { term:"maaien", def:"gras kort afsnijden", wrong:["kleine stukjes hout die ontstaan bij het zagen","een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen","zonder interesse; het maakt je niet uit"] },
-  { term:"markant", def:"opvallend en bijzonder", wrong:["een voorwerp om muziek mee te maken; ook: een hulpmiddel","iets wat je nog weet van vroeger","een korte zin die laat zien wat je belangrijk vindt"] },
-  { term:"moeiteloos", def:"zonder moeite", wrong:["een schilderij of foto van iemand","zonder interesse; het maakt je niet uit","waardoor je je klein en beschaamd voelt"] },
-  { term:"motto, het", def:"een korte zin die laat zien wat je belangrijk vindt", wrong:["een stuk van een film of toneelstuk; ook: een gebeurtenis","zorgen dat je iets goed onthoudt","zonder twijfel; ook: een bepaald, zoals in: een zekere meneer"] },
-  { term:"onverschillig", def:"zonder interesse; het maakt je niet uit", wrong:["het mooi zijn","in gedachten verbinden met iets anders","steeds weer; elke keer"] },
-  { term:"oproepen*", def:"een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen", wrong:["heel erg en verrassend op een nare manier","een korte zin die laat zien wat je belangrijk vindt","een klein stukje, bijvoorbeeld van een gesprek of herinnering"] },
-  { term:"portret, het", def:"een schilderij of foto van iemand", wrong:["gras kort afsnijden","heel erg en verrassend op een nare manier","kleine stukjes hout die ontstaan bij het zagen"] },
-  { term:"scène, de", def:"een stuk van een film of toneelstuk; ook: een gebeurtenis", wrong:["opvallend en bijzonder","van of door een groep samen","steun hebben aan iets/iemand"] },
-  { term:"schokkend", def:"heel erg en verrassend op een nare manier", wrong:["waardoor je je klein en beschaamd voelt","opvallend en bijzonder","in gedachten verbinden met iets anders"] },
-  { term:"schoonheid, de", def:"het mooi zijn", wrong:["nerveus en onrustig","zonder twijfel; ook: een bepaald, zoals in: een zekere meneer","een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen"] },
-  { term:"stemming, de", def:"hoe je je voelt; ook: het stemmen bij een verkiezing", wrong:["kleine stukjes hout die ontstaan bij het zagen","vastzitten aan iets; afhankelijk zijn van iets","zonder twijfel; ook: een bepaald, zoals in: een zekere meneer"] },
-  { term:"telkens", def:"steeds weer; elke keer", wrong:["opvallend en bijzonder","hoe je je voelt; ook: het stemmen bij een verkiezing","het mooi zijn"] },
-  { term:"vernederend", def:"waardoor je je klein en beschaamd voelt", wrong:["een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen","een voorwerp om muziek mee te maken; ook: een hulpmiddel","een klein stukje, bijvoorbeeld van een gesprek of herinnering"] },
-  { term:"zaagsel, het", def:"kleine stukjes hout die ontstaan bij het zagen", wrong:["steeds weer; elke keer","zonder interesse; het maakt je niet uit","opvallend en bijzonder"] },
-  { term:"zeker", def:"zonder twijfel; ook: een bepaald, zoals in: een zekere meneer", wrong:["het mooi zijn","nerveus en onrustig","kleine stukjes hout die ontstaan bij het zagen"] },
-  { term:"zenuwachtig", def:"nerveus en onrustig", wrong:["waardoor je je klein en beschaamd voelt","zonder interesse; het maakt je niet uit","door iets beïnvloed of veranderd kunnen worden"] },
-  { term:"aan iets onderhevig zijn", def:"door iets beïnvloed of veranderd kunnen worden", wrong:["iets wat je nog weet van vroeger","hoeveel je op iets of iemand kunt vertrouwen","een klein stukje, bijvoorbeeld van een gesprek of herinnering"] },
-  { term:"gebonden zijn aan iets", def:"vastzitten aan iets; afhankelijk zijn van iets", wrong:["zonder twijfel; ook: een bepaald, zoals in: een zekere meneer","een korte zin die laat zien wat je belangrijk vindt","een voorwerp om muziek mee te maken; ook: een hulpmiddel"] },
-  { term:"ten onrechte", def:"niet terecht; fout", wrong:["door iets beïnvloed of veranderd kunnen worden","heel erg en verrassend op een nare manier","nerveus en onrustig"] },
-  { term:"houvast hebben aan iets/iemand", def:"steun hebben aan iets/iemand", wrong:["over je eigen leven","heel erg en verrassend op een nare manier","een schilderij of foto van iemand"] },
-  { term:"iets in je geheugen prenten", def:"zorgen dat je iets goed onthoudt", wrong:["met je tanden in iets zetten","een voorwerp om muziek mee te maken; ook: een hulpmiddel","zonder interesse; het maakt je niet uit"] }
+  { term:"associëren", def:"in gedachten verbinden met iets anders", wrong:["een klein stukje, bijvoorbeeld van een gesprek of herinnering", "in gedachten scheiden van iets anders", "precies onthouden zoals het was"] },
+  { term:"autobiografisch", def:"over je eigen leven", wrong:["in gedachten verbinden met iets anders", "over het leven van iemand anders", "over de geschiedenis van een land"] },
+  { term:"betrouwbaarheid, de", def:"hoeveel je op iets of iemand kunt vertrouwen", wrong:["een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen", "hoe aardig iets of iemand is", "hoe bekend iets of iemand is"] },
+  { term:"bijten*", def:"met je tanden in iets zetten", wrong:["nerveus en onrustig", "met je lippen iets aanraken", "met je tong iets proeven"] },
+  { term:"collectief", def:"van of door een groep samen", wrong:["nerveus en onrustig", "van of door één persoon alleen", "verplicht voor iedereen"] },
+  { term:"flard, de", def:"een klein stukje, bijvoorbeeld van een gesprek of herinnering", wrong:["waardoor je je klein en beschaamd voelt", "een heel verhaal, van begin tot eind", "een samenvatting van een gesprek"] },
+  { term:"herinnering, de", def:"iets wat je nog weet van vroeger", wrong:["vastzitten aan iets; afhankelijk zijn van iets", "iets wat je van plan bent", "iets wat je vergeten bent"] },
+  { term:"instrument, het", def:"een voorwerp om muziek mee te maken; ook: een hulpmiddel", wrong:["iets wat je nog weet van vroeger", "een liedje dat je zingt; ook: een probleem", "een muziekles; ook: een resultaat"] },
+  { term:"maaien", def:"gras kort afsnijden", wrong:["zonder twijfel; ook: een bepaald, zoals in: een zekere meneer", "gras water geven", "gras zaaien"] },
+  { term:"markant", def:"opvallend en bijzonder", wrong:["steeds weer; elke keer", "gewoon en onopvallend", "vreemd en eng"] },
+  { term:"moeiteloos", def:"zonder moeite", wrong:["kleine stukjes hout die ontstaan bij het zagen", "met veel moeite", "zonder resultaat"] },
+  { term:"motto, het", def:"een korte zin die laat zien wat je belangrijk vindt", wrong:["opvallend en bijzonder", "een lang verhaal over je leven", "een vraag die je jezelf stelt"] },
+  { term:"onverschillig", def:"zonder interesse; het maakt je niet uit", wrong:["nerveus en onrustig", "heel geïnteresseerd; het is heel belangrijk voor je", "verschillend; niet hetzelfde"] },
+  { term:"oproepen*", def:"een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen", wrong:["waardoor je je klein en beschaamd voelt", "een herinnering of gevoel wegduwen; ook: iemand wegsturen", "een herinnering opschrijven; ook: iemand terugbellen"] },
+  { term:"portret, het", def:"een schilderij of foto van iemand", wrong:["over je eigen leven", "een schilderij of foto van een landschap", "een kort verhaal over iemand"] },
+  { term:"scène, de", def:"een stuk van een film of toneelstuk; ook: een gebeurtenis", wrong:["over je eigen leven", "de hele film of het hele toneelstuk; ook: een plan", "de acteurs van een film; ook: een publiek"] },
+  { term:"schokkend", def:"heel erg en verrassend op een nare manier", wrong:["kleine stukjes hout die ontstaan bij het zagen", "heel prettig en verrassend op een leuke manier", "een beetje saai en voorspelbaar"] },
+  { term:"schoonheid, de", def:"het mooi zijn", wrong:["zorgen dat je iets goed onthoudt", "het schoon zijn", "het sterk zijn"] },
+  { term:"stemming, de", def:"hoe je je voelt; ook: het stemmen bij een verkiezing", wrong:["gras kort afsnijden", "hoe je eruitziet; ook: een gesprek voor een verkiezing", "hoe je stem klinkt; ook: de uitslag van een wedstrijd"] },
+  { term:"telkens", def:"steeds weer; elke keer", wrong:["een herinnering of gevoel laten ontstaan; ook: iemand vragen te komen", "één keer", "bijna nooit"] },
+  { term:"vernederend", def:"waardoor je je klein en beschaamd voelt", wrong:["steeds weer; elke keer", "waardoor je je groot en trots voelt", "waardoor je je moe en slaperig voelt"] },
+  { term:"zaagsel, het", def:"kleine stukjes hout die ontstaan bij het zagen", wrong:["met je tanden in iets zetten", "kleine stukjes metaal die ontstaan bij het boren", "grote planken die ontstaan bij het zagen"] },
+  { term:"zeker", def:"zonder twijfel; ook: een bepaald, zoals in: een zekere meneer", wrong:["hoeveel je op iets of iemand kunt vertrouwen", "met twijfel; ook: een onbekend, zoals in: een of andere meneer", "misschien; ook: een beroemd, zoals in: een bekende meneer"] },
+  { term:"zenuwachtig", def:"nerveus en onrustig", wrong:["kleine stukjes hout die ontstaan bij het zagen", "rustig en ontspannen", "boos en geïrriteerd"] },
+  { term:"aan iets onderhevig zijn", def:"door iets beïnvloed of veranderd kunnen worden", wrong:["een schilderij of foto van iemand", "door niets beïnvloed kunnen worden", "onder iets liggen"] },
+  { term:"gebonden zijn aan iets", def:"vastzitten aan iets; afhankelijk zijn van iets", wrong:["niet terecht; fout", "helemaal vrij zijn van iets", "ergens van houden"] },
+  { term:"ten onrechte", def:"niet terecht; fout", wrong:["zonder moeite", "terecht; goed", "ten slotte; als laatste"] },
+  { term:"houvast hebben aan iets/iemand", def:"steun hebben aan iets/iemand", wrong:["hoe je je voelt; ook: het stemmen bij een verkiezing", "last hebben van iets/iemand", "iets of iemand stevig vastpakken"] },
+  { term:"iets in je geheugen prenten", def:"zorgen dat je iets goed onthoudt", wrong:["een schilderij of foto van iemand", "iets snel vergeten", "iets in een boek opschrijven"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -741,6 +757,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

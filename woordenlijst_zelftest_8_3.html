@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 8.3 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -726,46 +741,47 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 8.3 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 <script>
 const ALL = [
-  { term:"zich afspelen", def:"ergens plaatsvinden; ergens gebeuren", wrong:["een cadeau; iets wat je aan iemand geeft","de schrijver van een boek of tekst","een beloning voor prestaties; ook: de waarde van iets in geld"] },
-  { term:"aller-", def:"voorvoegsel dat de overtreffende trap versterkt: het meest van alles", wrong:["iets van iemand anders gaan doen of bezitten","een bedrijf; ook: een grote, uitdagende taak","van nu; van de huidige tijd"] },
-  { term:"auteur, de", def:"de schrijver van een boek of tekst", wrong:["erg populair; waar veel mensen van houden","kort en snel oplichten; ook: snel voorbijgaan","iets afkeuren; iets helemaal niet goed vinden"] },
-  { term:"bediende, de", def:"iemand die in dienst is van een ander en taken voor hem uitvoert", wrong:["de schrijver van een boek of tekst","voorvoegsel dat de overtreffende trap versterkt: het meest van alles","kort en snel oplichten; ook: snel voorbijgaan"] },
-  { term:"divers", def:"gevarieerd; van verschillende soorten", wrong:["het verschil in rechten, welvaart of kansen tussen mensen","een bedrijf; ook: een grote, uitdagende taak","behalve; uitgezonderd"] },
-  { term:"eren", def:"iemand eer bewijzen; iemand huldigen voor zijn verdiensten", wrong:["voorvoegsel dat de overtreffende trap versterkt: het meest van alles","niet afhankelijk van anderen; vrij en zelfstandig","begrijpen dat iets nodig of onvermijdelijk is"] },
-  { term:"flitsen", def:"kort en snel oplichten; ook: snel voorbijgaan", wrong:["een bedrijf; ook: een grote, uitdagende taak","volop bezig zijn; op het hoogtepunt van activiteit","een beloning voor prestaties; ook: de waarde van iets in geld"] },
-  { term:"geliefd", def:"erg populair; waar veel mensen van houden", wrong:["ergens plaatsvinden; ergens gebeuren","mooi van uiterlijk; ook: slim of handig","iets afkeuren; iets helemaal niet goed vinden"] },
-  { term:"geschenk, het", def:"een cadeau; iets wat je aan iemand geeft", wrong:["uitleggen of toelichten; ook: officieel iets meedelen","een beloning voor prestaties; ook: de waarde van iets in geld","een sociale groep; ook: een categorie of een schoolklas"] },
-  { term:"huidig", def:"van nu; van de huidige tijd", wrong:["het verschil in rechten, welvaart of kansen tussen mensen","uitleggen of toelichten; ook: officieel iets meedelen","kort en snel oplichten; ook: snel voorbijgaan"] },
-  { term:"klasse, de", def:"een sociale groep; ook: een categorie of een schoolklas", wrong:["iemand eer bewijzen; iemand huldigen voor zijn verdiensten","veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn","kort en snel oplichten; ook: snel voorbijgaan"] },
-  { term:"knap", def:"mooi van uiterlijk; ook: slim of handig", wrong:["van vroeger; eerder in die functie of positie","iets toestaan of zich iets kunnen veroorloven","de schrijver van een boek of tekst"] },
-  { term:"observeren", def:"zorgvuldig bekijken en bestuderen", wrong:["iets soortgelijks; zoiets","erg populair; waar veel mensen van houden","veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn"] },
-  { term:"onafhankelijk", def:"niet afhankelijk van anderen; vrij en zelfstandig", wrong:["iemand eer bewijzen; iemand huldigen voor zijn verdiensten","een elastisch materiaal dat van de rubberboom komt","de reputatie hebben van; bekend zijn door"] },
-  { term:"ongelijkheid, de", def:"het verschil in rechten, welvaart of kansen tussen mensen", wrong:["zorgvuldig bekijken en bestuderen","gevarieerd; van verschillende soorten","de schrijver van een boek of tekst"] },
-  { term:"onderneming, de", def:"een bedrijf; ook: een grote, uitdagende taak", wrong:["het verschil in rechten, welvaart of kansen tussen mensen","een elastisch materiaal dat van de rubberboom komt","iemand eer bewijzen; iemand huldigen voor zijn verdiensten"] },
-  { term:"overnemen*", def:"iets van iemand anders gaan doen of bezitten", wrong:["het verschil in rechten, welvaart of kansen tussen mensen","kort en snel oplichten; ook: snel voorbijgaan","veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn"] },
-  { term:"permitteren", def:"iets toestaan of zich iets kunnen veroorloven", wrong:["een beloning voor prestaties; ook: de waarde van iets in geld","iets soortgelijks; zoiets","de reputatie hebben van; bekend zijn door"] },
-  { term:"prijs, de", def:"een beloning voor prestaties; ook: de waarde van iets in geld", wrong:["een sociale groep; ook: een categorie of een schoolklas","de reputatie hebben van; bekend zijn door","van vroeger; eerder in die functie of positie"] },
-  { term:"rubber, het/de", def:"een elastisch materiaal dat van de rubberboom komt", wrong:["niet afhankelijk van anderen; vrij en zelfstandig","iets toestaan of zich iets kunnen veroorloven","gevarieerd; van verschillende soorten"] },
-  { term:"thema, het", def:"het onderwerp of de hoofdgedachte van een tekst of kunstwerk", wrong:["een sociale groep; ook: een categorie of een schoolklas","een bedrijf; ook: een grote, uitdagende taak","iets soortgelijks; zoiets"] },
-  { term:"verlof, het", def:"officiële toestemming om iets te doen; ook: vakantie van het werk", wrong:["veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn","iets toestaan of zich iets kunnen veroorloven","het verschil in rechten, welvaart of kansen tussen mensen"] },
-  { term:"verklaren", def:"uitleggen of toelichten; ook: officieel iets meedelen", wrong:["het onderwerp of de hoofdgedachte van een tekst of kunstwerk","iemand die in dienst is van een ander en taken voor hem uitvoert","het verschil in rechten, welvaart of kansen tussen mensen"] },
-  { term:"voormalig", def:"van vroeger; eerder in die functie of positie", wrong:["de schrijver van een boek of tekst","het onderwerp of de hoofdgedachte van een tekst of kunstwerk","voor het eerst kennismaken met iemand of iets"] },
-  { term:"bekend staan als", def:"de reputatie hebben van; bekend zijn door", wrong:["iets toestaan of zich iets kunnen veroorloven","gevarieerd; van verschillende soorten","niet afhankelijk van anderen; vrij en zelfstandig"] },
-  { term:"gehecht zijn aan iets/iemand", def:"veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn", wrong:["het onderwerp of de hoofdgedachte van een tekst of kunstwerk","niet afhankelijk van anderen; vrij en zelfstandig","klaar zijn om iets te gaan doen; op het punt staan"] },
-  { term:"iemand/iets leren kennen", def:"voor het eerst kennismaken met iemand of iets", wrong:["veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn","iets soortgelijks; zoiets","van nu; van de huidige tijd"] },
-  { term:"de noodzaak inzien van iets", def:"begrijpen dat iets nodig of onvermijdelijk is", wrong:["iets van iemand anders gaan doen of bezitten","een cadeau; iets wat je aan iemand geeft","een bedrijf; ook: een grote, uitdagende taak"] },
-  { term:"iets maar/echt niets vinden", def:"iets afkeuren; iets helemaal niet goed vinden", wrong:["iets van iemand anders gaan doen of bezitten","begrijpen dat iets nodig of onvermijdelijk is","veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn"] },
-  { term:"in volle gang", def:"volop bezig zijn; op het hoogtepunt van activiteit", wrong:["van vroeger; eerder in die functie of positie","het verschil in rechten, welvaart of kansen tussen mensen","een cadeau; iets wat je aan iemand geeft"] },
-  { term:"iets dergelijks", def:"iets soortgelijks; zoiets", wrong:["behalve; uitgezonderd","klaar zijn om iets te gaan doen; op het punt staan","iemand eer bewijzen; iemand huldigen voor zijn verdiensten"] },
-  { term:"het voor het zeggen hebben", def:"de baas zijn; de macht hebben", wrong:["iemand die in dienst is van een ander en taken voor hem uitvoert","erg populair; waar veel mensen van houden","van nu; van de huidige tijd"] },
-  { term:"op het punt staan", def:"klaar zijn om iets te gaan doen; op het punt staan", wrong:["een sociale groep; ook: een categorie of een schoolklas","begrijpen dat iets nodig of onvermijdelijk is","gevarieerd; van verschillende soorten"] },
-  { term:"op…na", def:"behalve; uitgezonderd", wrong:["de reputatie hebben van; bekend zijn door","volop bezig zijn; op het hoogtepunt van activiteit","zich voorbereiden op iets moeilijks of onaangenaams"] },
-  { term:"zich schrap zetten", def:"zich voorbereiden op iets moeilijks of onaangenaams", wrong:["iets van iemand anders gaan doen of bezitten","ergens plaatsvinden; ergens gebeuren","erg populair; waar veel mensen van houden"] }
+  { term:"zich afspelen", def:"ergens plaatsvinden; ergens gebeuren", wrong:["iets toestaan of zich iets kunnen veroorloven", "ergens stoppen; niet meer gebeuren", "een spel spelen tot het einde"] },
+  { term:"aller-", def:"voorvoegsel dat de overtreffende trap versterkt: het meest van alles", wrong:["een cadeau; iets wat je aan iemand geeft", "voorvoegsel dat iets verzwakt: een beetje", "voorvoegsel dat meervoud maakt: alle"] },
+  { term:"auteur, de", def:"de schrijver van een boek of tekst", wrong:["van nu; van de huidige tijd", "de lezer van een boek of tekst", "de uitgever die een boek verkoopt"] },
+  { term:"bediende, de", def:"iemand die in dienst is van een ander en taken voor hem uitvoert", wrong:["gevarieerd; van verschillende soorten", "iemand die de baas is over anderen", "iemand die als gast ergens komt"] },
+  { term:"divers", def:"gevarieerd; van verschillende soorten", wrong:["veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn", "eenzijdig; allemaal hetzelfde", "verschillend van mening; ruziënd"] },
+  { term:"eren", def:"iemand eer bewijzen; iemand huldigen voor zijn verdiensten", wrong:["behalve; uitgezonderd", "iemand beledigen of vernederen", "iemand een fout vergeven"] },
+  { term:"flitsen", def:"kort en snel oplichten; ook: snel voorbijgaan", wrong:["de reputatie hebben van; bekend zijn door", "lang en rustig schijnen; ook: langzaam gaan", "uitgaan; ook: stilstaan"] },
+  { term:"geliefd", def:"erg populair; waar veel mensen van houden", wrong:["voorvoegsel dat de overtreffende trap versterkt: het meest van alles", "niet populair; waar niemand van houdt", "bekend; waar veel mensen over praten"] },
+  { term:"geschenk, het", def:"een cadeau; iets wat je aan iemand geeft", wrong:["iets van iemand anders gaan doen of bezitten", "iets wat je koopt voor jezelf", "iets wat je terug moet geven"] },
+  { term:"huidig", def:"van nu; van de huidige tijd", wrong:["een bedrijf; ook: een grote, uitdagende taak", "van vroeger; van een eerdere tijd", "van later; van de toekomst"] },
+  { term:"klasse, de", def:"een sociale groep; ook: een categorie of een schoolklas", wrong:["een elastisch materiaal dat van de rubberboom komt", "één persoon; ook: een les", "een land; ook: een examen"] },
+  { term:"knap", def:"mooi van uiterlijk; ook: slim of handig", wrong:["een beloning voor prestaties; ook: de waarde van iets in geld", "lelijk van uiterlijk; ook: dom of onhandig", "groot en sterk; ook: brutaal"] },
+  { term:"observeren", def:"zorgvuldig bekijken en bestuderen", wrong:["een beloning voor prestaties; ook: de waarde van iets in geld", "snel en zonder aandacht voorbijlopen", "luid beschrijven wat je denkt"] },
+  { term:"onafhankelijk", def:"niet afhankelijk van anderen; vrij en zelfstandig", wrong:["de schrijver van een boek of tekst", "afhankelijk van anderen; niet vrij", "eenzaam; zonder vrienden"] },
+  { term:"ongelijkheid, de", def:"het verschil in rechten, welvaart of kansen tussen mensen", wrong:["van vroeger; eerder in die functie of positie", "het gelijk zijn in rechten en kansen", "een ruzie tussen twee mensen"] },
+  { term:"onderneming, de", def:"een bedrijf; ook: een grote, uitdagende taak", wrong:["veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn", "een vakantie; ook: een kleine, makkelijke taak", "een school; ook: een les"] },
+  { term:"overnemen*", def:"iets van iemand anders gaan doen of bezitten", wrong:["kort en snel oplichten; ook: snel voorbijgaan", "iets aan iemand anders teruggeven", "iets voor de tweede keer doen"] },
+  { term:"permitteren", def:"iets toestaan of zich iets kunnen veroorloven", wrong:["het verschil in rechten, welvaart of kansen tussen mensen", "iets verbieden of tegenhouden", "iets beloven"] },
+  { term:"prijs, de", def:"een beloning voor prestaties; ook: de waarde van iets in geld", wrong:["mooi van uiterlijk; ook: slim of handig", "een straf voor fouten; ook: de korting op iets", "een wedstrijd; ook: de winkel waar je iets koopt"] },
+  { term:"rubber, het/de", def:"een elastisch materiaal dat van de rubberboom komt", wrong:["iets soortgelijks; zoiets", "een hard materiaal dat van ijzer komt", "een doorzichtig materiaal zoals glas"] },
+  { term:"thema, het", def:"het onderwerp of de hoofdgedachte van een tekst of kunstwerk", wrong:["niet afhankelijk van anderen; vrij en zelfstandig", "de schrijver of maker van een tekst of kunstwerk", "de titel of het eerste woord van een tekst"] },
+  { term:"verlof, het", def:"officiële toestemming om iets te doen; ook: vakantie van het werk", wrong:["van nu; van de huidige tijd", "een officieel verbod om iets te doen; ook: overwerk", "een ontslag; ook: een ziekte"] },
+  { term:"verklaren", def:"uitleggen of toelichten; ook: officieel iets meedelen", wrong:["de reputatie hebben van; bekend zijn door", "iets verbergen of geheimhouden; ook: iets ontkennen", "iets helder maken door het schoon te maken; ook: iets vragen"] },
+  { term:"voormalig", def:"van vroeger; eerder in die functie of positie", wrong:["voorvoegsel dat de overtreffende trap versterkt: het meest van alles", "van nu; in de huidige functie", "toekomstig; later in die functie"] },
+  { term:"bekend staan als", def:"de reputatie hebben van; bekend zijn door", wrong:["van nu; van de huidige tijd", "onbekend zijn", "voor iemand staan die je kent"] },
+  { term:"gehecht zijn aan iets/iemand", def:"veel waarde hechten aan iets of iemand; er sterk aan verbonden zijn", wrong:["een cadeau; iets wat je aan iemand geeft", "iets of iemand onbelangrijk vinden", "aan iets vastgeplakt zijn"] },
+  { term:"iemand/iets leren kennen", def:"voor het eerst kennismaken met iemand of iets", wrong:["iemand eer bewijzen; iemand huldigen voor zijn verdiensten", "iemand of iets vergeten", "iemand iets leren"] },
+  { term:"de noodzaak inzien van iets", def:"begrijpen dat iets nodig of onvermijdelijk is", wrong:["behalve; uitgezonderd", "iets overbodig vinden", "ergens in kijken"] },
+  { term:"iets maar/echt niets vinden", def:"iets afkeuren; iets helemaal niet goed vinden", wrong:["iets van iemand anders gaan doen of bezitten", "iets heel goed vinden", "iets niet kunnen vinden"] },
+  { term:"in volle gang", def:"volop bezig zijn; op het hoogtepunt van activiteit", wrong:["officiële toestemming om iets te doen; ook: vakantie van het werk", "helemaal afgelopen", "nog niet begonnen"] },
+  { term:"iets dergelijks", def:"iets soortgelijks; zoiets", wrong:["van nu; van de huidige tijd", "iets heel anders", "precies hetzelfde"] },
+  { term:"het voor het zeggen hebben", def:"de baas zijn; de macht hebben", wrong:["begrijpen dat iets nodig of onvermijdelijk is", "niets te zeggen hebben", "veel praten"] },
+  { term:"op het punt staan", def:"klaar zijn om iets te gaan doen; op het punt staan", wrong:["begrijpen dat iets nodig of onvermijdelijk is", "iets net gedaan hebben", "ergens op een stip staan"] },
+  { term:"op…na", def:"behalve; uitgezonderd", wrong:["iets toestaan of zich iets kunnen veroorloven", "inclusief; ook", "na afloop van"] },
+  { term:"zich schrap zetten", def:"zich voorbereiden op iets moeilijks of onaangenaams", wrong:["uitleggen of toelichten; ook: officieel iets meedelen", "zich ontspannen en niets verwachten", "een streep door iets zetten"] }
 ];
 function shuffle(a) {
   const arr = [...a];
@@ -815,6 +831,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 8.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -836,65 +851,81 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 8.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 <script>
 const ALL = [
-  { term:"afspreken*", def:"een tijd of afspraak met iemand vastleggen", wrong:["er komen heel veel reacties of mensen tegelijk","iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden","een plek innemen of in bezit nemen"] },
-  { term:"baseren op", def:"iets op iets anders gronden of steunen", wrong:["wat te maken heeft met opvoeding en onderwijs","een groot dier dat gebruikt wordt om op te rijden of mee te werken","een gevoel van spanning en enthousiasme"] },
-  { term:"bezetten", def:"een plek innemen of in bezit nemen", wrong:["een lap stof voor een raam of als afsluiting","geld verstrekken voor iets","iets bedenken; een inval krijgen"] },
-  { term:"bisschop, de", def:"een hoge geestelijke in de christelijke kerk", wrong:["een verbinding leggen tussen twee dingen","een open bak met een handvat, gebruikt om vloeistoffen te dragen","langzaam iets groters of belanrijkers worden"] },
-  { term:"daad, de", def:"een handeling of actie, vaak met een bepaald doel", wrong:["een vertakking van een boom; ook: een roe of slaag","een plek innemen of in bezit nemen","iets op iets anders gronden of steunen"] },
-  { term:"dimensie, de", def:"een aspect of laag van iets; ook: een afmeting", wrong:["een open bak met een handvat, gebruikt om vloeistoffen te dragen","een stoet mensen die door de straat trekt","een gevoel van spanning en enthousiasme"] },
-  { term:"emmer, de", def:"een open bak met een handvat, gebruikt om vloeistoffen te dragen", wrong:["er wordt aangebeld; de deurbel klinkt","ervoor zorgen dat iets niet te erg of te ver gaat","iets op iets anders gronden of steunen"] },
-  { term:"financieren", def:"geld verstrekken voor iets", wrong:["namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt","vol opwinding en enthousiasme; zeer gespannen van verwachting","het onderwerp of thema is iets of iemand"] },
-  { term:"geheim, het", def:"iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden", wrong:["een verbinding leggen tussen twee dingen","ongehoorzaam en baldadig gedrag van een kind","een gevoel van spanning en enthousiasme"] },
-  { term:"gordijn, het", def:"een lap stof voor een raam of als afsluiting", wrong:["een streep of vlek; ook: een klap of slag","langzaam iets groters of belanrijkers worden","wat te maken heeft met opvoeding en onderwijs"] },
-  { term:"grijpen*", def:"snel en stevig vastpakken", wrong:["een tijd of afspraak met iemand vastleggen","wat te maken heeft met een kolonie of kolonisatie","een vertakking van een boom; ook: een roe of slaag"] },
-  { term:"koloniaal", def:"wat te maken heeft met een kolonie of kolonisatie", wrong:["woorden die op elkaar rijmen; ook: een gedichtje","wat te maken heeft met opvoeding en onderwijs","een lap stof voor een raam of als afsluiting"] },
-  { term:"ondergeschikt", def:"minder belangrijk; in een lagere positie", wrong:["een stoet mensen die door de straat trekt","woorden die op elkaar rijmen; ook: een gedichtje","een open bak met een handvat, gebruikt om vloeistoffen te dragen"] },
-  { term:"opgewonden", def:"vol opwinding en enthousiasme; zeer gespannen van verwachting", wrong:["een aspect of laag van iets; ook: een afmeting","zware dingen moeizaam dragen of slepen","een open bak met een handvat, gebruikt om vloeistoffen te dragen"] },
-  { term:"optocht, de", def:"een stoet mensen die door de straat trekt", wrong:["zwart poeder dat achterblijft na verbranding","ervoor zorgen dat iets niet te erg of te ver gaat","van of voor een individu; niet openbaar of overheids-"] },
-  { term:"opwinding, de", def:"een gevoel van spanning en enthousiasme", wrong:["een plek innemen of in bezit nemen","iemand met een gebaar naar je toe roepen","een verbinding leggen tussen twee dingen"] },
-  { term:"paard, het", def:"een groot dier dat gebruikt wordt om op te rijden of mee te werken", wrong:["geld verstrekken voor iets","zware dingen moeizaam dragen of slepen","een aspect of laag van iets; ook: een afmeting"] },
-  { term:"particulier", def:"van of voor een individu; niet openbaar of overheids-", wrong:["namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt","de media; kranten, tijdschriften en journalisten","er komen heel veel reacties of mensen tegelijk"] },
-  { term:"pedagogisch", def:"wat te maken heeft met opvoeding en onderwijs", wrong:["versturen of vertrekken","een pijp in een gebouw waardoor rook naar buiten gaat","namens iemand anders handelen of spreken"] },
-  { term:"pers, de", def:"de media; kranten, tijdschriften en journalisten", wrong:["minder belangrijk; in een lagere positie","een handeling of actie, vaak met een bepaald doel","een plek innemen of in bezit nemen"] },
-  { term:"plagen", def:"iemand pesterig of speels lastigvallen", wrong:["veel kritiek of aanvallen krijgen","een stoet mensen die door de straat trekt","wat te maken heeft met opvoeding en onderwijs"] },
-  { term:"pop, de", def:"een speelgoedfiguur in de vorm van een mens of dier", wrong:["een aspect of laag van iets; ook: een afmeting","een stoet mensen die door de straat trekt","een open bak met een handvat, gebruikt om vloeistoffen te dragen"] },
-  { term:"rijm, het", def:"woorden die op elkaar rijmen; ook: een gedichtje", wrong:["zware dingen moeizaam dragen of slepen","van of voor een individu; niet openbaar of overheids-","iemand met een gebaar naar je toe roepen"] },
-  { term:"roet, het", def:"zwart poeder dat achterblijft na verbranding", wrong:["er komen heel veel reacties of mensen tegelijk","een pijp in een gebouw waardoor rook naar buiten gaat","snel en stevig vastpakken"] },
-  { term:"schoorsteen, de", def:"een pijp in een gebouw waardoor rook naar buiten gaat", wrong:["zwart poeder dat achterblijft na verbranding","woorden die op elkaar rijmen; ook: een gedichtje","vol opwinding en enthousiasme; zeer gespannen van verwachting"] },
-  { term:"sjouwen", def:"zware dingen moeizaam dragen of slepen", wrong:["veel kritiek of aanvallen krijgen","van of voor een individu; niet openbaar of overheids-","iets bedenken; een inval krijgen"] },
-  { term:"slavernij, de", def:"het systeem waarbij mensen als eigendom worden behandeld en gedwongen werken", wrong:["het onderwerp of thema is iets of iemand","een handeling of actie, vaak met een bepaald doel","ervoor zorgen dat iets niet te erg of te ver gaat"] },
-  { term:"stout", def:"ongehoorzaam en baldadig gedrag van een kind", wrong:["er komen heel veel reacties of mensen tegelijk","snel en stevig vastpakken","een verbinding leggen tussen twee dingen"] },
-  { term:"tak, de", def:"een vertakking van een boom; ook: een roe of slaag", wrong:["een gevoel van spanning en enthousiasme","snel en stevig vastpakken","iemand met een gebaar naar je toe roepen"] },
-  { term:"veeg, de", def:"een streep of vlek; ook: een klap of slag", wrong:["een pijp in een gebouw waardoor rook naar buiten gaat","van of voor een individu; niet openbaar of overheids-","er komen heel veel reacties of mensen tegelijk"] },
-  { term:"wenken", def:"iemand met een gebaar naar je toe roepen", wrong:["namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt","een stoet mensen die door de straat trekt","iets bedenken; een inval krijgen"] },
-  { term:"werkelijk", def:"echt; in werkelijkheid; daadwerkelijk", wrong:["iemand pesterig of speels lastigvallen","een hoge geestelijke in de christelijke kerk","een stoet mensen die door de straat trekt"] },
-  { term:"aan iets komen", def:"iets in bezit krijgen; ergens bij kunnen", wrong:["een plek innemen of in bezit nemen","iemand pesterig of speels lastigvallen","zware dingen moeizaam dragen of slepen"] },
-  { term:"de bel gaat", def:"er wordt aangebeld; de deurbel klinkt", wrong:["van of voor een individu; niet openbaar of overheids-","een handeling of actie, vaak met een bepaald doel","vol opwinding en enthousiasme; zeer gespannen van verwachting"] },
-  { term:"de schoen zetten", def:"je schoen neerzetten zodat Sinterklaas er een cadeau in kan doen", wrong:["namens iemand anders handelen of spreken","iemand pesterig of speels lastigvallen","vol opwinding en enthousiasme; zeer gespannen van verwachting"] },
-  { term:"in verband brengen met", def:"een verbinding leggen tussen twee dingen", wrong:["het onderwerp of thema is iets of iemand","echt; in werkelijkheid; daadwerkelijk","zware dingen moeizaam dragen of slepen"] },
-  { term:"lootjes trekken", def:"namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt", wrong:["het onderwerp of thema is iets of iemand","een streep of vlek; ook: een klap of slag","een lap stof voor een raam of als afsluiting"] },
-  { term:"uit naam van iemand", def:"namens iemand anders handelen of spreken", wrong:["een groot dier dat gebruikt wordt om op te rijden of mee te werken","iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden","een gevoel van spanning en enthousiasme"] },
-  { term:"uitgroeien tot iets/iemand", def:"langzaam iets groters of belanrijkers worden", wrong:["een verbinding leggen tussen twee dingen","je schoen neerzetten zodat Sinterklaas er een cadeau in kan doen","een groot dier dat gebruikt wordt om op te rijden of mee te werken"] },
-  { term:"binnen de perken houden", def:"ervoor zorgen dat iets niet te erg of te ver gaat", wrong:["namens iemand anders handelen of spreken","ongehoorzaam en baldadig gedrag van een kind","zware dingen moeizaam dragen of slepen"] },
-  { term:"de deur uit (doen/zijn)", def:"versturen of vertrekken", wrong:["zwart poeder dat achterblijft na verbranding","een stoet mensen die door de straat trekt","iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden"] },
-  { term:"het loopt storm", def:"er komen heel veel reacties of mensen tegelijk", wrong:["iets in bezit krijgen; ergens bij kunnen","echt; in werkelijkheid; daadwerkelijk","een aspect of laag van iets; ook: een afmeting"] },
-  { term:"in het teken van iets/iemand", def:"het onderwerp of thema is iets of iemand", wrong:["een hoge geestelijke in de christelijke kerk","geld verstrekken voor iets","een lap stof voor een raam of als afsluiting"] },
-  { term:"onder vuur liggen", def:"veel kritiek of aanvallen krijgen", wrong:["versturen of vertrekken","snel en stevig vastpakken","iets bedenken; een inval krijgen"] },
-  { term:"op (een idee) komen", def:"iets bedenken; een inval krijgen", wrong:["ongehoorzaam en baldadig gedrag van een kind","langzaam iets groters of belanrijkers worden","een handeling of actie, vaak met een bepaald doel"] }
+  { term:"afspreken*", def:"een tijd of afspraak met iemand vastleggen", wrong:["er wordt aangebeld; de deurbel klinkt", "een afspraak met iemand afzeggen", "iemand toevallig tegenkomen"] },
+  { term:"baseren op", def:"iets op iets anders gronden of steunen", wrong:["zwart poeder dat achterblijft na verbranding", "iets helemaal los zien van iets anders", "iets bovenop iets anders zetten"] },
+  { term:"bezetten", def:"een plek innemen of in bezit nemen", wrong:["ervoor zorgen dat iets niet te erg of te ver gaat", "een plek verlaten of vrijgeven", "een plek schoonmaken"] },
+  { term:"bisschop, de", def:"een hoge geestelijke in de christelijke kerk", wrong:["een pijp in een gebouw waardoor rook naar buiten gaat", "een gewone gelovige in de christelijke kerk", "een hoge ambtenaar bij de gemeente"] },
+  { term:"daad, de", def:"een handeling of actie, vaak met een bepaald doel", wrong:["ervoor zorgen dat iets niet te erg of te ver gaat", "een gedachte of plan, zonder actie", "een woord of uitspraak"] },
+  { term:"dimensie, de", def:"een aspect of laag van iets; ook: een afmeting", wrong:["wat te maken heeft met opvoeding en onderwijs", "een fout of probleem in iets; ook: een gewicht", "het doel van iets; ook: een kleur"] },
+  { term:"emmer, de", def:"een open bak met een handvat, gebruikt om vloeistoffen te dragen", wrong:["een verbinding leggen tussen twee dingen", "een dichte fles met een dop", "een plat bord om eten op te leggen"] },
+  { term:"financieren", def:"geld verstrekken voor iets", wrong:["een groot dier dat gebruikt wordt om op te rijden of mee te werken", "geld terugvragen voor iets", "uitrekenen hoeveel iets kost"] },
+  { term:"geheim, het", def:"iets wat niet voor anderen bestemd is; iets wat verborgen wordt gehouden", wrong:["langzaam iets groters of belanrijkers worden", "iets wat iedereen mag weten; nieuws", "een raadsel dat je moet oplossen"] },
+  { term:"gordijn, het", def:"een lap stof voor een raam of als afsluiting", wrong:["de media; kranten, tijdschriften en journalisten", "een glazen ruit in een raam", "een kleed op de vloer"] },
+  { term:"grijpen*", def:"snel en stevig vastpakken", wrong:["iemand met een gebaar naar je toe roepen", "langzaam loslaten", "voorzichtig aanraken"] },
+  { term:"koloniaal", def:"wat te maken heeft met een kolonie of kolonisatie", wrong:["iets op iets anders gronden of steunen", "wat te maken heeft met onafhankelijkheid", "wat te maken heeft met de koning"] },
+  { term:"ondergeschikt", def:"minder belangrijk; in een lagere positie", wrong:["veel kritiek of aanvallen krijgen", "belangrijker; in een hogere positie", "even belangrijk; gelijk"] },
+  { term:"opgewonden", def:"vol opwinding en enthousiasme; zeer gespannen van verwachting", wrong:["ervoor zorgen dat iets niet te erg of te ver gaat", "rustig en kalm; zonder verwachting", "moe en slaperig"] },
+  { term:"optocht, de", def:"een stoet mensen die door de straat trekt", wrong:["een hoge geestelijke in de christelijke kerk", "een vergadering in een zaal", "een groep mensen die stilstaat en wacht"] },
+  { term:"opwinding, de", def:"een gevoel van spanning en enthousiasme", wrong:["een groot dier dat gebruikt wordt om op te rijden of mee te werken", "een gevoel van rust en kalmte", "een gevoel van verveling"] },
+  { term:"paard, het", def:"een groot dier dat gebruikt wordt om op te rijden of mee te werken", wrong:["een tijd of afspraak met iemand vastleggen", "een klein dier dat in huis woont", "een groot dier dat melk geeft"] },
+  { term:"particulier", def:"van of voor een individu; niet openbaar of overheids-", wrong:["een streep of vlek; ook: een klap of slag", "van of voor de overheid; openbaar", "van of voor een bedrijf"] },
+  { term:"pedagogisch", def:"wat te maken heeft met opvoeding en onderwijs", wrong:["van of voor een individu; niet openbaar of overheids-", "wat te maken heeft met geneeskunde", "wat te maken heeft met politiek"] },
+  { term:"pers, de", def:"de media; kranten, tijdschriften en journalisten", wrong:["ervoor zorgen dat iets niet te erg of te ver gaat", "de politie en justitie", "het publiek dat kranten leest"] },
+  { term:"plagen", def:"iemand pesterig of speels lastigvallen", wrong:["een speelgoedfiguur in de vorm van een mens of dier", "iemand helpen of troosten", "iemand ernstig mishandelen"] },
+  { term:"pop, de", def:"een speelgoedfiguur in de vorm van een mens of dier", wrong:["de media; kranten, tijdschriften en journalisten", "een echt, levend dier", "een bal om mee te spelen"] },
+  { term:"rijm, het", def:"woorden die op elkaar rijmen; ook: een gedichtje", wrong:["ongehoorzaam en baldadig gedrag van een kind", "woorden die niets met elkaar te maken hebben; ook: een lang verhaal", "het ritme van muziek; ook: een lied zonder woorden"] },
+  { term:"roet, het", def:"zwart poeder dat achterblijft na verbranding", wrong:["een stoet mensen die door de straat trekt", "wit poeder dat je gebruikt bij het bakken", "de rook die uit een vuur komt"] },
+  { term:"schoorsteen, de", def:"een pijp in een gebouw waardoor rook naar buiten gaat", wrong:["een open bak met een handvat, gebruikt om vloeistoffen te dragen", "een raam in het dak", "een kachel in de kamer"] },
+  { term:"sjouwen", def:"zware dingen moeizaam dragen of slepen", wrong:["iets bedenken; een inval krijgen", "lichte dingen makkelijk dragen", "dingen laten bezorgen"] },
+  { term:"slavernij, de", def:"het systeem waarbij mensen als eigendom worden behandeld en gedwongen werken", wrong:["wat te maken heeft met opvoeding en onderwijs", "het systeem waarbij mensen vrij kunnen werken voor loon", "het systeem waarbij mensen belasting betalen"] },
+  { term:"stout", def:"ongehoorzaam en baldadig gedrag van een kind", wrong:["namens iemand anders handelen of spreken", "gehoorzaam en braaf gedrag van een kind", "dapper gedrag van een volwassene"] },
+  { term:"tak, de", def:"een vertakking van een boom; ook: een roe of slaag", wrong:["geld verstrekken voor iets", "de wortel van een boom; ook: een cadeau", "een blad van een boom; ook: een snoepje"] },
+  { term:"veeg, de", def:"een streep of vlek; ook: een klap of slag", wrong:["het onderwerp of thema is iets of iemand", "een rechte lijn met een liniaal; ook: een aai", "een gat; ook: een kus"] },
+  { term:"wenken", def:"iemand met een gebaar naar je toe roepen", wrong:["iets in bezit krijgen; ergens bij kunnen", "iemand met een gebaar wegsturen", "iemand groeten met je hoed"] },
+  { term:"werkelijk", def:"echt; in werkelijkheid; daadwerkelijk", wrong:["er komen heel veel reacties of mensen tegelijk", "niet echt; in je fantasie", "misschien; mogelijk"] },
+  { term:"aan iets komen", def:"iets in bezit krijgen; ergens bij kunnen", wrong:["een open bak met een handvat, gebruikt om vloeistoffen te dragen", "iets kwijtraken; ergens niet bij kunnen", "ergens aankomen met de trein"] },
+  { term:"de bel gaat", def:"er wordt aangebeld; de deurbel klinkt", wrong:["iemand pesterig of speels lastigvallen", "de deur gaat open", "de telefoon is stil"] },
+  { term:"de schoen zetten", def:"je schoen neerzetten zodat Sinterklaas er een cadeau in kan doen", wrong:["namens iemand anders handelen of spreken", "je schoenen poetsen voor een feest", "je schoenen uittrekken bij de deur"] },
+  { term:"in verband brengen met", def:"een verbinding leggen tussen twee dingen", wrong:["een tijd of afspraak met iemand vastleggen", "twee dingen los van elkaar zien", "iemand naar het ziekenhuis brengen"] },
+  { term:"lootjes trekken", def:"namen uit een pot trekken om te bepalen wie voor wie een cadeau koopt", wrong:["namens iemand anders handelen of spreken", "cadeaus uitpakken op een feest", "een loterij winnen"] },
+  { term:"uit naam van iemand", def:"namens iemand anders handelen of spreken", wrong:["een plek innemen of in bezit nemen", "tegen de wil van iemand", "de naam van iemand vergeten"] },
+  { term:"uitgroeien tot iets/iemand", def:"langzaam iets groters of belanrijkers worden", wrong:["een pijp in een gebouw waardoor rook naar buiten gaat", "langzaam kleiner of minder belangrijk worden", "uit je kleren groeien"] },
+  { term:"binnen de perken houden", def:"ervoor zorgen dat iets niet te erg of te ver gaat", wrong:["wat te maken heeft met opvoeding en onderwijs", "iets laten groeien zonder grens", "iets binnen houden"] },
+  { term:"de deur uit (doen/zijn)", def:"versturen of vertrekken", wrong:["iemand pesterig of speels lastigvallen", "binnenhalen of thuisblijven", "de deur dichtdoen"] },
+  { term:"het loopt storm", def:"er komen heel veel reacties of mensen tegelijk", wrong:["een stoet mensen die door de straat trekt", "er komt niemand", "het waait hard"] },
+  { term:"in het teken van iets/iemand", def:"het onderwerp of thema is iets of iemand", wrong:["een handeling of actie, vaak met een bepaald doel", "tegen iets of iemand", "met een tekening van iets of iemand"] },
+  { term:"onder vuur liggen", def:"veel kritiek of aanvallen krijgen", wrong:["ongehoorzaam en baldadig gedrag van een kind", "veel complimenten krijgen", "in de zon liggen"] },
+  { term:"op (een idee) komen", def:"iets bedenken; een inval krijgen", wrong:["geld verstrekken voor iets", "een idee vergeten", "een idee afwijzen"] }
 ];
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do { shuffled = shuffle(opts); attempts++; }
+  while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
 function render(){
   const root=document.getElementById('quiz-root');
   if(current>=questions.length){ renderScore(); return; }
   const q=questions[current];
-  const opts=shuffle([q.def,...q.wrong]);
+  const opts=shuffleOpts([q.def,...q.wrong], q.def);
   const pct=Math.round((current/questions.length)*100);
   root.innerHTML=`<div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="quiz-card"><div class="quiz-label">Wat betekent:</div><div class="quiz-word">${q.term}</div><div class="options">${opts.map(o=>`<button class="opt" onclick="check(this,'${o.replace(/'/g,"\'")}', ${o===q.def})">${o}</button>`).join('')}</div><div class="feedback" id="fb" style="display:none"></div><button class="next-btn" id="nxt" style="display:none" onclick="next()">Volgende →</button></div>`;
 }
@@ -918,6 +949,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

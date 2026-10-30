@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 2.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -770,6 +785,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 2.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -791,45 +807,45 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"heuvel, de", def:"een stuk land dat hoger ligt dan de omgeving, lager dan een berg", wrong:["wegjagen; zorgen dat een dier of mens weggaat","alle dieren van één soort in een bepaald gebied","strijd tussen dieren, mensen of bedrijven om hetzelfde"] },
-  { term:"aantasten", def:"beschadigen; slechter maken", wrong:["lange tijd te weinig te eten hebben","een maatstaf of regel waarmee je iets beoordeelt","bomen omhakken"] },
-  { term:"bek, de", def:"de mond van een dier, vooral van een vogel", wrong:["beschadigen; slechter maken","een klein zoogdier dat in het donker vliegt","wat belangrijk of goed is voor iemand of iets"] },
-  { term:"belang, het", def:"wat belangrijk of goed is voor iemand of iets", wrong:["een klein groen of bruin dier dat kan springen en in en bij het water leeft","jongen krijgen; nakomelingen maken","bomen omhakken"] },
-  { term:"concurrentie, de", def:"strijd tussen dieren, mensen of bedrijven om hetzelfde", wrong:["nog over zijn als de rest weg is","niet goed gaan; slecht groeien of leven","wat belangrijk of goed is voor iemand of iets"] },
-  { term:"criterium, het", def:"een maatstaf of regel waarmee je iets beoordeelt", wrong:["producten of dieren uit het buitenland in een land brengen","op dat; ook: daarna","ziektes doorgeven aan een ander mens of dier"] },
-  { term:"daarop", def:"op dat; ook: daarna", wrong:["helemaal gegroeid; geen kind of jong dier meer","niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt","wat belangrijk of goed is voor iemand of iets"] },
-  { term:"exotisch", def:"uit een ver, vaak warm land", wrong:["helemaal laten verdwijnen, zodat er niets meer van over is","helemaal gegroeid; geen kind of jong dier meer","wegjagen; zorgen dat een dier of mens weggaat"] },
-  { term:"importeren", def:"producten of dieren uit het buitenland in een land brengen", wrong:["op dat; ook: daarna","lange tijd te weinig te eten hebben","een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst"] },
-  { term:"inheems", def:"van oorsprong thuis in een land of gebied", wrong:["de harde buitenkant van een weekdier, die je op het strand vindt","een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst","een kleine plas water, vaak in een tuin of park"] },
-  { term:"kappen", def:"bomen omhakken", wrong:["iets gaan doen om een probleem aan te pakken","een kleine plas water, vaak in een tuin of park","lange tijd te weinig te eten hebben"] },
-  { term:"kikker, de", def:"een klein groen of bruin dier dat kan springen en in en bij het water leeft", wrong:["een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst","uit of zoals de warme landen rond de evenaar","in de afgelopen periode; recent"] },
-  { term:"oester, de", def:"een schelpdier uit de zee dat je kunt eten", wrong:["bomen omhakken","een klein groen of bruin dier dat kan springen en in en bij het water leeft","de mond van een dier, vooral van een vogel"] },
-  { term:"ontsnappen", def:"wegkomen uit een plek waar je opgesloten bent", wrong:["strijd tussen dieren, mensen of bedrijven om hetzelfde","wat belangrijk of goed is voor iemand of iets","wild en niet verzorgd; ook: grof"] },
-  { term:"overblijven*", def:"nog over zijn als de rest weg is", wrong:["op dat; ook: daarna","niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt","de wegen in een dorp of stad waar je niet hard mag rijden"] },
-  { term:"overdreven", def:"te sterk; meer dan nodig of dan waar is", wrong:["uit of zoals de warme landen rond de evenaar","alle dieren van één soort in een bepaald gebied","wat belangrijk of goed is voor iemand of iets"] },
-  { term:"populatie, de", def:"alle dieren van één soort in een bepaald gebied", wrong:["uit of zoals de warme landen rond de evenaar","de harde buitenkant van een weekdier, die je op het strand vindt","op dat; ook: daarna"] },
-  { term:"regel, de", def:"een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst", wrong:["iets gaan doen om een probleem aan te pakken","iemand die vis vangt, als beroep of hobby","de mond van een dier, vooral van een vogel"] },
-  { term:"ruig", def:"wild en niet verzorgd; ook: grof", wrong:["bomen omhakken","producten of dieren uit het buitenland in een land brengen","iets later doen dan gepland"] },
-  { term:"schelp, de", def:"de harde buitenkant van een weekdier, die je op het strand vindt", wrong:["de mond van een dier, vooral van een vogel","lange tijd te weinig te eten hebben","een maatstaf of regel waarmee je iets beoordeelt"] },
-  { term:"terrein, het", def:"een stuk grond met een bepaald doel", wrong:["een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst","de harde buitenkant van een weekdier, die je op het strand vindt","iemand die vis vangt, als beroep of hobby"] },
-  { term:"tropisch", def:"uit of zoals de warme landen rond de evenaar", wrong:["een stuk land dat hoger ligt dan de omgeving, lager dan een berg","nog over zijn als de rest weg is","strijd tussen dieren, mensen of bedrijven om hetzelfde"] },
-  { term:"uitroeien", def:"helemaal laten verdwijnen, zodat er niets meer van over is", wrong:["wegjagen; zorgen dat een dier of mens weggaat","bomen omhakken","ziektes doorgeven aan een ander mens of dier"] },
-  { term:"uitstellen", def:"iets later doen dan gepland", wrong:["te sterk; meer dan nodig of dan waar is","meereizen met iets of iemand; ook: profiteren van iets","lange tijd te weinig te eten hebben"] },
-  { term:"verjagen*", def:"wegjagen; zorgen dat een dier of mens weggaat", wrong:["een klein zoogdier dat in het donker vliegt","een maatstaf of regel waarmee je iets beoordeelt","van oorsprong thuis in een land of gebied"] },
-  { term:"vijver, de", def:"een kleine plas water, vaak in een tuin of park", wrong:["iets gaan doen om een probleem aan te pakken","iets later doen dan gepland","strijd tussen dieren, mensen of bedrijven om hetzelfde"] },
-  { term:"visser, de", def:"iemand die vis vangt, als beroep of hobby", wrong:["meereizen met iets of iemand; ook: profiteren van iets","de wegen in een dorp of stad waar je niet hard mag rijden","niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt"] },
-  { term:"vleermuis, de", def:"een klein zoogdier dat in het donker vliegt", wrong:["een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst","een stuk grond met een bepaald doel","uit of zoals de warme landen rond de evenaar"] },
-  { term:"volwassen", def:"helemaal gegroeid; geen kind of jong dier meer", wrong:["in de afgelopen periode; recent","wild en niet verzorgd; ook: grof","strijd tussen dieren, mensen of bedrijven om hetzelfde"] },
-  { term:"voorkomen* (vóórkomen)", def:"scheidbaar werkwoord (het komt voor): ergens te vinden zijn; bestaan of gebeuren", wrong:["uit of zoals de warme landen rond de evenaar","uit een ver, vaak warm land","alle dieren van één soort in een bepaald gebied"] },
-  { term:"voorkomen* (voorkómen)", def:"niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt", wrong:["wild en niet verzorgd; ook: grof","nog over zijn als de rest weg is","meereizen met iets of iemand; ook: profiteren van iets"] },
-  { term:"voortplanten, zich", def:"jongen krijgen; nakomelingen maken", wrong:["wild en niet verzorgd; ook: grof","uit een ver, vaak warm land","helemaal laten verdwijnen, zodat er niets meer van over is"] },
-  { term:"actie ondernemen", def:"iets gaan doen om een probleem aan te pakken", wrong:["ziektes doorgeven aan een ander mens of dier","uit of zoals de warme landen rond de evenaar","wat belangrijk of goed is voor iemand of iets"] },
-  { term:"de laatste tijd", def:"in de afgelopen periode; recent", wrong:["op dat; ook: daarna","lange tijd te weinig te eten hebben","uit of zoals de warme landen rond de evenaar"] },
-  { term:"het slecht doen", def:"niet goed gaan; slecht groeien of leven", wrong:["uit een ver, vaak warm land","wat belangrijk of goed is voor iemand of iets","van oorsprong thuis in een land of gebied"] },
-  { term:"honger lijden", def:"lange tijd te weinig te eten hebben", wrong:["op dat; ook: daarna","producten of dieren uit het buitenland in een land brengen","een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst"] },
-  { term:"meeliften met iets/iemand", def:"meereizen met iets of iemand; ook: profiteren van iets", wrong:["niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt","bomen omhakken","iets gaan doen om een probleem aan te pakken"] },
-  { term:"ziektes overbrengen", def:"ziektes doorgeven aan een ander mens of dier", wrong:["iets gaan doen om een probleem aan te pakken","uit of zoals de warme landen rond de evenaar","niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt"] },
-  { term:"de bebouwde kom", def:"de wegen in een dorp of stad waar je niet hard mag rijden", wrong:["lange tijd te weinig te eten hebben","strijd tussen dieren, mensen of bedrijven om hetzelfde","in de afgelopen periode; recent"] }
+  { term:"heuvel, de", def:"een stuk land dat hoger ligt dan de omgeving, lager dan een berg", wrong:["strijd tussen dieren, mensen of bedrijven om hetzelfde", "een stuk land dat lager ligt dan de omgeving, zoals een dal", "een hoge muur van aarde langs een rivier"] },
+  { term:"aantasten", def:"beschadigen; slechter maken", wrong:["op dat; ook: daarna", "herstellen; beter maken", "beschermen; veilig houden"] },
+  { term:"bek, de", def:"de mond van een dier, vooral van een vogel", wrong:["helemaal gegroeid; geen kind of jong dier meer", "de neus van een dier, vooral van een hond", "de staart van een dier, vooral van een vis"] },
+  { term:"belang, het", def:"wat belangrijk of goed is voor iemand of iets", wrong:["producten of dieren uit het buitenland in een land brengen", "wat gevaarlijk of slecht is voor iemand of iets", "wat iets kost voor iemand of iets"] },
+  { term:"concurrentie, de", def:"strijd tussen dieren, mensen of bedrijven om hetzelfde", wrong:["jongen krijgen; nakomelingen maken", "samenwerking tussen dieren, mensen of bedrijven", "de prijs die bedrijven voor iets vragen"] },
+  { term:"criterium, het", def:"een maatstaf of regel waarmee je iets beoordeelt", wrong:["een klein zoogdier dat in het donker vliegt", "een mening die je zonder reden over iets hebt", "een verslag over hoe iets is gegaan"] },
+  { term:"daarop", def:"op dat; ook: daarna", wrong:["de harde buitenkant van een weekdier, die je op het strand vindt", "daaronder; ook: daarvoor", "daarin; ook: tegelijk"] },
+  { term:"exotisch", def:"uit een ver, vaak warm land", wrong:["de mond van een dier, vooral van een vogel", "uit de buurt, vaak uit je eigen dorp", "heel oud en zeldzaam"] },
+  { term:"importeren", def:"producten of dieren uit het buitenland in een land brengen", wrong:["bomen omhakken", "producten of dieren naar het buitenland verkopen", "producten of dieren in een land zelf maken of fokken"] },
+  { term:"inheems", def:"van oorsprong thuis in een land of gebied", wrong:["uit of zoals de warme landen rond de evenaar", "van oorsprong uit een ander land of gebied", "pas kort geleden ontdekt in een land of gebied"] },
+  { term:"kappen", def:"bomen omhakken", wrong:["een stuk land dat hoger ligt dan de omgeving, lager dan een berg", "bomen planten", "bomen water geven"] },
+  { term:"kikker, de", def:"een klein groen of bruin dier dat kan springen en in en bij het water leeft", wrong:["iets later doen dan gepland", "een klein dier met een huisje op zijn rug dat langzaam kruipt", "een klein vogeltje dat bij het water leeft"] },
+  { term:"oester, de", def:"een schelpdier uit de zee dat je kunt eten", wrong:["een klein groen of bruin dier dat kan springen en in en bij het water leeft", "een vis uit de rivier die je kunt eten", "een plant uit de zee die je kunt eten"] },
+  { term:"ontsnappen", def:"wegkomen uit een plek waar je opgesloten bent", wrong:["een kleine plas water, vaak in een tuin of park", "ergens opgesloten worden", "ergens vrijwillig naartoe gaan"] },
+  { term:"overblijven*", def:"nog over zijn als de rest weg is", wrong:["ziektes doorgeven aan een ander mens of dier", "helemaal op zijn", "erbij komen"] },
+  { term:"overdreven", def:"te sterk; meer dan nodig of dan waar is", wrong:["een maatstaf of regel waarmee je iets beoordeelt", "te zwak; minder dan nodig", "precies goed; zoals het moet"] },
+  { term:"populatie, de", def:"alle dieren van één soort in een bepaald gebied", wrong:["bomen omhakken", "alle soorten dieren in de hele wereld", "het gebied waar een diersoort leeft"] },
+  { term:"regel, de", def:"een afspraak of voorschrift over wat wel en niet mag; ook: een lijn tekst", wrong:["te sterk; meer dan nodig of dan waar is", "een advies dat je mag negeren; ook: een plaatje", "een vraag over wat wel en niet mag; ook: een woord"] },
+  { term:"ruig", def:"wild en niet verzorgd; ook: grof", wrong:["de mond van een dier, vooral van een vogel", "netjes en goed verzorgd; ook: zacht", "klein en rustig; ook: stil"] },
+  { term:"schelp, de", def:"de harde buitenkant van een weekdier, die je op het strand vindt", wrong:["in de afgelopen periode; recent", "een steen die je in de bergen vindt", "het zachte binnenste van een weekdier"] },
+  { term:"terrein, het", def:"een stuk grond met een bepaald doel", wrong:["beschadigen; slechter maken", "een gebouw met een bepaald doel", "een stuk grond zonder eigenaar"] },
+  { term:"tropisch", def:"uit of zoals de warme landen rond de evenaar", wrong:["alle dieren van één soort in een bepaald gebied", "uit of zoals de koude landen bij de noordpool", "uit of zoals de droge woestijn"] },
+  { term:"uitroeien", def:"helemaal laten verdwijnen, zodat er niets meer van over is", wrong:["meereizen met iets of iemand; ook: profiteren van iets", "laten groeien, zodat er steeds meer van komt", "tijdelijk weghalen en later terugbrengen"] },
+  { term:"uitstellen", def:"iets later doen dan gepland", wrong:["de wegen in een dorp of stad waar je niet hard mag rijden", "iets eerder doen dan gepland", "iets helemaal niet meer doen"] },
+  { term:"verjagen*", def:"wegjagen; zorgen dat een dier of mens weggaat", wrong:["van oorsprong thuis in een land of gebied", "lokken; zorgen dat een dier of mens komt", "vangen; zorgen dat een dier niet weg kan"] },
+  { term:"vijver, de", def:"een kleine plas water, vaak in een tuin of park", wrong:["scheidbaar werkwoord (het komt voor): ergens te vinden zijn; bestaan of gebeuren", "een grote rivier die naar de zee stroomt", "een bak met water voor vogels"] },
+  { term:"visser, de", def:"iemand die vis vangt, als beroep of hobby", wrong:["meereizen met iets of iemand; ook: profiteren van iets", "iemand die vis verkoopt in een winkel", "iemand die vis klaarmaakt in een restaurant"] },
+  { term:"vleermuis, de", def:"een klein zoogdier dat in het donker vliegt", wrong:["producten of dieren uit het buitenland in een land brengen", "een kleine vogel die alleen overdag vliegt", "een klein knaagdier dat onder de grond woont"] },
+  { term:"volwassen", def:"helemaal gegroeid; geen kind of jong dier meer", wrong:["nog over zijn als de rest weg is", "nog niet helemaal gegroeid; nog een kind of jong dier", "heel oud; aan het eind van het leven"] },
+  { term:"voorkomen* (vóórkomen)", def:"scheidbaar werkwoord (het komt voor): ergens te vinden zijn; bestaan of gebeuren", wrong:["iets gaan doen om een probleem aan te pakken", "scheidbaar werkwoord (het komt voor): verdwijnen; niet meer bestaan", "scheidbaar werkwoord (het komt voor): vooraan gaan staan"] },
+  { term:"voorkomen* (voorkómen)", def:"niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets niet gebeurt", wrong:["een stuk grond met een bepaald doel", "niet scheidbaar werkwoord (ik voorkom): ervoor zorgen dat iets wel gebeurt", "niet scheidbaar werkwoord (ik voorkom): iets van tevoren zien aankomen"] },
+  { term:"voortplanten, zich", def:"jongen krijgen; nakomelingen maken", wrong:["helemaal laten verdwijnen, zodat er niets meer van over is", "groeien; groter worden", "verhuizen; naar een ander gebied gaan"] },
+  { term:"actie ondernemen", def:"iets gaan doen om een probleem aan te pakken", wrong:["een kleine plas water, vaak in een tuin of park", "afwachten en niets doen aan een probleem", "praten over een probleem zonder iets te doen"] },
+  { term:"de laatste tijd", def:"in de afgelopen periode; recent", wrong:["helemaal laten verdwijnen, zodat er niets meer van over is", "heel lang geleden", "in de komende periode"] },
+  { term:"het slecht doen", def:"niet goed gaan; slecht groeien of leven", wrong:["helemaal laten verdwijnen, zodat er niets meer van over is", "iets expres verkeerd doen", "goed gaan; snel groeien"] },
+  { term:"honger lijden", def:"lange tijd te weinig te eten hebben", wrong:["niet goed gaan; slecht groeien of leven", "een korte tijd niet eten omdat je dat wilt", "te veel eten hebben"] },
+  { term:"meeliften met iets/iemand", def:"meereizen met iets of iemand; ook: profiteren van iets", wrong:["een klein groen of bruin dier dat kan springen en in en bij het water leeft", "iemand afzetten op een plek; ook: iemand helpen", "alleen reizen; ook: zelf hard werken"] },
+  { term:"ziektes overbrengen", def:"ziektes doorgeven aan een ander mens of dier", wrong:["alle dieren van één soort in een bepaald gebied", "ziektes genezen bij een ander mens of dier", "ziektes onderzoeken in een laboratorium"] },
+  { term:"de bebouwde kom", def:"de wegen in een dorp of stad waar je niet hard mag rijden", wrong:["uit een ver, vaak warm land", "de wegen buiten een dorp of stad waar je hard mag rijden", "de huizen aan de rand van een stad"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -861,6 +877,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 4.3 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -836,6 +851,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 4.3 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -857,51 +873,51 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"aanleiding, de", def:"de reden of oorzaak waardoor iets gebeurt", wrong:["eten, drinken of gebruiken","cijfers die iets laten zien over een groep","hoe erg iets is"] },
-  { term:"aannemen*", def:"iets accepteren of krijgen; ook: denken dat iets zo is", wrong:["een wond of beschadiging van het lichaam","in de betekenis van ... (de financiën)","in staat om voor jezelf op te komen"] },
-  { term:"beschadiging, de", def:"schade aan iets", wrong:["de relatie tussen mensen of dingen","echt; in werkelijkheid","een lange periode in de geschiedenis"] },
-  { term:"calvinistisch", def:"streng en zuinig, zonder overdreven luxe", wrong:["een bedreiging; zeggen dat je iets ergs zult doen","de reden of oorzaak waardoor iets gebeurt","geld eisen; ook: vooruitgaan"] },
-  { term:"consumeren", def:"eten, drinken of gebruiken", wrong:["laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen","de manier van denken van een persoon of groep","gewenst; goed om te hebben of te doen"] },
-  { term:"daadwerkelijk", def:"echt; in werkelijkheid", wrong:["een lange periode in de geschiedenis","laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen","een document of verzoek officieel inleveren"] },
-  { term:"doorschieten*", def:"te ver gaan; overdrijven", wrong:["iemand die dicht bij je staat, zoals familie; ook: je medemens","hoe erg iets is","iemand schade doen"] },
-  { term:"dreigement, het", def:"een bedreiging; zeggen dat je iets ergs zult doen", wrong:["iemand die dicht bij je staat, zoals familie; ook: je medemens","in staat om voor jezelf op te komen","iemand die rechten heeft gestudeerd"] },
-  { term:"eisen", def:"krachtig vragen; zeggen dat je iets per se wilt", wrong:["lichamelijke schade; een verwonding","de relatie tussen mensen of dingen","echt; in werkelijkheid"] },
-  { term:"erkenning, de", def:"het officieel accepteren of waarderen van iets", wrong:["een bedreiging; zeggen dat je iets ergs zult doen","argumenten geven vóór iets of iemand","een fase; een moment in een ontwikkeling"] },
-  { term:"ernst, de", def:"hoe erg iets is", wrong:["een rechtszaak beginnen","streng en zuinig, zonder overdreven luxe","een wond of beschadiging van het lichaam"] },
-  { term:"indienen", def:"een document of verzoek officieel inleveren", wrong:["schade aan iets","de manier van denken van een persoon of groep","gewenst; goed om te hebben of te doen"] },
-  { term:"jurist, de", def:"iemand die rechten heeft gestudeerd", wrong:["een bedreiging; zeggen dat je iets ergs zult doen","in de betekenis van ... (de financiën)","beginnen met zoeken"] },
-  { term:"letsel, het", def:"lichamelijke schade; een verwonding", wrong:["dreigen te gebeuren","de situatie of staat waarin iets of iemand is","het officieel accepteren of waarderen van iets"] },
-  { term:"materieel", def:"met dingen of geld te maken, niet met gevoelens of het lichaam", wrong:["dreigen te gebeuren","laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen","iets wat geregeld is voor mensen, zoals een dienst of hulpmiddel"] },
-  { term:"mentaliteit, de", def:"de manier van denken van een persoon of groep", wrong:["argumenten geven vóór iets of iemand","officieel geven","niet meer kunnen bewegen"] },
-  { term:"mondig", def:"in staat om voor jezelf op te komen", wrong:["goedvinden; laten gebeuren","lichamelijke schade; een verwonding","het officieel accepteren of waarderen van iets"] },
-  { term:"naaste, de", def:"iemand die dicht bij je staat, zoals familie; ook: je medemens", wrong:["helemaal; compleet","iets accepteren of krijgen; ook: denken dat iets zo is","de reden of oorzaak waardoor iets gebeurt"] },
-  { term:"overslaan*", def:"iets niet doen of iets missen", wrong:["helemaal; compleet","hoe erg iets is","een fase; een moment in een ontwikkeling"] },
-  { term:"schram, de", def:"een kleine, ondiepe wond of kras", wrong:["hoe erg iets is","de relatie tussen mensen of dingen","goedvinden; laten gebeuren"] },
-  { term:"stadium, het", def:"een fase; een moment in een ontwikkeling", wrong:["schade aan iets","zorgen dat je klaar bent om in actie te komen","laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen"] },
-  { term:"statistiek, de", def:"cijfers die iets laten zien over een groep", wrong:["een document of verzoek officieel inleveren","iets wat geregeld is voor mensen, zoals een dienst of hulpmiddel","gewenst; goed om te hebben of te doen"] },
-  { term:"tijdperk, het", def:"een lange periode in de geschiedenis", wrong:["een wond of beschadiging van het lichaam","een rechtszaak beginnen","een tekst over wat er gebeurd is"] },
-  { term:"toekennen", def:"officieel geven", wrong:["hoe erg iets is","de situatie of staat waarin iets of iemand is","een kleine, ondiepe wond of kras"] },
-  { term:"toestaan*", def:"goedvinden; laten gebeuren", wrong:["geld eisen; ook: vooruitgaan","zorgen dat je klaar bent om in actie te komen","helemaal; compleet"] },
-  { term:"toestand, de", def:"de situatie of staat waarin iets of iemand is", wrong:["beginnen met zoeken","hoe erg iets is","een tekst over wat er gebeurd is"] },
-  { term:"uitwijzen*", def:"laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen", wrong:["hoe erg iets is","een wond of beschadiging van het lichaam","schade aan iets"] },
-  { term:"verhouding, de", def:"de relatie tussen mensen of dingen", wrong:["de situatie of staat waarin iets of iemand is","iemand schade doen","in de betekenis van ... (de financiën)"] },
-  { term:"verlamd", def:"niet meer kunnen bewegen", wrong:["een lange periode in de geschiedenis","beginnen met zoeken","iets niet doen of iets missen"] },
-  { term:"verslag, het", def:"een tekst over wat er gebeurd is", wrong:["laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen","in de betekenis van ... (de financiën)","iemand die rechten heeft gestudeerd"] },
-  { term:"verwerpen*", def:"afwijzen; niet accepteren", wrong:["zorgen dat je klaar bent om in actie te komen","iemand officieel oproepen om bij de rechter te verschijnen","de reden of oorzaak waardoor iets gebeurt"] },
-  { term:"verwonding, de", def:"een wond of beschadiging van het lichaam", wrong:["iemand schade doen","de neiging hebben om iets te doen","de relatie tussen mensen of dingen"] },
-  { term:"volledig", def:"helemaal; compleet", wrong:["streng en zuinig, zonder overdreven luxe","iemand schade doen","een document of verzoek officieel inleveren"] },
-  { term:"voorziening, de", def:"iets wat geregeld is voor mensen, zoals een dienst of hulpmiddel", wrong:["geld eisen; ook: vooruitgaan","iemand officieel oproepen om bij de rechter te verschijnen","eten, drinken of gebruiken"] },
-  { term:"vorderen", def:"geld eisen; ook: vooruitgaan", wrong:["streng en zuinig, zonder overdreven luxe","de reden of oorzaak waardoor iets gebeurt","het officieel accepteren of waarderen van iets"] },
-  { term:"wenselijk", def:"gewenst; goed om te hebben of te doen", wrong:["iemand die rechten heeft gestudeerd","schade aan iets","cijfers die iets laten zien over een groep"] },
-  { term:"geneigd zijn om iets te doen", def:"de neiging hebben om iets te doen", wrong:["goedvinden; laten gebeuren","iets wat geregeld is voor mensen, zoals een dienst of hulpmiddel","laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen"] },
-  { term:"iemand schade berokkenen", def:"iemand schade doen", wrong:["krachtig vragen; zeggen dat je iets per se wilt","een document of verzoek officieel inleveren","iets accepteren of krijgen; ook: denken dat iets zo is"] },
-  { term:"naar de rechter stappen", def:"een rechtszaak beginnen", wrong:["cijfers die iets laten zien over een groep","iemand die dicht bij je staat, zoals familie; ook: je medemens","geld eisen; ook: vooruitgaan"] },
-  { term:"op zoek gaan naar iets/iemand", def:"beginnen met zoeken", wrong:["helemaal; compleet","niet meer kunnen bewegen","hoe erg iets is"] },
-  { term:"pleiten voor iets/iemand", def:"argumenten geven vóór iets of iemand", wrong:["afwijzen; niet accepteren","het officieel accepteren of waarderen van iets","geld eisen; ook: vooruitgaan"] },
-  { term:"voor de rechter dagen", def:"iemand officieel oproepen om bij de rechter te verschijnen", wrong:["de situatie of staat waarin iets of iemand is","hoe erg iets is","de neiging hebben om iets te doen"] },
-  { term:"in ... zin (in financiële zin)", def:"in de betekenis van ... (de financiën)", wrong:["iemand die rechten heeft gestudeerd","niet meer kunnen bewegen","lichamelijke schade; een verwonding"] },
-  { term:"op de loer liggen", def:"dreigen te gebeuren", wrong:["beginnen met zoeken","een kleine, ondiepe wond of kras","in de betekenis van ... (de financiën)"] },
-  { term:"op scherp zetten", def:"zorgen dat je klaar bent om in actie te komen", wrong:["krachtig vragen; zeggen dat je iets per se wilt","schade aan iets","te ver gaan; overdrijven"] }
+  { term:"aanleiding, de", def:"de reden of oorzaak waardoor iets gebeurt", wrong:["goedvinden; laten gebeuren", "het gevolg of resultaat van iets", "het doel waarvoor je iets doet"] },
+  { term:"aannemen*", def:"iets accepteren of krijgen; ook: denken dat iets zo is", wrong:["geld eisen; ook: vooruitgaan", "iets weigeren of teruggeven; ook: zeker weten dat iets zo is", "iets uitlenen; ook: twijfelen of iets zo is"] },
+  { term:"beschadiging, de", def:"schade aan iets", wrong:["iets niet doen of iets missen", "reparatie van iets", "een kleine vlek op iets"] },
+  { term:"calvinistisch", def:"streng en zuinig, zonder overdreven luxe", wrong:["een bedreiging; zeggen dat je iets ergs zult doen", "vrolijk en gul, met veel luxe", "modern en vrij, zonder regels"] },
+  { term:"consumeren", def:"eten, drinken of gebruiken", wrong:["laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen", "maken of produceren", "verkopen of verhandelen"] },
+  { term:"daadwerkelijk", def:"echt; in werkelijkheid", wrong:["beginnen met zoeken", "misschien; in theorie", "bijna; niet helemaal"] },
+  { term:"doorschieten*", def:"te ver gaan; overdrijven", wrong:["de manier van denken van een persoon of groep", "te weinig doen; niet ver genoeg gaan", "ergens doorheen lopen; rustig blijven"] },
+  { term:"dreigement, het", def:"een bedreiging; zeggen dat je iets ergs zult doen", wrong:["streng en zuinig, zonder overdreven luxe", "een belofte; zeggen dat je iets goeds zult doen", "een waarschuwing voor slecht weer"] },
+  { term:"eisen", def:"krachtig vragen; zeggen dat je iets per se wilt", wrong:["iemand officieel oproepen om bij de rechter te verschijnen", "voorzichtig vragen; zeggen dat het niet hoeft", "iets aanbieden; zeggen dat iemand het mag hebben"] },
+  { term:"erkenning, de", def:"het officieel accepteren of waarderen van iets", wrong:["een wond of beschadiging van het lichaam", "het officieel weigeren of afwijzen van iets", "het geheimhouden van iets"] },
+  { term:"ernst, de", def:"hoe erg iets is", wrong:["streng en zuinig, zonder overdreven luxe", "hoe groot iets is", "hoe lang iets duurt"] },
+  { term:"indienen", def:"een document of verzoek officieel inleveren", wrong:["te ver gaan; overdrijven", "een document of verzoek intrekken", "een document lezen en goedkeuren"] },
+  { term:"jurist, de", def:"iemand die rechten heeft gestudeerd", wrong:["iemand officieel oproepen om bij de rechter te verschijnen", "iemand die geneeskunde heeft gestudeerd", "iemand die bij de politie werkt"] },
+  { term:"letsel, het", def:"lichamelijke schade; een verwonding", wrong:["het officieel accepteren of waarderen van iets", "geestelijke schade; verdriet", "schade aan spullen; een deuk"] },
+  { term:"materieel", def:"met dingen of geld te maken, niet met gevoelens of het lichaam", wrong:["de neiging hebben om iets te doen", "met gevoelens te maken, niet met dingen of geld", "met het lichaam te maken, niet met dingen of geld"] },
+  { term:"mentaliteit, de", def:"de manier van denken van een persoon of groep", wrong:["iemand die dicht bij je staat, zoals familie; ook: je medemens", "het uiterlijk van een persoon of groep", "de taal van een persoon of groep"] },
+  { term:"mondig", def:"in staat om voor jezelf op te komen", wrong:["niet meer kunnen bewegen", "verlegen; niet voor jezelf durven opkomen", "brutaal; onbeleefd tegen anderen"] },
+  { term:"naaste, de", def:"iemand die dicht bij je staat, zoals familie; ook: je medemens", wrong:["de relatie tussen mensen of dingen", "iemand die ver van je af staat, zoals een vreemde; ook: je vijand", "iemand die naast je woont; ook: je collega"] },
+  { term:"overslaan*", def:"iets niet doen of iets missen", wrong:["de manier van denken van een persoon of groep", "iets twee keer doen", "iets extra goed doen"] },
+  { term:"schram, de", def:"een kleine, ondiepe wond of kras", wrong:["afwijzen; niet accepteren", "een diepe, ernstige wond", "een blauwe plek door een klap"] },
+  { term:"stadium, het", def:"een fase; een moment in een ontwikkeling", wrong:["geld eisen; ook: vooruitgaan", "een gebouw voor sportwedstrijden", "het eindresultaat van een ontwikkeling"] },
+  { term:"statistiek, de", def:"cijfers die iets laten zien over een groep", wrong:["een bedreiging; zeggen dat je iets ergs zult doen", "een verhaal over één persoon", "een mening over een groep"] },
+  { term:"tijdperk, het", def:"een lange periode in de geschiedenis", wrong:["de situatie of staat waarin iets of iemand is", "een kort moment", "een plek in de geschiedenis"] },
+  { term:"toekennen", def:"officieel geven", wrong:["goedvinden; laten gebeuren", "officieel afnemen", "officieel aanvragen"] },
+  { term:"toestaan*", def:"goedvinden; laten gebeuren", wrong:["lichamelijke schade; een verwonding", "verbieden; tegenhouden", "voorstellen; aanraden"] },
+  { term:"toestand, de", def:"de situatie of staat waarin iets of iemand is", wrong:["een rechtszaak beginnen", "de plek waar iets of iemand is", "het plan voor iets of iemand"] },
+  { term:"uitwijzen*", def:"laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen", wrong:["in de betekenis van ... (de financiën)", "verbergen; onduidelijk maken", "iemand de weg wijzen"] },
+  { term:"verhouding, de", def:"de relatie tussen mensen of dingen", wrong:["streng en zuinig, zonder overdreven luxe", "het verschil tussen mensen of dingen", "de afstand tussen mensen of dingen"] },
+  { term:"verlamd", def:"niet meer kunnen bewegen", wrong:["te ver gaan; overdrijven", "heel snel kunnen bewegen", "pijn hebben bij het bewegen"] },
+  { term:"verslag, het", def:"een tekst over wat er gebeurd is", wrong:["de manier van denken van een persoon of groep", "een tekst over wat er gaat gebeuren", "een tekst met je mening"] },
+  { term:"verwerpen*", def:"afwijzen; niet accepteren", wrong:["goedvinden; laten gebeuren", "aannemen; wel accepteren", "opnieuw bekijken; nog niet beslissen"] },
+  { term:"verwonding, de", def:"een wond of beschadiging van het lichaam", wrong:["in staat om voor jezelf op te komen", "een ziekte van het lichaam", "het herstel van het lichaam"] },
+  { term:"volledig", def:"helemaal; compleet", wrong:["een tekst over wat er gebeurd is", "half; niet compleet", "bijna; op een klein deel na"] },
+  { term:"voorziening, de", def:"iets wat geregeld is voor mensen, zoals een dienst of hulpmiddel", wrong:["goedvinden; laten gebeuren", "iets wat ontbreekt of niet geregeld is", "een voorspelling over de toekomst"] },
+  { term:"vorderen", def:"geld eisen; ook: vooruitgaan", wrong:["in de betekenis van ... (de financiën)", "geld teruggeven; ook: achteruitgaan", "geld lenen; ook: stilstaan"] },
+  { term:"wenselijk", def:"gewenst; goed om te hebben of te doen", wrong:["iets wat geregeld is voor mensen, zoals een dienst of hulpmiddel", "ongewenst; beter niet doen", "verplicht; het moet"] },
+  { term:"geneigd zijn om iets te doen", def:"de neiging hebben om iets te doen", wrong:["laten zien; duidelijk maken, vaak in: de tijd zal het uitwijzen", "geen zin hebben om iets te doen", "verplicht zijn om iets te doen"] },
+  { term:"iemand schade berokkenen", def:"iemand schade doen", wrong:["de manier van denken van een persoon of groep", "iemand schade vergoeden", "iemand helpen na schade"] },
+  { term:"naar de rechter stappen", def:"een rechtszaak beginnen", wrong:["te ver gaan; overdrijven", "een rechtszaak stoppen", "op bezoek gaan bij een rechter"] },
+  { term:"op zoek gaan naar iets/iemand", def:"beginnen met zoeken", wrong:["krachtig vragen; zeggen dat je iets per se wilt", "stoppen met zoeken", "iets of iemand vinden"] },
+  { term:"pleiten voor iets/iemand", def:"argumenten geven vóór iets of iemand", wrong:["streng en zuinig, zonder overdreven luxe", "argumenten geven tegen iets of iemand", "ergens over twijfelen"] },
+  { term:"voor de rechter dagen", def:"iemand officieel oproepen om bij de rechter te verschijnen", wrong:["een kleine, ondiepe wond of kras", "iemand officieel vrijspreken", "iemand helpen bij de rechter"] },
+  { term:"in ... zin (in financiële zin)", def:"in de betekenis van ... (de financiën)", wrong:["goedvinden; laten gebeuren", "in de buurt van ... (de financiën)", "in plaats van ... (de financiën)"] },
+  { term:"op de loer liggen", def:"dreigen te gebeuren", wrong:["hoe erg iets is", "al voorbij zijn", "rustig liggen slapen"] },
+  { term:"op scherp zetten", def:"zorgen dat je klaar bent om in actie te komen", wrong:["gewenst; goed om te hebben of te doen", "ontspannen en afwachten", "iets kapotmaken"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -933,6 +949,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

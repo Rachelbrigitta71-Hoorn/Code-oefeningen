@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 2.3 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -913,6 +928,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 2.3 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -934,58 +950,58 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"agrarisch", def:"met de landbouw te maken", wrong:["enthousiast zijn over iets","dieren hebben en verzorgen; ook: niet weggeven","een gebouw waarin dieren wonen"] },
-  { term:"antibioticum, het", def:"een medicijn tegen infecties door bacteriën", wrong:["gemaakt of gekweekt zonder chemische middelen","gemaakt met stoffen uit een fabriek of laboratorium","naast elkaar"] },
-  { term:"automatiseren", def:"werk door machines of computers laten doen", wrong:["door; wegens","alle dieren op een boerderij, zoals koeien en schapen","een stapel; ook: het verwachten dat er iets goeds gebeurt"] },
-  { term:"beperken", def:"kleiner of minder maken; een grens stellen", wrong:["het kweken van groente, fruit en bloemen","een afscheiding van hout of metaal rond een stuk land","een heel sterk metaal"] },
-  { term:"bestrijdingsmiddel, het", def:"een middel tegen insecten, onkruid of ziektes op het land", wrong:["het kweken van groente, fruit en bloemen","werk door machines of computers laten doen","een stuk varkensvlees met een bot"] },
-  { term:"bezwaar, het", def:"een reden waarom je tegen iets bent", wrong:["producten naar het buitenland verkopen","anders zijn","gemaakt met stoffen uit een fabriek of laboratorium"] },
-  { term:"big, de", def:"een jong varken", wrong:["goed voor het milieu; ook: lang bruikbaar","door; wegens","zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend"] },
-  { term:"biologisch", def:"gemaakt of gekweekt zonder chemische middelen", wrong:["werk door machines of computers laten doen","een teken op een product dat laat zien dat het aan bepaalde eisen voldoet","voor een woord: van dieren die vrij rond kunnen lopen"] },
-  { term:"chemisch", def:"gemaakt met stoffen uit een fabriek of laboratorium", wrong:["natte, zachte aarde","een kort, heel hard geluid","een stof in het lichaam die processen regelt"] },
-  { term:"dierlijk", def:"afkomstig van dieren", wrong:["een gebouw van glas waarin planten groeien","gemaakt of gekweekt zonder chemische middelen","het slachtoffer worden van iets"] },
-  { term:"duurzaam", def:"goed voor het milieu; ook: lang bruikbaar", wrong:["de zijkant van iets of iemand","een stof in het lichaam die processen regelt","één keer; nu eenmaal betekent: zo is het nu"] },
-  { term:"eenmaal", def:"één keer; nu eenmaal betekent: zo is het nu", wrong:["het kweken van groente, fruit en bloemen","de droge stengels van graan","door; wegens"] },
-  { term:"exporteren", def:"producten naar het buitenland verkopen", wrong:["een middel tegen insecten, onkruid of ziektes op het land","door; wegens","aardig; achter een woord ook: goed voor, zoals in diervriendelijk"] },
-  { term:"geweten, het", def:"het gevoel in jezelf dat zegt wat goed en slecht is", wrong:["voor een woord: van dieren die vrij rond kunnen lopen","lief en leuk om te zien","een afscheiding van hout of metaal rond een stuk land"] },
-  { term:"grond, de", def:"de aarde waarop planten groeien; ook: een stuk land", wrong:["de grootte van iets","een materiaal of middel; ook: textiel of heel fijn vuil","producten naar het buitenland verkopen"] },
-  { term:"hek, het", def:"een afscheiding van hout of metaal rond een stuk land", wrong:["het maken of produceren van iets","producten naar het buitenland verkopen","een medicijn tegen infecties door bacteriën"] },
-  { term:"hoop, de", def:"een stapel; ook: het verwachten dat er iets goeds gebeurt", wrong:["met de landbouw te maken","met de neus in de grond zoeken","aardig; achter een woord ook: goed voor, zoals in diervriendelijk"] },
-  { term:"hormoon, het", def:"een stof in het lichaam die processen regelt", wrong:["kleiner of minder maken; een grens stellen","hard proberen iets te bereiken","enthousiast zijn over iets"] },
-  { term:"houden*", def:"dieren hebben en verzorgen; ook: niet weggeven", wrong:["de zijkant van iets of iemand","enthousiast zijn over iets","een teken op een product dat laat zien dat het aan bepaalde eisen voldoet"] },
-  { term:"karbonade, de", def:"een stuk varkensvlees met een bot", wrong:["een afscheiding van hout of metaal rond een stuk land","met de neus in de grond zoeken","een materiaal of middel; ook: textiel of heel fijn vuil"] },
-  { term:"kas, de", def:"een gebouw van glas waarin planten groeien", wrong:["het maken of produceren van iets","lief en leuk om te zien","enthousiast zijn over iets"] },
-  { term:"keurmerk, het", def:"een teken op een product dat laat zien dat het aan bepaalde eisen voldoet", wrong:["een jong varken","een medicijn tegen infecties door bacteriën","met de neus in de grond zoeken"] },
-  { term:"knal, de", def:"een kort, heel hard geluid", wrong:["hard proberen iets te bereiken","eten voor dieren","een gebouw waarin dieren wonen"] },
-  { term:"mest, de", def:"poep van dieren die je op het land gebruikt", wrong:["gemaakt of gekweekt zonder chemische middelen","het maken of produceren van iets","afkomstig van dieren"] },
-  { term:"modder, de", def:"natte, zachte aarde", wrong:["een reden waarom je tegen iets bent","een heel sterk metaal","een stapel; ook: het verwachten dat er iets goeds gebeurt"] },
-  { term:"natuurlijk", def:"zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend", wrong:["een kort, heel hard geluid","een materiaal of middel; ook: textiel of heel fijn vuil","een stuk varkensvlees met een bot"] },
-  { term:"omvang, de", def:"de grootte van iets", wrong:["producten naar het buitenland verkopen","een kort, heel hard geluid","een materiaal of middel; ook: textiel of heel fijn vuil"] },
-  { term:"productie, de", def:"het maken of produceren van iets", wrong:["lief en leuk om te zien","heel snel","een stof in het lichaam die processen regelt"] },
-  { term:"scharrel-", def:"voor een woord: van dieren die vrij rond kunnen lopen", wrong:["naast elkaar","het gevoel in jezelf dat zegt wat goed en slecht is","hard proberen iets te bereiken"] },
-  { term:"schattig", def:"lief en leuk om te zien", wrong:["de aarde waarop planten groeien; ook: een stuk land","een heel sterk metaal","één keer; nu eenmaal betekent: zo is het nu"] },
-  { term:"slagerij, de", def:"een winkel waar je vlees koopt", wrong:["zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend","enthousiast zijn over iets","een gebouw waarin dieren wonen"] },
-  { term:"staal, het", def:"een heel sterk metaal", wrong:["werk door machines of computers laten doen","hoe goed een mens of dier zich voelt","een afscheiding van hout of metaal rond een stuk land"] },
-  { term:"stal, de", def:"een gebouw waarin dieren wonen", wrong:["naast elkaar","één keer; nu eenmaal betekent: zo is het nu","een stapel; ook: het verwachten dat er iets goeds gebeurt"] },
-  { term:"stof, de", def:"een materiaal of middel; ook: textiel of heel fijn vuil", wrong:["een middel tegen insecten, onkruid of ziektes op het land","een jong varken","naast elkaar"] },
-  { term:"stro, het", def:"de droge stengels van graan", wrong:["gemaakt met stoffen uit een fabriek of laboratorium","werk door machines of computers laten doen","door; wegens"] },
-  { term:"tuinbouw, de", def:"het kweken van groente, fruit en bloemen", wrong:["met de landbouw te maken","een afscheiding van hout of metaal rond een stuk land","een gebouw waarin dieren wonen"] },
-  { term:"vanwege", def:"door; wegens", wrong:["poep van dieren die je op het land gebruikt","een stapel; ook: het verwachten dat er iets goeds gebeurt","de droge stengels van graan"] },
-  { term:"varken, het", def:"een boerderijdier dat gehouden wordt voor het vlees", wrong:["een stuk varkensvlees met een bot","een medicijn tegen infecties door bacteriën","zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend"] },
-  { term:"vee, het", def:"alle dieren op een boerderij, zoals koeien en schapen", wrong:["een materiaal of middel; ook: textiel of heel fijn vuil","dieren hebben en verzorgen; ook: niet weggeven","een reden waarom je tegen iets bent"] },
-  { term:"verschillen", def:"anders zijn", wrong:["het slachtoffer worden van iets","natte, zachte aarde","afkomstig van dieren"] },
-  { term:"vetmesten", def:"een dier veel laten eten zodat het snel dik wordt", wrong:["een gebouw van glas waarin planten groeien","een stuk varkensvlees met een bot","kleiner of minder maken; een grens stellen"] },
-  { term:"voer, het", def:"eten voor dieren", wrong:["één keer; nu eenmaal betekent: zo is het nu","een gebouw waarin dieren wonen","het gevoel in jezelf dat zegt wat goed en slecht is"] },
-  { term:"vriendelijk", def:"aardig; achter een woord ook: goed voor, zoals in diervriendelijk", wrong:["heel snel","een medicijn tegen infecties door bacteriën","alle dieren op een boerderij, zoals koeien en schapen"] },
-  { term:"welzijn, het", def:"hoe goed een mens of dier zich voelt", wrong:["alle dieren op een boerderij, zoals koeien en schapen","een reden waarom je tegen iets bent","de zijkant van iets of iemand"] },
-  { term:"wroeten", def:"met de neus in de grond zoeken", wrong:["zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend","gemaakt of gekweekt zonder chemische middelen","enthousiast zijn over iets"] },
-  { term:"zij, de", def:"de zijkant van iets of iemand", wrong:["heel snel","eten voor dieren","werk door machines of computers laten doen"] },
-  { term:"in hoog tempo", def:"heel snel", wrong:["een teken op een product dat laat zien dat het aan bepaalde eisen voldoet","met de neus in de grond zoeken","goed voor het milieu; ook: lang bruikbaar"] },
-  { term:"streven naar iets", def:"hard proberen iets te bereiken", wrong:["voor een woord: van dieren die vrij rond kunnen lopen","met de landbouw te maken","de zijkant van iets of iemand"] },
-  { term:"ergens voor gaan", def:"enthousiast zijn over iets", wrong:["een boerderijdier dat gehouden wordt voor het vlees","gemaakt met stoffen uit een fabriek of laboratorium","het maken of produceren van iets"] },
-  { term:"het roer omgooien", def:"iets gaan doen wat helemaal anders is", wrong:["een reden waarom je tegen iets bent","gemaakt met stoffen uit een fabriek of laboratorium","een stapel; ook: het verwachten dat er iets goeds gebeurt"] },
-  { term:"ten prooi vallen aan iets", def:"het slachtoffer worden van iets", wrong:["een materiaal of middel; ook: textiel of heel fijn vuil","een middel tegen insecten, onkruid of ziektes op het land","lief en leuk om te zien"] },
-  { term:"zij aan zij", def:"naast elkaar", wrong:["de aarde waarop planten groeien; ook: een stuk land","een heel sterk metaal","een stof in het lichaam die processen regelt"] }
+  { term:"agrarisch", def:"met de landbouw te maken", wrong:["met de neus in de grond zoeken", "met de industrie te maken", "met de visserij te maken"] },
+  { term:"antibioticum, het", def:"een medicijn tegen infecties door bacteriën", wrong:["met de neus in de grond zoeken", "een medicijn tegen pijn en koorts", "een middel tegen insecten op het land"] },
+  { term:"automatiseren", def:"werk door machines of computers laten doen", wrong:["een medicijn tegen infecties door bacteriën", "werk weer met de hand laten doen", "werk aan een ander bedrijf geven"] },
+  { term:"beperken", def:"kleiner of minder maken; een grens stellen", wrong:["enthousiast zijn over iets", "groter of meer maken; een grens weghalen", "precies tellen hoeveel er is"] },
+  { term:"bestrijdingsmiddel, het", def:"een middel tegen insecten, onkruid of ziektes op het land", wrong:["een stof in het lichaam die processen regelt", "een middel dat planten sneller laat groeien", "een middel tegen ziektes bij mensen"] },
+  { term:"bezwaar, het", def:"een reden waarom je tegen iets bent", wrong:["gemaakt met stoffen uit een fabriek of laboratorium", "een reden waarom je voor iets bent", "een vraag die je over iets hebt"] },
+  { term:"big, de", def:"een jong varken", wrong:["zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend", "een jonge koe", "een volwassen varken"] },
+  { term:"biologisch", def:"gemaakt of gekweekt zonder chemische middelen", wrong:["eten voor dieren", "gemaakt of gekweekt met veel chemische middelen", "gemaakt in een laboratorium"] },
+  { term:"chemisch", def:"gemaakt met stoffen uit een fabriek of laboratorium", wrong:["dieren hebben en verzorgen; ook: niet weggeven", "gemaakt met stoffen uit de natuur", "gemaakt met de hand"] },
+  { term:"dierlijk", def:"afkomstig van dieren", wrong:["een stof in het lichaam die processen regelt", "afkomstig van planten", "gemaakt voor dieren"] },
+  { term:"duurzaam", def:"goed voor het milieu; ook: lang bruikbaar", wrong:["een materiaal of middel; ook: textiel of heel fijn vuil", "slecht voor het milieu; ook: snel kapot", "duur; ook: van goede kwaliteit"] },
+  { term:"eenmaal", def:"één keer; nu eenmaal betekent: zo is het nu", wrong:["een afscheiding van hout of metaal rond een stuk land", "twee keer; nu eenmaal betekent: dat kan anders", "nooit; nu eenmaal betekent: misschien later"] },
+  { term:"exporteren", def:"producten naar het buitenland verkopen", wrong:["anders zijn", "producten uit het buitenland kopen", "producten in het eigen land verkopen"] },
+  { term:"geweten, het", def:"het gevoel in jezelf dat zegt wat goed en slecht is", wrong:["zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend", "alles wat je hebt geleerd en weet", "het gevoel dat je bang bent voor straf"] },
+  { term:"grond, de", def:"de aarde waarop planten groeien; ook: een stuk land", wrong:["door; wegens", "het water waarin planten groeien; ook: een stuk zee", "de lucht boven het land; ook: een stuk bos"] },
+  { term:"hek, het", def:"een afscheiding van hout of metaal rond een stuk land", wrong:["aardig; achter een woord ook: goed voor, zoals in diervriendelijk", "een pad van stenen door een stuk land", "een gebouw voor dieren op een stuk land"] },
+  { term:"hoop, de", def:"een stapel; ook: het verwachten dat er iets goeds gebeurt", wrong:["met de landbouw te maken", "een gat; ook: het verwachten dat er iets slechts gebeurt", "een rij; ook: het zeker weten dat iets gebeurt"] },
+  { term:"hormoon, het", def:"een stof in het lichaam die processen regelt", wrong:["kleiner of minder maken; een grens stellen", "een ziekte in het lichaam die processen verstoort", "een vitamine uit eten die je sterk maakt"] },
+  { term:"houden*", def:"dieren hebben en verzorgen; ook: niet weggeven", wrong:["gemaakt of gekweekt zonder chemische middelen", "dieren verkopen; ook: iets weggeven", "dieren in het wild bekijken; ook: iets lenen"] },
+  { term:"karbonade, de", def:"een stuk varkensvlees met een bot", wrong:["lief en leuk om te zien", "een stuk rundvlees zonder bot", "een worst van varkensvlees"] },
+  { term:"kas, de", def:"een gebouw van glas waarin planten groeien", wrong:["een heel sterk metaal", "een schuur van hout waarin gereedschap staat", "een tuin buiten waarin planten groeien"] },
+  { term:"keurmerk, het", def:"een teken op een product dat laat zien dat het aan bepaalde eisen voldoet", wrong:["werk door machines of computers laten doen", "een prijs op een product die laat zien hoeveel het kost", "een reclame op een product die laat zien hoe lekker het is"] },
+  { term:"knal, de", def:"een kort, heel hard geluid", wrong:["een teken op een product dat laat zien dat het aan bepaalde eisen voldoet", "een lang, zacht geluid", "een fel licht"] },
+  { term:"mest, de", def:"poep van dieren die je op het land gebruikt", wrong:["de zijkant van iets of iemand", "voer voor dieren dat je op het land kweekt", "droog gras dat je aan dieren geeft"] },
+  { term:"modder, de", def:"natte, zachte aarde", wrong:["kleiner of minder maken; een grens stellen", "droge, harde aarde", "natte, fijne zand"] },
+  { term:"natuurlijk", def:"zoals in de natuur, zonder kunstmatige toevoegingen; ook: vanzelfsprekend", wrong:["iets gaan doen wat helemaal anders is", "kunstmatig, met toevoegingen uit een fabriek; ook: verrassend", "uit de natuur, maar wel bewerkt; ook: onzeker"] },
+  { term:"omvang, de", def:"de grootte van iets", wrong:["hard proberen iets te bereiken", "de vorm van iets", "het gewicht van iets"] },
+  { term:"productie, de", def:"het maken of produceren van iets", wrong:["gemaakt met stoffen uit een fabriek of laboratorium", "het verkopen van iets", "het weggooien van iets"] },
+  { term:"scharrel-", def:"voor een woord: van dieren die vrij rond kunnen lopen", wrong:["de droge stengels van graan", "voor een woord: van dieren die altijd binnen in een stal staan", "voor een woord: van wilde dieren uit het bos"] },
+  { term:"schattig", def:"lief en leuk om te zien", wrong:["een winkel waar je vlees koopt", "eng en lelijk om te zien", "groot en sterk om te zien"] },
+  { term:"slagerij, de", def:"een winkel waar je vlees koopt", wrong:["goed voor het milieu; ook: lang bruikbaar", "een winkel waar je brood koopt", "een winkel waar je vis koopt"] },
+  { term:"staal, het", def:"een heel sterk metaal", wrong:["een stapel; ook: het verwachten dat er iets goeds gebeurt", "een heel zacht metaal", "een soort hout"] },
+  { term:"stal, de", def:"een gebouw waarin dieren wonen", wrong:["een stapel; ook: het verwachten dat er iets goeds gebeurt", "een weiland waarop dieren lopen", "een winkel waar je dieren koopt"] },
+  { term:"stof, de", def:"een materiaal of middel; ook: textiel of heel fijn vuil", wrong:["een jong varken", "een vorm of kleur; ook: hout of steen", "een geluid of geur; ook: water"] },
+  { term:"stro, het", def:"de droge stengels van graan", wrong:["iets gaan doen wat helemaal anders is", "de groene bladeren van een boom", "het meel van graan"] },
+  { term:"tuinbouw, de", def:"het kweken van groente, fruit en bloemen", wrong:["natte, zachte aarde", "het houden van koeien en varkens", "het bouwen van huizen met een tuin"] },
+  { term:"vanwege", def:"door; wegens", wrong:["een middel tegen insecten, onkruid of ziektes op het land", "ondanks; toch", "voor; met het doel"] },
+  { term:"varken, het", def:"een boerderijdier dat gehouden wordt voor het vlees", wrong:["aardig; achter een woord ook: goed voor, zoals in diervriendelijk", "een boerderijdier dat gehouden wordt voor de melk", "een boerderijdier dat gehouden wordt voor de wol"] },
+  { term:"vee, het", def:"alle dieren op een boerderij, zoals koeien en schapen", wrong:["gemaakt met stoffen uit een fabriek of laboratorium", "alle groente en graan op een boerderij", "alle machines op een boerderij"] },
+  { term:"verschillen", def:"anders zijn", wrong:["gemaakt met stoffen uit een fabriek of laboratorium", "hetzelfde zijn", "erbij horen"] },
+  { term:"vetmesten", def:"een dier veel laten eten zodat het snel dik wordt", wrong:["het slachtoffer worden van iets", "een dier weinig laten eten zodat het slank blijft", "een dier laten rennen zodat het sterk wordt"] },
+  { term:"voer, het", def:"eten voor dieren", wrong:["één keer; nu eenmaal betekent: zo is het nu", "water voor dieren", "eten voor mensen"] },
+  { term:"vriendelijk", def:"aardig; achter een woord ook: goed voor, zoals in diervriendelijk", wrong:["door; wegens", "onaardig; achter een woord ook: slecht voor", "beleefd; achter een woord ook: gemaakt door"] },
+  { term:"welzijn, het", def:"hoe goed een mens of dier zich voelt", wrong:["een gebouw van glas waarin planten groeien", "hoe rijk een mens of dier is", "hoe oud een mens of dier is"] },
+  { term:"wroeten", def:"met de neus in de grond zoeken", wrong:["het slachtoffer worden van iets", "met de poten graven om iets te verstoppen", "met de bek van de grond eten"] },
+  { term:"zij, de", def:"de zijkant van iets of iemand", wrong:["de aarde waarop planten groeien; ook: een stuk land", "de voorkant van iets of iemand", "de bovenkant van iets of iemand"] },
+  { term:"in hoog tempo", def:"heel snel", wrong:["een stapel; ook: het verwachten dat er iets goeds gebeurt", "heel langzaam", "heel hard en luid"] },
+  { term:"streven naar iets", def:"hard proberen iets te bereiken", wrong:["het slachtoffer worden van iets", "opgeven om iets te bereiken", "nadenken over iets"] },
+  { term:"ergens voor gaan", def:"enthousiast zijn over iets", wrong:["goed voor het milieu; ook: lang bruikbaar", "ergens tegen zijn", "ergens weggaan"] },
+  { term:"het roer omgooien", def:"iets gaan doen wat helemaal anders is", wrong:["hard proberen iets te bereiken", "op dezelfde manier doorgaan", "een klein beetje veranderen"] },
+  { term:"ten prooi vallen aan iets", def:"het slachtoffer worden van iets", wrong:["een materiaal of middel; ook: textiel of heel fijn vuil", "winnen van iets", "zich beschermen tegen iets"] },
+  { term:"zij aan zij", def:"naast elkaar", wrong:["een materiaal of middel; ook: textiel of heel fijn vuil", "tegenover elkaar", "achter elkaar"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -1017,6 +1033,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

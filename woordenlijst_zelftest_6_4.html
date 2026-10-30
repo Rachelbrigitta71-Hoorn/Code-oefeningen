@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <!-- TERUG NAAR HOOFDMENU -->
@@ -339,6 +353,7 @@ header { padding-top: 4.5rem !important; }
 
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 6.4 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -654,37 +669,53 @@ header { padding-top: 4.5rem !important; }
   </div>
 
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 6.4 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 
 <script>
 const ALL = [
-  { term:"beginsel, het", def:"een fundamentele regel of principe waarop iets is gebaseerd", wrong:["niet meer werken","geen inkomen hebben","geld weggeven"] },
-  { term:"behoefte, de", def:"iets wat je nodig hebt of waar je naar verlangt", wrong:["iets tijdelijk doen","een vaste baan hebben","iets onverwachts"] },
-  { term:"degene", def:"de persoon over wie het gaat; hij of zij die", wrong:["iets tijdelijk doen","geen inkomen hebben","een vaste baan hebben"] },
-  { term:"eindigen", def:"ophouden; een einde komen", wrong:["iets tijdelijk doen","geen inkomen hebben","een vaste baan hebben"] },
-  { term:"huisvesting, de", def:"een plek om te wonen; woonruimte", wrong:["iets onverwachts","niet meer werken","geen inkomen hebben"] },
-  { term:"inkomsten, de", def:"het geld dat je verdient of ontvangt", wrong:["geen inkomen hebben","iets tijdelijk doen","iets onverwachts"] },
-  { term:"langdurig", def:"voor een lange tijd; niet van korte duur", wrong:["geld weggeven","iets onverwachts","een vaste baan hebben"] },
-  { term:"onbeheersbaar", def:"niet meer te controleren of te stoppen", wrong:["een vaste baan hebben","geld weggeven","iets tijdelijk doen"] },
-  { term:"ouderdom, de", def:"de laatste fase van het leven; oude leeftijd", wrong:["een vaste baan hebben","geen inkomen hebben","iets onverwachts"] },
-  { term:"peil, het", def:"het niveau of de kwaliteit van iets", wrong:["een vaste baan hebben","geen inkomen hebben","iets onverwachts"] },
-  { term:"solidariteit, de", def:"saamhorigheid; het voor elkaar opkomen", wrong:["geld weggeven","een vaste baan hebben","iets onverwachts"] },
-  { term:"stelsel, het", def:"een samenhangend geheel van regels of voorzieningen", wrong:["een vaste baan hebben","geen inkomen hebben","iets tijdelijk doen"] },
-  { term:"variabel", def:"wisselend; niet vast", wrong:["niet meer werken","iets tijdelijk doen","geld weggeven"] },
-  { term:"vanzelfsprekend", def:"iets wat voor iedereen duidelijk is zonder uitleg", wrong:["niet meer werken","geen inkomen hebben","een vaste baan hebben"] },
-  { term:"vermogen, het", def:"al het bezit en geld dat iemand heeft; rijkdom", wrong:["niet meer werken","een vaste baan hebben","iets tijdelijk doen"] },
-  { term:"zekerheid, de", def:"de toestand dat iets zeker of vast is; geen onzekerheid", wrong:["niet meer werken","geen inkomen hebben","iets onverwachts"] },
-  { term:"bedoeld zijn voor iemand", def:"bestemd zijn voor een bepaalde persoon of groep", wrong:["ergens last van hebben","iemand helpen","niets doen"] },
-  { term:"de basis leggen voor iets", def:"de eerste stappen zetten voor iets wat later groter wordt", wrong:["stoppen met iets","geld bewaren","niets doen"] },
-  { term:"in aanmerking komen voor iets", def:"het recht hebben om iets te krijgen of te doen", wrong:["iets afwijzen","stoppen met iets","iemand helpen"] },
-  { term:"in het kader van iets", def:"in verband met; als onderdeel van", wrong:["ergens last van hebben","iets afwijzen","niets doen"] },
-  { term:"in loondienst", def:"werken voor een werkgever die je salaris betaalt", wrong:["iemand helpen","iets afwijzen","ergens last van hebben"] },
-  { term:"verantwoordelijkheid nemen", def:"erkennen dat iets jouw taak of schuld is", wrong:["ergens last van hebben","geld bewaren","stoppen met iets"] }
+  { term:"beginsel, het", def:"een fundamentele regel of principe waarop iets is gebaseerd", wrong:["in verband met; als onderdeel van", "een uitzondering op een regel", "het begin van een verhaal"] },
+  { term:"behoefte, de", def:"iets wat je nodig hebt of waar je naar verlangt", wrong:["een plek om te wonen; woonruimte", "iets wat je hebt en niet nodig hebt", "iets wat je moet doen voor een ander"] },
+  { term:"degene", def:"de persoon over wie het gaat; hij of zij die", wrong:["de toestand dat iets zeker of vast is; geen onzekerheid", "de dingen waarover het gaat", "iedereen, zonder uitzondering"] },
+  { term:"eindigen", def:"ophouden; een einde komen", wrong:["saamhorigheid; het voor elkaar opkomen", "beginnen; een start maken", "doorgaan; niet stoppen"] },
+  { term:"huisvesting, de", def:"een plek om te wonen; woonruimte", wrong:["het niveau of de kwaliteit van iets", "het schoonmaken van een huis", "het verkopen van een huis"] },
+  { term:"inkomsten, de", def:"het geld dat je verdient of ontvangt", wrong:["in verband met; als onderdeel van", "het geld dat je uitgeeft", "het geld dat je schuldig bent"] },
+  { term:"langdurig", def:"voor een lange tijd; niet van korte duur", wrong:["een samenhangend geheel van regels of voorzieningen", "voor een korte tijd", "voor altijd"] },
+  { term:"onbeheersbaar", def:"niet meer te controleren of te stoppen", wrong:["saamhorigheid; het voor elkaar opkomen", "goed te controleren", "niet te begrijpen"] },
+  { term:"ouderdom, de", def:"de laatste fase van het leven; oude leeftijd", wrong:["voor een lange tijd; niet van korte duur", "de eerste fase van het leven; kindertijd", "de middelste fase van het leven"] },
+  { term:"peil, het", def:"het niveau of de kwaliteit van iets", wrong:["niet meer te controleren of te stoppen", "de prijs van iets", "de richting van iets"] },
+  { term:"solidariteit, de", def:"saamhorigheid; het voor elkaar opkomen", wrong:["de laatste fase van het leven; oude leeftijd", "eenzaamheid; alleen voor jezelf zorgen", "concurrentie; tegen elkaar strijden"] },
+  { term:"stelsel, het", def:"een samenhangend geheel van regels of voorzieningen", wrong:["het geld dat je verdient of ontvangt", "één losse regel of voorziening", "een plan voor de toekomst"] },
+  { term:"variabel", def:"wisselend; niet vast", wrong:["de persoon over wie het gaat; hij of zij die", "vast; altijd hetzelfde", "hoog; veel"] },
+  { term:"vanzelfsprekend", def:"iets wat voor iedereen duidelijk is zonder uitleg", wrong:["iets wat je nodig hebt of waar je naar verlangt", "iets wat uitgebreid uitgelegd moet worden", "iets wat je tegen jezelf zegt"] },
+  { term:"vermogen, het", def:"al het bezit en geld dat iemand heeft; rijkdom", wrong:["een fundamentele regel of principe waarop iets is gebaseerd", "de schulden die iemand heeft", "het maandsalaris van iemand"] },
+  { term:"zekerheid, de", def:"de toestand dat iets zeker of vast is; geen onzekerheid", wrong:["iets wat je nodig hebt of waar je naar verlangt", "de toestand dat iets onzeker of wisselend is", "de bewaking van een gebouw"] },
+  { term:"bedoeld zijn voor iemand", def:"bestemd zijn voor een bepaalde persoon of groep", wrong:["ophouden; een einde komen", "verboden zijn voor iemand", "gemaakt zijn door iemand"] },
+  { term:"de basis leggen voor iets", def:"de eerste stappen zetten voor iets wat later groter wordt", wrong:["het geld dat je verdient of ontvangt", "iets afbreken", "iets afmaken"] },
+  { term:"in aanmerking komen voor iets", def:"het recht hebben om iets te krijgen of te doen", wrong:["erkennen dat iets jouw taak of schuld is", "geen recht hebben op iets", "iets opmerken"] },
+  { term:"in het kader van iets", def:"in verband met; als onderdeel van", wrong:["saamhorigheid; het voor elkaar opkomen", "los van iets", "in een lijst met iets"] },
+  { term:"in loondienst", def:"werken voor een werkgever die je salaris betaalt", wrong:["voor een lange tijd; niet van korte duur", "als zelfstandige met een eigen bedrijf", "zonder werk"] },
+  { term:"verantwoordelijkheid nemen", def:"erkennen dat iets jouw taak of schuld is", wrong:["in verband met; als onderdeel van", "de schuld bij een ander leggen", "een taak weigeren"] }
 ];
 
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do { shuffled = shuffle(opts); attempts++; }
+  while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 let questions=[], current=0, score=0;
 
 function buildQuiz(){
@@ -697,7 +728,7 @@ function render(){
   const root = document.getElementById('quiz-root');
   if(current >= questions.length){ renderScore(); return; }
   const q = questions[current];
-  const opts = shuffle([q.def, ...q.wrong]);
+  const opts=shuffleOpts([q.def, ...q.wrong], q.def);
   const pct = Math.round((current/questions.length)*100);
   root.innerHTML = `
     <div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div>
@@ -750,6 +781,93 @@ function showTab(name, btn){
   btn.classList.add('active');
   if(name==='quiz' && questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

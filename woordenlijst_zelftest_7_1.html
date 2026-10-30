@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 7.1 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -990,79 +1005,95 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 7.1 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
 <script>
 const ALL = [
-  { term:"ambt, het", def:"een officiële functie of beroep in de overheid of kerk", wrong:["vreemd of opvallend; anders dan normaal","tactvol en voorzichtig in wat je zegt; niet kwetsend","terugkomen naar een plek of situatie"] },
-  { term:"as, de", def:"een denkbeeldige lijn waaromheen iets draait; ook: het poeder dat overblijft na verbranding", wrong:["het mechanisme van een klok of horloge","tactvol en voorzichtig in wat je zegt; niet kwetsend","iets wat voor het eerst gevonden of onthuld wordt"] },
-  { term:"blootleggen", def:"iets verborgens zichtbaar maken; onthullen", wrong:["het hemellichaam dat om de aarde draait","leeg van binnen; niet massief","iets geheimhouden; niet openbaar maken"] },
-  { term:"bol, de", def:"een ronde driedimensionale vorm; ook: een bolvormig voorwerp", wrong:["veel kritiek hebben op iemand; iemand in diskrediet brengen","iemand die zijn eigen mening altijd beter vindt dan die van anderen","iets herkennen of inzien, vaak iets negatiefs"] },
-  { term:"botsen", def:"met kracht tegen iets of iemand aanrijden; ook: het oneens zijn", wrong:["het hemellichaam dat om de aarde draait","knutselen aan iets mechanisch; repareren of aanpassen","de kant die links of rechts is, niet voor of achter"] },
-  { term:"corresponderen", def:"brieven of berichten uitwisselen; ook: overeenstemmen met iets", wrong:["niet binnen het plan of het onderwerp vallen","iets langer maken of uitstrekken; ook: tijd verlengen","een onderzeeër; een boot die onder water kan varen"] },
-  { term:"diplomatiek", def:"tactvol en voorzichtig in wat je zegt; niet kwetsend", wrong:["iets wat voor het eerst gevonden of onthuld wordt","vrij; redelijk; niet helemaal maar wel behoorlijk","een vaste manier van werken om iets te bereiken"] },
-  { term:"doorbrengen*", def:"tijd ergens of met iemand besteden", wrong:["iets wat voor het eerst gevonden of onthuld wordt","toegeven dat iets waar is; accepteren dat iets bestaat of klopt","zoeken of opsporen, zoals een detective"] },
-  { term:"doorheen", def:"door iets heen; aan de andere kant van iets uit", wrong:["iets verborgens zichtbaar maken; onthullen","serieus beginnen met iets","het hele universum; alles wat bestaat in de ruimte"] },
-  { term:"duikboot, de", def:"een onderzeeër; een boot die onder water kan varen", wrong:["al je tijd en energie besteden aan iets of iemand","als reactie op iets; naar aanleiding van een gebeurtenis","met kracht tegen iets of iemand aanrijden; ook: het oneens zijn"] },
-  { term:"eer, de", def:"respect en aanzien dat iemand verdient; trots gevoel", wrong:["zoeken of opsporen, zoals een detective","een officiële functie of beroep in de overheid of kerk","aan iemand geven of toekennen"] },
-  { term:"eigenwijs", def:"iemand die zijn eigen mening altijd beter vindt dan die van anderen", wrong:["eenvoudig; niet ingewikkeld","iets wat voor het eerst bedacht of gemaakt wordt","iets geheimhouden; niet openbaar maken"] },
-  { term:"erkennen*", def:"toegeven dat iets waar is; accepteren dat iets bestaat of klopt", wrong:["vrij; redelijk; niet helemaal maar wel behoorlijk","iemand die vijandig staat tegenover iemand anders; tegenstander","iets geheimhouden; niet openbaar maken"] },
-  { term:"heelal, het", def:"het hele universum; alles wat bestaat in de ruimte", wrong:["terugkomen naar een plek of situatie","een onderzeeër; een boot die onder water kan varen","respect en aanzien dat iemand verdient; trots gevoel"] },
-  { term:"hol", def:"leeg van binnen; niet massief", wrong:["respect en aanzien dat iemand verdient; trots gevoel","terugkomen naar een plek of situatie","iets onderzoeken om het te begrijpen; ook: iets selecteren"] },
-  { term:"kern, de", def:"het binnenste of belangrijkste deel van iets", wrong:["zoeken of opsporen, zoals een detective","iets herkennen of inzien, vaak iets negatiefs","het mechanisme van een klok of horloge"] },
-  { term:"krater, de", def:"een kuilvormige opening in de grond, ontstaan door een vulkaan of inslag", wrong:["heel bijzonder en bijna ongelooflijk","puur en onvervuild; ook: correct of nauwkeurig","een groot hemellichaam dat om een ster draait"] },
-  { term:"maan, de", def:"het hemellichaam dat om de aarde draait", wrong:["de positie in een hiërarchie; een graad of titel","knutselen aan iets mechanisch; repareren of aanpassen","de positie of het aanzien van iemand in de maatschappij"] },
-  { term:"macht, de", def:"het vermogen om anderen te beïnvloeden of te besturen; gezag", wrong:["wat te maken heeft met het leger of de krijgsmacht","het mechanisme van een klok of horloge","iets doen wat niet past bij iemands positie in de maatschappij"] },
-  { term:"merkwaardig", def:"vreemd of opvallend; anders dan normaal", wrong:["tijd ergens of met iemand besteden","het vermogen om anderen te beïnvloeden of te besturen; gezag","een ronde driedimensionale vorm; ook: een bolvormig voorwerp"] },
-  { term:"methode, de", def:"een vaste manier van werken om iets te bereiken", wrong:["iets doen wat niet past bij iemands positie in de maatschappij","een deel dat uitsteekt of uitpuilt","serieus beginnen met iets"] },
-  { term:"middelpunt, het", def:"het centrale punt; de persoon of het ding waar alles om draait", wrong:["heel bijzonder en bijna ongelooflijk","vervuiling van lucht, water of bodem","heel belangrijk zijn in iets"] },
-  { term:"militair", def:"wat te maken heeft met het leger of de krijgsmacht", wrong:["iets doen wat niet past bij iemands positie in de maatschappij","een onderzeeër; een boot die onder water kan varen","vervuiling van lucht, water of bodem"] },
-  { term:"ontdekking, de", def:"iets wat voor het eerst gevonden of onthuld wordt", wrong:["een groot hemellichaam dat om een ster draait","het hele universum; alles wat bestaat in de ruimte","respect en aanzien dat iemand verdient; trots gevoel"] },
-  { term:"onderkennen*", def:"iets herkennen of inzien, vaak iets negatiefs", wrong:["het hele universum; alles wat bestaat in de ruimte","al je tijd en energie besteden aan iets of iemand","brieven of berichten uitwisselen; ook: overeenstemmen met iets"] },
-  { term:"planeet, de", def:"een groot hemellichaam dat om een ster draait", wrong:["een instrument om ver weg gelegen objecten te bekijken","gespannen zijn; klaar zijn om elk moment in actie te komen","het centrale punt; de persoon of het ding waar alles om draait"] },
-  { term:"rang, de", def:"de positie in een hiërarchie; een graad of titel", wrong:["zoeken of opsporen, zoals een detective","toegeven dat iets waar is; accepteren dat iets bestaat of klopt","vervuiling van lucht, water of bodem"] },
-  { term:"rekken", def:"iets langer maken of uitstrekken; ook: tijd verlengen", wrong:["terugkomen naar een plek of situatie","het mechanisme van een klok of horloge","het binnenste of belangrijkste deel van iets"] },
-  { term:"simpel", def:"eenvoudig; niet ingewikkeld", wrong:["respect en aanzien dat iemand verdient; trots gevoel","wat te maken heeft met het leger of de krijgsmacht","met kracht tegen iets of iemand aanrijden; ook: het oneens zijn"] },
-  { term:"sleutelen", def:"knutselen aan iets mechanisch; repareren of aanpassen", wrong:["iets wat je beloofd hebt ook werkelijk doen","de kant die links of rechts is, niet voor of achter","met kracht tegen iets of iemand aanrijden; ook: het oneens zijn"] },
-  { term:"speuren", def:"zoeken of opsporen, zoals een detective", wrong:["het hele universum; alles wat bestaat in de ruimte","de positie in een hiërarchie; een graad of titel","veel kritiek hebben op iemand; iemand in diskrediet brengen"] },
-  { term:"status, de", def:"de positie of het aanzien van iemand in de maatschappij", wrong:["het vermogen om anderen te beïnvloeden of te besturen; gezag","wat te maken heeft met het leger of de krijgsmacht","respect en aanzien dat iemand verdient; trots gevoel"] },
-  { term:"stiekem", def:"in het geheim; zonder dat anderen het weten", wrong:["tijd ergens of met iemand besteden","tactvol en voorzichtig in wat je zegt; niet kwetsend","eenvoudig; niet ingewikkeld"] },
-  { term:"tamelijk", def:"vrij; redelijk; niet helemaal maar wel behoorlijk", wrong:["de positie in een hiërarchie; een graad of titel","veel kritiek hebben op iemand; iemand in diskrediet brengen","iets wat je beloofd hebt ook werkelijk doen"] },
-  { term:"telescoop, de", def:"een instrument om ver weg gelegen objecten te bekijken", wrong:["toegeven dat iets waar is; accepteren dat iets bestaat of klopt","heel bijzonder en bijna ongelooflijk","een onderzeeër; een boot die onder water kan varen"] },
-  { term:"terugkeren", def:"terugkomen naar een plek of situatie", wrong:["tijd ergens of met iemand besteden","een denkbeeldige lijn waaromheen iets draait; ook: het poeder dat overblijft na verbranding","de positie of het aanzien van iemand in de maatschappij"] },
-  { term:"toewijzen*", def:"aan iemand geven of toekennen", wrong:["als reactie op iets; naar aanleiding van een gebeurtenis","iets geheimhouden; niet openbaar maken","een ronde driedimensionale vorm; ook: een bolvormig voorwerp"] },
-  { term:"uitsteeksel, het", def:"een deel dat uitsteekt of uitpuilt", wrong:["iets langer maken of uitstrekken; ook: tijd verlengen","knutselen aan iets mechanisch; repareren of aanpassen","het centrale punt; de persoon of het ding waar alles om draait"] },
-  { term:"uitvinding, de", def:"iets wat voor het eerst bedacht of gemaakt wordt", wrong:["de kant die links of rechts is, niet voor of achter","niet binnen het plan of het onderwerp vallen","een vaste manier van werken om iets te bereiken"] },
-  { term:"uitzoeken*", def:"iets onderzoeken om het te begrijpen; ook: iets selecteren", wrong:["knutselen aan iets mechanisch; repareren of aanpassen","een kuilvormige opening in de grond, ontstaan door een vulkaan of inslag","niet binnen het plan of het onderwerp vallen"] },
-  { term:"uurwerk, het", def:"het mechanisme van een klok of horloge", wrong:["puur en onvervuild; ook: correct of nauwkeurig","iemand die zijn eigen mening altijd beter vindt dan die van anderen","respect en aanzien dat iemand verdient; trots gevoel"] },
-  { term:"verontreiniging, de", def:"vervuiling van lucht, water of bodem", wrong:["aan iemand geven of toekennen","heel belangrijk zijn in iets","serieus beginnen met iets"] },
-  { term:"vijand, de", def:"iemand die vijandig staat tegenover iemand anders; tegenstander", wrong:["gespannen zijn; klaar zijn om elk moment in actie te komen","aan iemand geven of toekennen","terugkomen naar een plek of situatie"] },
-  { term:"waarmaken", def:"iets wat je beloofd hebt ook werkelijk doen", wrong:["leeg van binnen; niet massief","heel veel indruk maken; de fantasie prikkelen","wat te maken heeft met het leger of de krijgsmacht"] },
-  { term:"wonderbaarlijk", def:"heel bijzonder en bijna ongelooflijk", wrong:["gespannen zijn; klaar zijn om elk moment in actie te komen","vreemd of opvallend; anders dan normaal","eenvoudig; niet ingewikkeld"] },
-  { term:"zijkant, de", def:"de kant die links of rechts is, niet voor of achter", wrong:["serieus beginnen met iets","leeg van binnen; niet massief","het binnenste of belangrijkste deel van iets"] },
-  { term:"zuiver", def:"puur en onvervuild; ook: correct of nauwkeurig", wrong:["iets doen wat niet past bij iemands positie in de maatschappij","veel kritiek hebben op iemand; iemand in diskrediet brengen","iets geheimhouden; niet openbaar maken"] },
-  { term:"naar aanleiding van iets", def:"als reactie op iets; naar aanleiding van een gebeurtenis", wrong:["een groot hemellichaam dat om een ster draait","brieven of berichten uitwisselen; ook: overeenstemmen met iets","vreemd of opvallend; anders dan normaal"] },
-  { term:"zich wijden aan iets/iemand", def:"al je tijd en energie besteden aan iets of iemand", wrong:["brieven of berichten uitwisselen; ook: overeenstemmen met iets","de positie in een hiërarchie; een graad of titel","toegeven dat iets waar is; accepteren dat iets bestaat of klopt"] },
-  { term:"zich zetten aan iets", def:"serieus beginnen met iets", wrong:["het centrale punt; de persoon of het ding waar alles om draait","gespannen zijn; klaar zijn om elk moment in actie te komen","het hele universum; alles wat bestaat in de ruimte"] },
-  { term:"beneden zijn stand", def:"iets doen wat niet past bij iemands positie in de maatschappij", wrong:["een vaste manier van werken om iets te bereiken","een denkbeeldige lijn waaromheen iets draait; ook: het poeder dat overblijft na verbranding","het hele universum; alles wat bestaat in de ruimte"] },
-  { term:"buiten het bestek vallen/gaan", def:"niet binnen het plan of het onderwerp vallen", wrong:["puur en onvervuild; ook: correct of nauwkeurig","eenvoudig; niet ingewikkeld","serieus beginnen met iets"] },
-  { term:"een sleutelrol spelen", def:"heel belangrijk zijn in iets", wrong:["een ronde driedimensionale vorm; ook: een bolvormig voorwerp","de positie in een hiërarchie; een graad of titel","vervuiling van lucht, water of bodem"] },
-  { term:"iemand onderuit halen/schoppen", def:"veel kritiek hebben op iemand; iemand in diskrediet brengen", wrong:["door iets heen; aan de andere kant van iets uit","puur en onvervuild; ook: correct of nauwkeurig","met kracht tegen iets of iemand aanrijden; ook: het oneens zijn"] },
-  { term:"onder de pet houden", def:"iets geheimhouden; niet openbaar maken", wrong:["een groot hemellichaam dat om een ster draait","iemand die vijandig staat tegenover iemand anders; tegenstander","knutselen aan iets mechanisch; repareren of aanpassen"] },
-  { term:"op scherp staan", def:"gespannen zijn; klaar zijn om elk moment in actie te komen", wrong:["als reactie op iets; naar aanleiding van een gebeurtenis","met kracht tegen iets of iemand aanrijden; ook: het oneens zijn","de positie of het aanzien van iemand in de maatschappij"] },
-  { term:"tot de verbeelding spreken", def:"heel veel indruk maken; de fantasie prikkelen", wrong:["eenvoudig; niet ingewikkeld","gespannen zijn; klaar zijn om elk moment in actie te komen","de positie of het aanzien van iemand in de maatschappij"] },
-  { term:"van formaat", def:"van betekenis en belang; indrukwekkend", wrong:["serieus beginnen met iets","het centrale punt; de persoon of het ding waar alles om draait","iets wat voor het eerst bedacht of gemaakt wordt"] },
-  { term:"voor raadsels stellen", def:"iets onbegrijpelijk zijn; iemand niet kunnen begrijpen", wrong:["serieus beginnen met iets","een deel dat uitsteekt of uitpuilt","in het geheim; zonder dat anderen het weten"] }
+  { term:"ambt, het", def:"een officiële functie of beroep in de overheid of kerk", wrong:["een onderzeeër; een boot die onder water kan varen", "een tijdelijke baan in een winkel of fabriek", "een titel die je krijgt na je studie"] },
+  { term:"as, de", def:"een denkbeeldige lijn waaromheen iets draait; ook: het poeder dat overblijft na verbranding", wrong:["niet binnen het plan of het onderwerp vallen", "een echte lijn die je op een kaart tekent; ook: de rook van een vuur", "het midden van een cirkel; ook: het hout dat overblijft na verbranding"] },
+  { term:"blootleggen", def:"iets verborgens zichtbaar maken; onthullen", wrong:["veel kritiek hebben op iemand; iemand in diskrediet brengen", "iets zichtbaars verbergen; geheimhouden", "iets uitkleden; schoonmaken"] },
+  { term:"bol, de", def:"een ronde driedimensionale vorm; ook: een bolvormig voorwerp", wrong:["een onderzeeër; een boot die onder water kan varen", "een platte, ronde vorm; ook: een schijf", "een vierkante, driedimensionale vorm; ook: een doos"] },
+  { term:"botsen", def:"met kracht tegen iets of iemand aanrijden; ook: het oneens zijn", wrong:["als reactie op iets; naar aanleiding van een gebeurtenis", "rustig langs iets of iemand rijden; ook: het eens zijn", "hard remmen; ook: twijfelen"] },
+  { term:"corresponderen", def:"brieven of berichten uitwisselen; ook: overeenstemmen met iets", wrong:["iets onderzoeken om het te begrijpen; ook: iets selecteren", "telefoneren of vergaderen; ook: verschillen van iets", "brieven bezorgen; ook: tegenspreken"] },
+  { term:"diplomatiek", def:"tactvol en voorzichtig in wat je zegt; niet kwetsend", wrong:["vervuiling van lucht, water of bodem", "direct en bot in wat je zegt; kwetsend", "officieel en formeel; met veel regels"] },
+  { term:"doorbrengen*", def:"tijd ergens of met iemand besteden", wrong:["iets wat je beloofd hebt ook werkelijk doen", "tijd verspillen of verliezen", "iets ergens naartoe brengen"] },
+  { term:"doorheen", def:"door iets heen; aan de andere kant van iets uit", wrong:["een groot hemellichaam dat om een ster draait", "langs iets; aan de buitenkant", "boven iets; erover"] },
+  { term:"duikboot, de", def:"een onderzeeër; een boot die onder water kan varen", wrong:["vreemd of opvallend; anders dan normaal", "een schip dat over het water vaart", "een boot met een glazen bodem"] },
+  { term:"eer, de", def:"respect en aanzien dat iemand verdient; trots gevoel", wrong:["wat te maken heeft met het leger of de krijgsmacht", "schaamte en schande", "geld en bezit dat iemand verdient"] },
+  { term:"eigenwijs", def:"iemand die zijn eigen mening altijd beter vindt dan die van anderen", wrong:["iets wat je beloofd hebt ook werkelijk doen", "iemand die altijd luistert naar de mening van anderen", "iemand die heel wijs en slim is"] },
+  { term:"erkennen*", def:"toegeven dat iets waar is; accepteren dat iets bestaat of klopt", wrong:["een denkbeeldige lijn waaromheen iets draait; ook: het poeder dat overblijft na verbranding", "ontkennen dat iets waar is", "herkennen wie iemand is"] },
+  { term:"heelal, het", def:"het hele universum; alles wat bestaat in de ruimte", wrong:["als reactie op iets; naar aanleiding van een gebeurtenis", "de aarde met alle landen", "de lucht boven de wolken"] },
+  { term:"hol", def:"leeg van binnen; niet massief", wrong:["een kuilvormige opening in de grond, ontstaan door een vulkaan of inslag", "vol van binnen; massief", "rond van buiten"] },
+  { term:"kern, de", def:"het binnenste of belangrijkste deel van iets", wrong:["serieus beginnen met iets", "de buitenkant of het minst belangrijke deel van iets", "de schil of verpakking van iets"] },
+  { term:"krater, de", def:"een kuilvormige opening in de grond, ontstaan door een vulkaan of inslag", wrong:["serieus beginnen met iets", "een hoge berg die door een vulkaan ontstaat", "een tunnel onder de grond"] },
+  { term:"maan, de", def:"het hemellichaam dat om de aarde draait", wrong:["knutselen aan iets mechanisch; repareren of aanpassen", "de ster in het midden van ons zonnestelsel", "een planeet die om de zon draait"] },
+  { term:"macht, de", def:"het vermogen om anderen te beïnvloeden of te besturen; gezag", wrong:["door iets heen; aan de andere kant van iets uit", "het gebrek aan invloed; zwakte", "het geld dat iemand bezit"] },
+  { term:"merkwaardig", def:"vreemd of opvallend; anders dan normaal", wrong:["iets verborgens zichtbaar maken; onthullen", "gewoon en normaal", "waardevol en duur"] },
+  { term:"methode, de", def:"een vaste manier van werken om iets te bereiken", wrong:["brieven of berichten uitwisselen; ook: overeenstemmen met iets", "een toevallige manier van werken", "het doel dat je wilt bereiken"] },
+  { term:"middelpunt, het", def:"het centrale punt; de persoon of het ding waar alles om draait", wrong:["van betekenis en belang; indrukwekkend", "de rand; de persoon die niemand ziet", "het eindpunt; de laatste persoon"] },
+  { term:"militair", def:"wat te maken heeft met het leger of de krijgsmacht", wrong:["een groot hemellichaam dat om een ster draait", "wat te maken heeft met de politie", "wat te maken heeft met de regering"] },
+  { term:"ontdekking, de", def:"iets wat voor het eerst gevonden of onthuld wordt", wrong:["de kant die links of rechts is, niet voor of achter", "iets wat al heel lang bekend is", "iets wat verloren is gegaan"] },
+  { term:"onderkennen*", def:"iets herkennen of inzien, vaak iets negatiefs", wrong:["de kant die links of rechts is, niet voor of achter", "iets negeren of over het hoofd zien", "iets van onderen bekijken"] },
+  { term:"planeet, de", def:"een groot hemellichaam dat om een ster draait", wrong:["een officiële functie of beroep in de overheid of kerk", "een groot hemellichaam dat zelf licht geeft", "een klein stuk steen dat door de ruimte vliegt"] },
+  { term:"rang, de", def:"de positie in een hiërarchie; een graad of titel", wrong:["veel kritiek hebben op iemand; iemand in diskrediet brengen", "de plaats in een rij van wachtenden", "het salaris van iemand"] },
+  { term:"rekken", def:"iets langer maken of uitstrekken; ook: tijd verlengen", wrong:["iets onbegrijpelijk zijn; iemand niet kunnen begrijpen", "iets korter maken of indrukken; ook: tijd inkorten", "iets op een rek leggen; ook: tijd tellen"] },
+  { term:"simpel", def:"eenvoudig; niet ingewikkeld", wrong:["serieus beginnen met iets", "ingewikkeld; moeilijk", "goedkoop; niet duur"] },
+  { term:"sleutelen", def:"knutselen aan iets mechanisch; repareren of aanpassen", wrong:["het centrale punt; de persoon of het ding waar alles om draait", "iets op slot doen", "iets nieuws kopen"] },
+  { term:"speuren", def:"zoeken of opsporen, zoals een detective", wrong:["een vaste manier van werken om iets te bereiken", "verstoppen of verbergen", "volgen zonder te zoeken"] },
+  { term:"status, de", def:"de positie of het aanzien van iemand in de maatschappij", wrong:["het vermogen om anderen te beïnvloeden of te besturen; gezag", "de gezondheid van iemand", "het karakter van iemand"] },
+  { term:"stiekem", def:"in het geheim; zonder dat anderen het weten", wrong:["al je tijd en energie besteden aan iets of iemand", "openlijk; zodat iedereen het weet", "snel; zonder na te denken"] },
+  { term:"tamelijk", def:"vrij; redelijk; niet helemaal maar wel behoorlijk", wrong:["heel veel indruk maken; de fantasie prikkelen", "helemaal; volledig", "nauwelijks; bijna niet"] },
+  { term:"telescoop, de", def:"een instrument om ver weg gelegen objecten te bekijken", wrong:["iets wat voor het eerst bedacht of gemaakt wordt", "een instrument om heel kleine dingen te bekijken", "een instrument om geluid op te nemen"] },
+  { term:"terugkeren", def:"terugkomen naar een plek of situatie", wrong:["respect en aanzien dat iemand verdient; trots gevoel", "voor het eerst ergens naartoe gaan", "ergens voorgoed weggaan"] },
+  { term:"toewijzen*", def:"aan iemand geven of toekennen", wrong:["tijd ergens of met iemand besteden", "van iemand afpakken", "aan iemand vragen"] },
+  { term:"uitsteeksel, het", def:"een deel dat uitsteekt of uitpuilt", wrong:["heel bijzonder en bijna ongelooflijk", "een gat of kuil", "een plat deel"] },
+  { term:"uitvinding, de", def:"iets wat voor het eerst bedacht of gemaakt wordt", wrong:["heel bijzonder en bijna ongelooflijk", "iets wat al heel lang bestaat", "iets wat je terugvindt"] },
+  { term:"uitzoeken*", def:"iets onderzoeken om het te begrijpen; ook: iets selecteren", wrong:["vreemd of opvallend; anders dan normaal", "iets vergeten; ook: iets weggooien", "iets uitleggen aan anderen; ook: iets kopen"] },
+  { term:"uurwerk, het", def:"het mechanisme van een klok of horloge", wrong:["iets onbegrijpelijk zijn; iemand niet kunnen begrijpen", "de wijzerplaat met de cijfers van een klok", "het werk dat je per uur doet"] },
+  { term:"verontreiniging, de", def:"vervuiling van lucht, water of bodem", wrong:["een onderzeeër; een boot die onder water kan varen", "schoonmaak van lucht, water of bodem", "verwarming van lucht, water of bodem"] },
+  { term:"vijand, de", def:"iemand die vijandig staat tegenover iemand anders; tegenstander", wrong:["als reactie op iets; naar aanleiding van een gebeurtenis", "iemand die je helpt; bondgenoot", "iemand die je niet kent"] },
+  { term:"waarmaken", def:"iets wat je beloofd hebt ook werkelijk doen", wrong:["het vermogen om anderen te beïnvloeden of te besturen; gezag", "iets beloven maar niet doen", "iets waar maken door het op te schrijven"] },
+  { term:"wonderbaarlijk", def:"heel bijzonder en bijna ongelooflijk", wrong:["iets geheimhouden; niet openbaar maken", "heel gewoon en voorspelbaar", "een beetje vreemd"] },
+  { term:"zijkant, de", def:"de kant die links of rechts is, niet voor of achter", wrong:["brieven of berichten uitwisselen; ook: overeenstemmen met iets", "de kant die voor of achter is", "de bovenkant"] },
+  { term:"zuiver", def:"puur en onvervuild; ook: correct of nauwkeurig", wrong:["toegeven dat iets waar is; accepteren dat iets bestaat of klopt", "vies en vervuild; ook: onjuist", "doorzichtig; ook: ongeveer"] },
+  { term:"naar aanleiding van iets", def:"als reactie op iets; naar aanleiding van een gebeurtenis", wrong:["de kant die links of rechts is, niet voor of achter", "zonder enig verband met iets", "voorafgaand aan iets"] },
+  { term:"zich wijden aan iets/iemand", def:"al je tijd en energie besteden aan iets of iemand", wrong:["puur en onvervuild; ook: correct of nauwkeurig", "geen tijd besteden aan iets of iemand", "zich kort bezighouden met iets"] },
+  { term:"zich zetten aan iets", def:"serieus beginnen met iets", wrong:["iets onbegrijpelijk zijn; iemand niet kunnen begrijpen", "stoppen met iets", "op iets gaan zitten"] },
+  { term:"beneden zijn stand", def:"iets doen wat niet past bij iemands positie in de maatschappij", wrong:["een onderzeeër; een boot die onder water kan varen", "iets doen wat heel goed past bij iemands positie", "op een lagere verdieping wonen"] },
+  { term:"buiten het bestek vallen/gaan", def:"niet binnen het plan of het onderwerp vallen", wrong:["iemand die zijn eigen mening altijd beter vindt dan die van anderen", "precies binnen het plan of onderwerp vallen", "buiten de begroting duurder worden"] },
+  { term:"een sleutelrol spelen", def:"heel belangrijk zijn in iets", wrong:["niet binnen het plan of het onderwerp vallen", "een kleine rol spelen", "een slot openmaken"] },
+  { term:"iemand onderuit halen/schoppen", def:"veel kritiek hebben op iemand; iemand in diskrediet brengen", wrong:["in het geheim; zonder dat anderen het weten", "iemand prijzen; iemand populair maken", "iemand overeind helpen"] },
+  { term:"onder de pet houden", def:"iets geheimhouden; niet openbaar maken", wrong:["iets wat voor het eerst bedacht of gemaakt wordt", "iets aan iedereen vertellen", "een pet dragen"] },
+  { term:"op scherp staan", def:"gespannen zijn; klaar zijn om elk moment in actie te komen", wrong:["iets langer maken of uitstrekken; ook: tijd verlengen", "ontspannen zijn; nergens op letten", "op een scherpe rand staan"] },
+  { term:"tot de verbeelding spreken", def:"heel veel indruk maken; de fantasie prikkelen", wrong:["terugkomen naar een plek of situatie", "helemaal geen indruk maken", "een verhaal hardop voorlezen"] },
+  { term:"van formaat", def:"van betekenis en belang; indrukwekkend", wrong:["het mechanisme van een klok of horloge", "klein en onbelangrijk", "van normale grootte"] },
+  { term:"voor raadsels stellen", def:"iets onbegrijpelijk zijn; iemand niet kunnen begrijpen", wrong:["brieven of berichten uitwisselen; ook: overeenstemmen met iets", "iets helemaal duidelijk maken", "iemand een quiz laten doen"] }
 ];
-function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+let lastCorrectPos = -1;
+function shuffleOpts(opts, correct) {
+  let shuffled, attempts = 0;
+  do { shuffled = shuffle(opts); attempts++; }
+  while (shuffled.indexOf(correct) === lastCorrectPos && attempts < 10);
+  lastCorrectPos = shuffled.indexOf(correct);
+  return shuffled;
+}
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
 function render(){
   const root=document.getElementById('quiz-root');
   if(current>=questions.length){ renderScore(); return; }
   const q=questions[current];
-  const opts=shuffle([q.def,...q.wrong]);
+  const opts=shuffleOpts([q.def,...q.wrong], q.def);
   const pct=Math.round((current/questions.length)*100);
   root.innerHTML=`
     <div class="quiz-meta"><span>Vraag ${current+1} / ${questions.length}</span><span>${score} goed</span></div>
@@ -1095,6 +1126,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>

@@ -316,6 +316,20 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="zelftest-extra-css">
+.len-bar { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; margin:0 0 1rem; font-size:.9rem; color:var(--ink-muted); }
+.len-bar .restart { margin:0; padding:.35rem .9rem; font-size:.85rem; }
+.len-bar .restart.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.score-wrap .restart.fouten { margin-left:.5rem; background:var(--accent); color:#fff; border-color:var(--accent); }
+</style>
+<style id="voorlees-css">
+button.sound-link.voorlees { border:none; cursor:pointer; font-family:inherit; line-height:inherit; }
+.voorlees-melding { font-size:.8rem; color:var(--ink-muted); margin-top:.4rem; }
+</style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -333,6 +347,7 @@ header { padding-top: 4.5rem !important; }
 </nav>
 <div class="content">
   <div id="panel-lijst" class="panel active">
+  <div class="doelzin"><b>🎯 Doel:</b> je leert wat de woorden van hoofdstuk 5.2 betekenen en hoe je ze in een zin gebruikt.</div>
     <div class="section-heading">Woordenschat</div>
     
     <div class="word-card">
@@ -627,6 +642,7 @@ header { padding-top: 4.5rem !important; }
     </div>
   </div>
   <div id="panel-quiz" class="panel">
+  <div class="doelzin"><b>🎯 Doel:</b> je test of je de betekenis van de woorden van hoofdstuk 5.2 kent.</div>
     <div id="quiz-root"></div>
   </div>
 </div>
@@ -648,32 +664,32 @@ function shuffleOpts(opts, correct) {
   return shuffled;
 }
 const ALL = [
-  { term:"afsluiten*", def:"dichtdoen of op slot doen; ook: beëindigen; ook: een contract of verzekering nemen", wrong:["de twee samen","oppakken; ook: snel leren","iets wat invloed heeft op een resultaat"] },
-  { term:"afwisselen", def:"om de beurt doen; elkaar opvolgen", wrong:["krijgen door er moeite voor te doen","verband hebben met iets","met je handen in iets rommelen en zoeken"] },
-  { term:"allebei", def:"de twee samen", wrong:["iets wat je aanneemt, zonder dat het zeker is","met een touw vastmaken; ook: verbinden","oppakken; ook: snel leren"] },
-  { term:"binden*", def:"met een touw vastmaken; ook: verbinden", wrong:["een gebied of terrein, ook figuurlijk","dichtdoen of op slot doen; ook: beëindigen; ook: een contract of verzekering nemen","zonder vaste keuze of regel; zomaar"] },
-  { term:"domein, het", def:"een gebied of terrein, ook figuurlijk", wrong:["waarschijnlijk","met je handen in iets rommelen en zoeken","globaal"] },
-  { term:"factor, de", def:"iets wat invloed heeft op een resultaat", wrong:["meestal; als je naar het geheel kijkt","oppakken; ook: snel leren","waarschijnlijk"] },
-  { term:"fysiek", def:"lichamelijk", wrong:["iets wat invloed heeft op een resultaat","plotseling tevoorschijn komen","echt"] },
-  { term:"garanderen", def:"beloven dat iets zeker gebeurt", wrong:["plotseling tevoorschijn komen","een gebied of terrein, ook figuurlijk","op dat gebied"] },
-  { term:"grabbelen", def:"met je handen in iets rommelen en zoeken", wrong:["plotseling tevoorschijn komen","beloven dat iets zeker gebeurt","iets wat invloed heeft op een resultaat"] },
-  { term:"opduiken*", def:"plotseling tevoorschijn komen", wrong:["lichamelijk","iets wat je aanneemt, zonder dat het zeker is","de twee samen"] },
-  { term:"opgroeien", def:"groot worden; je jeugd doorbrengen", wrong:["met een touw vastmaken; ook: verbinden","samengaan met iets","veranderen naar iets anders"] },
-  { term:"oppikken", def:"oppakken; ook: snel leren", wrong:["plotseling tevoorschijn komen","op dat gebied","om de beurt doen; elkaar opvolgen"] },
-  { term:"vermengen", def:"door elkaar mengen", wrong:["krijgen door er moeite voor te doen","om de beurt doen; elkaar opvolgen","beloven dat iets zeker gebeurt"] },
-  { term:"vermoedelijk", def:"waarschijnlijk", wrong:["meestal; als je naar het geheel kijkt","met een touw vastmaken; ook: verbinden","verband hebben met iets"] },
-  { term:"veronderstelling, de", def:"iets wat je aanneemt, zonder dat het zeker is", wrong:["veranderen naar iets anders","het verschil zien tussen twee dingen","door elkaar mengen"] },
-  { term:"verschijnsel, het", def:"iets wat je kunt waarnemen; een gebeurtenis of fenomeen", wrong:["een gebied of terrein, ook figuurlijk","het verschil zien tussen twee dingen","door elkaar mengen"] },
-  { term:"verwerven*", def:"krijgen door er moeite voor te doen", wrong:["zonder vaste keuze of regel; zomaar","veranderen naar iets anders","oppakken; ook: snel leren"] },
-  { term:"willekeurig", def:"zonder vaste keuze of regel; zomaar", wrong:["waarschijnlijk","oppakken; ook: snel leren","globaal"] },
-  { term:"in het algemeen", def:"meestal; als je naar het geheel kijkt", wrong:["lichamelijk","een gebied of terrein, ook figuurlijk","iets wat je kunt waarnemen; een gebeurtenis of fenomeen"] },
-  { term:"op dat vlak", def:"op dat gebied", wrong:["dichtdoen of op slot doen; ook: beëindigen; ook: een contract of verzekering nemen","iets wat je kunt waarnemen; een gebeurtenis of fenomeen","samengaan met iets"] },
-  { term:"overschakelen op iets", def:"veranderen naar iets anders", wrong:["iets wat je kunt waarnemen; een gebeurtenis of fenomeen","iets wat invloed heeft op een resultaat","samengaan met iets"] },
-  { term:"samenhangen met iets", def:"verband hebben met iets", wrong:["samengaan met iets","plotseling tevoorschijn komen","echt"] },
-  { term:"uit elkaar houden", def:"het verschil zien tussen twee dingen", wrong:["iets wat invloed heeft op een resultaat","waarschijnlijk","oppakken; ook: snel leren"] },
-  { term:"gepaard gaan met iets", def:"samengaan met iets", wrong:["om de beurt doen; elkaar opvolgen","verband hebben met iets","door elkaar mengen"] },
-  { term:"in grote lijnen", def:"globaal", wrong:["iets wat invloed heeft op een resultaat","krijgen door er moeite voor te doen","zonder vaste keuze of regel; zomaar"] },
-  { term:"wel degelijk", def:"echt", wrong:["iets wat je kunt waarnemen; een gebeurtenis of fenomeen","meestal; als je naar het geheel kijkt","iets wat je aanneemt, zonder dat het zeker is"] }
+  { term:"afsluiten*", def:"dichtdoen of op slot doen; ook: beëindigen; ook: een contract of verzekering nemen", wrong:["zonder vaste keuze of regel; zomaar", "openmaken of van het slot halen; ook: beginnen; ook: een contract opzeggen", "schoonmaken; ook: uitstellen; ook: een verzekering aanvragen"] },
+  { term:"afwisselen", def:"om de beurt doen; elkaar opvolgen", wrong:["iets wat invloed heeft op een resultaat", "altijd hetzelfde doen; niets veranderen", "tegelijk doen; samen beginnen"] },
+  { term:"allebei", def:"de twee samen", wrong:["meestal; als je naar het geheel kijkt", "geen van de twee", "één van de twee"] },
+  { term:"binden*", def:"met een touw vastmaken; ook: verbinden", wrong:["meestal; als je naar het geheel kijkt", "met een schaar losknippen; ook: scheiden", "met lijm plakken; ook: kopiëren"] },
+  { term:"domein, het", def:"een gebied of terrein, ook figuurlijk", wrong:["met een touw vastmaken; ook: verbinden", "een gebouw of huis, ook figuurlijk", "een regel of wet, ook figuurlijk"] },
+  { term:"factor, de", def:"iets wat invloed heeft op een resultaat", wrong:["een gebied of terrein, ook figuurlijk", "het eindresultaat zelf", "iets wat geen invloed heeft"] },
+  { term:"fysiek", def:"lichamelijk", wrong:["met een touw vastmaken; ook: verbinden", "geestelijk; in je gedachten", "medisch; bij de dokter"] },
+  { term:"garanderen", def:"beloven dat iets zeker gebeurt", wrong:["om de beurt doen; elkaar opvolgen", "twijfelen of iets gebeurt", "hopen dat iets gebeurt"] },
+  { term:"grabbelen", def:"met je handen in iets rommelen en zoeken", wrong:["het verschil zien tussen twee dingen", "iets netjes opruimen", "iets voorzichtig aanraken"] },
+  { term:"opduiken*", def:"plotseling tevoorschijn komen", wrong:["zonder vaste keuze of regel; zomaar", "plotseling verdwijnen", "onder water zwemmen"] },
+  { term:"opgroeien", def:"groot worden; je jeugd doorbrengen", wrong:["samengaan met iets", "oud worden; met pensioen gaan", "groter maken; een kind opvoeden"] },
+  { term:"oppikken", def:"oppakken; ook: snel leren", wrong:["plotseling tevoorschijn komen", "laten vallen; ook: snel vergeten", "neerleggen; ook: langzaam leren"] },
+  { term:"vermengen", def:"door elkaar mengen", wrong:["veranderen naar iets anders", "uit elkaar halen", "één voor één toevoegen"] },
+  { term:"vermoedelijk", def:"waarschijnlijk", wrong:["oppakken; ook: snel leren", "zeker; dat is bewezen", "onwaarschijnlijk; dat denk ik niet"] },
+  { term:"veronderstelling, de", def:"iets wat je aanneemt, zonder dat het zeker is", wrong:["veranderen naar iets anders", "iets wat zeker is en bewezen", "een vraag die je aan iemand stelt"] },
+  { term:"verschijnsel, het", def:"iets wat je kunt waarnemen; een gebeurtenis of fenomeen", wrong:["de twee samen", "iets wat je bedenkt maar niet ziet", "de oorzaak van een ziekte"] },
+  { term:"verwerven*", def:"krijgen door er moeite voor te doen", wrong:["waarschijnlijk", "krijgen zonder er iets voor te doen", "kwijtraken door slordigheid"] },
+  { term:"willekeurig", def:"zonder vaste keuze of regel; zomaar", wrong:["op dat gebied", "volgens een vaste regel; precies gekozen", "met opzet; om iemand te pesten"] },
+  { term:"in het algemeen", def:"meestal; als je naar het geheel kijkt", wrong:["met je handen in iets rommelen en zoeken", "in één bijzonder geval", "nooit"] },
+  { term:"op dat vlak", def:"op dat gebied", wrong:["zonder vaste keuze of regel; zomaar", "op dat moment", "op die plek"] },
+  { term:"overschakelen op iets", def:"veranderen naar iets anders", wrong:["dichtdoen of op slot doen; ook: beëindigen; ook: een contract of verzekering nemen", "bij hetzelfde blijven", "iets overslaan"] },
+  { term:"samenhangen met iets", def:"verband hebben met iets", wrong:["een gebied of terrein, ook figuurlijk", "los staan van iets", "samenwerken met iemand"] },
+  { term:"uit elkaar houden", def:"het verschil zien tussen twee dingen", wrong:["op dat gebied", "twee dingen door elkaar halen", "twee mensen van elkaar scheiden"] },
+  { term:"gepaard gaan met iets", def:"samengaan met iets", wrong:["iets wat je aanneemt, zonder dat het zeker is", "los staan van iets", "met zijn tweeën gaan"] },
+  { term:"in grote lijnen", def:"globaal", wrong:["waarschijnlijk", "tot in detail", "in grote letters"] },
+  { term:"wel degelijk", def:"echt", wrong:["zonder vaste keuze of regel; zomaar", "helemaal niet", "misschien wel"] }
 ];
 let questions=[], current=0, score=0;
 function buildQuiz(){ questions=shuffle(ALL); current=0; score=0; render(); }
@@ -705,6 +721,93 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='quiz'&&questions.length===0) buildQuiz();
 }
+</script>
+<script id="zelftest-extra">
+(function(){
+  var gekozen = 0, fouten = [], foutenRonde = false;
+  var root = document.getElementById('quiz-root');
+  var bar = document.createElement('div');
+  bar.className = 'len-bar';
+  function knoppen(){
+    var n = ALL.length, opties = [10, 20].filter(function(x){ return x < n; });
+    bar.innerHTML = '<span>Hoeveel vragen?</span>' + opties.map(function(x){
+      return '<button class="restart' + (gekozen===x?' on':'') + '" data-n="' + x + '">' + x + '</button>';
+    }).join('') + '<button class="restart' + (gekozen===0?' on':'') + '" data-n="0">Alle (' + n + ')</button>';
+  }
+  bar.addEventListener('click', function(e){
+    var b = e.target.closest('button'); if(!b) return;
+    gekozen = parseInt(b.getAttribute('data-n'), 10) || 0;
+    knoppen(); buildQuiz();
+  });
+  root.parentNode.insertBefore(bar, root);
+  knoppen();
+
+  var origBuild = buildQuiz;
+  buildQuiz = function(){
+    origBuild();
+    foutenRonde = false; fouten = [];
+    if (gekozen && questions.length > gekozen) { questions = questions.slice(0, gekozen); current = 0; score = 0; render(); }
+  };
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || !b.classList.contains('wrong')) return;
+    var w = root.querySelector('.quiz-word'), t = w ? w.textContent.trim() : '';
+    var q = questions.filter(function(x){ return String(x.term).trim() === t; })[0];
+    if (q && fouten.indexOf(q) === -1) fouten.push(q);
+  });
+  var origScore = renderScore;
+  renderScore = function(){
+    origScore();
+    var w = root.querySelector('.score-wrap');
+    if (w && fouten.length) {
+      var b = document.createElement('button');
+      b.className = 'restart fouten';
+      b.textContent = 'Oefen de fouten (' + fouten.length + ')';
+      b.onclick = function(){
+        questions = shuffle(fouten); fouten = []; foutenRonde = true;
+        current = 0; score = 0; render();
+      };
+      w.appendChild(b);
+    }
+  };
+})();
+</script>
+<script id="voorlees-extra">
+(function(){
+  if (!('speechSynthesis' in window)) return;
+  function stem(){
+    var v = speechSynthesis.getVoices();
+    return v.filter(function(x){ return /^nl[-_]NL/i.test(x.lang); })[0] ||
+           v.filter(function(x){ return /^nl/i.test(x.lang); })[0] || null;
+  }
+  speechSynthesis.getVoices();
+  function tekst(t){
+    return t.replace(/\s*\([^)]*\)/g, '').replace(/\//g, ' of ').replace(/…|\.\.\./g, ' ').replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+  }
+  document.querySelectorAll('.word-card').forEach(function(card){
+    if (!card.querySelector('.tag-verb, .tag-idioom')) return;
+    var link = card.querySelector('a.sound-link'), term = card.querySelector('.card-term');
+    var plek = card.querySelector('.card-right');
+    if (!term || (!link && !plek)) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'sound-link voorlees';
+    b.innerHTML = '🔊 Voorlezen';
+    b.addEventListener('click', function(){
+      var v = stem();
+      var u = new SpeechSynthesisUtterance(tekst(term.textContent));
+      u.lang = 'nl-NL'; u.rate = 0.9; if (v) u.voice = v;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+      if (!v && !card.querySelector('.voorlees-melding')) {
+        var m = document.createElement('div');
+        m.className = 'voorlees-melding';
+        m.textContent = 'Je telefoon of computer heeft geen Nederlandse stem. Het voorlezen kan dan vreemd klinken.';
+        card.appendChild(m);
+      }
+    });
+    if (link) link.parentNode.replaceChild(b, link); else plek.insertBefore(b, plek.firstChild);
+  });
+})();
 </script>
 </body>
 </html>
