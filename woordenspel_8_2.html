@@ -344,6 +344,10 @@
 /* ruimte zodat de knop Hoofdmenu niets bedekt */
 header { padding-top: 4.5rem !important; }
 </style>
+<style id="doelzin-css">
+.doelzin { background:#fff; border-left:5px solid #2d3a8c; border-radius:6px; padding:.6rem .9rem; margin:0 0 1.1rem; font-size:.92rem; line-height:1.5; color:#1a1612; }
+.doelzin b { color:#2d3a8c; }
+</style>
 </head>
 <body>
   <div style="position:fixed;top:1rem;left:1rem;z-index:9999;">
@@ -360,6 +364,7 @@ header { padding-top: 4.5rem !important; }
     <div>Score: <span id="score-display">0</span> / <span id="total-display">0</span></div>
     <div>Correct: <span id="correct-display">0</span> &nbsp;|&nbsp; Fout: <span id="wrong-display">0</span></div>
   </div>
+  <div class="doelzin"><b>🎯 Doel:</b> je gebruikt de woorden van hoofdstuk 8.2 zelf in een zin, in de juiste vorm.</div>
   <div class="instructions">
     Elke zin bevat een <span style="text-decoration:underline dotted var(--accent);color:var(--accent);font-style:italic">onderstreept woord of zinsdeel</span>. Vervang dat door het juiste woord, de verbinding of de idioomuitdrukking uit hoofdstuk 8.2.
   </div>
@@ -658,7 +663,7 @@ header { padding-top: 4.5rem !important; }
     const input=document.getElementById('ans-'+n), fb=document.getElementById('fb-'+n), btn=document.querySelector('#card-'+n+' .check-btn');
     const val=normalize(input.value), correct=answers[n];
     if(!val){ fb.textContent='Typ eerst een antwoord.'; fb.className='feedback wrong'; return; }
-    const isCorrect=correct.some(c=>normalize(c)===val||val.includes(normalize(c))||normalize(c).includes(val));
+    const isCorrect=correct.some(c=>normalize(c)===val||(val.length>=4&&(val.includes(normalize(c))||normalize(c).includes(val))));
     if(isCorrect){ input.classList.add('correct'); input.classList.remove('wrong'); fb.textContent='✓ Correct!'; fb.className='feedback correct'; btn.disabled=true; if(!scores[n]){ scores[n]=true; updateScore(); } markWordbank(n); }
     else{ input.classList.add('wrong'); input.classList.remove('correct'); attempts[n]=(attempts[n]||0)+1; if(attempts[n]>=2) fb.innerHTML='✗ Het antwoord is: <strong>'+correct[0]+'</strong>'; else fb.textContent='✗ Probeer het nog eens. Kijk naar de hint!'; fb.className='feedback wrong'; if(!scores['wrong'+n]){ scores['wrong'+n]=true; updateScore(); } }
   }
