@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursist A — Thema 1, Taak 2</title>
+<style>
+  :root {
+    --accent: #2563eb;
+    --accent-light: #60a5fa;
+    --accent-dark: #1e40af;
+    --ink: #1f2430;
+    --paper: #ffffff;
+    --bg: #f4f5f7;
+    --muted: #6b7280;
+    --ok: #16a34a;
+    --bad: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 0 0 60px 0;
+  }
+  header {
+    background: var(--accent);
+    color: white;
+    padding: 22px 20px 26px;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .02em;
+  }
+  header h1 {
+    margin: 12px 0 4px;
+    font-size: 22px;
+  }
+  header p {
+    margin: 0;
+    opacity: .92;
+    font-size: 14px;
+    max-width: 640px;
+  }
+  main {
+    max-width: 760px;
+    margin: 20px auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 10px rgba(0,0,0,.04);
+    padding: 20px 20px 22px;
+    border: 1px solid #eceef1;
+  }
+  .card h2 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    flex: none;
+  }
+  .card .hint {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin: 0 0 14px;
+    line-height: 1.5;
+  }
+  ul.read-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  li.read-line {
+    background: var(--bg);
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: opacity .15s;
+  }
+  li.read-line.done {
+    opacity: .45;
+  }
+  li.read-line label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  li.read-line input[type=checkbox] {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    flex: none;
+  }
+  .numseq {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    font-variant-numeric: tabular-nums;
+  }
+  li.read-line.done .numseq {
+    text-decoration: line-through;
+  }
+  .grid-wrap {
+    width: 100%;
+    overflow: auto;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1px solid #eceef1;
+    touch-action: manipulation;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+  }
+  .dot {
+    fill: #9ca3af;
+    stroke: white;
+    stroke-width: 1.5;
+    cursor: pointer;
+    transition: fill .12s, r .12s;
+  }
+  .dot:hover {
+    fill: var(--accent-light);
+  }
+  .dot.visited {
+    fill: var(--accent);
+  }
+  .dot.current {
+    fill: var(--accent-dark);
+  }
+  .dot.wrong {
+    fill: var(--bad) !important;
+  }
+  .hit {
+    fill: transparent;
+    cursor: pointer;
+  }
+  .lbl {
+    font-size: 13px;
+    fill: #374151;
+    text-anchor: middle;
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .startring {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+  }
+  .segline {
+    stroke: var(--accent-dark);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    fill: none;
+    opacity: .9;
+  }
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .progress-text {
+    font-size: 13.5px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .progress-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar > div {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width .25s ease;
+  }
+  button.reset {
+    background: white;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13.5px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  button.reset:hover {
+    background: var(--accent);
+    color: white;
+  }
+  .feedback {
+    min-height: 20px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .feedback.ok { color: var(--ok); }
+  .feedback.bad { color: var(--bad); }
+  .celebrate {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 14px;
+    display: none;
+  }
+  .partner-note {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #7c2d12;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin: 14px 16px 0;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .shake { animation: shake .25s; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge">Cursist A</span>
+  <h1>Extra opdracht &mdash; Thema 1 &middot; Taak 2</h1>
+  <p>Werk samen met je partner die de pagina van cursist B open heeft. Laat elkaars scherm niet zien &mdash; jullie hebben allebei andere informatie nodig om de opdracht samen op te lossen.</p>
+</header>
+
+<main>
+
+<div class="card">
+    <h2><span class="step-num">1</span> Lees hardop voor</h2>
+    <p class="hint">Lees onderstaande getallenreeksen hardop voor aan cursist B. cursist B verbindt op basis daarvan de stippen op het eigen werkblad. Vink een reeks af zodra je hem hebt voorgelezen.</p>
+    <ul class="read-list">
+      <li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">87 &ndash; 594 &ndash; 430 &ndash; 1034 &ndash; 799 &ndash; 310 &ndash; 284 &ndash; 3357 &ndash; 651</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">875 &ndash; 992 &ndash; 916</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">124 &ndash; 793</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">785 &ndash; 431 &ndash; 553 &ndash; 22 &ndash; 401 &ndash; 381 &ndash; 963 &ndash; 2265 &ndash; 834 &ndash; 487 &ndash; 286</span>
+          </label>
+        </li>
+    </ul>
+  </div>
+<div class="card">
+    <h2><span class="step-num">2</span> Verbind de stippen</h2>
+    <p class="hint">Luister naar cursist B en verbind de stippen met een lijn. Begin bij <strong>77</strong> (blauwe cirkel).</p>
+    <div class="grid-wrap">
+      <svg id="gridsvg" viewBox="0 0 680 920" xmlns="http://www.w3.org/2000/svg">
+        <g id="lineLayer"></g>
+        <g id="dotLayer"></g>
+      </svg>
+    </div>
+    <div class="toolbar">
+      <div>
+        <div class="progress-text" id="progressText">Lijn 1 van &hellip;</div>
+        <div class="progress-bar"><div id="progressFill"></div></div>
+      </div>
+      <button class="reset" id="resetBtn">&#8635; Opnieuw beginnen</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="celebrate" id="celebrate">&#127881; Goed gedaan! De hele figuur is verbonden.</div>
+  </div>
+
+</main>
+
+<script>
+const pointsData = {"76": {"x": 40, "y": 40}, "344": {"x": 100, "y": 40}, "252": {"x": 160, "y": 40}, "465": {"x": 220, "y": 40}, "406": {"x": 280, "y": 40}, "180": {"x": 340, "y": 40}, "51": {"x": 400, "y": 40}, "209": {"x": 460, "y": 40}, "386": {"x": 520, "y": 40}, "218": {"x": 580, "y": 40}, "61": {"x": 640, "y": 40}, "205": {"x": 40, "y": 100}, "331": {"x": 100, "y": 100}, "327": {"x": 160, "y": 100}, "433": {"x": 220, "y": 100}, "97": {"x": 280, "y": 100}, "243": {"x": 340, "y": 100}, "125": {"x": 400, "y": 100}, "165": {"x": 460, "y": 100}, "396": {"x": 520, "y": 100}, "454": {"x": 580, "y": 100}, "9": {"x": 640, "y": 100}, "189": {"x": 40, "y": 160}, "78": {"x": 100, "y": 160}, "422": {"x": 160, "y": 160}, "450": {"x": 220, "y": 160}, "3": {"x": 280, "y": 160}, "310": {"x": 340, "y": 160}, "390": {"x": 400, "y": 160}, "320": {"x": 460, "y": 160}, "216": {"x": 520, "y": 160}, "322": {"x": 580, "y": 160}, "47": {"x": 640, "y": 160}, "194": {"x": 40, "y": 220}, "224": {"x": 100, "y": 220}, "357": {"x": 160, "y": 220}, "60": {"x": 220, "y": 220}, "271": {"x": 280, "y": 220}, "425": {"x": 340, "y": 220}, "275": {"x": 400, "y": 220}, "18": {"x": 460, "y": 220}, "471": {"x": 520, "y": 220}, "25": {"x": 580, "y": 220}, "486": {"x": 640, "y": 220}, "146": {"x": 40, "y": 280}, "103": {"x": 100, "y": 280}, "468": {"x": 160, "y": 280}, "453": {"x": 220, "y": 280}, "238": {"x": 280, "y": 280}, "350": {"x": 340, "y": 280}, "334": {"x": 400, "y": 280}, "10": {"x": 460, "y": 280}, "387": {"x": 520, "y": 280}, "226": {"x": 580, "y": 280}, "200": {"x": 640, "y": 280}, "294": {"x": 40, "y": 340}, "438": {"x": 100, "y": 340}, "221": {"x": 160, "y": 340}, "404": {"x": 220, "y": 340}, "91": {"x": 280, "y": 340}, "317": {"x": 340, "y": 340}, "32": {"x": 400, "y": 340}, "283": {"x": 460, "y": 340}, "154": {"x": 520, "y": 340}, "328": {"x": 580, "y": 340}, "20": {"x": 640, "y": 340}, "77": {"x": 40, "y": 400}, "176": {"x": 100, "y": 400}, "228": {"x": 160, "y": 400}, "206": {"x": 220, "y": 400}, "167": {"x": 280, "y": 400}, "251": {"x": 340, "y": 400}, "30": {"x": 400, "y": 400}, "62": {"x": 460, "y": 400}, "418": {"x": 520, "y": 400}, "35": {"x": 580, "y": 400}, "2": {"x": 640, "y": 400}, "12": {"x": 40, "y": 460}, "142": {"x": 100, "y": 460}, "259": {"x": 160, "y": 460}, "79": {"x": 220, "y": 460}, "88": {"x": 280, "y": 460}, "442": {"x": 340, "y": 460}, "148": {"x": 400, "y": 460}, "332": {"x": 460, "y": 460}, "36": {"x": 520, "y": 460}, "411": {"x": 580, "y": 460}, "303": {"x": 640, "y": 460}, "421": {"x": 40, "y": 520}, "290": {"x": 100, "y": 520}, "234": {"x": 160, "y": 520}, "489": {"x": 220, "y": 520}, "239": {"x": 280, "y": 520}, "304": {"x": 340, "y": 520}, "198": {"x": 400, "y": 520}, "126": {"x": 460, "y": 520}, "485": {"x": 520, "y": 520}, "426": {"x": 580, "y": 520}, "229": {"x": 640, "y": 520}, "487": {"x": 40, "y": 580}, "389": {"x": 100, "y": 580}, "171": {"x": 160, "y": 580}, "316": {"x": 220, "y": 580}, "49": {"x": 280, "y": 580}, "185": {"x": 340, "y": 580}, "71": {"x": 400, "y": 580}, "168": {"x": 460, "y": 580}, "476": {"x": 520, "y": 580}, "383": {"x": 580, "y": 580}, "388": {"x": 640, "y": 580}, "199": {"x": 40, "y": 640}, "151": {"x": 100, "y": 640}, "293": {"x": 160, "y": 640}, "363": {"x": 220, "y": 640}, "429": {"x": 280, "y": 640}, "211": {"x": 340, "y": 640}, "124": {"x": 400, "y": 640}, "495": {"x": 460, "y": 640}, "410": {"x": 520, "y": 640}, "299": {"x": 580, "y": 640}, "34": {"x": 640, "y": 640}, "23": {"x": 40, "y": 700}, "494": {"x": 100, "y": 700}, "326": {"x": 160, "y": 700}, "145": {"x": 220, "y": 700}, "72": {"x": 280, "y": 700}, "164": {"x": 340, "y": 700}, "46": {"x": 400, "y": 700}, "403": {"x": 460, "y": 700}, "478": {"x": 520, "y": 700}, "115": {"x": 580, "y": 700}, "48": {"x": 640, "y": 700}, "183": {"x": 40, "y": 760}, "428": {"x": 100, "y": 760}, "16": {"x": 160, "y": 760}, "318": {"x": 220, "y": 760}, "230": {"x": 280, "y": 760}, "368": {"x": 340, "y": 760}, "295": {"x": 400, "y": 760}, "203": {"x": 460, "y": 760}, "107": {"x": 520, "y": 760}, "493": {"x": 580, "y": 760}, "105": {"x": 640, "y": 760}, "263": {"x": 40, "y": 820}, "150": {"x": 100, "y": 820}, "306": {"x": 160, "y": 820}, "133": {"x": 220, "y": 820}, "412": {"x": 280, "y": 820}, "237": {"x": 340, "y": 820}, "470": {"x": 400, "y": 820}, "246": {"x": 460, "y": 820}, "249": {"x": 520, "y": 820}, "393": {"x": 580, "y": 820}, "380": {"x": 640, "y": 820}, "90": {"x": 40, "y": 880}, "461": {"x": 100, "y": 880}, "40": {"x": 160, "y": 880}, "455": {"x": 220, "y": 880}, "33": {"x": 280, "y": 880}, "329": {"x": 340, "y": 880}, "223": {"x": 400, "y": 880}, "13": {"x": 460, "y": 880}, "94": {"x": 520, "y": 880}, "236": {"x": 580, "y": 880}, "109": {"x": 640, "y": 880}};
+const sequences = [[77, 221, 238, 275], [221, 103, 60, 238, 350, 283, 36, 485, 495, 164, 72, 293, 290, 142, 221], [259, 206, 167], [251, 30, 332], [316, 429, 211, 71], [183, 145, 230, 237, 295, 403, 478, 115, 48], [237, 329]];
+const startNumber = 77;
+
+const svg = document.getElementById('gridsvg');
+const svgNS = "http://www.w3.org/2000/svg";
+const lineLayer = document.getElementById('lineLayer');
+const dotLayer = document.getElementById('dotLayer');
+
+let strokeIdx = 0;
+let pointIdx = 0;
+let drawnSegments = [];
+let visited = new Set();
+let mistakes = 0;
+
+function totalPoints() {
+  return sequences.reduce((a,s) => a + s.length, 0);
+}
+function donePoints() {
+  let n = 0;
+  for (let i=0;i<strokeIdx;i++) n += sequences[i].length;
+  n += pointIdx;
+  return n;
+}
+
+function buildDots() {
+  dotLayer.innerHTML = "";
+  Object.keys(pointsData).forEach(num => {
+    const p = pointsData[num];
+    const g = document.createElementNS(svgNS, "g");
+    g.setAttribute("data-num", num);
+
+    if (parseInt(num) === startNumber) {
+      const ring = document.createElementNS(svgNS, "circle");
+      ring.setAttribute("cx", p.x);
+      ring.setAttribute("cy", p.y);
+      ring.setAttribute("r", 11);
+      ring.setAttribute("class", "startring");
+      g.appendChild(ring);
+    }
+
+    const label = document.createElementNS(svgNS, "text");
+    label.setAttribute("x", p.x);
+    label.setAttribute("y", p.y - 8);
+    label.setAttribute("class", "lbl");
+    label.textContent = num;
+    g.appendChild(label);
+
+    const dot = document.createElementNS(svgNS, "circle");
+    dot.setAttribute("cx", p.x);
+    dot.setAttribute("cy", p.y);
+    dot.setAttribute("r", 4);
+    dot.setAttribute("class", "dot");
+    dot.setAttribute("data-num", num);
+    g.appendChild(dot);
+
+    const hit = document.createElementNS(svgNS, "circle");
+    hit.setAttribute("cx", p.x);
+    hit.setAttribute("cy", p.y);
+    hit.setAttribute("r", 13);
+    hit.setAttribute("class", "hit");
+    hit.setAttribute("data-num", num);
+    hit.addEventListener("click", () => handleClick(num, dot));
+    g.appendChild(hit);
+
+    dotLayer.appendChild(g);
+  });
+}
+
+function redrawLines() {
+  lineLayer.innerHTML = "";
+  drawnSegments.forEach(seg => {
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("x1", seg.x1);
+    line.setAttribute("y1", seg.y1);
+    line.setAttribute("x2", seg.x2);
+    line.setAttribute("y2", seg.y2);
+    line.setAttribute("class", "segline");
+    lineLayer.appendChild(line);
+  });
+}
+
+function updateDotClasses() {
+  document.querySelectorAll('.dot').forEach(d => {
+    const n = d.getAttribute('data-num');
+    d.classList.remove('visited','current');
+    if (visited.has(n)) d.classList.add('visited');
+  });
+  if (strokeIdx < sequences.length) {
+    const curVal = sequences[strokeIdx][pointIdx > 0 ? pointIdx - 1 : 0];
+    const d = document.querySelector('.dot[data-num="'+curVal+'"]');
+    if (d && pointIdx > 0) d.classList.add('current');
+  }
+}
+
+function updateProgress() {
+  const total = totalPoints();
+  const done = donePoints();
+  const pct = Math.round((done/total)*100);
+  document.getElementById('progressFill').style.width = pct + "%";
+  const figCount = sequences.length;
+  document.getElementById('progressText').textContent =
+    strokeIdx < figCount
+      ? `Lijn ${strokeIdx+1} van ${figCount} — ${done} van ${total} stippen verbonden`
+      : `Voltooid — ${done} van ${total} stippen verbonden`;
+}
+
+function handleClick(num, dotEl) {
+  if (strokeIdx >= sequences.length) return;
+  const expected = sequences[strokeIdx][pointIdx];
+  const feedback = document.getElementById('feedback');
+
+  if (parseInt(num) === expected) {
+    if (pointIdx > 0) {
+      const prevVal = sequences[strokeIdx][pointIdx - 1];
+      const p1 = pointsData[prevVal];
+      const p2 = pointsData[num];
+      drawnSegments.push({x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y});
+      redrawLines();
+    }
+    visited.add(String(num));
+    pointIdx++;
+    feedback.textContent = "";
+    feedback.className = "feedback";
+
+    if (pointIdx === sequences[strokeIdx].length) {
+      strokeIdx++;
+      pointIdx = 0;
+      if (strokeIdx === sequences.length) {
+        document.getElementById('celebrate').style.display = "block";
+        feedback.textContent = "";
+      } else {
+        feedback.textContent = "Lijn voltooid! Ga verder met de volgende lijn.";
+        feedback.className = "feedback ok";
+      }
+    }
+    updateDotClasses();
+    updateProgress();
+  } else {
+    mistakes++;
+    dotEl.classList.add('wrong');
+    dotEl.closest('g').classList.add('shake');
+    setTimeout(() => {
+      dotEl.classList.remove('wrong');
+      dotEl.closest('g').classList.remove('shake');
+    }, 300);
+    feedback.textContent = "Nog niet het juiste getal — luister goed en probeer opnieuw.";
+    feedback.className = "feedback bad";
+  }
+}
+
+function resetExercise() {
+  strokeIdx = 0; pointIdx = 0; drawnSegments = []; visited = new Set(); mistakes = 0;
+  redrawLines();
+  updateDotClasses();
+  updateProgress();
+  document.getElementById('celebrate').style.display = "none";
+  document.getElementById('feedback').textContent = "";
+  document.querySelectorAll('li.read-line input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('li').classList.remove('done');
+  });
+}
+
+buildDots();
+updateProgress();
+document.getElementById('resetBtn').addEventListener('click', resetExercise);
+</script>
+
+</body>
+</html>

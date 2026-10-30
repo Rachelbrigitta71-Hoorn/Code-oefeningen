@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cursist B — Thema 1, Taak 2</title>
+<style>
+  :root {
+    --accent: #9333ea;
+    --accent-light: #c084fc;
+    --accent-dark: #6b21a8;
+    --ink: #1f2430;
+    --paper: #ffffff;
+    --bg: #f4f5f7;
+    --muted: #6b7280;
+    --ok: #16a34a;
+    --bad: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 0 0 60px 0;
+  }
+  header {
+    background: var(--accent);
+    color: white;
+    padding: 22px 20px 26px;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .02em;
+  }
+  header h1 {
+    margin: 12px 0 4px;
+    font-size: 22px;
+  }
+  header p {
+    margin: 0;
+    opacity: .92;
+    font-size: 14px;
+    max-width: 640px;
+  }
+  main {
+    max-width: 760px;
+    margin: 20px auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .card {
+    background: var(--paper);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 10px rgba(0,0,0,.04);
+    padding: 20px 20px 22px;
+    border: 1px solid #eceef1;
+  }
+  .card h2 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    flex: none;
+  }
+  .card .hint {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin: 0 0 14px;
+    line-height: 1.5;
+  }
+  ul.read-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  li.read-line {
+    background: var(--bg);
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 10px 14px;
+    transition: opacity .15s;
+  }
+  li.read-line.done {
+    opacity: .45;
+  }
+  li.read-line label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+  li.read-line input[type=checkbox] {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    flex: none;
+  }
+  .numseq {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    font-variant-numeric: tabular-nums;
+  }
+  li.read-line.done .numseq {
+    text-decoration: line-through;
+  }
+  .grid-wrap {
+    width: 100%;
+    overflow: auto;
+    border-radius: 10px;
+    background: #fafafa;
+    border: 1px solid #eceef1;
+    touch-action: manipulation;
+  }
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+  }
+  .dot {
+    fill: #9ca3af;
+    stroke: white;
+    stroke-width: 1.5;
+    cursor: pointer;
+    transition: fill .12s, r .12s;
+  }
+  .dot:hover {
+    fill: var(--accent-light);
+  }
+  .dot.visited {
+    fill: var(--accent);
+  }
+  .dot.current {
+    fill: var(--accent-dark);
+  }
+  .dot.wrong {
+    fill: var(--bad) !important;
+  }
+  .hit {
+    fill: transparent;
+    cursor: pointer;
+  }
+  .lbl {
+    font-size: 13px;
+    fill: #374151;
+    text-anchor: middle;
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .startring {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+  }
+  .segline {
+    stroke: var(--accent-dark);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    fill: none;
+    opacity: .9;
+  }
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .progress-text {
+    font-size: 13.5px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .progress-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar > div {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width .25s ease;
+  }
+  button.reset {
+    background: white;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13.5px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  button.reset:hover {
+    background: var(--accent);
+    color: white;
+  }
+  .feedback {
+    min-height: 20px;
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+  .feedback.ok { color: var(--ok); }
+  .feedback.bad { color: var(--bad); }
+  .celebrate {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 14px;
+    display: none;
+  }
+  .partner-note {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #7c2d12;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin: 14px 16px 0;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .shake { animation: shake .25s; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge">Cursist B</span>
+  <h1>Extra opdracht &mdash; Thema 1 &middot; Taak 2</h1>
+  <p>Werk samen met je partner die de pagina van cursist A open heeft. Laat elkaars scherm niet zien &mdash; jullie hebben allebei andere informatie nodig om de opdracht samen op te lossen.</p>
+</header>
+
+<main>
+
+<div class="card">
+    <h2><span class="step-num">1</span> Verbind de stippen</h2>
+    <p class="hint">Luister naar cursist A en verbind de stippen met een lijn. Begin bij <strong>87</strong> (paarse cirkel).</p>
+    <div class="grid-wrap">
+      <svg id="gridsvg" viewBox="0 0 612 880" xmlns="http://www.w3.org/2000/svg">
+        <g id="lineLayer"></g>
+        <g id="dotLayer"></g>
+      </svg>
+    </div>
+    <div class="toolbar">
+      <div>
+        <div class="progress-text" id="progressText">Lijn 1 van &hellip;</div>
+        <div class="progress-bar"><div id="progressFill"></div></div>
+      </div>
+      <button class="reset" id="resetBtn">&#8635; Opnieuw beginnen</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="celebrate" id="celebrate">&#127881; Goed gedaan! De hele figuur is verbonden.</div>
+  </div>
+<div class="card">
+    <h2><span class="step-num">2</span> Lees hardop voor</h2>
+    <p class="hint">Lees onderstaande getallenreeksen hardop voor aan cursist A. cursist A verbindt op basis daarvan de stippen op het eigen werkblad. Vink een reeks af zodra je hem hebt voorgelezen.</p>
+    <ul class="read-list">
+      <li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">77 &ndash; 221 &ndash; 238 &ndash; 275</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">221 &ndash; 103 &ndash; 60 &ndash; 238 &ndash; 350 &ndash; 283 &ndash; 36 &ndash; 485 &ndash; 495 &ndash; 164 &ndash; 72 &ndash; 293 &ndash; 290 &ndash; 142 &ndash; 221</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">259 &ndash; 206 &ndash; 167</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">251 &ndash; 30 &ndash; 332</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">316 &ndash; 429 &ndash; 211 &ndash; 71</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">183 &ndash; 145 &ndash; 230 &ndash; 237 &ndash; 295 &ndash; 403 &ndash; 478 &ndash; 115 &ndash; 48</span>
+          </label>
+        </li>
+<li class="read-line">
+          <label>
+            <input type="checkbox" onchange="this.closest('li').classList.toggle('done', this.checked)">
+            <span class="numseq">237 &ndash; 329</span>
+          </label>
+        </li>
+    </ul>
+  </div>
+
+</main>
+
+<script>
+const pointsData = {"233": {"x": 116, "y": 40}, "909": {"x": 268, "y": 40}, "258": {"x": 420, "y": 40}, "145": {"x": 572, "y": 40}, "1034": {"x": 40, "y": 90}, "651": {"x": 192, "y": 90}, "124": {"x": 344, "y": 90}, "793": {"x": 496, "y": 90}, "140": {"x": 116, "y": 140}, "713": {"x": 268, "y": 140}, "916": {"x": 420, "y": 140}, "1021": {"x": 572, "y": 140}, "430": {"x": 40, "y": 190}, "3357": {"x": 192, "y": 190}, "132": {"x": 344, "y": 190}, "128": {"x": 496, "y": 190}, "799": {"x": 116, "y": 240}, "290": {"x": 268, "y": 240}, "992": {"x": 420, "y": 240}, "1446": {"x": 572, "y": 240}, "594": {"x": 40, "y": 290}, "284": {"x": 192, "y": 290}, "545": {"x": 344, "y": 290}, "489": {"x": 496, "y": 290}, "586": {"x": 116, "y": 340}, "18": {"x": 268, "y": 340}, "875": {"x": 420, "y": 340}, "583": {"x": 572, "y": 340}, "87": {"x": 40, "y": 390}, "310": {"x": 192, "y": 390}, "461": {"x": 344, "y": 390}, "3279": {"x": 496, "y": 390}, "965": {"x": 116, "y": 440}, "7": {"x": 268, "y": 440}, "52": {"x": 420, "y": 440}, "270": {"x": 572, "y": 440}, "539": {"x": 40, "y": 490}, "407": {"x": 192, "y": 490}, "431": {"x": 344, "y": 490}, "553": {"x": 496, "y": 490}, "860": {"x": 116, "y": 540}, "841": {"x": 268, "y": 540}, "3058": {"x": 420, "y": 540}, "22": {"x": 572, "y": 540}, "421": {"x": 40, "y": 590}, "628": {"x": 192, "y": 590}, "954": {"x": 344, "y": 590}, "96": {"x": 496, "y": 590}, "720": {"x": 116, "y": 640}, "785": {"x": 268, "y": 640}, "560": {"x": 420, "y": 640}, "401": {"x": 572, "y": 640}, "840": {"x": 40, "y": 690}, "826": {"x": 192, "y": 690}, "3877": {"x": 344, "y": 690}, "381": {"x": 496, "y": 690}, "764": {"x": 116, "y": 740}, "981": {"x": 268, "y": 740}, "963": {"x": 420, "y": 740}, "814": {"x": 572, "y": 740}, "4072": {"x": 40, "y": 790}, "223": {"x": 192, "y": 790}, "2265": {"x": 344, "y": 790}, "1": {"x": 496, "y": 790}, "2213": {"x": 116, "y": 840}, "834": {"x": 268, "y": 840}, "487": {"x": 420, "y": 840}, "286": {"x": 572, "y": 840}};
+const sequences = [[87, 594, 430, 1034, 799, 310, 284, 3357, 651], [875, 992, 916], [124, 793], [785, 431, 553, 22, 401, 381, 963, 2265, 834, 487, 286]];
+const startNumber = 87;
+
+const svg = document.getElementById('gridsvg');
+const svgNS = "http://www.w3.org/2000/svg";
+const lineLayer = document.getElementById('lineLayer');
+const dotLayer = document.getElementById('dotLayer');
+
+let strokeIdx = 0;
+let pointIdx = 0;
+let drawnSegments = [];
+let visited = new Set();
+let mistakes = 0;
+
+function totalPoints() {
+  return sequences.reduce((a,s) => a + s.length, 0);
+}
+function donePoints() {
+  let n = 0;
+  for (let i=0;i<strokeIdx;i++) n += sequences[i].length;
+  n += pointIdx;
+  return n;
+}
+
+function buildDots() {
+  dotLayer.innerHTML = "";
+  Object.keys(pointsData).forEach(num => {
+    const p = pointsData[num];
+    const g = document.createElementNS(svgNS, "g");
+    g.setAttribute("data-num", num);
+
+    if (parseInt(num) === startNumber) {
+      const ring = document.createElementNS(svgNS, "circle");
+      ring.setAttribute("cx", p.x);
+      ring.setAttribute("cy", p.y);
+      ring.setAttribute("r", 11);
+      ring.setAttribute("class", "startring");
+      g.appendChild(ring);
+    }
+
+    const label = document.createElementNS(svgNS, "text");
+    label.setAttribute("x", p.x);
+    label.setAttribute("y", p.y - 8);
+    label.setAttribute("class", "lbl");
+    label.textContent = num;
+    g.appendChild(label);
+
+    const dot = document.createElementNS(svgNS, "circle");
+    dot.setAttribute("cx", p.x);
+    dot.setAttribute("cy", p.y);
+    dot.setAttribute("r", 4);
+    dot.setAttribute("class", "dot");
+    dot.setAttribute("data-num", num);
+    g.appendChild(dot);
+
+    const hit = document.createElementNS(svgNS, "circle");
+    hit.setAttribute("cx", p.x);
+    hit.setAttribute("cy", p.y);
+    hit.setAttribute("r", 13);
+    hit.setAttribute("class", "hit");
+    hit.setAttribute("data-num", num);
+    hit.addEventListener("click", () => handleClick(num, dot));
+    g.appendChild(hit);
+
+    dotLayer.appendChild(g);
+  });
+}
+
+function redrawLines() {
+  lineLayer.innerHTML = "";
+  drawnSegments.forEach(seg => {
+    const line = document.createElementNS(svgNS, "line");
+    line.setAttribute("x1", seg.x1);
+    line.setAttribute("y1", seg.y1);
+    line.setAttribute("x2", seg.x2);
+    line.setAttribute("y2", seg.y2);
+    line.setAttribute("class", "segline");
+    lineLayer.appendChild(line);
+  });
+}
+
+function updateDotClasses() {
+  document.querySelectorAll('.dot').forEach(d => {
+    const n = d.getAttribute('data-num');
+    d.classList.remove('visited','current');
+    if (visited.has(n)) d.classList.add('visited');
+  });
+  if (strokeIdx < sequences.length) {
+    const curVal = sequences[strokeIdx][pointIdx > 0 ? pointIdx - 1 : 0];
+    const d = document.querySelector('.dot[data-num="'+curVal+'"]');
+    if (d && pointIdx > 0) d.classList.add('current');
+  }
+}
+
+function updateProgress() {
+  const total = totalPoints();
+  const done = donePoints();
+  const pct = Math.round((done/total)*100);
+  document.getElementById('progressFill').style.width = pct + "%";
+  const figCount = sequences.length;
+  document.getElementById('progressText').textContent =
+    strokeIdx < figCount
+      ? `Lijn ${strokeIdx+1} van ${figCount} — ${done} van ${total} stippen verbonden`
+      : `Voltooid — ${done} van ${total} stippen verbonden`;
+}
+
+function handleClick(num, dotEl) {
+  if (strokeIdx >= sequences.length) return;
+  const expected = sequences[strokeIdx][pointIdx];
+  const feedback = document.getElementById('feedback');
+
+  if (parseInt(num) === expected) {
+    if (pointIdx > 0) {
+      const prevVal = sequences[strokeIdx][pointIdx - 1];
+      const p1 = pointsData[prevVal];
+      const p2 = pointsData[num];
+      drawnSegments.push({x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y});
+      redrawLines();
+    }
+    visited.add(String(num));
+    pointIdx++;
+    feedback.textContent = "";
+    feedback.className = "feedback";
+
+    if (pointIdx === sequences[strokeIdx].length) {
+      strokeIdx++;
+      pointIdx = 0;
+      if (strokeIdx === sequences.length) {
+        document.getElementById('celebrate').style.display = "block";
+        feedback.textContent = "";
+      } else {
+        feedback.textContent = "Lijn voltooid! Ga verder met de volgende lijn.";
+        feedback.className = "feedback ok";
+      }
+    }
+    updateDotClasses();
+    updateProgress();
+  } else {
+    mistakes++;
+    dotEl.classList.add('wrong');
+    dotEl.closest('g').classList.add('shake');
+    setTimeout(() => {
+      dotEl.classList.remove('wrong');
+      dotEl.closest('g').classList.remove('shake');
+    }, 300);
+    feedback.textContent = "Nog niet het juiste getal — luister goed en probeer opnieuw.";
+    feedback.className = "feedback bad";
+  }
+}
+
+function resetExercise() {
+  strokeIdx = 0; pointIdx = 0; drawnSegments = []; visited = new Set(); mistakes = 0;
+  redrawLines();
+  updateDotClasses();
+  updateProgress();
+  document.getElementById('celebrate').style.display = "none";
+  document.getElementById('feedback').textContent = "";
+  document.querySelectorAll('li.read-line input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('li').classList.remove('done');
+  });
+}
+
+buildDots();
+updateProgress();
+document.getElementById('resetBtn').addEventListener('click', resetExercise);
+</script>
+
+</body>
+</html>
