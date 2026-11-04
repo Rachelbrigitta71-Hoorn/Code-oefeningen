@@ -187,7 +187,7 @@
 
   <div class="panel" id="panel"></div>
 
-  <footer>EdINOVA - Rachel</footer>
+  <footer>Gemaakt voor cursisten van EdINOVA - Rachel</footer>
 </div>
 
 <script>
@@ -1200,6 +1200,341 @@ const SITU = [
 W.forEach(x => x.th = 3);
 return { nr: 3, titel: "Lees eerst de bijsluiter", W, ZINNEN, ANDER, SITU, synOf, PLUR };
 })();
+THEMES[4] = (function () {
+const THEMA = 4;
+const AFL = THEMA <= 3 ? 1 : 2;   // afleiders bij gewone oefeningen (t/m thema 3: 1, daarna 2)
+const AFL_H = 2;                  // afleiders bij de herhaling: altijd 2
+const HINT = THEMA <= 2;          // beginletter als hulp bij Typen (alleen thema 1-2, niet bij herhaling)
+const KEY = 'code2_t' + THEMA + '_moeilijk';
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4'],['moeilijk','⭐ Moeilijk']];
+const TITELS = {
+  all: 'Alle woorden van thema 4',
+  1: 'Intro + 4.1 · Gesprekjes voeren met mensen',
+  2: '4.2 · Praten over persoonlijke zaken',
+  3: '4.3 · Je familie beschrijven',
+  4: '4.4 · Over een relatie praten',
+  moeilijk: 'Jouw moeilijke woorden. Ze staan alleen op dit apparaat.'
+};
+
+/* [woord, lidwoord, emoji, taak, uitleg, voorbeeldzin, afleiders (lijken op het woord), goede antwoorden bij typen, nieuwe betekenis]
+   Intro en taak 1 zijn samen: taak 1. */
+const RAW = [
+ // ---------- INTRO (11) ----------
+ ['duin','het','🏖️',1,'Een heuvel van zand bij de zee.','We wandelen door de duinen.',['ding','dorp'],['duin','duinen']],
+ ['eenzaam','','😔',1,'Je bent veel alleen en je vindt dat niet fijn.','Mijn buurman is oud en eenzaam.',['eens','eerlijk']],
+ ['geleden','','⏪',1,'Zo lang terug in de tijd. Bijvoorbeeld: twee jaar geleden.','Ik kwam drie jaar geleden naar Nederland.',['geleerd','gelukkig']],
+ ['klikken (het klikt)','','✨',1,'Je vindt iemand meteen aardig. Het gaat goed samen.','Met mijn nieuwe collega klikt het meteen.',['kijken','klinken'],['klikken','klikt']],
+ ['klomp','de','👞',1,'Een houten schoen. Typisch Nederlands.','Mijn opa droeg vroeger klompen.',['klok','klant'],['klomp','klompen']],
+ ['missen','','💔',1,'Je bent verdrietig, omdat iemand er niet is.','Ik mis mijn familie.',['misschien','meenemen'],['missen','mis']],
+ ['overweg kunnen met','','🤝',1,'Goed samen kunnen gaan. Geen ruzie hebben.','Ik kan goed overweg met mijn buren.',['overal','onderweg'],['overweg kunnen met','overweg kunnen','overweg']],
+ ['teruggaan','','🔙',1,'Weer naar een plek gaan waar je eerder was.','Ik ga volgend jaar terug naar mijn land.',['teruggeven','terugbrengen'],['teruggaan','ga terug']],
+ ['toen','','🕰️',1,'Op dat moment in het verleden.','Toen ik klein was, woonde ik in een dorp.',['tot','toch']],
+ ['visite','de','☕',1,'Mensen die bij je op bezoek komen.','Zondag krijgen we visite.',['visum','vis']],
+ ['wandelen','','🚶',1,'Rustig lopen, voor je plezier.','We wandelen elke zondag in het park.',['wonen','wachten']],
+
+ // ---------- TAAK 1 (12) ----------
+ ['bekende','de','🙋',1,'Iemand die je kent, maar geen goede vriend.','Op de markt zie ik een bekende.',['bekend','bekijken']],
+ ['eens (weer eens)','','🔁',1,'Een keer. Weer eens = nog een keer, na lange tijd.','We moeten weer eens koffie drinken!',['eerst','eenzaam'],['eens']],
+ ['iemand','','👤',1,'Een persoon. Je weet niet wie.','Er staat iemand aan de deur.',['iets','ieder']],
+ ['inderdaad','','👍',1,'Ja, dat is waar. Dat klopt.','Het is koud vandaag. – Ja, inderdaad!',['inmiddels','in']],
+ ['klas','de','🏫',1,'Een groep cursisten of leerlingen die samen les hebben.','In mijn klas zitten twaalf cursisten.',['klant','kast']],
+ ['onderwerp','het','💬',1,'Waar een gesprek of een tekst over gaat.','Het weer is een makkelijk onderwerp.',['onderweg','onderscheid']],
+ ['regen','de','🌧️',1,'Water dat uit de lucht valt.','Wat een regen vandaag!',['regel','rekening']],
+ ['rij','de','🚶',1,'Mensen staan achter elkaar en wachten.','Er staat een lange rij bij de kassa.',['rijst','rijden']],
+ ['taal','de','🗣️',1,'Nederlands, Arabisch, Engels: dat zijn talen.','Nederlands is een moeilijke taal.',['tafel','tas']],
+ ['trouwens','','💡',1,'Dat zeg je als je iets nieuws erbij vertelt.','Trouwens, hoe gaat het met je moeder?',['trouwen','trouw']],
+ ['uitdrukking','de','🗨️',1,'Een paar woorden samen met een speciale betekenis. Bijvoorbeeld: "Het klikt."','"Het klikt" is een uitdrukking.',['uitnodiging','uitverkoop']],
+ ['vertellen','','📖',1,'Iets aan iemand zeggen. Bijvoorbeeld een verhaal.','Vertel eens: hoe was je weekend?',['vertrekken','verkopen'],['vertellen','vertel']],
+
+ // ---------- TAAK 2 (14) ----------
+ ['baan','de','💼',2,'Werk waarvoor je geld krijgt.','Ik heb een nieuwe baan!',['baas','bank']],
+ ['direct','','🎯',2,'Je zegt meteen wat je denkt. Of: meteen.','Nederlanders zijn vaak heel direct.',['dicht','druk']],
+ ['eerlijk','','🤞',2,'Je zegt wat waar is. Je liegt niet.','Wees eerlijk: vind je het lekker?',['eerder','eindelijk']],
+ ['kwijt (het kwijt kunnen)','','🗯️',2,'Je kunt je verhaal vertellen aan iemand. Dan voel je je beter.','Bij mijn zus kan ik mijn verhaal kwijt.',['kwart','klein'],['kwijt'],'Kwijt is ook: je weet niet waar iets is. Nu: je verhaal kwijt kunnen = het aan iemand vertellen.'],
+ ['laatste (de laatste tijd)','','📆',2,'De laatste tijd = de afgelopen weken of maanden.','De laatste tijd ben ik vaak moe.',['laat','later'],['laatste']],
+ ['liefde','de','❤️',2,'Het gevoel als je heel veel van iemand houdt.','Liefde is belangrijk in een relatie.',['lief','lied']],
+ ['nergens','','🚫',2,'Op geen enkele plek. Het tegenovergestelde van ergens.','Ik kan mijn sleutels nergens vinden.',['ergens','niemand']],
+ ['onderscheid','het','⚖️',2,'Verschil maken tussen mensen of dingen.','Je mag geen onderscheid maken tussen mannen en vrouwen.',['onderwerp','onderweg']],
+ ['opstappen','','🚲',2,'Op een fiets of brommer gaan zitten en wegrijden. Ook: weggaan.','Ik stap op mijn fiets en ga naar huis.',['opstaan','overstappen'],['opstappen','stap op']],
+ ['religie','','🕊️',2,'Een geloof. Bijvoorbeeld de islam, het christendom of het jodendom.','In Nederland mag iedereen zijn eigen religie hebben.',['regio','relatie']],
+ ['ruzie','de','😠',2,'Je bent boos op elkaar en je praat hard.','Ik heb ruzie met mijn broer.',['rug','reis']],
+ ['vertrouwen','','🤝',2,'Je weet: iemand is eerlijk. Je kunt op hem of haar rekenen.','Ik vertrouw mijn beste vriendin.',['vertellen','verhuizen'],['vertrouwen','vertrouw']],
+ ['zin (het naar de zin hebben)','','😊',2,'Het naar je zin hebben = je vindt het fijn, je bent tevreden.','Heb je het naar je zin op je werk?',['zien','zijn'],['zin','naar je zin'],'In Deel 1: een zin = woorden met een punt aan het eind. Ook: zin hebben in. Nu: het naar je zin hebben = het fijn vinden.'],
+ ['zorgen maken, zich','','😟',2,'Je denkt veel aan een probleem. Je bent bang dat het misgaat.','Ik maak me zorgen om mijn moeder.',['zorgen voor','zoeken'],['zorgen maken','zich zorgen maken','zorgen']],
+
+ // ---------- TAAK 3 (26) ----------
+ ['aardig (aardig vinden)','','😊',3,'Vriendelijk. Iemand aardig vinden = iemand leuk en vriendelijk vinden.','Ik vind mijn buurvrouw heel aardig.',['aardappel','apart'],['aardig']],
+ ['afstand','de','📏',3,'Hoe ver iets weg is.','De afstand naar mijn familie is groot: 5000 kilometer.',['afspraak','afdeling']],
+ ['band (familie)','de','🔗',3,'Hoe goed je met iemand omgaat. Een goede band = jullie zijn dicht bij elkaar.','Ik heb een goede band met mijn zus.',['bank','baan'],['band'],'Een band is ook de band van een fiets. Nu: een goede band met iemand.'],
+ ['bestaan uit','','🧩',3,'Gemaakt zijn van verschillende delen of mensen.','Mijn gezin bestaat uit vier personen.',['bestellen','besluiten'],['bestaan uit','bestaat uit','bestaan']],
+ ['buren','de','🏘️',3,'De mensen die naast je wonen.','Mijn buren zijn heel aardig.',['buurt','boeren']],
+ ['daardoor','','➡️',3,'Door dat. Dat is de reden.','Ik woon ver weg. Daardoor zie ik mijn ouders weinig.',['daar','daarna']],
+ ['familielid (familieleden)','het','👨‍👩‍👧',3,'Iemand uit je familie. Bijvoorbeeld je oom of je nicht.','Op het feest komen veel familieleden.',['familie','gezin'],['familielid','familieleden']],
+ ['haven','de','⚓',3,'Een plek aan het water waar boten en schepen liggen.','Mijn oom werkt in de haven van Rotterdam.',['hoeven','halen']],
+ ['herinnering','de','💭',3,'Iets wat je nog weet van vroeger.','Ik heb mooie herinneringen aan mijn oma.',['herkomst','herhalen'],['herinnering','herinneringen']],
+ ['kleinkind','het','👶',3,'Het kind van je zoon of je dochter.','Mijn moeder heeft vijf kleinkinderen.',['klein','kleingeld'],['kleinkind','kleinkinderen']],
+ ['lief','','🥰',3,'Aardig en zacht voor anderen.','Mijn oma is heel lief.',['liefde','lied']],
+ ['los','','🎈',3,'Niet vast.','De knoop van mijn jas is los.',['lief','lang']],
+ ['na een tijdje','','⏳',3,'Na een tijd. Later.','Na een tijdje kreeg ik nieuwe vrienden.',['naast','nooit'],['na een tijdje','na een tijd']],
+ ['neef','de','👦',3,'De zoon van je oom of tante. Of de zoon van je broer of zus.','Mijn neef woont in Duitsland.',['nicht','nee']],
+ ['nicht','de','👧',3,'De dochter van je oom of tante. Of de dochter van je broer of zus.','Mijn nicht gaat trouwen.',['neef','niet']],
+ ['oom','de','👨',3,'De broer van je vader of moeder.','Mijn oom is de broer van mijn vader.',['oog','oma']],
+ ['overlijden (overleden)','','🕯️',3,'Doodgaan. Het is een beleefd woord.','Mijn opa is vorig jaar overleden.',['overleggen','overstappen'],['overlijden','overleden']],
+ ['relatie','de','💑',3,'Twee mensen die samen zijn. Of: hoe je met iemand omgaat.','Ik heb een relatie met Sam.',['regio','religie']],
+ ['samengesteld (gezin)','','👨‍👩‍👧‍👦',3,'Een gezin met kinderen uit een eerdere relatie van de vader of de moeder.','Wij zijn een samengesteld gezin.',['samen','sterk'],['samengesteld','samengestelde']],
+ ['schoon- (schoonzus)','','👩',3,'Schoon- = familie van je man of vrouw. Je schoonzus is de zus van je man of vrouw.','Mijn schoonzus komt morgen eten.',['schoon','schoen'],['schoonzus','schoon']],
+ ['schoot','de','🧸',3,'Boven op je benen als je zit. Een kind zit op je schoot.','Mijn dochter zit bij oma op schoot.',['school','schoon']],
+ ['spel','het','🎲',3,'Iets wat je doet voor plezier, met regels. Bijvoorbeeld een kaartspel.','We doen een spel met de kinderen.',['spelen','spiegel']],
+ ['spelen','','🧒',3,'Iets doen voor plezier. Kinderen spelen buiten.','De kinderen spelen in de tuin.',['spreken','slapen']],
+ ['stief- (stiefvader)','','👨',3,'Stief- = familie door een nieuwe relatie. Je stiefvader is de nieuwe man van je moeder.','Mijn stiefvader is heel lief voor mij.',['stil','sterk'],['stiefvader','stief']],
+ ['tante','de','👩',3,'De zus van je vader of moeder.','Mijn tante is de zus van mijn moeder.',['taart','tas']],
+ ['zwager','de','👨',3,'De man van je zus. Of de broer van je man of vrouw.','Mijn zwager helpt met de verhuizing.',['zwaar','zwanger']],
+
+ // ---------- TAAK 4 (39) ----------
+ ['aantrekkelijk','','😍',4,'Mooi of knap. Je vindt iemand leuk om te zien.','Ze vindt hem heel aantrekkelijk.',['aantrekken','aantal']],
+ ['accepteren','','✅',4,'Goedvinden. Ja zeggen tegen iets.','Mijn ouders accepteren mijn keuze.',['activiteit','advertentie']],
+ ['alleenstaand','','🧍',4,'Je hebt geen partner. Je woont alleen of alleen met je kinderen.','Zij is alleenstaand en heeft twee kinderen.',['alleen','allerlei']],
+ ['belangstelling','de','👀',4,'Interesse. Je wilt er meer over weten.','Hij heeft belangstelling voor muziek.',['belangrijk','bestelling']],
+ ['besluiten','','🤔',4,'Kiezen wat je gaat doen.','Wij besluiten om te gaan trouwen.',['bestaan','betalen'],['besluiten','besluit']],
+ ['de deur uit zijn (kinderen)','','🏠',4,'De kinderen wonen niet meer bij hun ouders. Ze wonen zelf.','Onze kinderen zijn de deur uit.',['de deur dicht','de deur open'],['de deur uit','deur uit','de deur uit zijn']],
+ ['erfgenaam','de','📜',4,'Iemand die geld of spullen krijgt als iemand overlijdt.','De kinderen zijn de erfgenamen.',['erg','eerlijk'],['erfgenaam','erfgenamen']],
+ ['genieten van','','😌',4,'Iets heel fijn vinden.','Ik geniet van de zon.',['genezen','geven'],['genieten','genieten van','geniet']],
+ ['gevoelig','','🥺',4,'Je voelt veel. Je bent snel verdrietig.','Mijn zoon is heel gevoelig.',['gevoel','gelukkig']],
+ ['gezelligheid','de','🕯️',4,'Een fijne, warme sfeer met mensen samen.','Ik hou van gezelligheid: samen eten en praten.',['gezellig','gezondheid']],
+ ['humor','de','😂',4,'Grappig zijn. Mensen aan het lachen maken.','Mijn man heeft veel humor.',['huur','honger']],
+ ['huwelijk','het','💍',4,'Je bent getrouwd. Of: de dag dat je trouwt.','Ze zijn tien jaar getrouwd. Het is een goed huwelijk.',['huis','huren']],
+ ['inmiddels','','⏱️',4,'Nu, na een tijd.','Ik woon inmiddels vijf jaar in Nederland.',['inderdaad','middag']],
+ ['lachen','','😄',4,'Geluid maken als je iets grappig vindt. Haha!','We lachen veel samen.',['lekken','lezen']],
+ ['notaris','de','✒️',4,'Iemand bij wie je officiële papieren maakt. Bijvoorbeeld een testament.','We gaan naar de notaris voor ons testament.',['natuurlijk','nooit']],
+ ['nuchter','','🧠',4,'Rustig en praktisch. Je denkt goed na.','Mijn vrouw is heel nuchter.',['nu','nacht']],
+ ['omgeving','de','🏞️',4,'De plek om je heen. Bijvoorbeeld je buurt.','Ik woon in een rustige omgeving.',['omdat','omgaan']],
+ ['partnerschap','het','📝',4,'Een officiële afspraak tussen twee partners, bijna hetzelfde als een huwelijk.','Wij hebben een geregistreerd partnerschap.',['partner','paspoort']],
+ ['rechter','de','⚖️',4,'Iemand die bij de rechtbank beslist wat er moet gebeuren.','Bij een scheiding beslist soms de rechter over de kinderen.',['rechts','rechtdoor']],
+ ['registreren (geregistreerd)','','🖊️',4,'Officieel opschrijven, bijvoorbeeld bij de gemeente.','Wij laten ons partnerschap registreren.',['regelen','reageren'],['registreren','geregistreerd']],
+ ['scheiden','','💔',4,'Je huwelijk stoppen. Je gaat uit elkaar.','Mijn ouders zijn gescheiden.',['schrijven','snijden'],['scheiden','gescheiden']],
+ ['serieus','','🧐',4,'Niet voor de grap. Het is belangrijk.','Is het serieus tussen jullie?',['zeker','sterk']],
+ ['slank','','🧍',4,'Dun, niet dik.','Zij is lang en slank.',['slapen','slecht']],
+ ['spontaan','','🎉',4,'Je doet iets zonder plan. Zomaar.','Hij is heel spontaan en vrolijk.',['sport','spannend']],
+ ['stadhuis','het','🏛️',4,'Het gebouw van de gemeente in een stad. Daar kun je trouwen.','Wij trouwen op het stadhuis.',['stad','station']],
+ ['sterven','','🥀',4,'Doodgaan.','Bloemen sterven als ze geen water krijgen.',['sterk','sturen']],
+ ['testament','het','📜',4,'Een papier bij de notaris. Daarin staat wie je geld en spullen krijgt als je overlijdt.','Ik maak een testament bij de notaris.',['tarief','test']],
+ ['trouw','','🐕',4,'Je blijft bij iemand. Je laat hem of haar nooit in de steek.','Een hond is heel trouw.',['trouwen','trouwens']],
+ ['vast (vaste relatie)','','🔒',4,'Een vaste relatie = jullie zijn al een tijd samen, het is serieus.','Hij heeft een vaste vriendin.',['vaak','vies'],['vast','vaste'],'In Thema 1: vaste prijzen = de prijs verandert niet. Nu: een vaste relatie = serieus en al een tijd samen.'],
+ ['verantwoordelijk','','🧑‍💼',4,'Jij moet zorgen dat het goed gaat.','Ouders zijn verantwoordelijk voor hun kinderen.',['verantwoordelijkheid','vervelend']],
+ ['verantwoordelijkheid','de','📋',4,'Iets waar jij voor moet zorgen.','Een kind is een grote verantwoordelijkheid.',['verantwoordelijk','verjaardag']],
+ ['verlegen','','🙈',4,'Je vindt het moeilijk om met nieuwe mensen te praten.','Mijn dochter is een beetje verlegen.',['vergeten','verliefd']],
+ ['verzorgd','','💇',4,'Je ziet er netjes en schoon uit.','Hij ziet er altijd verzorgd uit.',['verzameld','verkeerd']],
+ ['volwassen','','🧑',4,'Groot. Niet meer een kind.','Mijn kinderen zijn al volwassen.',['volwassene','vol']],
+ ['voorlopig','','⏳',4,'Nu even, voor een tijd. Later kan het veranderen.','We gaan voorlopig nog niet trouwen.',['voorzichtig','voordeel']],
+ ['vrijgezel','de','🧑',4,'Iemand die niet getrouwd is en geen relatie heeft.','Mijn broer is nog vrijgezel.',['vrijheid','vriend']],
+ ['vrijheid','de','🕊️',4,'Je mag zelf kiezen wat je doet.','In Nederland is vrijheid belangrijk.',['vrijgezel','vrij']],
+ ['vrolijk','','😁',4,'Blij. Je lacht veel.','Mijn moeder is altijd vrolijk.',['vrouw','vroeg']],
+ ['zorgzaam','','🤲',4,'Je zorgt goed voor anderen.','Mijn man is heel zorgzaam.',['zorgen','zeker']]
+];
+
+const IRR = new Set(['kwijt (het kwijt kunnen)','aardig (aardig vinden)','bestaan uit','overlijden (overleden)','besluiten','genieten van','lachen','scheiden','sterven']);
+const PLUR = new Set(['buren']);
+
+const W = RAW.map(r => {
+  const alt = r[7] && r[7].length ? r[7] : [r[0].replace(/\s*\(.*?\)\s*/g, '').trim()];
+  return { w: r[0], a: r[1], e: r[2], t: r[3], u: r[4], z: r[5], af: r[6] || [], alt, nb: r[8] || '', base: alt[0] };
+});
+
+/* Woorden die (bijna) hetzelfde betekenen of goed bij elkaar passen: die komen niet samen voor als 'fout' antwoord. */
+const SYN = [
+  ['eenzaam','alleenstaand','vrijgezel','missen'], ['visite','bekende','buren','familielid (familieleden)'],
+  ['toen','geleden','inmiddels','na een tijdje','laatste (de laatste tijd)','voorlopig','herinnering'], ['teruggaan','opstappen'],
+  ['iemand','bekende','nergens'], ['eens (weer eens)','inderdaad','trouwens'], ['taal','uitdrukking','onderwerp'],
+  ['eerlijk','direct','trouw','serieus','vertrouwen'], ['liefde','relatie','huwelijk','partnerschap','vast (vaste relatie)','band (familie)','klikken (het klikt)'],
+  ['ruzie','scheiden'], ['zorgen maken, zich','gevoelig','zorgzaam'], ['aardig (aardig vinden)','lief','zorgzaam','vrolijk','klikken (het klikt)','overweg kunnen met'],
+  ['familielid (familieleden)','neef','nicht','oom','tante','zwager','schoon- (schoonzus)','stief- (stiefvader)','kleinkind','samengesteld (gezin)','bestaan uit'],
+  ['overlijden (overleden)','sterven','erfgenaam','testament','notaris'], ['spel','spelen'], ['rechter','notaris'],
+  ['registreren (geregistreerd)','partnerschap','stadhuis'], ['aantrekkelijk','slank','verzorgd'], ['besluiten','accepteren'],
+  ['verantwoordelijk','verantwoordelijkheid','volwassen','de deur uit zijn (kinderen)'], ['genieten van','gezelligheid','humor','lachen','zin (het naar de zin hebben)'],
+  ['nuchter','serieus'], ['spontaan','vrolijk'], ['afstand','omgeving'], ['vrijheid','vrijgezel'], ['wandelen','duin'], ['daardoor','onderscheid']
+];
+function synOf(w) { return SYN.filter(s => s.includes(w)).flat().concat([w]); }
+
+/* ---------- ZINNEN ----------
+   [zin, goed, [afleiders], [duidelijk fout], taak, h]
+   Vanaf thema 4: gewone oefening = goed + 2 afleiders + 1 duidelijk fout. Herhaling: andere zinnen, ook 2 afleiders. */
+const ZINNEN = [
+  // intro + taak 1 – gewoon
+  ['Twee jaar ___ kwam ik naar Nederland.','geleden',['geleerd','gelukkig'],['klomp','regen'],1,0],
+  ['___ ik klein was, woonde ik in een dorp.','Toen',['Tot','Toch'],['Regen','Taal'],1,0],
+  ['Ik woon alleen en ik ken weinig mensen. Ik voel me soms ___.','eenzaam',['eens','eerlijk'],['klas','regen'],1,0],
+  ['Ik ___ mijn familie. Ze wonen ver weg.','mis',['mag','moet'],['klomp','taal'],1,0],
+  ['Met mijn nieuwe collega ___ het meteen. We lachen veel.','klikt',['kijkt','klinkt'],['rij','taal'],1,0],
+  ['Zondag krijgen we ___. Mijn tante en oom komen koffie drinken.','visite',['visum','vis'],['regen','taal'],1,0],
+  ['We ___ elke zondag in de duinen.','wandelen',['wonen','wachten'],['klomp','rij'],1,0],
+  ['Ik kan goed ___ met mijn buren. We hebben nooit ruzie.','overweg',['overal','onderweg'],['regen','klas'],1,0],
+  ['Wat een ___! Neem een paraplu mee.','regen',['regel','rekening'],['taal','klas'],1,0],
+  ['Er staat een lange ___ bij de kassa. We moeten wachten.','rij',['rijst','rijden'],['taal','klomp'],1,0],
+  ['Nederlands is een moeilijke ___.','taal',['tafel','tas'],['regen','rij'],1,0],
+  ['Het weer is een makkelijk ___ voor een gesprek.','onderwerp',['onderweg','onderscheid'],['klomp','regen'],1,0],
+  ['Het is koud vandaag! – Ja, ___!','inderdaad',['inmiddels','in'],['klomp','taal'],1,0],
+  ['___, hoe gaat het met je moeder?','Trouwens',['Trouwen','Trouw'],['Regen','Klas'],1,0],
+  ['Op de markt zie ik een ___. Ik ken haar van school.','bekende',['bekend','bekijken'],['regen','taal'],1,0],
+  // intro + taak 1 – herhaling
+  ['"Het klikt" is een ___: de woorden hebben samen een speciale betekenis.','uitdrukking',['uitnodiging','uitverkoop'],['klomp'],1,1],
+  ['___ eens: hoe was je vakantie?','Vertel',['Vertrek','Verkoop'],['Regen'],1,1],
+  ['We moeten weer ___ samen koffie drinken!','eens',['eerst','eenzaam'],['taal'],1,1],
+  ['Er staat ___ aan de deur. Ik weet niet wie.','iemand',['iets','ieder'],['klas'],1,1],
+  ['In mijn ___ zitten twaalf cursisten.','klas',['klant','kast'],['regen'],1,1],
+  ['Volgend jaar ___ ik voor een maand terug naar mijn land.','ga',['geef','breng'],['regen'],1,1],
+  ['Mijn opa droeg vroeger ___ van hout.','klompen',['klokken','klanten'],['talen'],1,1],
+  ['Aan zee zijn veel ___ van zand.','duinen',['dingen','dorpen'],['talen'],1,1],
+
+  // taak 2 – gewoon
+  ['Ik heb een nieuwe ___! Ik werk bij een supermarkt.','baan',['baas','bank'],['ruzie','liefde'],2,0],
+  ['Nederlanders zijn vaak heel ___. Ze zeggen meteen wat ze denken.','direct',['dicht','druk'],['nergens','religie'],2,0],
+  ['Wees ___: vind je mijn eten lekker?','eerlijk',['eerder','eindelijk'],['ruzie','nergens'],2,0],
+  ['Bij mijn zus kan ik mijn verhaal ___.','kwijt',['kwart','klein'],['religie','baan'],2,0],
+  ['De ___ tijd ben ik vaak moe.','laatste',['laat','later'],['ruzie','baan'],2,0],
+  ['Ik kan mijn sleutels ___ vinden.','nergens',['ergens','niemand'],['eerlijk','direct'],2,0],
+  ['Ik heb ___ met mijn broer. We zijn boos op elkaar.','ruzie',['rug','reis'],['baan','religie'],2,0],
+  ['Ik ___ mijn beste vriendin. Zij vertelt niets door.','vertrouw',['vertel','verhuis'],['baan','ruzie'],2,0],
+  ['Heb je het naar je ___ op je nieuwe werk?','zin',['zien','zijn'],['ruzie','baan'],2,0],
+  ['Ik maak me ___ om mijn moeder. Ze is ziek.','zorgen',['zoeken','zorgzaam'],['ruzie','baan'],2,0],
+  ['In Nederland mag iedereen zijn eigen ___ hebben: de islam, het christendom of iets anders.','religie',['regio','relatie'],['ruzie','baan'],2,0],
+  ['Je mag geen ___ maken tussen mannen en vrouwen.','onderscheid',['onderwerp','onderweg'],['ruzie','liefde'],2,0],
+  // taak 2 – herhaling
+  ['___ is belangrijk in een relatie.','Liefde',['Lief','Lied'],['Baan'],2,1],
+  ['Het is laat. Ik stap ___ mijn fiets en ga naar huis.','op',['af','uit'],['baan'],2,1],
+  ['Ik heb het hier erg naar mijn ___. Ik ben blij.','zin',['zien','zon'],['ruzie'],2,1],
+  ['Mijn vriend is heel ___. Hij zegt altijd de waarheid.','eerlijk',['eerder','eindelijk'],['nergens'],2,1],
+  ['Ik ___ me zorgen over mijn examen.','maak',['mag','mis'],['baan'],2,1],
+  ['Kun je je verhaal ergens ___? Praat met een vriend.','kwijt',['kwart','klein'],['ruzie'],2,1],
+  ['Ik kan het ___ vinden. Waar is mijn telefoon?','nergens',['ergens','niemand'],['baan'],2,1],
+
+  // taak 3 – gewoon
+  ['De broer van mijn vader is mijn ___.','oom',['oog','oma'],['haven','spel'],3,0],
+  ['De zus van mijn moeder is mijn ___.','tante',['taart','tas'],['haven','schoot'],3,0],
+  ['De zoon van mijn oom is mijn ___.','neef',['nicht','nee'],['haven','spel'],3,0],
+  ['De dochter van mijn tante is mijn ___.','nicht',['neef','niet'],['haven','spel'],3,0],
+  ['De man van mijn zus is mijn ___.','zwager',['zwaar','zwanger'],['haven','spel'],3,0],
+  ['Mijn moeder heeft vijf ___. Het zijn de kinderen van mijn broers en zussen.','kleinkinderen',['kleingeld','klein'],['havens','spellen'],3,0],
+  ['Mijn gezin ___ uit vier personen.','bestaat',['bestelt','besluit'],['speelt','haven'],3,0],
+  ['Ik woon ver weg. ___ zie ik mijn ouders weinig.','Daardoor',['Daar','Daarna'],['Haven','Spel'],3,0],
+  ['Ik heb een goede ___ met mijn zus. We bellen elke dag.','band',['bank','baan'],['haven','schoot'],3,0],
+  ['Mijn opa is vorig jaar ___.','overleden',['overlegd','overgestapt'],['los','lief'],3,0],
+  ['Ik heb mooie ___ aan mijn oma. Ze vertelde altijd verhalen.','herinneringen',['herkomsten','herhalingen'],['havens','spellen'],3,0],
+  ['De kinderen ___ buiten in de tuin.','spelen',['spreken','slapen'],['haven','los'],3,0],
+  ['De ___ naar mijn familie is groot: 5000 kilometer.','afstand',['afspraak','afdeling'],['schoot','spel'],3,0],
+  ['Mijn ___ zijn heel aardig. Ze wonen naast ons.','buren',['buurt','boeren'],['havens','spellen'],3,0],
+  ['Mijn oom werkt in de ___ van Rotterdam. Daar komen grote schepen.','haven',['hoeven','halen'],['schoot','spel'],3,0],
+  // taak 3 – herhaling
+  ['Ik vind mijn nieuwe collega heel ___.','aardig',['aardappel','apart'],['haven'],3,1],
+  ['Mijn ___ is de nieuwe man van mijn moeder.','stiefvader',['stil','sterk'],['haven'],3,1],
+  ['De zus van mijn man is mijn ___.','schoonzus',['schoon','schoen'],['haven'],3,1],
+  ['Wij zijn een ___ gezin: ik heb twee kinderen, mijn vrouw ook.','samengesteld',['samen','sterk'],['los'],3,1],
+  ['Mijn dochter zit bij oma op ___.','schoot',['school','schoon'],['haven'],3,1],
+  ['We doen een ___ met de kinderen: met kaarten.','spel',['spelen','spiegel'],['haven'],3,1],
+  ['Op het feest komen veel ___: mijn ooms, tantes, neven en nichten.','familieleden',['families','gezinnen'],['havens'],3,1],
+  ['Ik heb een ___ met Sam. We zijn al twee jaar samen.','relatie',['regio','religie'],['haven'],3,1],
+  ['___ kreeg ik nieuwe vrienden in Nederland.','Na een tijdje',['Naast','Nooit'],['Los'],3,1],
+  ['Mijn oma is heel ___ voor de kinderen.','lief',['liefde','lied'],['haven'],3,1],
+  ['De knoop van mijn jas is ___.','los',['lief','lang'],['haven'],3,1],
+
+  // taak 4 – gewoon
+  ['Wij trouwen op het ___.','stadhuis',['stad','station'],['humor','testament'],4,0],
+  ['We gaan naar de ___ voor ons testament.','notaris',['natuurlijk','nooit'],['humor','vrijheid'],4,0],
+  ['In het ___ staat wie mijn geld krijgt.','testament',['tarief','test'],['humor','vrijheid'],4,0],
+  ['Mijn broer is nog ___. Hij heeft geen relatie.','vrijgezel',['vrijheid','vriend'],['notaris','rechter'],4,0],
+  ['Ze zijn tien jaar getrouwd. Het is een goed ___.','huwelijk',['huis','huren'],['notaris','humor'],4,0],
+  ['Mijn ouders zijn ___. Ze wonen niet meer samen.','gescheiden',['geschreven','gesneden'],['slank','spontaan'],4,0],
+  ['Mijn man heeft veel ___. Hij maakt altijd grapjes.','humor',['huur','honger'],['notaris','testament'],4,0],
+  ['We ___ veel samen. Haha!','lachen',['lekken','lezen'],['notaris','slank'],4,0],
+  ['Ik ___ van de zon en de rust.','geniet',['geneest','geef'],['notaris','slank'],4,0],
+  ['Mijn dochter is een beetje ___. Ze praat niet graag met nieuwe mensen.','verlegen',['vergeten','verliefd'],['notaris','humor'],4,0],
+  ['Mijn kinderen zijn al ___. Ze zijn 25 en 28.','volwassen',['volwassene','vol'],['notaris','humor'],4,0],
+  ['Ik woon ___ vijf jaar in Nederland.','inmiddels',['inderdaad','middag'],['notaris','slank'],4,0],
+  ['Ouders zijn ___ voor hun kinderen.','verantwoordelijk',['verantwoordelijkheid','vervelend'],['notaris','humor'],4,0],
+  ['Hij heeft ___ voor muziek. Hij wil er alles over weten.','belangstelling',['belangrijk','bestelling'],['notaris','slank'],4,0],
+  ['Ik woon in een rustige ___, met veel groen.','omgeving',['omdat','omgaan'],['humor','notaris'],4,0],
+  ['Wij ___ om te gaan trouwen.','besluiten',['bestaan','betalen'],['slank','humor'],4,0],
+  ['Mijn moeder is altijd ___. Ze lacht veel.','vrolijk',['vrouw','vroeg'],['notaris','testament'],4,0],
+  // taak 4 – herhaling
+  ['Zij is ___ en heeft twee kinderen. Ze heeft geen partner.','alleenstaand',['alleen','allerlei'],['notaris'],4,1],
+  ['Onze kinderen zijn de deur ___. Ze wonen zelf.','uit',['dicht','open'],['humor'],4,1],
+  ['Mijn ouders ___ mijn keuze. Ze vinden het goed.','accepteren',['activiteit','advertentie'],['notaris'],4,1],
+  ['Ik hou van ___: samen eten en praten met familie.','gezelligheid',['gezellig','gezondheid'],['notaris'],4,1],
+  ['Mijn man is heel ___. Hij zorgt goed voor ons.','zorgzaam',['zorgen','zeker'],['notaris'],4,1],
+  ['Hij ziet er altijd ___ uit: schone kleren, mooi haar.','verzorgd',['verzameld','verkeerd'],['humor'],4,1],
+  ['Wij hebben een geregistreerd ___ bij de gemeente.','partnerschap',['partner','paspoort'],['humor'],4,1],
+  ['Een hond is heel ___. Hij blijft altijd bij je.','trouw',['trouwen','trouwens'],['slank'],4,1],
+  ['We gaan ___ nog niet trouwen. Misschien later.','voorlopig',['voorzichtig','voordeel'],['slank'],4,1],
+  ['Is het ___ tussen jullie? Gaan jullie samenwonen?','serieus',['zeker','sterk'],['notaris'],4,1],
+  ['Mijn zoon is heel ___. Hij huilt snel.','gevoelig',['gevoel','gelukkig'],['notaris'],4,1],
+  ['Hij heeft een ___ vriendin. Ze zijn al drie jaar samen.','vaste',['vaak','vieze'],['humor'],4,1],
+  ['Mijn vrouw is heel ___. Ze blijft rustig en denkt goed na.','nuchter',['nu','nacht'],['notaris'],4,1],
+  ['Bij een scheiding beslist soms de ___ over de kinderen.','rechter',['rechts','rechtdoor'],['humor'],4,1],
+  ['De kinderen zijn de ___: zij krijgen het geld.','erfgenamen',['erg','eerlijk'],['humor'],4,1]
+];
+
+/* ---------- ANDER WOORD (vervangspel) ----------
+   [zin met [gewone woorden], goed, [afleiders], [duidelijk fout], taak] */
+const ANDER = [
+  ['Ik ben [vaak alleen en dat vind ik niet fijn].','eenzaam',['eens','eerlijk'],['klomp','regen'],1],
+  ['Ik kwam [drie jaar terug in de tijd] naar Nederland.','drie jaar geleden',['drie jaar geleerd','drie jaar gelukkig'],['drie jaar regen','drie jaar taal'],1],
+  ['Morgen krijgen we [bezoek van familie].','visite',['visum','vis'],['regen','taal'],1],
+  ['Ja, [dat klopt]!','inderdaad',['inmiddels','in'],['klomp','taal'],1],
+  ['[O ja, nog iets]: hoe gaat het met je moeder?','Trouwens',['Trouwen','Trouw'],['Regen','Klas'],1],
+  ['Ze is [iemand die ik een beetje ken].','een bekende',['een bekend','een bekijken'],['een regen','een taal'],1],
+
+  ['Ik heb [werk]! Ik begin maandag.','een baan',['een baas','een bank'],['een ruzie','een religie'],2],
+  ['Mijn vriend is [iemand die altijd de waarheid zegt].','eerlijk',['eerder','eindelijk'],['ruzie','nergens'],2],
+  ['Ik heb het [fijn] op mijn werk.','naar mijn zin',['naar mijn zien','naar mijn zijn'],['naar mijn baan','naar mijn ruzie'],2],
+  ['Ik [denk veel aan het probleem en ben bang] om mijn moeder.','maak me zorgen',['maak me zoeken','maak me zorgzaam'],['maak me baan','maak me ruzie'],2],
+  ['Ik kan mijn sleutels [op geen enkele plek] vinden.','nergens',['ergens','niemand'],['eerlijk','direct'],2],
+  ['[In de afgelopen weken] ben ik vaak moe.','De laatste tijd',['De late tijd','De latere tijd'],['De ruzie tijd','De baan tijd'],2],
+
+  ['Ik vind haar [vriendelijk en leuk].','aardig',['aardappel','apart'],['haven','spel'],3],
+  ['Ik woon ver weg. [Door dat] zie ik mijn ouders weinig.','Daardoor',['Daar','Daarna'],['Haven','Spel'],3],
+  ['Mijn opa is [doodgegaan].','overleden',['overlegd','overgestapt'],['los','lief'],3],
+  ['[Na een tijd] kreeg ik vrienden.','Na een tijdje',['Naast','Nooit'],['Los','Lief'],3],
+  ['De [mensen die naast ons wonen] zijn aardig.','buren',['buurt','boeren'],['havens','spellen'],3],
+  ['Mijn gezin [heeft] vier personen.','bestaat uit',['bestelt uit','besluit uit'],['speelt uit','havent uit'],3],
+
+  ['Wij [kiezen] om te verhuizen.','besluiten',['bestaan','betalen'],['slank','humor'],4],
+  ['Hij is [dun, niet dik].','slank',['slapen','slecht'],['notaris','humor'],4],
+  ['Ik woon [nu, na een tijd,] vijf jaar in Nederland.','inmiddels',['inderdaad','middag'],['notaris','slank'],4],
+  ['Mijn broer is [niet getrouwd en heeft geen relatie].','vrijgezel',['vrijheid','vriend'],['notaris','rechter'],4],
+  ['We gaan [voor nu] nog niet verhuizen.','voorlopig',['voorzichtig','voordeel'],['slank','humor'],4],
+  ['Mijn ouders [zeggen ja tegen] mijn keuze.','accepteren',['activiteit','advertentie'],['slank','humor'],4],
+  ['Mijn moeder is altijd [blij en lacht veel].','vrolijk',['vrouw','vroeg'],['notaris','testament'],4],
+  ['Hij doet alles [zonder plan, zomaar].','spontaan',['sport','spannend'],['notaris','testament'],4]
+];
+
+/* ---------- WAT ZEG JE? ----------
+   [situatie, goed, [afleiders], [duidelijk fout], taak] */
+const SITU = [
+  ['Je ziet een bekende in de supermarkt. Je hebt hem lang niet gezien. Wat zeg je?','Hé, hoe is het? We moeten weer eens koffie drinken!',['Hé, hoe is het? We moeten weer eerst koffie drinken!','Hé, hoe is het? We moeten weer eenzaam koffie drinken!'],['Ik heb een klomp.','Waar is de kassa?'],1],
+  ['Je buurvrouw zegt: "Wat een regen vandaag!" Je bent het met haar eens. Wat zeg je?','Ja, inderdaad! Echt Nederlands weer.',['Ja, inmiddels! Echt Nederlands weer.','Ja, trouwens! Echt Nederlands weer.'],['Ik heb een baan.','Mijn oom is ziek.'],1],
+  ['Je wilt in een gesprek over iets anders beginnen. Wat zeg je?','Trouwens, hoe gaat het met je kinderen?',['Trouw, hoe gaat het met je kinderen?','Trouwen, hoe gaat het met je kinderen?'],['Ik ga naar huis.','Het regent.'],1],
+  ['Iemand vraagt: "Mis je je familie?" Wat zeg je?','Ja, ik mis mijn familie heel erg.',['Ja, ik mag mijn familie heel erg.','Ja, ik moet mijn familie heel erg.'],['Ik heb een klas.','Ik wandel.'],1],
+
+  ['Je vriendin vraagt: "Vind je mijn nieuwe jas mooi?" Je vindt hem niet mooi. Je wilt eerlijk zijn.','Eerlijk gezegd vind ik hem niet zo mooi.',['Eerder gezegd vind ik hem niet zo mooi.','Eindelijk gezegd vind ik hem niet zo mooi.'],['Ik heb een baan.','Het is laat.'],2],
+  ['Je collega is de laatste tijd stil en moe. Wat zeg je?','Gaat het wel goed met je? Je kunt je verhaal bij mij kwijt.',['Gaat het wel goed met je? Je kunt je verhaal bij mij kwart.','Gaat het wel goed met je? Je kunt je verhaal bij mij klein.'],['Waar is de wc?','Hoe laat is het?'],2],
+  ['Je vriend vraagt: "Heb je het naar je zin in Nederland?" Je bent blij hier. Wat zeg je?','Ja, ik heb het hier erg naar mijn zin.',['Ja, ik heb het hier erg naar mijn zien.','Ja, ik heb het hier erg naar mijn zijn.'],['Ik heb ruzie.','Nergens.'],2],
+  ['Je moeder is ziek. Je vriendin vraagt hoe het gaat. Wat zeg je?','Niet zo goed. Ik maak me zorgen om mijn moeder.',['Niet zo goed. Ik maak me zoeken om mijn moeder.','Niet zo goed. Ik maak me zorgzaam om mijn moeder.'],['Ik heb een nieuwe baan!','Het regent.'],2],
+
+  ['Iemand vraagt: "Hoe groot is je gezin?" Wat zeg je?','Mijn gezin bestaat uit vier personen.',['Mijn gezin bestelt uit vier personen.','Mijn gezin besluit uit vier personen.'],['Ik woon bij de haven.','Ik speel een spel.'],3],
+  ['Je vertelt over je zus. Jullie bellen elke dag. Wat zeg je?','Ik heb een goede band met mijn zus.',['Ik heb een goede bank met mijn zus.','Ik heb een goede baan met mijn zus.'],['Mijn zus is los.','Ik heb een haven.'],3],
+  ['Je collega vertelt dat haar opa is overleden. Wat zeg je?','Wat erg voor je. Sterkte!',['Wat erg voor je. Sterk!','Wat erg voor je. Straks!'],['Gefeliciteerd!','Lekker!'],3],
+  ['Je hebt een zoon. Je man heeft twee dochters. Jullie wonen samen. Wat zeg je?','Wij zijn een samengesteld gezin.',['Wij zijn een samen gezin.','Wij zijn een sterk gesteld gezin.'],['Wij wonen bij de haven.','Wij spelen een spel.'],3],
+
+  ['Je vriendin heeft een nieuwe vriend. Je wilt weten of het iets wordt. Wat vraag je?','Is het serieus tussen jullie?',['Is het zeker tussen jullie?','Is het sterk tussen jullie?'],['Hoe laat is het?','Waar is het station?'],4],
+  ['Jij en je partner willen trouwen. Waar gaan jullie naartoe?','Naar het stadhuis.',['Naar de stad.','Naar het station.'],['Naar de bakker.','Naar de haven.'],4],
+  ['Je wilt regelen wie je spullen krijgt als je overlijdt. Waar ga je naartoe?','Naar de notaris, voor een testament.',['Naar de rechter, voor een testament.','Naar de notaris, voor een tarief.'],['Naar de bibliotheek.','Naar de supermarkt.'],4],
+  ['Iemand vraagt: "Hoe is je man?" Je vertelt iets moois. Wat zeg je?','Hij is heel zorgzaam en hij heeft veel humor.',['Hij is heel zorgen en hij heeft veel humor.','Hij is heel zorgzaam en hij heeft veel huur.'],['Hij woont bij de haven.','Het regent.'],4]
+];
+
+
+W.forEach(x => x.th = 4);
+return { nr: 4, titel: "Samen sta je sterk!", W, ZINNEN, ANDER, SITU, synOf, PLUR };
+})();
 
 const NRS = Object.keys(THEMES).map(Number).sort((a, b) => a - b);
 const LS = 'code2_herhaling_fouten';
@@ -1255,14 +1590,36 @@ function pickVoice() {
   nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
 }
 if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+// Hulpmelding als het voorlezen niet lukt
+let curU = null, speakWarned = false;
+const NOSOUND = '🔇 <b>Hoor je niets?</b> Zet het geluid van je telefoon of computer harder. iPhone of iPad: zet de stille modus uit (de schakelaar aan de zijkant). Gebruik Chrome, Safari of Edge.';
+function speakNote(msg) {
+  let el = document.getElementById('speaknote');
+  if (!el) {
+    el = document.createElement('div'); el.id = 'speaknote';
+    el.style.cssText = 'position:fixed;left:50%;top:4rem;transform:translateX(-50%);width:min(92%,520px);background:#fef3c7;color:#92400e;border:2px solid #f5a623;border-radius:12px;padding:.7rem 1rem;font-size:.88rem;line-height:1.45;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.15);cursor:pointer';
+    el.onclick = () => el.remove();
+    document.body.appendChild(el);
+  }
+  el.innerHTML = msg + '<br><small>(Klik om te sluiten)</small>';
+  clearTimeout(el._t); el._t = setTimeout(() => el.remove(), 9000);
+}
 function say(text, slow) {
-  if (!canSpeak) return;
-  speechSynthesis.cancel();
+  if (!canSpeak) { speakNote('🔇 Deze browser kan niet voorlezen. Gebruik Chrome, Safari of Edge.'); return; }
+  pickVoice();
   const u = new SpeechSynthesisUtterance(String(text).replace(/\s*\([^)]*\)/g, '').replace(/[–…]/g, ','));
   u.lang = 'nl-NL';
   if (nlVoice) u.voice = nlVoice;
   u.rate = slow ? 0.6 : 0.9;
-  speechSynthesis.speak(u);
+  let started = false;
+  u.onstart = () => { started = true; };
+  u.onerror = e => { if (e.error !== 'interrupted' && e.error !== 'canceled') speakNote(NOSOUND + '<br><small>Melding van de browser: ' + e.error + '</small>'); };
+  curU = u;  // bewaren: anders stopt Chrome soms midden in het woord
+  const go = () => { try { speechSynthesis.resume(); } catch (e) {} speechSynthesis.speak(u); };
+  // Chrome zegt soms niets als je direct na cancel() weer spreekt; daarom even wachten.
+  // Spreekt er niets? Dan meteen spreken (iPhone wil dat binnen de klik gebeurt).
+  if (speechSynthesis.speaking || speechSynthesis.pending) { speechSynthesis.cancel(); setTimeout(go, 80); } else go();
+  setTimeout(() => { if (!started && curU === u && !speakWarned) { speakWarned = true; speakNote(NOSOUND); } }, 2500);
 }
 function checkVoice() {
   const w = document.getElementById('warn');

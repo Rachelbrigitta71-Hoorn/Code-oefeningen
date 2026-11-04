@@ -180,7 +180,7 @@
 
   <div class="panel" id="panel"></div>
 
-  <footer>EdINOVA - Rachel</footer>
+  <footer>Gemaakt voor cursisten van EdINOVA - Rachel</footer>
 </div>
 
 <script>
@@ -585,14 +585,36 @@ function pickVoice() {
   nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
 }
 if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+// Hulpmelding als het voorlezen niet lukt
+let curU = null, speakWarned = false;
+const NOSOUND = '🔇 <b>Hoor je niets?</b> Zet het geluid van je telefoon of computer harder. iPhone of iPad: zet de stille modus uit (de schakelaar aan de zijkant). Gebruik Chrome, Safari of Edge.';
+function speakNote(msg) {
+  let el = document.getElementById('speaknote');
+  if (!el) {
+    el = document.createElement('div'); el.id = 'speaknote';
+    el.style.cssText = 'position:fixed;left:50%;top:4rem;transform:translateX(-50%);width:min(92%,520px);background:#fef3c7;color:#92400e;border:2px solid #f5a623;border-radius:12px;padding:.7rem 1rem;font-size:.88rem;line-height:1.45;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.15);cursor:pointer';
+    el.onclick = () => el.remove();
+    document.body.appendChild(el);
+  }
+  el.innerHTML = msg + '<br><small>(Klik om te sluiten)</small>';
+  clearTimeout(el._t); el._t = setTimeout(() => el.remove(), 9000);
+}
 function say(text, slow) {
-  if (!canSpeak) return;
-  speechSynthesis.cancel();
+  if (!canSpeak) { speakNote('🔇 Deze browser kan niet voorlezen. Gebruik Chrome, Safari of Edge.'); return; }
+  pickVoice();
   const u = new SpeechSynthesisUtterance(String(text).replace(/\s*\([^)]*\)/g, '').replace(/[–…]/g, ','));
   u.lang = 'nl-NL';
   if (nlVoice) u.voice = nlVoice;
   u.rate = slow ? 0.6 : 0.9;
-  speechSynthesis.speak(u);
+  let started = false;
+  u.onstart = () => { started = true; };
+  u.onerror = e => { if (e.error !== 'interrupted' && e.error !== 'canceled') speakNote(NOSOUND + '<br><small>Melding van de browser: ' + e.error + '</small>'); };
+  curU = u;  // bewaren: anders stopt Chrome soms midden in het woord
+  const go = () => { try { speechSynthesis.resume(); } catch (e) {} speechSynthesis.speak(u); };
+  // Chrome zegt soms niets als je direct na cancel() weer spreekt; daarom even wachten.
+  // Spreekt er niets? Dan meteen spreken (iPhone wil dat binnen de klik gebeurt).
+  if (speechSynthesis.speaking || speechSynthesis.pending) { speechSynthesis.cancel(); setTimeout(go, 80); } else go();
+  setTimeout(() => { if (!started && curU === u && !speakWarned) { speakWarned = true; speakNote(NOSOUND); } }, 2500);
 }
 
 /* ---------- MOEILIJKE WOORDEN (alleen op dit apparaat) ---------- */

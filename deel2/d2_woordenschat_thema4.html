@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 4 – Samen sta je sterk! – Code+ Deel 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef7f6; --blue: #1a6b6b; --blue2: #13817d; --accent: #f5a623; --pink: #b5385a;
+    --ink: #1a1a2e; --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5; --bad: #dc2626; --bad-bg: #fee2e2; --almost: #b45309; --almost-bg: #fef3c7;
+    --shadow: rgba(26,107,107,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(26,107,107,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(245,166,35,0.08) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 740px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px var(--shadow); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+  .taaktitel { font-size: .85rem; color: var(--muted); font-style: italic; margin-bottom: .8rem; min-height: 1.2em; }
+
+  .herh-bar { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; background: #fff8eb; border: 2px dashed var(--accent); border-radius: 14px; padding: .6rem .9rem; margin-bottom: 1rem; font-size: .88rem; }
+  .herh-bar b { color: var(--blue); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .55rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.4rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .72rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(26,107,107,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--accent)); border-radius: 10px; transition: width .3s; }
+  .qtype { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--pink); margin-bottom: .4rem; }
+
+  .big-emoji { font-size: 3.6rem; text-align: center; line-height: 1.1; min-height: 3.8rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.1rem, 4.4vw, 1.4rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .sentence .mark { background: #fff1d6; border-bottom: 3px solid var(--accent); padding: 0 .15em; border-radius: 4px; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+  .defn { font-size: clamp(1.05rem, 4.2vw, 1.25rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.2rem; background: #f4fbfa; border-radius: 14px; padding: .9rem 1rem; }
+  .hint { text-align: center; font-family: monospace; font-size: 1.4rem; letter-spacing: .25em; color: var(--blue); margin-bottom: 1rem; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.one { grid-template-columns: 1fr; }
+  .opt { background: #f8fdfc; border: 2px solid #cfe9e6; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.02rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; line-height: 1.3; }
+  .opts.one .opt { justify-content: flex-start; text-align: left; font-weight: 600; font-size: .98rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .type-row { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
+  .type-row input { flex: 1; min-width: 200px; max-width: 360px; font-family: inherit; font-size: 1.2rem; padding: .7rem 1rem; border: 2px solid #cfe9e6; border-radius: 14px; outline: none; }
+  .type-row input:focus { border-color: var(--blue); }
+  .type-row input.ok { border-color: var(--ok); background: var(--ok-bg); }
+  .type-row input.bad { border-color: var(--bad); background: var(--bad-bg); }
+  .type-row input.almost { border-color: var(--almost); background: var(--almost-bg); }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); } .fb.almost { color: var(--almost); }
+  .tip { text-align: center; font-size: .88rem; color: var(--muted); margin-top: .35rem; font-style: italic; line-height: 1.45; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+  .btn.herh { background: #fff8eb; color: var(--blue); border: 2px solid var(--accent); }
+  .btn.ghost { background: white; color: var(--muted); border: 2px solid #ddd; box-shadow: none; }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--pink); margin: 1.3rem 0 .5rem; }
+  .wrow { display: grid; grid-template-columns: 2.2rem 1fr auto; gap: .2rem .7rem; align-items: start; border: 1px solid #dcefec; border-radius: 12px; padding: .6rem .7rem; margin-bottom: .45rem; background: #fbfefe; }
+  .wrow .we { font-size: 1.5rem; text-align: center; grid-row: span 3; }
+  .wrow .ww { font-weight: 800; font-size: 1rem; color: var(--blue); }
+  .wrow .ww small { color: var(--muted); font-weight: 700; }
+  .wrow .ww .irr { color: var(--pink); font-weight: 900; }
+  .wrow .wu { grid-column: 2 / 4; font-size: .9rem; line-height: 1.4; }
+  .wrow .wz { grid-column: 2 / 4; font-size: .88rem; color: var(--muted); font-style: italic; font-family: 'Lora', serif; }
+  .wrow .sp { background: #eef7f6; border: none; border-radius: 50px; padding: .25rem .6rem; cursor: pointer; font-size: .9rem; grid-row: 1; grid-column: 3; }
+  .nb { display: inline-block; font-size: .68rem; font-weight: 800; background: #fde8ee; color: var(--pink); border-radius: 20px; padding: .05rem .5rem; margin-left: .3rem; vertical-align: middle; }
+  .legend { font-size: .8rem; color: var(--muted); margin-bottom: .8rem; }
+
+  .fc-scene { height: 270px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #cfe9e6; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--ink); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-em { font-size: 2.6rem; margin-bottom: .3rem; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.1rem); font-weight: 800; line-height: 1.3; }
+  .fc-def { font-size: clamp(1rem, 4.2vw, 1.2rem); line-height: 1.45; }
+  .fc-ex { font-family: 'Lora', serif; font-style: italic; opacity: .8; margin-top: .7rem; font-size: .95rem; }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef7f6; color: var(--blue); }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  .review { text-align: left; margin-top: 1.6rem; }
+  .review h3 { font-size: 1rem; font-weight: 900; color: var(--bad); margin-bottom: .2rem; }
+  .rv { border: 1px solid #f3d0d0; border-left: 5px solid var(--bad); border-radius: 12px; padding: .7rem .9rem; margin-bottom: .6rem; background: #fffafa; font-size: .92rem; line-height: 1.45; }
+  .rv .rt { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--pink); }
+  .rv .rq { font-family: 'Lora', serif; margin: .25rem 0 .35rem; font-size: 1rem; }
+  .rv .rq .gap { min-width: 3em; }
+  .rv .rq .mark { background: #fff1d6; border-bottom: 2px solid var(--accent); padding: 0 .15em; border-radius: 4px; }
+  .rv .ry { color: #991b1b; }
+  .rv .rg { color: #065f46; font-weight: 800; }
+  .rv .ru { color: var(--muted); font-size: .85rem; margin-top: .2rem; font-style: italic; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+</style>
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel2/overzicht_code2.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">🤝</div>
+    <div>
+      <h1>Thema 4 · Samen sta je sterk!</h1>
+      <p>Code+ Deel 2 · woordenschat · 102 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b> en <b>🃏 Flitskaarten</b>. Lees de uitleg en luister.<br>
+    Oefen daarna van makkelijk naar moeilijk. Het moeilijkst is <b>⌨️ Typen</b>.<br>
+    Klaar met een taak? Doe dan de <b>🔁 Herhaling</b>. Daar oefen je alle woorden tot nu toe.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+  <div class="taaktitel" id="taaktitel"></div>
+  <div id="herhbar"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>Gemaakt voor cursisten van EdINOVA - Rachel</footer>
+</div>
+
+<script>
+/* ======================================================================
+   Code+ Deel 2 · Thema 4 · Samen sta je sterk!
+   Woorden: letterlijk uit de woordenlijst van Code+ Deel 2 (ThiemeMeulenhoff).
+   * = onregelmatig werkwoord (volgens het boek).
+   ====================================================================== */
+const THEMA = 4;
+const AFL = THEMA <= 3 ? 1 : 2;   // afleiders bij gewone oefeningen (t/m thema 3: 1, daarna 2)
+const AFL_H = 2;                  // afleiders bij de herhaling: altijd 2
+const HINT = THEMA <= 2;          // beginletter als hulp bij Typen (alleen thema 1-2, niet bij herhaling)
+const KEY = 'code2_t' + THEMA + '_moeilijk';
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4'],['moeilijk','⭐ Moeilijk']];
+const TITELS = {
+  all: 'Alle woorden van thema 4',
+  1: 'Intro + 4.1 · Gesprekjes voeren met mensen',
+  2: '4.2 · Praten over persoonlijke zaken',
+  3: '4.3 · Je familie beschrijven',
+  4: '4.4 · Over een relatie praten',
+  moeilijk: 'Jouw moeilijke woorden. Ze staan alleen op dit apparaat.'
+};
+
+/* [woord, lidwoord, emoji, taak, uitleg, voorbeeldzin, afleiders (lijken op het woord), goede antwoorden bij typen, nieuwe betekenis]
+   Intro en taak 1 zijn samen: taak 1. */
+const RAW = [
+ // ---------- INTRO (11) ----------
+ ['duin','het','🏖️',1,'Een heuvel van zand bij de zee.','We wandelen door de duinen.',['ding','dorp'],['duin','duinen']],
+ ['eenzaam','','😔',1,'Je bent veel alleen en je vindt dat niet fijn.','Mijn buurman is oud en eenzaam.',['eens','eerlijk']],
+ ['geleden','','⏪',1,'Zo lang terug in de tijd. Bijvoorbeeld: twee jaar geleden.','Ik kwam drie jaar geleden naar Nederland.',['geleerd','gelukkig']],
+ ['klikken (het klikt)','','✨',1,'Je vindt iemand meteen aardig. Het gaat goed samen.','Met mijn nieuwe collega klikt het meteen.',['kijken','klinken'],['klikken','klikt']],
+ ['klomp','de','👞',1,'Een houten schoen. Typisch Nederlands.','Mijn opa droeg vroeger klompen.',['klok','klant'],['klomp','klompen']],
+ ['missen','','💔',1,'Je bent verdrietig, omdat iemand er niet is.','Ik mis mijn familie.',['misschien','meenemen'],['missen','mis']],
+ ['overweg kunnen met','','🤝',1,'Goed samen kunnen gaan. Geen ruzie hebben.','Ik kan goed overweg met mijn buren.',['overal','onderweg'],['overweg kunnen met','overweg kunnen','overweg']],
+ ['teruggaan','','🔙',1,'Weer naar een plek gaan waar je eerder was.','Ik ga volgend jaar terug naar mijn land.',['teruggeven','terugbrengen'],['teruggaan','ga terug']],
+ ['toen','','🕰️',1,'Op dat moment in het verleden.','Toen ik klein was, woonde ik in een dorp.',['tot','toch']],
+ ['visite','de','☕',1,'Mensen die bij je op bezoek komen.','Zondag krijgen we visite.',['visum','vis']],
+ ['wandelen','','🚶',1,'Rustig lopen, voor je plezier.','We wandelen elke zondag in het park.',['wonen','wachten']],
+
+ // ---------- TAAK 1 (12) ----------
+ ['bekende','de','🙋',1,'Iemand die je kent, maar geen goede vriend.','Op de markt zie ik een bekende.',['bekend','bekijken']],
+ ['eens (weer eens)','','🔁',1,'Een keer. Weer eens = nog een keer, na lange tijd.','We moeten weer eens koffie drinken!',['eerst','eenzaam'],['eens']],
+ ['iemand','','👤',1,'Een persoon. Je weet niet wie.','Er staat iemand aan de deur.',['iets','ieder']],
+ ['inderdaad','','👍',1,'Ja, dat is waar. Dat klopt.','Het is koud vandaag. – Ja, inderdaad!',['inmiddels','in']],
+ ['klas','de','🏫',1,'Een groep cursisten of leerlingen die samen les hebben.','In mijn klas zitten twaalf cursisten.',['klant','kast']],
+ ['onderwerp','het','💬',1,'Waar een gesprek of een tekst over gaat.','Het weer is een makkelijk onderwerp.',['onderweg','onderscheid']],
+ ['regen','de','🌧️',1,'Water dat uit de lucht valt.','Wat een regen vandaag!',['regel','rekening']],
+ ['rij','de','🚶',1,'Mensen staan achter elkaar en wachten.','Er staat een lange rij bij de kassa.',['rijst','rijden']],
+ ['taal','de','🗣️',1,'Nederlands, Arabisch, Engels: dat zijn talen.','Nederlands is een moeilijke taal.',['tafel','tas']],
+ ['trouwens','','💡',1,'Dat zeg je als je iets nieuws erbij vertelt.','Trouwens, hoe gaat het met je moeder?',['trouwen','trouw']],
+ ['uitdrukking','de','🗨️',1,'Een paar woorden samen met een speciale betekenis. Bijvoorbeeld: "Het klikt."','"Het klikt" is een uitdrukking.',['uitnodiging','uitverkoop']],
+ ['vertellen','','📖',1,'Iets aan iemand zeggen. Bijvoorbeeld een verhaal.','Vertel eens: hoe was je weekend?',['vertrekken','verkopen'],['vertellen','vertel']],
+
+ // ---------- TAAK 2 (14) ----------
+ ['baan','de','💼',2,'Werk waarvoor je geld krijgt.','Ik heb een nieuwe baan!',['baas','bank']],
+ ['direct','','🎯',2,'Je zegt meteen wat je denkt. Of: meteen.','Nederlanders zijn vaak heel direct.',['dicht','druk']],
+ ['eerlijk','','🤞',2,'Je zegt wat waar is. Je liegt niet.','Wees eerlijk: vind je het lekker?',['eerder','eindelijk']],
+ ['kwijt (het kwijt kunnen)','','🗯️',2,'Je kunt je verhaal vertellen aan iemand. Dan voel je je beter.','Bij mijn zus kan ik mijn verhaal kwijt.',['kwart','klein'],['kwijt'],'Kwijt is ook: je weet niet waar iets is. Nu: je verhaal kwijt kunnen = het aan iemand vertellen.'],
+ ['laatste (de laatste tijd)','','📆',2,'De laatste tijd = de afgelopen weken of maanden.','De laatste tijd ben ik vaak moe.',['laat','later'],['laatste']],
+ ['liefde','de','❤️',2,'Het gevoel als je heel veel van iemand houdt.','Liefde is belangrijk in een relatie.',['lief','lied']],
+ ['nergens','','🚫',2,'Op geen enkele plek. Het tegenovergestelde van ergens.','Ik kan mijn sleutels nergens vinden.',['ergens','niemand']],
+ ['onderscheid','het','⚖️',2,'Verschil maken tussen mensen of dingen.','Je mag geen onderscheid maken tussen mannen en vrouwen.',['onderwerp','onderweg']],
+ ['opstappen','','🚲',2,'Op een fiets of brommer gaan zitten en wegrijden. Ook: weggaan.','Ik stap op mijn fiets en ga naar huis.',['opstaan','overstappen'],['opstappen','stap op']],
+ ['religie','','🕊️',2,'Een geloof. Bijvoorbeeld de islam, het christendom of het jodendom.','In Nederland mag iedereen zijn eigen religie hebben.',['regio','relatie']],
+ ['ruzie','de','😠',2,'Je bent boos op elkaar en je praat hard.','Ik heb ruzie met mijn broer.',['rug','reis']],
+ ['vertrouwen','','🤝',2,'Je weet: iemand is eerlijk. Je kunt op hem of haar rekenen.','Ik vertrouw mijn beste vriendin.',['vertellen','verhuizen'],['vertrouwen','vertrouw']],
+ ['zin (het naar de zin hebben)','','😊',2,'Het naar je zin hebben = je vindt het fijn, je bent tevreden.','Heb je het naar je zin op je werk?',['zien','zijn'],['zin','naar je zin'],'In Deel 1: een zin = woorden met een punt aan het eind. Ook: zin hebben in. Nu: het naar je zin hebben = het fijn vinden.'],
+ ['zorgen maken, zich','','😟',2,'Je denkt veel aan een probleem. Je bent bang dat het misgaat.','Ik maak me zorgen om mijn moeder.',['zorgen voor','zoeken'],['zorgen maken','zich zorgen maken','zorgen']],
+
+ // ---------- TAAK 3 (26) ----------
+ ['aardig (aardig vinden)','','😊',3,'Vriendelijk. Iemand aardig vinden = iemand leuk en vriendelijk vinden.','Ik vind mijn buurvrouw heel aardig.',['aardappel','apart'],['aardig']],
+ ['afstand','de','📏',3,'Hoe ver iets weg is.','De afstand naar mijn familie is groot: 5000 kilometer.',['afspraak','afdeling']],
+ ['band (familie)','de','🔗',3,'Hoe goed je met iemand omgaat. Een goede band = jullie zijn dicht bij elkaar.','Ik heb een goede band met mijn zus.',['bank','baan'],['band'],'Een band is ook de band van een fiets. Nu: een goede band met iemand.'],
+ ['bestaan uit','','🧩',3,'Gemaakt zijn van verschillende delen of mensen.','Mijn gezin bestaat uit vier personen.',['bestellen','besluiten'],['bestaan uit','bestaat uit','bestaan']],
+ ['buren','de','🏘️',3,'De mensen die naast je wonen.','Mijn buren zijn heel aardig.',['buurt','boeren']],
+ ['daardoor','','➡️',3,'Door dat. Dat is de reden.','Ik woon ver weg. Daardoor zie ik mijn ouders weinig.',['daar','daarna']],
+ ['familielid (familieleden)','het','👨‍👩‍👧',3,'Iemand uit je familie. Bijvoorbeeld je oom of je nicht.','Op het feest komen veel familieleden.',['familie','gezin'],['familielid','familieleden']],
+ ['haven','de','⚓',3,'Een plek aan het water waar boten en schepen liggen.','Mijn oom werkt in de haven van Rotterdam.',['hoeven','halen']],
+ ['herinnering','de','💭',3,'Iets wat je nog weet van vroeger.','Ik heb mooie herinneringen aan mijn oma.',['herkomst','herhalen'],['herinnering','herinneringen']],
+ ['kleinkind','het','👶',3,'Het kind van je zoon of je dochter.','Mijn moeder heeft vijf kleinkinderen.',['klein','kleingeld'],['kleinkind','kleinkinderen']],
+ ['lief','','🥰',3,'Aardig en zacht voor anderen.','Mijn oma is heel lief.',['liefde','lied']],
+ ['los','','🎈',3,'Niet vast.','De knoop van mijn jas is los.',['lief','lang']],
+ ['na een tijdje','','⏳',3,'Na een tijd. Later.','Na een tijdje kreeg ik nieuwe vrienden.',['naast','nooit'],['na een tijdje','na een tijd']],
+ ['neef','de','👦',3,'De zoon van je oom of tante. Of de zoon van je broer of zus.','Mijn neef woont in Duitsland.',['nicht','nee']],
+ ['nicht','de','👧',3,'De dochter van je oom of tante. Of de dochter van je broer of zus.','Mijn nicht gaat trouwen.',['neef','niet']],
+ ['oom','de','👨',3,'De broer van je vader of moeder.','Mijn oom is de broer van mijn vader.',['oog','oma']],
+ ['overlijden (overleden)','','🕯️',3,'Doodgaan. Het is een beleefd woord.','Mijn opa is vorig jaar overleden.',['overleggen','overstappen'],['overlijden','overleden']],
+ ['relatie','de','💑',3,'Twee mensen die samen zijn. Of: hoe je met iemand omgaat.','Ik heb een relatie met Sam.',['regio','religie']],
+ ['samengesteld (gezin)','','👨‍👩‍👧‍👦',3,'Een gezin met kinderen uit een eerdere relatie van de vader of de moeder.','Wij zijn een samengesteld gezin.',['samen','sterk'],['samengesteld','samengestelde']],
+ ['schoon- (schoonzus)','','👩',3,'Schoon- = familie van je man of vrouw. Je schoonzus is de zus van je man of vrouw.','Mijn schoonzus komt morgen eten.',['schoon','schoen'],['schoonzus','schoon']],
+ ['schoot','de','🧸',3,'Boven op je benen als je zit. Een kind zit op je schoot.','Mijn dochter zit bij oma op schoot.',['school','schoon']],
+ ['spel','het','🎲',3,'Iets wat je doet voor plezier, met regels. Bijvoorbeeld een kaartspel.','We doen een spel met de kinderen.',['spelen','spiegel']],
+ ['spelen','','🧒',3,'Iets doen voor plezier. Kinderen spelen buiten.','De kinderen spelen in de tuin.',['spreken','slapen']],
+ ['stief- (stiefvader)','','👨',3,'Stief- = familie door een nieuwe relatie. Je stiefvader is de nieuwe man van je moeder.','Mijn stiefvader is heel lief voor mij.',['stil','sterk'],['stiefvader','stief']],
+ ['tante','de','👩',3,'De zus van je vader of moeder.','Mijn tante is de zus van mijn moeder.',['taart','tas']],
+ ['zwager','de','👨',3,'De man van je zus. Of de broer van je man of vrouw.','Mijn zwager helpt met de verhuizing.',['zwaar','zwanger']],
+
+ // ---------- TAAK 4 (39) ----------
+ ['aantrekkelijk','','😍',4,'Mooi of knap. Je vindt iemand leuk om te zien.','Ze vindt hem heel aantrekkelijk.',['aantrekken','aantal']],
+ ['accepteren','','✅',4,'Goedvinden. Ja zeggen tegen iets.','Mijn ouders accepteren mijn keuze.',['activiteit','advertentie']],
+ ['alleenstaand','','🧍',4,'Je hebt geen partner. Je woont alleen of alleen met je kinderen.','Zij is alleenstaand en heeft twee kinderen.',['alleen','allerlei']],
+ ['belangstelling','de','👀',4,'Interesse. Je wilt er meer over weten.','Hij heeft belangstelling voor muziek.',['belangrijk','bestelling']],
+ ['besluiten','','🤔',4,'Kiezen wat je gaat doen.','Wij besluiten om te gaan trouwen.',['bestaan','betalen'],['besluiten','besluit']],
+ ['de deur uit zijn (kinderen)','','🏠',4,'De kinderen wonen niet meer bij hun ouders. Ze wonen zelf.','Onze kinderen zijn de deur uit.',['de deur dicht','de deur open'],['de deur uit','deur uit','de deur uit zijn']],
+ ['erfgenaam','de','📜',4,'Iemand die geld of spullen krijgt als iemand overlijdt.','De kinderen zijn de erfgenamen.',['erg','eerlijk'],['erfgenaam','erfgenamen']],
+ ['genieten van','','😌',4,'Iets heel fijn vinden.','Ik geniet van de zon.',['genezen','geven'],['genieten','genieten van','geniet']],
+ ['gevoelig','','🥺',4,'Je voelt veel. Je bent snel verdrietig.','Mijn zoon is heel gevoelig.',['gevoel','gelukkig']],
+ ['gezelligheid','de','🕯️',4,'Een fijne, warme sfeer met mensen samen.','Ik hou van gezelligheid: samen eten en praten.',['gezellig','gezondheid']],
+ ['humor','de','😂',4,'Grappig zijn. Mensen aan het lachen maken.','Mijn man heeft veel humor.',['huur','honger']],
+ ['huwelijk','het','💍',4,'Je bent getrouwd. Of: de dag dat je trouwt.','Ze zijn tien jaar getrouwd. Het is een goed huwelijk.',['huis','huren']],
+ ['inmiddels','','⏱️',4,'Nu, na een tijd.','Ik woon inmiddels vijf jaar in Nederland.',['inderdaad','middag']],
+ ['lachen','','😄',4,'Geluid maken als je iets grappig vindt. Haha!','We lachen veel samen.',['lekken','lezen']],
+ ['notaris','de','✒️',4,'Iemand bij wie je officiële papieren maakt. Bijvoorbeeld een testament.','We gaan naar de notaris voor ons testament.',['natuurlijk','nooit']],
+ ['nuchter','','🧠',4,'Rustig en praktisch. Je denkt goed na.','Mijn vrouw is heel nuchter.',['nu','nacht']],
+ ['omgeving','de','🏞️',4,'De plek om je heen. Bijvoorbeeld je buurt.','Ik woon in een rustige omgeving.',['omdat','omgaan']],
+ ['partnerschap','het','📝',4,'Een officiële afspraak tussen twee partners, bijna hetzelfde als een huwelijk.','Wij hebben een geregistreerd partnerschap.',['partner','paspoort']],
+ ['rechter','de','⚖️',4,'Iemand die bij de rechtbank beslist wat er moet gebeuren.','Bij een scheiding beslist soms de rechter over de kinderen.',['rechts','rechtdoor']],
+ ['registreren (geregistreerd)','','🖊️',4,'Officieel opschrijven, bijvoorbeeld bij de gemeente.','Wij laten ons partnerschap registreren.',['regelen','reageren'],['registreren','geregistreerd']],
+ ['scheiden','','💔',4,'Je huwelijk stoppen. Je gaat uit elkaar.','Mijn ouders zijn gescheiden.',['schrijven','snijden'],['scheiden','gescheiden']],
+ ['serieus','','🧐',4,'Niet voor de grap. Het is belangrijk.','Is het serieus tussen jullie?',['zeker','sterk']],
+ ['slank','','🧍',4,'Dun, niet dik.','Zij is lang en slank.',['slapen','slecht']],
+ ['spontaan','','🎉',4,'Je doet iets zonder plan. Zomaar.','Hij is heel spontaan en vrolijk.',['sport','spannend']],
+ ['stadhuis','het','🏛️',4,'Het gebouw van de gemeente in een stad. Daar kun je trouwen.','Wij trouwen op het stadhuis.',['stad','station']],
+ ['sterven','','🥀',4,'Doodgaan.','Bloemen sterven als ze geen water krijgen.',['sterk','sturen']],
+ ['testament','het','📜',4,'Een papier bij de notaris. Daarin staat wie je geld en spullen krijgt als je overlijdt.','Ik maak een testament bij de notaris.',['tarief','test']],
+ ['trouw','','🐕',4,'Je blijft bij iemand. Je laat hem of haar nooit in de steek.','Een hond is heel trouw.',['trouwen','trouwens']],
+ ['vast (vaste relatie)','','🔒',4,'Een vaste relatie = jullie zijn al een tijd samen, het is serieus.','Hij heeft een vaste vriendin.',['vaak','vies'],['vast','vaste'],'In Thema 1: vaste prijzen = de prijs verandert niet. Nu: een vaste relatie = serieus en al een tijd samen.'],
+ ['verantwoordelijk','','🧑‍💼',4,'Jij moet zorgen dat het goed gaat.','Ouders zijn verantwoordelijk voor hun kinderen.',['verantwoordelijkheid','vervelend']],
+ ['verantwoordelijkheid','de','📋',4,'Iets waar jij voor moet zorgen.','Een kind is een grote verantwoordelijkheid.',['verantwoordelijk','verjaardag']],
+ ['verlegen','','🙈',4,'Je vindt het moeilijk om met nieuwe mensen te praten.','Mijn dochter is een beetje verlegen.',['vergeten','verliefd']],
+ ['verzorgd','','💇',4,'Je ziet er netjes en schoon uit.','Hij ziet er altijd verzorgd uit.',['verzameld','verkeerd']],
+ ['volwassen','','🧑',4,'Groot. Niet meer een kind.','Mijn kinderen zijn al volwassen.',['volwassene','vol']],
+ ['voorlopig','','⏳',4,'Nu even, voor een tijd. Later kan het veranderen.','We gaan voorlopig nog niet trouwen.',['voorzichtig','voordeel']],
+ ['vrijgezel','de','🧑',4,'Iemand die niet getrouwd is en geen relatie heeft.','Mijn broer is nog vrijgezel.',['vrijheid','vriend']],
+ ['vrijheid','de','🕊️',4,'Je mag zelf kiezen wat je doet.','In Nederland is vrijheid belangrijk.',['vrijgezel','vrij']],
+ ['vrolijk','','😁',4,'Blij. Je lacht veel.','Mijn moeder is altijd vrolijk.',['vrouw','vroeg']],
+ ['zorgzaam','','🤲',4,'Je zorgt goed voor anderen.','Mijn man is heel zorgzaam.',['zorgen','zeker']]
+];
+
+const IRR = new Set(['kwijt (het kwijt kunnen)','aardig (aardig vinden)','bestaan uit','overlijden (overleden)','besluiten','genieten van','lachen','scheiden','sterven']);
+const PLUR = new Set(['buren']);
+
+const W = RAW.map(r => {
+  const alt = r[7] && r[7].length ? r[7] : [r[0].replace(/\s*\(.*?\)\s*/g, '').trim()];
+  return { w: r[0], a: r[1], e: r[2], t: r[3], u: r[4], z: r[5], af: r[6] || [], alt, nb: r[8] || '', base: alt[0] };
+});
+
+/* Woorden die (bijna) hetzelfde betekenen of goed bij elkaar passen: die komen niet samen voor als 'fout' antwoord. */
+const SYN = [
+  ['eenzaam','alleenstaand','vrijgezel','missen'], ['visite','bekende','buren','familielid (familieleden)'],
+  ['toen','geleden','inmiddels','na een tijdje','laatste (de laatste tijd)','voorlopig','herinnering'], ['teruggaan','opstappen'],
+  ['iemand','bekende','nergens'], ['eens (weer eens)','inderdaad','trouwens'], ['taal','uitdrukking','onderwerp'],
+  ['eerlijk','direct','trouw','serieus','vertrouwen'], ['liefde','relatie','huwelijk','partnerschap','vast (vaste relatie)','band (familie)','klikken (het klikt)'],
+  ['ruzie','scheiden'], ['zorgen maken, zich','gevoelig','zorgzaam'], ['aardig (aardig vinden)','lief','zorgzaam','vrolijk','klikken (het klikt)','overweg kunnen met'],
+  ['familielid (familieleden)','neef','nicht','oom','tante','zwager','schoon- (schoonzus)','stief- (stiefvader)','kleinkind','samengesteld (gezin)','bestaan uit'],
+  ['overlijden (overleden)','sterven','erfgenaam','testament','notaris'], ['spel','spelen'], ['rechter','notaris'],
+  ['registreren (geregistreerd)','partnerschap','stadhuis'], ['aantrekkelijk','slank','verzorgd'], ['besluiten','accepteren'],
+  ['verantwoordelijk','verantwoordelijkheid','volwassen','de deur uit zijn (kinderen)'], ['genieten van','gezelligheid','humor','lachen','zin (het naar de zin hebben)'],
+  ['nuchter','serieus'], ['spontaan','vrolijk'], ['afstand','omgeving'], ['vrijheid','vrijgezel'], ['wandelen','duin'], ['daardoor','onderscheid']
+];
+function synOf(w) { return SYN.filter(s => s.includes(w)).flat().concat([w]); }
+
+/* ---------- ZINNEN ----------
+   [zin, goed, [afleiders], [duidelijk fout], taak, h]
+   Vanaf thema 4: gewone oefening = goed + 2 afleiders + 1 duidelijk fout. Herhaling: andere zinnen, ook 2 afleiders. */
+const ZINNEN = [
+  // intro + taak 1 – gewoon
+  ['Twee jaar ___ kwam ik naar Nederland.','geleden',['geleerd','gelukkig'],['klomp','regen'],1,0],
+  ['___ ik klein was, woonde ik in een dorp.','Toen',['Tot','Toch'],['Regen','Taal'],1,0],
+  ['Ik woon alleen en ik ken weinig mensen. Ik voel me soms ___.','eenzaam',['eens','eerlijk'],['klas','regen'],1,0],
+  ['Ik ___ mijn familie. Ze wonen ver weg.','mis',['mag','moet'],['klomp','taal'],1,0],
+  ['Met mijn nieuwe collega ___ het meteen. We lachen veel.','klikt',['kijkt','klinkt'],['rij','taal'],1,0],
+  ['Zondag krijgen we ___. Mijn tante en oom komen koffie drinken.','visite',['visum','vis'],['regen','taal'],1,0],
+  ['We ___ elke zondag in de duinen.','wandelen',['wonen','wachten'],['klomp','rij'],1,0],
+  ['Ik kan goed ___ met mijn buren. We hebben nooit ruzie.','overweg',['overal','onderweg'],['regen','klas'],1,0],
+  ['Wat een ___! Neem een paraplu mee.','regen',['regel','rekening'],['taal','klas'],1,0],
+  ['Er staat een lange ___ bij de kassa. We moeten wachten.','rij',['rijst','rijden'],['taal','klomp'],1,0],
+  ['Nederlands is een moeilijke ___.','taal',['tafel','tas'],['regen','rij'],1,0],
+  ['Het weer is een makkelijk ___ voor een gesprek.','onderwerp',['onderweg','onderscheid'],['klomp','regen'],1,0],
+  ['Het is koud vandaag! – Ja, ___!','inderdaad',['inmiddels','in'],['klomp','taal'],1,0],
+  ['___, hoe gaat het met je moeder?','Trouwens',['Trouwen','Trouw'],['Regen','Klas'],1,0],
+  ['Op de markt zie ik een ___. Ik ken haar van school.','bekende',['bekend','bekijken'],['regen','taal'],1,0],
+  // intro + taak 1 – herhaling
+  ['"Het klikt" is een ___: de woorden hebben samen een speciale betekenis.','uitdrukking',['uitnodiging','uitverkoop'],['klomp'],1,1],
+  ['___ eens: hoe was je vakantie?','Vertel',['Vertrek','Verkoop'],['Regen'],1,1],
+  ['We moeten weer ___ samen koffie drinken!','eens',['eerst','eenzaam'],['taal'],1,1],
+  ['Er staat ___ aan de deur. Ik weet niet wie.','iemand',['iets','ieder'],['klas'],1,1],
+  ['In mijn ___ zitten twaalf cursisten.','klas',['klant','kast'],['regen'],1,1],
+  ['Volgend jaar ___ ik voor een maand terug naar mijn land.','ga',['geef','breng'],['regen'],1,1],
+  ['Mijn opa droeg vroeger ___ van hout.','klompen',['klokken','klanten'],['talen'],1,1],
+  ['Aan zee zijn veel ___ van zand.','duinen',['dingen','dorpen'],['talen'],1,1],
+
+  // taak 2 – gewoon
+  ['Ik heb een nieuwe ___! Ik werk bij een supermarkt.','baan',['baas','bank'],['ruzie','liefde'],2,0],
+  ['Nederlanders zijn vaak heel ___. Ze zeggen meteen wat ze denken.','direct',['dicht','druk'],['nergens','religie'],2,0],
+  ['Wees ___: vind je mijn eten lekker?','eerlijk',['eerder','eindelijk'],['ruzie','nergens'],2,0],
+  ['Bij mijn zus kan ik mijn verhaal ___.','kwijt',['kwart','klein'],['religie','baan'],2,0],
+  ['De ___ tijd ben ik vaak moe.','laatste',['laat','later'],['ruzie','baan'],2,0],
+  ['Ik kan mijn sleutels ___ vinden.','nergens',['ergens','niemand'],['eerlijk','direct'],2,0],
+  ['Ik heb ___ met mijn broer. We zijn boos op elkaar.','ruzie',['rug','reis'],['baan','religie'],2,0],
+  ['Ik ___ mijn beste vriendin. Zij vertelt niets door.','vertrouw',['vertel','verhuis'],['baan','ruzie'],2,0],
+  ['Heb je het naar je ___ op je nieuwe werk?','zin',['zien','zijn'],['ruzie','baan'],2,0],
+  ['Ik maak me ___ om mijn moeder. Ze is ziek.','zorgen',['zoeken','zorgzaam'],['ruzie','baan'],2,0],
+  ['In Nederland mag iedereen zijn eigen ___ hebben: de islam, het christendom of iets anders.','religie',['regio','relatie'],['ruzie','baan'],2,0],
+  ['Je mag geen ___ maken tussen mannen en vrouwen.','onderscheid',['onderwerp','onderweg'],['ruzie','liefde'],2,0],
+  // taak 2 – herhaling
+  ['___ is belangrijk in een relatie.','Liefde',['Lief','Lied'],['Baan'],2,1],
+  ['Het is laat. Ik stap ___ mijn fiets en ga naar huis.','op',['af','uit'],['baan'],2,1],
+  ['Ik heb het hier erg naar mijn ___. Ik ben blij.','zin',['zien','zon'],['ruzie'],2,1],
+  ['Mijn vriend is heel ___. Hij zegt altijd de waarheid.','eerlijk',['eerder','eindelijk'],['nergens'],2,1],
+  ['Ik ___ me zorgen over mijn examen.','maak',['mag','mis'],['baan'],2,1],
+  ['Kun je je verhaal ergens ___? Praat met een vriend.','kwijt',['kwart','klein'],['ruzie'],2,1],
+  ['Ik kan het ___ vinden. Waar is mijn telefoon?','nergens',['ergens','niemand'],['baan'],2,1],
+
+  // taak 3 – gewoon
+  ['De broer van mijn vader is mijn ___.','oom',['oog','oma'],['haven','spel'],3,0],
+  ['De zus van mijn moeder is mijn ___.','tante',['taart','tas'],['haven','schoot'],3,0],
+  ['De zoon van mijn oom is mijn ___.','neef',['nicht','nee'],['haven','spel'],3,0],
+  ['De dochter van mijn tante is mijn ___.','nicht',['neef','niet'],['haven','spel'],3,0],
+  ['De man van mijn zus is mijn ___.','zwager',['zwaar','zwanger'],['haven','spel'],3,0],
+  ['Mijn moeder heeft vijf ___. Het zijn de kinderen van mijn broers en zussen.','kleinkinderen',['kleingeld','klein'],['havens','spellen'],3,0],
+  ['Mijn gezin ___ uit vier personen.','bestaat',['bestelt','besluit'],['speelt','haven'],3,0],
+  ['Ik woon ver weg. ___ zie ik mijn ouders weinig.','Daardoor',['Daar','Daarna'],['Haven','Spel'],3,0],
+  ['Ik heb een goede ___ met mijn zus. We bellen elke dag.','band',['bank','baan'],['haven','schoot'],3,0],
+  ['Mijn opa is vorig jaar ___.','overleden',['overlegd','overgestapt'],['los','lief'],3,0],
+  ['Ik heb mooie ___ aan mijn oma. Ze vertelde altijd verhalen.','herinneringen',['herkomsten','herhalingen'],['havens','spellen'],3,0],
+  ['De kinderen ___ buiten in de tuin.','spelen',['spreken','slapen'],['haven','los'],3,0],
+  ['De ___ naar mijn familie is groot: 5000 kilometer.','afstand',['afspraak','afdeling'],['schoot','spel'],3,0],
+  ['Mijn ___ zijn heel aardig. Ze wonen naast ons.','buren',['buurt','boeren'],['havens','spellen'],3,0],
+  ['Mijn oom werkt in de ___ van Rotterdam. Daar komen grote schepen.','haven',['hoeven','halen'],['schoot','spel'],3,0],
+  // taak 3 – herhaling
+  ['Ik vind mijn nieuwe collega heel ___.','aardig',['aardappel','apart'],['haven'],3,1],
+  ['Mijn ___ is de nieuwe man van mijn moeder.','stiefvader',['stil','sterk'],['haven'],3,1],
+  ['De zus van mijn man is mijn ___.','schoonzus',['schoon','schoen'],['haven'],3,1],
+  ['Wij zijn een ___ gezin: ik heb twee kinderen, mijn vrouw ook.','samengesteld',['samen','sterk'],['los'],3,1],
+  ['Mijn dochter zit bij oma op ___.','schoot',['school','schoon'],['haven'],3,1],
+  ['We doen een ___ met de kinderen: met kaarten.','spel',['spelen','spiegel'],['haven'],3,1],
+  ['Op het feest komen veel ___: mijn ooms, tantes, neven en nichten.','familieleden',['families','gezinnen'],['havens'],3,1],
+  ['Ik heb een ___ met Sam. We zijn al twee jaar samen.','relatie',['regio','religie'],['haven'],3,1],
+  ['___ kreeg ik nieuwe vrienden in Nederland.','Na een tijdje',['Naast','Nooit'],['Los'],3,1],
+  ['Mijn oma is heel ___ voor de kinderen.','lief',['liefde','lied'],['haven'],3,1],
+  ['De knoop van mijn jas is ___.','los',['lief','lang'],['haven'],3,1],
+
+  // taak 4 – gewoon
+  ['Wij trouwen op het ___.','stadhuis',['stad','station'],['humor','testament'],4,0],
+  ['We gaan naar de ___ voor ons testament.','notaris',['natuurlijk','nooit'],['humor','vrijheid'],4,0],
+  ['In het ___ staat wie mijn geld krijgt.','testament',['tarief','test'],['humor','vrijheid'],4,0],
+  ['Mijn broer is nog ___. Hij heeft geen relatie.','vrijgezel',['vrijheid','vriend'],['notaris','rechter'],4,0],
+  ['Ze zijn tien jaar getrouwd. Het is een goed ___.','huwelijk',['huis','huren'],['notaris','humor'],4,0],
+  ['Mijn ouders zijn ___. Ze wonen niet meer samen.','gescheiden',['geschreven','gesneden'],['slank','spontaan'],4,0],
+  ['Mijn man heeft veel ___. Hij maakt altijd grapjes.','humor',['huur','honger'],['notaris','testament'],4,0],
+  ['We ___ veel samen. Haha!','lachen',['lekken','lezen'],['notaris','slank'],4,0],
+  ['Ik ___ van de zon en de rust.','geniet',['geneest','geef'],['notaris','slank'],4,0],
+  ['Mijn dochter is een beetje ___. Ze praat niet graag met nieuwe mensen.','verlegen',['vergeten','verliefd'],['notaris','humor'],4,0],
+  ['Mijn kinderen zijn al ___. Ze zijn 25 en 28.','volwassen',['volwassene','vol'],['notaris','humor'],4,0],
+  ['Ik woon ___ vijf jaar in Nederland.','inmiddels',['inderdaad','middag'],['notaris','slank'],4,0],
+  ['Ouders zijn ___ voor hun kinderen.','verantwoordelijk',['verantwoordelijkheid','vervelend'],['notaris','humor'],4,0],
+  ['Hij heeft ___ voor muziek. Hij wil er alles over weten.','belangstelling',['belangrijk','bestelling'],['notaris','slank'],4,0],
+  ['Ik woon in een rustige ___, met veel groen.','omgeving',['omdat','omgaan'],['humor','notaris'],4,0],
+  ['Wij ___ om te gaan trouwen.','besluiten',['bestaan','betalen'],['slank','humor'],4,0],
+  ['Mijn moeder is altijd ___. Ze lacht veel.','vrolijk',['vrouw','vroeg'],['notaris','testament'],4,0],
+  // taak 4 – herhaling
+  ['Zij is ___ en heeft twee kinderen. Ze heeft geen partner.','alleenstaand',['alleen','allerlei'],['notaris'],4,1],
+  ['Onze kinderen zijn de deur ___. Ze wonen zelf.','uit',['dicht','open'],['humor'],4,1],
+  ['Mijn ouders ___ mijn keuze. Ze vinden het goed.','accepteren',['activiteit','advertentie'],['notaris'],4,1],
+  ['Ik hou van ___: samen eten en praten met familie.','gezelligheid',['gezellig','gezondheid'],['notaris'],4,1],
+  ['Mijn man is heel ___. Hij zorgt goed voor ons.','zorgzaam',['zorgen','zeker'],['notaris'],4,1],
+  ['Hij ziet er altijd ___ uit: schone kleren, mooi haar.','verzorgd',['verzameld','verkeerd'],['humor'],4,1],
+  ['Wij hebben een geregistreerd ___ bij de gemeente.','partnerschap',['partner','paspoort'],['humor'],4,1],
+  ['Een hond is heel ___. Hij blijft altijd bij je.','trouw',['trouwen','trouwens'],['slank'],4,1],
+  ['We gaan ___ nog niet trouwen. Misschien later.','voorlopig',['voorzichtig','voordeel'],['slank'],4,1],
+  ['Is het ___ tussen jullie? Gaan jullie samenwonen?','serieus',['zeker','sterk'],['notaris'],4,1],
+  ['Mijn zoon is heel ___. Hij huilt snel.','gevoelig',['gevoel','gelukkig'],['notaris'],4,1],
+  ['Hij heeft een ___ vriendin. Ze zijn al drie jaar samen.','vaste',['vaak','vieze'],['humor'],4,1],
+  ['Mijn vrouw is heel ___. Ze blijft rustig en denkt goed na.','nuchter',['nu','nacht'],['notaris'],4,1],
+  ['Bij een scheiding beslist soms de ___ over de kinderen.','rechter',['rechts','rechtdoor'],['humor'],4,1],
+  ['De kinderen zijn de ___: zij krijgen het geld.','erfgenamen',['erg','eerlijk'],['humor'],4,1]
+];
+
+/* ---------- ANDER WOORD (vervangspel) ----------
+   [zin met [gewone woorden], goed, [afleiders], [duidelijk fout], taak] */
+const ANDER = [
+  ['Ik ben [vaak alleen en dat vind ik niet fijn].','eenzaam',['eens','eerlijk'],['klomp','regen'],1],
+  ['Ik kwam [drie jaar terug in de tijd] naar Nederland.','drie jaar geleden',['drie jaar geleerd','drie jaar gelukkig'],['drie jaar regen','drie jaar taal'],1],
+  ['Morgen krijgen we [bezoek van familie].','visite',['visum','vis'],['regen','taal'],1],
+  ['Ja, [dat klopt]!','inderdaad',['inmiddels','in'],['klomp','taal'],1],
+  ['[O ja, nog iets]: hoe gaat het met je moeder?','Trouwens',['Trouwen','Trouw'],['Regen','Klas'],1],
+  ['Ze is [iemand die ik een beetje ken].','een bekende',['een bekend','een bekijken'],['een regen','een taal'],1],
+
+  ['Ik heb [werk]! Ik begin maandag.','een baan',['een baas','een bank'],['een ruzie','een religie'],2],
+  ['Mijn vriend is [iemand die altijd de waarheid zegt].','eerlijk',['eerder','eindelijk'],['ruzie','nergens'],2],
+  ['Ik heb het [fijn] op mijn werk.','naar mijn zin',['naar mijn zien','naar mijn zijn'],['naar mijn baan','naar mijn ruzie'],2],
+  ['Ik [denk veel aan het probleem en ben bang] om mijn moeder.','maak me zorgen',['maak me zoeken','maak me zorgzaam'],['maak me baan','maak me ruzie'],2],
+  ['Ik kan mijn sleutels [op geen enkele plek] vinden.','nergens',['ergens','niemand'],['eerlijk','direct'],2],
+  ['[In de afgelopen weken] ben ik vaak moe.','De laatste tijd',['De late tijd','De latere tijd'],['De ruzie tijd','De baan tijd'],2],
+
+  ['Ik vind haar [vriendelijk en leuk].','aardig',['aardappel','apart'],['haven','spel'],3],
+  ['Ik woon ver weg. [Door dat] zie ik mijn ouders weinig.','Daardoor',['Daar','Daarna'],['Haven','Spel'],3],
+  ['Mijn opa is [doodgegaan].','overleden',['overlegd','overgestapt'],['los','lief'],3],
+  ['[Na een tijd] kreeg ik vrienden.','Na een tijdje',['Naast','Nooit'],['Los','Lief'],3],
+  ['De [mensen die naast ons wonen] zijn aardig.','buren',['buurt','boeren'],['havens','spellen'],3],
+  ['Mijn gezin [heeft] vier personen.','bestaat uit',['bestelt uit','besluit uit'],['speelt uit','havent uit'],3],
+
+  ['Wij [kiezen] om te verhuizen.','besluiten',['bestaan','betalen'],['slank','humor'],4],
+  ['Hij is [dun, niet dik].','slank',['slapen','slecht'],['notaris','humor'],4],
+  ['Ik woon [nu, na een tijd,] vijf jaar in Nederland.','inmiddels',['inderdaad','middag'],['notaris','slank'],4],
+  ['Mijn broer is [niet getrouwd en heeft geen relatie].','vrijgezel',['vrijheid','vriend'],['notaris','rechter'],4],
+  ['We gaan [voor nu] nog niet verhuizen.','voorlopig',['voorzichtig','voordeel'],['slank','humor'],4],
+  ['Mijn ouders [zeggen ja tegen] mijn keuze.','accepteren',['activiteit','advertentie'],['slank','humor'],4],
+  ['Mijn moeder is altijd [blij en lacht veel].','vrolijk',['vrouw','vroeg'],['notaris','testament'],4],
+  ['Hij doet alles [zonder plan, zomaar].','spontaan',['sport','spannend'],['notaris','testament'],4]
+];
+
+/* ---------- WAT ZEG JE? ----------
+   [situatie, goed, [afleiders], [duidelijk fout], taak] */
+const SITU = [
+  ['Je ziet een bekende in de supermarkt. Je hebt hem lang niet gezien. Wat zeg je?','Hé, hoe is het? We moeten weer eens koffie drinken!',['Hé, hoe is het? We moeten weer eerst koffie drinken!','Hé, hoe is het? We moeten weer eenzaam koffie drinken!'],['Ik heb een klomp.','Waar is de kassa?'],1],
+  ['Je buurvrouw zegt: "Wat een regen vandaag!" Je bent het met haar eens. Wat zeg je?','Ja, inderdaad! Echt Nederlands weer.',['Ja, inmiddels! Echt Nederlands weer.','Ja, trouwens! Echt Nederlands weer.'],['Ik heb een baan.','Mijn oom is ziek.'],1],
+  ['Je wilt in een gesprek over iets anders beginnen. Wat zeg je?','Trouwens, hoe gaat het met je kinderen?',['Trouw, hoe gaat het met je kinderen?','Trouwen, hoe gaat het met je kinderen?'],['Ik ga naar huis.','Het regent.'],1],
+  ['Iemand vraagt: "Mis je je familie?" Wat zeg je?','Ja, ik mis mijn familie heel erg.',['Ja, ik mag mijn familie heel erg.','Ja, ik moet mijn familie heel erg.'],['Ik heb een klas.','Ik wandel.'],1],
+
+  ['Je vriendin vraagt: "Vind je mijn nieuwe jas mooi?" Je vindt hem niet mooi. Je wilt eerlijk zijn.','Eerlijk gezegd vind ik hem niet zo mooi.',['Eerder gezegd vind ik hem niet zo mooi.','Eindelijk gezegd vind ik hem niet zo mooi.'],['Ik heb een baan.','Het is laat.'],2],
+  ['Je collega is de laatste tijd stil en moe. Wat zeg je?','Gaat het wel goed met je? Je kunt je verhaal bij mij kwijt.',['Gaat het wel goed met je? Je kunt je verhaal bij mij kwart.','Gaat het wel goed met je? Je kunt je verhaal bij mij klein.'],['Waar is de wc?','Hoe laat is het?'],2],
+  ['Je vriend vraagt: "Heb je het naar je zin in Nederland?" Je bent blij hier. Wat zeg je?','Ja, ik heb het hier erg naar mijn zin.',['Ja, ik heb het hier erg naar mijn zien.','Ja, ik heb het hier erg naar mijn zijn.'],['Ik heb ruzie.','Nergens.'],2],
+  ['Je moeder is ziek. Je vriendin vraagt hoe het gaat. Wat zeg je?','Niet zo goed. Ik maak me zorgen om mijn moeder.',['Niet zo goed. Ik maak me zoeken om mijn moeder.','Niet zo goed. Ik maak me zorgzaam om mijn moeder.'],['Ik heb een nieuwe baan!','Het regent.'],2],
+
+  ['Iemand vraagt: "Hoe groot is je gezin?" Wat zeg je?','Mijn gezin bestaat uit vier personen.',['Mijn gezin bestelt uit vier personen.','Mijn gezin besluit uit vier personen.'],['Ik woon bij de haven.','Ik speel een spel.'],3],
+  ['Je vertelt over je zus. Jullie bellen elke dag. Wat zeg je?','Ik heb een goede band met mijn zus.',['Ik heb een goede bank met mijn zus.','Ik heb een goede baan met mijn zus.'],['Mijn zus is los.','Ik heb een haven.'],3],
+  ['Je collega vertelt dat haar opa is overleden. Wat zeg je?','Wat erg voor je. Sterkte!',['Wat erg voor je. Sterk!','Wat erg voor je. Straks!'],['Gefeliciteerd!','Lekker!'],3],
+  ['Je hebt een zoon. Je man heeft twee dochters. Jullie wonen samen. Wat zeg je?','Wij zijn een samengesteld gezin.',['Wij zijn een samen gezin.','Wij zijn een sterk gesteld gezin.'],['Wij wonen bij de haven.','Wij spelen een spel.'],3],
+
+  ['Je vriendin heeft een nieuwe vriend. Je wilt weten of het iets wordt. Wat vraag je?','Is het serieus tussen jullie?',['Is het zeker tussen jullie?','Is het sterk tussen jullie?'],['Hoe laat is het?','Waar is het station?'],4],
+  ['Jij en je partner willen trouwen. Waar gaan jullie naartoe?','Naar het stadhuis.',['Naar de stad.','Naar het station.'],['Naar de bakker.','Naar de haven.'],4],
+  ['Je wilt regelen wie je spullen krijgt als je overlijdt. Waar ga je naartoe?','Naar de notaris, voor een testament.',['Naar de rechter, voor een testament.','Naar de notaris, voor een tarief.'],['Naar de bibliotheek.','Naar de supermarkt.'],4],
+  ['Iemand vraagt: "Hoe is je man?" Je vertelt iets moois. Wat zeg je?','Hij is heel zorgzaam en hij heeft veel humor.',['Hij is heel zorgen en hij heeft veel humor.','Hij is heel zorgzaam en hij heeft veel huur.'],['Hij woont bij de haven.','Het regent.'],4]
+];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['flits','🃏','Flitskaarten'], ['luister','🎧','Luisteren'],
+  ['betekenis','💡','Betekenis'], ['dehet','🔤','De of het'], ['zinnen','✏️','Zinnen'],
+  ['ander','🔄','Ander woord'], ['situ','💬','Wat zeg je?'], ['typen','⌨️','Typen'],
+  ['herh','🔁','Herhaling']
+];
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds op dezelfde plek staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function spoken(x) { return (x.a ? x.a + ' ' : '') + x.base; }
+function norm(s) {
+  return String(s).toLowerCase().trim().replace(/[.!?,]/g, '').replace(/^(de|het|een)\s+/, '').replace(/\s+/g, ' ');
+}
+function lev(a, b) {
+  const m = a.length, n = b.length, d = Array.from({ length: m + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+    d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+// voorbeeldzin met het woord weggelaten (voor de flitskaart 'uitleg → woord')
+const BLANK = { 'klikken (het klikt)': ['klikt'], 'missen': ['mis'], 'overweg kunnen met': ['overweg'], 'teruggaan': ['ga','terug'], 'vertellen': ['Vertel'],
+  'eens (weer eens)': ['eens'], 'kwijt (het kwijt kunnen)': ['kwijt.'], 'laatste (de laatste tijd)': ['laatste'], 'opstappen': ['stap','op'], 'vertrouwen': ['vertrouw'],
+  'zin (het naar de zin hebben)': ['zin'], 'zorgen maken, zich': ['maak','zorgen'], 'aardig (aardig vinden)': ['aardig.'], 'bestaan uit': ['bestaat','uit'],
+  'familielid (familieleden)': ['familieleden.'], 'herinnering': ['herinneringen'], 'kleinkind': ['kleinkinderen.'], 'na een tijdje': ['Na','een','tijdje'],
+  'overlijden (overleden)': ['overleden.'], 'samengesteld (gezin)': ['samengesteld'], 'schoon- (schoonzus)': ['schoonzus'], 'stief- (stiefvader)': ['stiefvader'],
+  'besluiten': ['besluiten'], 'de deur uit zijn (kinderen)': ['de','deur','uit.'], 'erfgenaam': ['erfgenamen.'], 'genieten van': ['geniet','van'],
+  'registreren (geregistreerd)': ['registreren.'], 'scheiden': ['gescheiden.'], 'vast (vaste relatie)': ['vaste'], 'duin': ['duinen.'], 'klomp': ['klompen.'],
+  'wandelen': ['wandelen'], 'spel': ['spel'], 'spelen': ['spelen'] };
+function blankEx(x) {
+  if (BLANK[x.w]) return x.z.split(' ').map(t => BLANK[x.w].includes(t) ? t.replace(/[a-zA-Z]+/, '…') : t).join(' ');
+  const stem = x.base.toLowerCase().slice(0, Math.min(4, x.base.length));
+  let done = false;
+  return x.z.split(' ').map(t => {
+    const clean = t.toLowerCase().replace(/[^a-zà-ÿ]/g, '');
+    if (!done && clean.length >= 2 && (clean.startsWith(stem) || (x.base.length <= 4 && clean === x.base.toLowerCase()))) {
+      done = true; return t.replace(/[a-zà-ÿA-Z]+/, '…');
+    }
+    return t;
+  }).join(' ');
+}
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+// Hulpmelding als het voorlezen niet lukt
+let curU = null, speakWarned = false;
+const NOSOUND = '🔇 <b>Hoor je niets?</b> Zet het geluid van je telefoon of computer harder. iPhone of iPad: zet de stille modus uit (de schakelaar aan de zijkant). Gebruik Chrome, Safari of Edge.';
+function speakNote(msg) {
+  let el = document.getElementById('speaknote');
+  if (!el) {
+    el = document.createElement('div'); el.id = 'speaknote';
+    el.style.cssText = 'position:fixed;left:50%;top:4rem;transform:translateX(-50%);width:min(92%,520px);background:#fef3c7;color:#92400e;border:2px solid #f5a623;border-radius:12px;padding:.7rem 1rem;font-size:.88rem;line-height:1.45;z-index:10000;box-shadow:0 4px 16px rgba(0,0,0,.15);cursor:pointer';
+    el.onclick = () => el.remove();
+    document.body.appendChild(el);
+  }
+  el.innerHTML = msg + '<br><small>(Klik om te sluiten)</small>';
+  clearTimeout(el._t); el._t = setTimeout(() => el.remove(), 9000);
+}
+function say(text, slow) {
+  if (!canSpeak) { speakNote('🔇 Deze browser kan niet voorlezen. Gebruik Chrome, Safari of Edge.'); return; }
+  pickVoice();
+  const u = new SpeechSynthesisUtterance(String(text).replace(/\s*\([^)]*\)/g, '').replace(/[–…]/g, ','));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  let started = false;
+  u.onstart = () => { started = true; };
+  u.onerror = e => { if (e.error !== 'interrupted' && e.error !== 'canceled') speakNote(NOSOUND + '<br><small>Melding van de browser: ' + e.error + '</small>'); };
+  curU = u;  // bewaren: anders stopt Chrome soms midden in het woord
+  const go = () => { try { speechSynthesis.resume(); } catch (e) {} speechSynthesis.speak(u); };
+  // Chrome zegt soms niets als je direct na cancel() weer spreekt; daarom even wachten.
+  // Spreekt er niets? Dan meteen spreken (iPhone wil dat binnen de klik gebeurt).
+  if (speechSynthesis.speaking || speechSynthesis.pending) { speechSynthesis.cancel(); setTimeout(go, 80); } else go();
+  setTimeout(() => { if (!started && curU === u && !speakWarned) { speakWarned = true; speakNote(NOSOUND); } }, 2500);
+}
+
+/* ---------- MOEILIJKE WOORDEN (alleen op dit apparaat) ---------- */
+function getHard() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+function setHard(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
+function addHard(w) { const h = getHard(); if (!h.includes(w)) { h.push(w); setHard(h); } }
+function removeHard(w) { setHard(getHard().filter(x => x !== w)); }
+
+/* ---------- STATUS ---------- */
+let taak = 1, tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], isHerh = false, herhN = 1;
+
+function pool() {
+  if (taak === 'moeilijk') { const h = getHard(); return W.filter(x => h.includes(x.w)); }
+  return W.filter(x => taak === 'all' || x.t === taak);
+}
+function herhUpTo() { return taak === 'all' || taak === 'moeilijk' ? 4 : taak; }
+function herhLabel(n) { return n === 1 ? 'intro + taak 1' : n === 4 ? 'het hele thema (intro + taak 1 t/m 4)' : 'intro + taak 1 t/m ' + n; }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  tk.innerHTML = '';
+  TAKEN.forEach(([v, lbl]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.dataset.t = v;
+    b.textContent = lbl + (v === 'moeilijk' ? ' (' + getHard().length + ')' : '');
+    b.onclick = () => { taak = v; buildControls(); if (tab === 'herh') tab = 'woorden'; openTab(tab); };
+    tk.appendChild(b);
+  });
+  document.getElementById('taaktitel').textContent = TITELS[taak];
+  const n = herhUpTo();
+  document.getElementById('herhbar').innerHTML = '<div class="herh-bar"><span>🔁 Klaar met deze taak? Oefen <b>' + herhLabel(n) + '</b> door elkaar.</span><button class="btn herh" id="hbgo">Start herhaling</button></div>';
+  document.getElementById('hbgo').onclick = () => startHerhaling(n);
+  const tb = document.getElementById('tabs');
+  if (!tb.children.length) {
+    TABS.forEach(([id, ic, lb]) => {
+      const b = document.createElement('button');
+      b.className = 'tab';
+      b.dataset.id = id;
+      b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+      b.onclick = () => openTab(id);
+      tb.appendChild(b);
+    });
+  }
+}
+
+const INTRO = {
+  luister:   ['🎧 Luisteren', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  betekenis: ['💡 Wat betekent het?', 'Lees de uitleg. Welk woord past bij de uitleg?'],
+  dehet:     ['🔤 De of het?', 'Is het <b>de</b> of <b>het</b>?'],
+  zinnen:    ['✏️ Zinnen', 'Welk woord past in de zin? Let op: sommige woorden lijken op elkaar!'],
+  ander:     ['🔄 Ander woord', 'De <span style="background:#fff1d6;padding:0 .2em">gele woorden</span> zijn gewone woorden. Welk woord uit de lijst betekent hetzelfde?'],
+  situ:      ['💬 Wat zeg je?', 'Lees de situatie. Wat zeg je? Kies het beste antwoord.'],
+  typen:     ['⌨️ Typen', 'Lees de uitleg. Typ het woord zelf.' + (HINT ? ' Je ziet de eerste letter als hulp.' : '')]
+};
+
+function setActiveTab() { document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === tab)); }
+
+function openTab(id) {
+  tab = id; setActiveTab();
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'flits') return renderFlitsStart();
+  if (id === 'herh') return renderHerhStart();
+  const p = document.getElementById('panel');
+  if (taak === 'moeilijk' && !pool().length) {
+    p.innerHTML = '<h2>⭐ Moeilijke woorden</h2><p class="how">Je hebt nog geen moeilijke woorden. Maak je een fout? Dan komt het woord hier. Kies eerst een taak.</p>';
+    return;
+  }
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p><div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Bij deze keuze zijn er geen vragen voor deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => { isHerh = false; startQuiz(buildQuestions(id)); };
+}
+
+function checkVoice() {
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!document.body.contains(w)) return;
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet de spraak van je telefoon of computer op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function rowHtml(x) {
+  return '<div class="wrow"><span class="we">' + (x.e || '') + '</span>' +
+    '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + (IRR.has(x.w) ? ' <span class="irr" title="onregelmatig werkwoord">*</span>' : '') +
+    (x.nb ? '<span class="nb">nieuwe betekenis</span>' : '') + '</span>' +
+    '<button class="sp" data-say="' + esc(spoken(x)) + '">🔊</button>' +
+    '<span class="wu">' + esc(x.u) + (x.nb ? '<br><small style="color:#b5385a">' + esc(x.nb) + '</small>' : '') + '</span>' +
+    '<span class="wz" data-say="' + esc(x.z) + '">„' + esc(x.z) + '”</span></div>';
+}
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const P = pool();
+  let html = '<h2>📖 Woorden</h2><p class="how">Lees de uitleg en de zin. Klik op 🔊 of op de zin. Zeg het hardop na.</p>' +
+    '<p class="legend">* = onregelmatig werkwoord · <span class="nb" style="margin:0">nieuwe betekenis</span> = je kent dit woord uit Deel 1 of een eerder thema, maar hier betekent het iets anders.</p><div class="warn" id="warn"></div>';
+  if (!P.length) html += '<p class="how">Je hebt nog geen moeilijke woorden. Kies een taak.</p>';
+  if (taak === 'all') {
+    [1,2,3,4].forEach(g => {
+      const list = W.filter(x => x.t === g);
+      html += '<div class="wl-head">' + TITELS[g] + ' · ' + list.length + ' woorden</div>' + list.map(rowHtml).join('');
+    });
+  } else html += P.map(rowHtml).join('');
+  p.innerHTML = html;
+  p.querySelectorAll('[data-say]').forEach(c => { c.style.cursor = 'pointer'; c.onclick = () => say(c.dataset.say); });
+  checkVoice();
+}
+
+/* ---------- FLITSKAARTEN ---------- */
+let deck = [], di = 0, fcFlipped = false, fcWrong = [], fcDir = 'woord';
+function renderFlitsStart() {
+  const p = document.getElementById('panel'), P = pool();
+  if (!P.length) { p.innerHTML = '<h2>🃏 Flitskaarten</h2><p class="how">Je hebt nog geen moeilijke woorden. Kies een taak.</p>'; return; }
+  const dirs = [['woord','Woord → uitleg'], ['uitleg','Uitleg → woord'], ['mix','Door elkaar']];
+  p.innerHTML = '<h2>🃏 Flitskaarten</h2><p class="how">Kijk naar de kaart. Weet je wat het is? Zeg het hardop. Draai dan de kaart.</p>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === fcDir ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    '<div class="next-row"><button class="btn start" id="go">▶ Start (' + P.length + ' kaarten)</button></div>';
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { fcDir = b.dataset.d; renderFlitsStart(); });
+  document.getElementById('go').onclick = () => startDeck(P);
+}
+function startDeck(list) {
+  deck = shuffle(list).map(x => ({ x, side: fcDir === 'mix' ? (Math.random() < .5 ? 'woord' : 'uitleg') : fcDir }));
+  di = 0; fcWrong = []; renderCard(); toPanel();
+}
+function wordFace(x, tag) {
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-em">' + (x.e || '') + '</div><div class="fc-word">' + esc(full(x)) + '</div><button class="fc-say" data-say="1">🔊 Luister</button>';
+}
+function defFace(x, tag, blank) {
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-def">' + esc(x.u) + '</div><div class="fc-ex">„' + esc(blank ? blankEx(x) : x.z) + '”</div>';
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), c = deck[di], x = c.x;
+  const frontWord = c.side === 'woord';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + (frontWord ? wordFace(x, 'Woord') : defFace(x, 'Uitleg', true)) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + (frontWord ? defFace(x, 'Uitleg', false) : wordFace(x, 'Woord')) + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  if (frontWord) say(spoken(x));
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(spoken(x)); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontWord) say(spoken(x));
+  };
+  document.getElementById('kk').onclick = () => { if (taak === 'moeilijk') removeHard(x.w); di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(x); addHard(x.w); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🃏</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar(); buildControls();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderFlitsStart();
+}
+
+/* ---------- KEUZES MAKEN ----------
+   goed + afleiders (lijken op het woord) + duidelijk foute woorden uit de lijst */
+function wordOpts(x, nAfl, P) {
+  const syn = synOf(x.w);
+  const afl = shuffle(x.af).slice(0, nAfl);
+  const used = new Set([x.w, ...afl]);
+  const src = P.length >= 8 ? P : W;
+  const fill = shuffle(src).filter(y => !used.has(y.w) && !syn.includes(y.w) && !afl.includes(y.base) && !x.af.includes(y.w))
+    .slice(0, 3 - afl.length).map(y => y.w);
+  return shuffleOpts([x.w, ...afl, ...fill]);
+}
+
+function buildQuestions(mode, P) {
+  P = P || pool();
+  const inT = t => taak === 'all' || taak === 'moeilijk' || t === taak;
+  const mc = z => ({ s: z[0], ans: z[1], opts: shuffleOpts([z[1], ...z[2].slice(0, AFL), ...z[3].slice(0, 3 - AFL)]) });
+  if (mode === 'luister' || mode === 'betekenis') return shuffle(P).slice(0, 10).map(x => ({ mode, x, opts: wordOpts(x, AFL, P) }));
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'typen') return shuffle(P).slice(0, 10).map(x => ({ mode, x, hint: HINT }));
+  if (mode === 'zinnen') return shuffle(ZINNEN.filter(z => !z[5] && inT(z[4]))).slice(0, 12).map(z => ({ mode, ...mc(z) }));
+  if (mode === 'ander') return shuffle(ANDER.filter(z => inT(z[4]))).slice(0, 10).map(z => ({ mode, ...mc(z) }));
+  if (mode === 'situ') return shuffle(SITU.filter(z => inT(z[4]))).slice(0, 10).map(z => ({ mode, ...mc(z) }));
+  return [];
+}
+
+/* ---------- HERHALING ----------
+   Alle woorden van taak 1 t/m n, door elkaar. Andere vragen dan bij de gewone oefeningen:
+   - nieuwe zinnen (2 afleiders + 1 duidelijk fout)
+   - omgekeerd: je ziet het woord en kiest de goede uitleg (2 uitleggen van woorden die erop lijken)
+   - luisteren met 2 afleiders
+   - luister en typ, zonder beginletter */
+function renderHerhStart() {
+  const n = herhUpTo();
+  const P = W.filter(x => x.t <= n);
+  document.getElementById('panel').innerHTML = '<h2>🔁 Herhaling · ' + herhLabel(n) + '</h2>' +
+    '<p class="how">Je oefent alle ' + P.length + ' woorden van ' + herhLabel(n) + ' door elkaar. ' +
+    'De vragen zijn anders dan bij de gewone oefeningen. En ze zijn moeilijker: twee antwoorden lijken op het goede antwoord. Bij typen krijg je geen hulp.</p>' +
+    '<div class="warn" id="warn"></div><div class="next-row"><button class="btn start" id="go">▶ Start herhaling (16 vragen)</button></div>';
+  checkVoice();
+  document.getElementById('go').onclick = () => startHerhaling(n);
+}
+function uitlegOpts(x, P) {
+  const syn = synOf(x.w);
+  const look = shuffle(P.filter(y => y.w !== x.w && !syn.includes(y.w) &&
+      (x.af.includes(y.w) || x.af.includes(y.base) || y.af.includes(x.w) || y.af.includes(x.base) || y.base.slice(0, 3) === x.base.slice(0, 3)))).slice(0, AFL_H);
+  const used = new Set([x.w, ...look.map(y => y.w)]);
+  const fill = shuffle(P.length >= 8 ? P : W).filter(y => !used.has(y.w) && !syn.includes(y.w)).slice(0, 3 - look.length);
+  return shuffleOpts([x, ...look, ...fill]).map(y => ({ text: y.u, ok: y.w === x.w }));
+}
+function startHerhaling(n) {
+  herhN = n; isHerh = true; tab = 'herh'; setActiveTab();
+  const P = W.filter(x => x.t <= n);
+  const zin = shuffle(ZINNEN.filter(z => z[5] && z[4] <= n)).slice(0, 5)
+    .map(z => ({ mode: 'zinnen', s: z[0], ans: z[1], opts: shuffleOpts([z[1], ...z[2].slice(0, AFL_H), ...z[3].slice(0, 1)]) }));
+  const words = shuffle(P);
+  const omg = words.slice(0, 4).map(x => ({ mode: 'omgekeerd', x, opts: uitlegOpts(x, P) }));
+  const lst = words.slice(4, 7).map(x => ({ mode: 'luister', x, opts: wordOpts(x, AFL_H, P) }));
+  const dic = words.slice(7, 10).map(x => ({ mode: 'dictee', x }));
+  const dh = shuffle(P.filter(x => x.a && !words.slice(0, 10).includes(x))).slice(0, 16 - zin.length - 10).map(x => ({ mode: 'dehet', x }));
+  // door elkaar, en liefst niet twee keer dezelfde soort vraag na elkaar
+  let all = shuffle([...zin, ...omg, ...lst, ...dic, ...dh]);
+  for (let pass = 0; pass < 3; pass++) for (let i = 1; i < all.length; i++) if (all[i].mode === all[i-1].mode) {
+    const j = all.findIndex((q, k) => k !== i && q.mode !== all[i-1].mode && (k === 0 || all[k-1].mode !== all[i].mode) && (k + 1 >= all.length || all[k+1].mode !== all[i].mode));
+    if (j >= 0) [all[i], all[j]] = [all[j], all[i]];
+  }
+  startQuiz(all);
+}
+
+/* ---------- QUIZ ---------- */
+function toPanel() { const el = document.getElementById('panel'); if (el.getBoundingClientRect().top > window.innerHeight * 0.5) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function startQuiz(list) { Q = list; qi = 0; score = 0; wrongs = []; renderQ(); toPanel(); }
+
+const QTYPE = { luister: '🎧 Luisteren', betekenis: '💡 Betekenis', omgekeerd: '💡 Welke uitleg past?', dehet: '🔤 De of het', zinnen: '✏️ Zin', ander: '🔄 Ander woord', situ: '💬 Wat zeg je?', typen: '⌨️ Typen', dictee: '⌨️ Luister en typ' };
+
+function head() {
+  return '<div class="progress"><div>' + (isHerh ? '🔁 ' : '') + 'Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>' +
+         (isHerh ? '<span class="qtype">' + QTYPE[Q[qi].mode] + '</span>' : '');
+}
+function optBtns(opts, one) {
+  return '<div class="opts' + (one ? ' one' : '') + '">' + opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' + optBtns(q.opts);
+  } else if (q.mode === 'betekenis') {
+    html += '<div class="defn">' + esc(q.x.u) + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'omgekeerd') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+      '<div class="opts one">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '">' + esc(o.text) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+      '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'ander') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace(/\[(.*?)\]/g, '<span class="mark">$1</span>') + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'situ') {
+    html += '<div class="defn">' + esc(q.s) + '</div>' + optBtns(q.opts, true);
+  } else if (q.mode === 'typen' || q.mode === 'dictee') {
+    if (q.mode === 'typen') {
+      html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="defn">' + esc(q.x.u) + (q.x.a ? '<br><small>(' + q.x.a + ' …)</small>' : '') + '</div>';
+      if (q.hint) html += '<div class="hint">' + q.x.base.split('').map((c, i) => i === 0 ? c : c === ' ' ? '&nbsp;' : '_').join(' ') + '</div>';
+    } else {
+      html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>';
+    }
+    html += '<div class="type-row"><input id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Typ het woord"><button class="btn" id="chk">Controleer</button></div>' +
+      '<div class="next-row"><button class="btn ghost" id="idk">Ik weet het niet</button></div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister' || q.mode === 'dictee') {
+    document.getElementById('sp').onclick = () => say(spoken(q.x));
+    document.getElementById('spS').onclick = () => say(spoken(q.x), true);
+    say(spoken(q.x));
+  }
+  if (q.mode === 'luister' || q.mode === 'betekenis') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.w, q.x.w));
+  } else if (q.mode === 'omgekeerd') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].ok, null));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (['zinnen','ander','situ'].includes(q.mode)) {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.ans, q.ans));
+  } else {
+    const inp = document.getElementById('inp');
+    setTimeout(() => inp.focus(), 50);
+    inp.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); checkTyped(); } };
+    document.getElementById('chk').onclick = () => checkTyped();
+    document.getElementById('idk').onclick = () => checkTyped(true);
+  }
+}
+
+function checkTyped(giveUp) {
+  const q = Q[qi], inp = document.getElementById('inp');
+  if (inp.disabled) return;
+  const v = norm(inp.value);
+  if (!v && !giveUp) { inp.focus(); return; }
+  const good = q.x.alt.map(norm);
+  let state = 'bad';
+  if (!giveUp) {
+    if (good.includes(v)) state = 'ok';
+    else if (good.some(g => g.length >= 5 && lev(v, g) === 1)) state = 'almost';
+  }
+  q.given = giveUp ? '(ik weet het niet)' : inp.value.trim();
+  inp.disabled = true; inp.classList.add(state);
+  document.getElementById('chk').disabled = true; document.getElementById('idk').style.display = 'none';
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + state;
+  if (state === 'ok') { score++; fb.textContent = '✓ Goed! ' + full(q.x); if (taak === 'moeilijk') removeHard(q.x.w); }
+  else if (state === 'almost') { score++; fb.textContent = '≈ Bijna goed! Let op de spelling: ' + q.x.base; }
+  else { wrongs.push(q); addHard(q.x.w); fb.textContent = '✗ Het goede woord is: ' + q.x.base; }
+  if (q.mode === 'dictee' || state !== 'ok') tip.textContent = q.x.u;
+  say(spoken(q.x));
+  nextBtn();
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  p.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    const isGood = q.mode === 'omgekeerd' ? q.opts[+b.dataset.i].ok : b.dataset.v === correct;
+    if (isGood) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  q.given = q.mode === 'dehet' ? btn.dataset.v : btn.textContent;
+  if (ok) { score++; if (q.x && taak === 'moeilijk') removeHard(q.x.w); }
+  else { wrongs.push(q); if (q.x) addHard(q.x.w); }
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+    tip.textContent = q.x.u;
+  } else if (q.mode === 'betekenis' || q.mode === 'omgekeerd') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het goede antwoord: ') + full(q.x);
+    tip.textContent = q.x.u + ' – „' + q.x.z + '”';
+    say(spoken(q.x));
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (PLUR.has(q.x.w)) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(spoken(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans));
+  } else if (q.mode === 'ander') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    const m = q.s.match(/\[(.*?)\]/);
+    tip.textContent = (m ? m[1] + ' = ' : '') + q.ans;
+  } else if (q.mode === 'situ') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Beter is: ' + q.ans;
+    say(q.ans);
+  }
+  nextBtn();
+}
+
+function nextBtn() {
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  const nb = document.getElementById('nb');
+  nb.onclick = () => { qi++; renderQ(); };
+  nb.focus();
+}
+
+/* ---------- OVERZICHT VAN DE FOUTEN ---------- */
+function qText(q) {
+  if (q.mode === 'luister' || q.mode === 'dictee') return '🔊 Je hoorde een woord.';
+  if (q.mode === 'betekenis' || q.mode === 'typen') return esc(q.x.u);
+  if (q.mode === 'omgekeerd') return '<b>' + esc(full(q.x)) + '</b> – welke uitleg past?';
+  if (q.mode === 'dehet') return '… ' + esc(q.x.w);
+  if (q.mode === 'ander') return esc(q.s).replace(/\[(.*?)\]/g, '<span class="mark">$1</span>');
+  if (q.mode === 'zinnen') return esc(q.s).replace('___', '<span class="gap">&nbsp;</span>');
+  return esc(q.s);
+}
+function goodText(q) {
+  if (q.mode === 'omgekeerd') return q.x.u;
+  if (q.mode === 'dehet') return q.x.a + ' ' + q.x.w;
+  if (q.x) return full(q.x);
+  return q.ans;
+}
+function reviewHtml(list) {
+  if (!list.length) return '';
+  return '<div class="review"><h3>Dit had je fout (' + list.length + ')</h3><p class="how">Lees het goede antwoord. Zeg het hardop. Oefen daarna je fouten nog een keer.</p>' + list.map(q =>
+    '<div class="rv"><div class="rt">' + (QTYPE[q.mode] || '') + '</div><div class="rq">' + qText(q) + '</div>' +
+    '<div class="ry">✗ Jouw antwoord: ' + esc(q.given || '–') + '</div>' +
+    '<div class="rg">✓ Goed: ' + esc(goodText(q)) + '</div>' +
+    (q.x ? '<div class="ru">' + (q.mode === 'betekenis' || q.mode === 'typen' || q.mode === 'omgekeerd' ? '„' + esc(q.x.z) + '”' : esc(q.x.u)) + '</div>' : '') +
+    '</div>').join('') + '</div>';
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden en 🃏 Flitskaarten. Probeer het dan opnieuw. Je kunt het!';
+  const n = isHerh ? herhN : herhUpTo();
+  p.innerHTML = '<div class="result"><div class="avatar-box av">' + (isHerh ? '🔁' : '🤝') + '</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    (isHerh ? '<button class="btn" id="rn">↺ Nieuwe herhaling</button>'
+            : '<button class="btn" id="rn">↺ Nieuwe ronde</button><button class="btn herh" id="rh">🔁 Herhaling: ' + herhLabel(n) + '</button>') +
+    '</div>' + reviewHtml(wrongs) + '</div>';
+  setAvatar(); buildControls();
+  if (wrongs.length) document.getElementById('rw').onclick = () =>
+    startQuiz(shuffle(wrongs).map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : q));
+  if (isHerh) document.getElementById('rn').onclick = () => startHerhaling(herhN);
+  else {
+    const t = tab;
+    document.getElementById('rn').onclick = () => startQuiz(buildQuestions(t));
+    document.getElementById('rh').onclick = () => startHerhaling(n);
+  }
+}
+
+/* ---------- AVATAR ----------
+   De foto komt uit overzicht_code2.html (zelfde map op GitHub). Lokaal geopend? Dan zie je een emoji. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code2.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' && document.activeElement.tagName !== 'INPUT') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+  if (tab === 'flits' && document.getElementById('fcs') && e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>
