@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herhaling alle thema's – Code+ Deel 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --bg: #eef7f6; --blue: #1a6b6b; --blue2: #13817d; --accent: #f5a623; --pink: #b5385a;
+    --ink: #1a1a2e; --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5; --bad: #dc2626; --bad-bg: #fee2e2; --almost: #b45309; --almost-bg: #fef3c7;
+    --shadow: rgba(26,107,107,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(26,107,107,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(245,166,35,0.08) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 740px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px var(--shadow); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+  .taaktitel { font-size: .85rem; color: var(--muted); font-style: italic; margin-bottom: .8rem; min-height: 1.2em; }
+
+  .herh-bar { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; background: #fff8eb; border: 2px dashed var(--accent); border-radius: 14px; padding: .6rem .9rem; margin-bottom: 1rem; font-size: .88rem; }
+  .herh-bar b { color: var(--blue); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .55rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.4rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .72rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(26,107,107,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--accent)); border-radius: 10px; transition: width .3s; }
+  .qtype { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--pink); margin-bottom: .4rem; }
+
+  .big-emoji { font-size: 3.6rem; text-align: center; line-height: 1.1; min-height: 3.8rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.1rem, 4.4vw, 1.4rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .sentence .mark { background: #fff1d6; border-bottom: 3px solid var(--accent); padding: 0 .15em; border-radius: 4px; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+  .defn { font-size: clamp(1.05rem, 4.2vw, 1.25rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.2rem; background: #f4fbfa; border-radius: 14px; padding: .9rem 1rem; }
+  .hint { text-align: center; font-family: monospace; font-size: 1.4rem; letter-spacing: .25em; color: var(--blue); margin-bottom: 1rem; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.one { grid-template-columns: 1fr; }
+  .opt { background: #f8fdfc; border: 2px solid #cfe9e6; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.02rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; line-height: 1.3; }
+  .opts.one .opt { justify-content: flex-start; text-align: left; font-weight: 600; font-size: .98rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .type-row { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
+  .type-row input { flex: 1; min-width: 200px; max-width: 360px; font-family: inherit; font-size: 1.2rem; padding: .7rem 1rem; border: 2px solid #cfe9e6; border-radius: 14px; outline: none; }
+  .type-row input:focus { border-color: var(--blue); }
+  .type-row input.ok { border-color: var(--ok); background: var(--ok-bg); }
+  .type-row input.bad { border-color: var(--bad); background: var(--bad-bg); }
+  .type-row input.almost { border-color: var(--almost); background: var(--almost-bg); }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); } .fb.almost { color: var(--almost); }
+  .tip { text-align: center; font-size: .88rem; color: var(--muted); margin-top: .35rem; font-style: italic; line-height: 1.45; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+  .btn.herh { background: #fff8eb; color: var(--blue); border: 2px solid var(--accent); }
+  .btn.ghost { background: white; color: var(--muted); border: 2px solid #ddd; box-shadow: none; }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--pink); margin: 1.3rem 0 .5rem; }
+  .wrow { display: grid; grid-template-columns: 2.2rem 1fr auto; gap: .2rem .7rem; align-items: start; border: 1px solid #dcefec; border-radius: 12px; padding: .6rem .7rem; margin-bottom: .45rem; background: #fbfefe; }
+  .wrow .we { font-size: 1.5rem; text-align: center; grid-row: span 3; }
+  .wrow .ww { font-weight: 800; font-size: 1rem; color: var(--blue); }
+  .wrow .ww small { color: var(--muted); font-weight: 700; }
+  .wrow .ww .irr { color: var(--pink); font-weight: 900; }
+  .wrow .wu { grid-column: 2 / 4; font-size: .9rem; line-height: 1.4; }
+  .wrow .wz { grid-column: 2 / 4; font-size: .88rem; color: var(--muted); font-style: italic; font-family: 'Lora', serif; }
+  .wrow .sp { background: #eef7f6; border: none; border-radius: 50px; padding: .25rem .6rem; cursor: pointer; font-size: .9rem; grid-row: 1; grid-column: 3; }
+  .nb { display: inline-block; font-size: .68rem; font-weight: 800; background: #fde8ee; color: var(--pink); border-radius: 20px; padding: .05rem .5rem; margin-left: .3rem; vertical-align: middle; }
+  .legend { font-size: .8rem; color: var(--muted); margin-bottom: .8rem; }
+
+  .fc-scene { height: 270px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #cfe9e6; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--ink); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-em { font-size: 2.6rem; margin-bottom: .3rem; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.1rem); font-weight: 800; line-height: 1.3; }
+  .fc-def { font-size: clamp(1rem, 4.2vw, 1.2rem); line-height: 1.45; }
+  .fc-ex { font-family: 'Lora', serif; font-style: italic; opacity: .8; margin-top: .7rem; font-size: .95rem; }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef7f6; color: var(--blue); }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  .review { text-align: left; margin-top: 1.6rem; }
+  .review h3 { font-size: 1rem; font-weight: 900; color: var(--bad); margin-bottom: .2rem; }
+  .rv { border: 1px solid #f3d0d0; border-left: 5px solid var(--bad); border-radius: 12px; padding: .7rem .9rem; margin-bottom: .6rem; background: #fffafa; font-size: .92rem; line-height: 1.45; }
+  .rv .rt { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--pink); }
+  .rv .rq { font-family: 'Lora', serif; margin: .25rem 0 .35rem; font-size: 1rem; }
+  .rv .rq .gap { min-width: 3em; }
+  .rv .rq .mark { background: #fff1d6; border-bottom: 2px solid var(--accent); padding: 0 .15em; border-radius: 4px; }
+  .rv .ry { color: #991b1b; }
+  .rv .rg { color: #065f46; font-weight: 800; }
+  .rv .ru { color: var(--muted); font-size: .85rem; margin-top: .2rem; font-style: italic; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+
+  .checks { display: grid; gap: .45rem; margin-bottom: .6rem; }
+  .chk { display: flex; align-items: center; gap: .7rem; background: #f8fdfc; border: 2px solid #cfe9e6; border-radius: 14px; padding: .65rem .85rem; cursor: pointer; font-size: .95rem; line-height: 1.3; transition: all .12s; }
+  .chk.on { border-color: var(--blue); background: #eef7f6; }
+  .chk input { width: 1.35rem; height: 1.35rem; accent-color: var(--blue); flex-shrink: 0; cursor: pointer; }
+  .chk b { color: var(--blue); }
+  .chk small { color: var(--muted); margin-left: auto; white-space: nowrap; }
+  .linkrow { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .linkbtn { background: none; border: none; color: var(--blue); text-decoration: underline; cursor: pointer; font-family: inherit; font-size: .85rem; font-weight: 700; padding: 0; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .tscore { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin: -.4rem 0 1rem; }
+  .tscore span { background: #eef7f6; border-radius: 20px; padding: .25rem .8rem; font-weight: 700; font-size: .85rem; color: var(--blue); }
+  .thtag { display: inline-block; font-size: .7rem; font-weight: 800; color: var(--muted); margin-left: .5rem; }
+</style>
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel2/overzicht_code2.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">🔁</div>
+    <div>
+      <h1>Herhaling · alle thema’s</h1>
+      <p id="sub">Code+ Deel 2</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> hier oefen je woorden van verschillende thema’s <b>door elkaar</b>.<br>
+    De vragen zijn moeilijk: <b>twee antwoorden lijken op het goede antwoord</b>. Bij typen krijg je geen hulp.<br>
+    Aan het eind zie je <b>wat je fout had</b>. Die fouten kun je meteen nog een keer oefenen.<br>
+    Je fouten worden ook bewaard op dit apparaat. Zo kun je ze later nog oefenen.
+  </div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>EdINOVA - Rachel</footer>
+</div>
+
+<script>
+/* ======================================================================
+   Code+ Deel 2 · Herhaling van alle thema's
+   Deze pagina wordt gemaakt met build_herhaling.py: de woorden en zinnen komen uit de themapagina's.
+   ====================================================================== */
+const THEMES = {};
+THEMES[1] = (function () {
+const THEMA = 1;
+const AFL = THEMA <= 3 ? 1 : 2;   // afleiders bij gewone oefeningen (t/m thema 3: 1, daarna 2)
+const AFL_H = 2;                  // afleiders bij de herhaling: altijd 2
+const HINT = THEMA <= 2;          // beginletter als hulp bij Typen (alleen thema 1-2, niet bij herhaling)
+const KEY = 'code2_t' + THEMA + '_moeilijk';
+
+const TAKEN = [['all','Alles'],[1,'Taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4'],['moeilijk','⭐ Moeilijk']];
+const TITELS = {
+  all: 'Alle woorden van thema 1',
+  1: '1.1 · Een gesprek voeren tijdens het afrekenen in een winkel',
+  2: '1.2 · Advertenties lezen en begrijpen',
+  3: '1.3 · Een gesprek voeren over apparaten in een winkel',
+  4: '1.4 · Overleggen over boodschappen doen voor een feestje',
+  moeilijk: 'Jouw moeilijke woorden. Ze staan alleen op dit apparaat.'
+};
+
+/* [woord, lidwoord, emoji, taak, uitleg, voorbeeldzin, afleiders (lijken op het woord), goede antwoorden bij typen, nieuwe betekenis] */
+const RAW = [
+ // ---------- TAAK 1 (29) ----------
+ ['afrekenen','','🧾',1,'Betalen aan het eind. In de winkel of in het restaurant.','Ik ga afrekenen bij de kassa.',['afkeuren','rekening']],
+ ['apparaat','het','🔌',1,'Een machine. Bijvoorbeeld een koelkast of een wasmachine.','Dit apparaat is kapot.',['appartement','automaat']],
+ ['bak','de','🧺',1,'Een open doos. Je legt er dingen in.','Leg je tas in de bak bij de kassa.',['bakker','tas']],
+ ['bedrag','het','💶',1,'Hoeveel geld het is. Bijvoorbeeld: € 12,50.','Het bedrag is 25 euro.',['betaling','getal']],
+ ['betaling','de','💳',1,'Het betalen. Je geeft geld.','De betaling is gelukt.',['bedrag','rekening']],
+ ['contant','','💵',1,'Met geld in je hand. Niet met je pas.','Ik betaal contant.',['kleingeld','pinnen']],
+ ['fooi','de','🪙',1,'Extra geld voor de ober of de kapper. Omdat het goed was.','We geven de ober een fooi.',['korting','kleingeld']],
+ ['gaat uw gang / ga je gang','','👉',1,'Dat zeg je als iemand iets mag doen.','Kan ik pinnen? – Ja, gaat uw gang.',['tot straks','goedemiddag'],['gaat uw gang','ga je gang']],
+ ['gewoon (koffie)','','☕',1,'Normaal. Niet speciaal.','Ik wil graag een gewone koffie.',['gezond','gezellig'],['gewoon','gewone'],'In Deel 1: gewoon = zoals altijd. Nu: een gewone koffie = een normale koffie.'],
+ ['groeien','','🌱',1,'Groter worden.','Mijn zoon groeit snel.',['groeten','groen']],
+ ['intoetsen','','🔢',1,'Cijfers kiezen op een apparaat. Bijvoorbeeld je code bij het pinnen.','Toets uw code in.',['invullen','instappen']],
+ ['kleingeld','het','🪙',1,'Kleine munten. Bijvoorbeeld 10 of 50 cent.','Heb je kleingeld? Ik heb alleen 50 euro.',['contant','geld']],
+ ['makkelijk','','👌',1,'Niet moeilijk.','Pinnen is makkelijk.',['moeilijk','mogelijk']],
+ ['onjuist','','❌',1,'Niet goed. Fout.','Uw code is onjuist. Probeer het nog een keer.',['onbeleefd','ongemakkelijk']],
+ ['overal','','🌍',1,'Op elke plaats.','Je kunt bijna overal pinnen.',['over','allemaal']],
+ ['passen (gepast)','','🎯',1,'Precies het goede bedrag geven. Dan krijg je geen geld terug.','Kunt u gepast betalen? Ik heb geen kleingeld.',['pinnen','proberen'],['gepast','passen'],'In Deel 1: passen = kleren aandoen in de winkel. Nu: gepast betalen.'],
+ ['pinautomaat','de','🏧',1,'Een apparaat op straat of in de winkel. Je haalt er geld met je pas.','Ik haal geld bij de pinautomaat.',['automaat','pinpas']],
+ ['pinnen','','💳',1,'Betalen met je pas.','Kan ik hier pinnen?',['passen','contant']],
+ ['(pin)pas','de','💳',1,'Een kaart van de bank. Daarmee betaal je in de winkel.','Ik ben mijn pinpas vergeten.',['pinautomaat','kassa'],['pinpas','pas']],
+ ['proberen','','🤞',1,'Iets doen en kijken of het lukt.','Probeer het nog een keer.',['probleem','praten']],
+ ['sparen','','🐷',1,'Iets bewaren en steeds meer krijgen. Bijvoorbeeld zegels of geld.','Ik spaar zegels bij de supermarkt.',['sporten','spreken']],
+ ['stom','','🙄',1,'Niet slim. Of: niet leuk.','Stom! Ik ben mijn pas vergeten.',['sterk','stoel']],
+ ['terughebben van','','💱',1,'Genoeg kleingeld hebben om geld terug te geven.','Heeft u terug van 50 euro?',['teruggeven','meenemen'],['terughebben','terug hebben','terughebben van']],
+ ['tweedehands','','♻️',1,'Niet nieuw. Iemand anders had het eerst.','Ik koop een tweedehands fiets.',['tweede','goedkoop']],
+ ['verkopen','','🏷️',1,'Iets aan iemand geven, en daar geld voor krijgen.','Ik verkoop mijn oude fiets.',['kopen','verkoper']],
+ ['vroeger','','⏳',1,'Lang geleden. Niet nu.','Vroeger betaalde iedereen contant.',['vroeg','straks']],
+ ['weegschaal','de','⚖️',1,'Een apparaat. Je ziet hoeveel kilo of gram iets is.','Leg de appels op de weegschaal.',['wegen','kassa']],
+ ['wegen','','⚖️',1,'Kijken hoeveel kilo of gram iets is.','Je moet de bananen eerst wegen.',['weegschaal','wachten']],
+ ['zegel','de','🎟️',1,'Een klein plaatje. Je krijgt het bij de boodschappen. Je spaart het.','Met tien zegels krijg ik korting.',['bon','kaart']],
+
+ // ---------- TAAK 2 (39) ----------
+ ['aannemelijk','','👍',2,'Goed genoeg. Daar kun je ja op zeggen. Bijvoorbeeld: een aannemelijk bod.','Fiets te koop voor een aannemelijk bod.',['aanbieding','aantal']],
+ ['afdingen','','🤝',2,'Vragen om een lagere prijs.','Op de markt kun je afdingen.',['afkeuren','afrekenen']],
+ ['allebei','','✌️',2,'Alle twee.','Ik wil de stoel en de tafel. Ik koop ze allebei.',['allemaal','alleen']],
+ ['apart','','↔️',2,'Niet samen. Alleen.','De stoelen zijn ook apart te koop.',['alleen','allebei']],
+ ['batterij','de','🔋',2,'Die zit in een klok of een klein apparaat. Dan werkt het.','De batterij is leeg.',['bak','bank']],
+ ['bieden','','💬',2,'Zeggen hoeveel geld je wilt betalen.','Ik bied 20 euro voor de fiets.',['bod','kiezen']],
+ ['bod','het','💰',2,'Hoeveel geld je wilt betalen voor iets.','Hij doet een bod van 50 euro.',['bieden','boot']],
+ ['college','het','🎓',2,'Een les op de universiteit.','Ik heb morgen college.',['collega','cursus']],
+ ['dak','het','🏠',2,'Het bovenste deel van een huis.','Er zit een kat op het dak.',['dag','zolder']],
+ ['dame','de','👩',2,'Een vrouw (beleefd).','Die dame verkoopt haar spullen.',['dag','heer']],
+ ['deel','het','🍕',2,'Een stuk van iets.','Een deel van de spullen is tweedehands.',['delen','dag']],
+ ['deur','de','🚪',2,'Daar ga je door, het huis in of uit.','Doe de deur dicht.',['duur','raam']],
+ ['frisdrank','de','🥤',2,'Een koud drankje met suiker. Bijvoorbeeld cola.','Wil je water of frisdrank?',['drinken','fruit']],
+ ['geluid','het','🔊',2,'Wat je hoort.','De koelkast maakt veel geluid.',['geld','gelukkig']],
+ ['geschikt','','✅',2,'Goed voor iets. Het past.','Deze fiets is geschikt voor kinderen.',['gezellig','geslacht']],
+ ['gitaar','de','🎸',2,'Daarmee maak je muziek. Je speelt met je vingers.','Ik verkoop mijn oude gitaar.',['muziek','gast']],
+ ['grijs','','🩶',2,'Een kleur tussen wit en zwart.','Ik heb een grijze jas.',['groen','wit'],['grijs','grijze']],
+ ['heer','de','🎩',2,'Een man (beleefd).','Een heer wil de gitaar kopen.',['hier','dame']],
+ ['hout','het','🪵',2,'Dat komt van een boom. Een tafel is vaak van hout. Houten = van hout.','Ik heb een houten tafel.',['houden','oud'],['hout','houten']],
+ ['ieder','','👥',2,'Elk. Iedereen of alles, één voor één.','Ieder meubel kost 10 euro.',['iemand','iets']],
+ ['koelkast','de','🧊',2,'Een kast in de keuken. Het eten blijft daar koud.','De melk staat in de koelkast.',['kast','koud']],
+ ['koopje','het','🤑',2,'Iets voor een lage prijs.','Twee euro voor deze stoel? Dat is een koopje!',['kopen','kop']],
+ ['koud','','🥶',2,'Niet warm.','De frisdrank is lekker koud.',['oud','warm']],
+ ['lenen','','🔁',2,'Iets even krijgen en later teruggeven. Of iets even geven.','Mag ik jouw fiets lenen?',['leren','lezen']],
+ ['magnetron','de','♨️',2,'Een apparaat in de keuken. Je maakt eten snel warm.','Ik maak de melk warm in de magnetron.',['wasmachine','koelkast']],
+ ['meisje','het','👧',2,'Een jong kind. Geen jongen.','Het meisje is tien jaar.',['mevrouw','jongen']],
+ ['merk','het','🏷️',2,'De naam van de maker. Bijvoorbeeld Philips of Samsung.','Welk merk is de koelkast?',['markt','melk']],
+ ['onderhandelen','','🗣️',2,'Praten over de prijs. Samen kiezen jullie een prijs.','We onderhandelen over de prijs.',['onderweg','ontmoeten']],
+ ['ophalen','','🚗',2,'Iets of iemand gaan halen.','Je kunt de kast zaterdag ophalen.',['opstaan','opschieten']],
+ ['redelijk (in redelijke staat)','','👌',2,'Niet heel goed, maar ook niet slecht.','De fiets is in redelijke staat.',['rustig','prettig'],['redelijk','redelijke']],
+ ['slechts','','☝️',2,'Alleen maar. Niet meer.','De stoel kost slechts 5 euro.',['slecht','slapen']],
+ ['spullen','de','📦',2,'Dingen.','Ik verkoop mijn oude spullen.',['spelen','spiegel']],
+ ['staat','de','🔧',2,'Hoe goed of slecht iets nog is.','De tafel is in goede staat.',['straat','staan']],
+ ['stelen (gestolen)','','🦹',2,'Iets pakken dat niet van jou is.','Mijn fiets is gestolen!',['spelen','sterk'],['stelen','gestolen']],
+ ['tegelijk','','⏱️',2,'Op hetzelfde moment.','Twee mensen bellen tegelijk.',['tegen','gelijk']],
+ ['vast (vaste prijzen)','','📌',2,'Het verandert niet. Je kunt niet afdingen.','In de winkel zijn de prijzen vast.',['vaak','vies'],['vast','vaste']],
+ ['versnelling','de','🚲',2,'Op een fiets. Daarmee fiets je makkelijker, bijvoorbeeld op een brug.','De fiets heeft zeven versnellingen.',['vertraging','verdieping']],
+ ['verzenden','','📮',2,'Iets naar een ander adres laten brengen.','Kunt u de spullen verzenden?',['verhuizen','vertrekken']],
+ ['vooral','','⭐',2,'Het meest.','Ik koop vooral tweedehands spullen.',['voor','voordeel']],
+
+ // ---------- TAAK 3 (10) ----------
+ ['aanbieding','de','🏷️',3,'Een lagere prijs, maar maar een korte tijd.','De televisie is in de aanbieding.',['aanbieden','advertentie']],
+ ['beeld (scherm)','het','📺',3,'Het scherm van een televisie of een telefoon. Daar zie je de film.','De televisie heeft een groot beeld.',['bed','beetje'],['beeld']],
+ ['bekend','','🌟',3,'Veel mensen kennen het.','Dat merk is heel bekend.',['bekijken','beneden']],
+ ['garantie','de','🛡️',3,'Is het apparaat snel kapot? Dan maakt de winkel het gratis.','U krijgt twee jaar garantie.',['gratis','kassa']],
+ ['opschrijven','','✍️',3,'Iets schrijven, zodat je het niet vergeet.','Ik schrijf de prijs op.',['opschieten','beschrijven']],
+ ['opslag (data-opslag)','de','💾',3,'Hoeveel foto’s en filmpjes er op je telefoon passen.','Deze telefoon heeft veel opslag.',['opstaan','slapen'],['opslag']],
+ ['programma (wasmachine, airfryer)','het','🔘',3,'Een keuze op een apparaat. Bijvoorbeeld: kort of lang wassen.','Deze wasmachine heeft een snel programma.',['probleem','rooster'],['programma'],'In Deel 1: programma = wat er op een dag gebeurt. Nu: een programma op een apparaat.'],
+ ['televisie','de','📺',3,'Een apparaat. Je kijkt er films op.','We kijken samen televisie.',['tafel','beeld']],
+ ['wassen','','🧼',3,'Met water maken dat iets niet meer vies is.','Ik was mijn kleren in de wasmachine.',['wachten','water']],
+ ['zelf','','🙋',3,'Jij, en niet een ander.','Ik maak het zelf.',['zelfs','zeker']],
+
+ // ---------- TAAK 4 (25) ----------
+ ['afstuderen','','🎓',4,'Klaar zijn met studeren. Je hebt je diploma.','Mijn broer is afgestudeerd. We geven een feestje!',['studeren','afrekenen'],['afstuderen','afgestudeerd']],
+ ['allemaal','','👨‍👩‍👧',4,'Iedereen. Of: alles.','We gaan allemaal naar het feest.',['allebei','alleen']],
+ ['chips','de','🥔',4,'Zout borrelhapje van aardappel. In een zak.','We kopen chips en pinda’s.',['friet','pinda']],
+ ['dienst','de','🛎️',4,'Werk dat iemand voor jou doet. Bijvoorbeeld: de supermarkt bezorgt je boodschappen.','Bezorgen is een dienst van de supermarkt.',['dinsdag','dier']],
+ ['eindelijk','','😅',4,'Na lang wachten.','Eindelijk is het weekend!',['einde','eigenlijk']],
+ ['examen','het','📝',4,'Aan het eind van een cursus. Je laat zien wat je kunt.','Morgen heb ik mijn examen.',['excuus','cursus']],
+ ['folder','de','📰',4,'Een papier met reclame en aanbiedingen.','In de folder staan de aanbiedingen.',['formulier','krant']],
+ ['gezond','','🥦',4,'Goed voor je. Bijvoorbeeld groente en fruit.','Ik koop ook gezond eten.',['gezellig','gewoon']],
+ ['huismerk','het','🏪',4,'Het eigen merk van de supermarkt. Vaak goedkoper.','Ik koop de chips van het huismerk.',['huis','markt']],
+ ['krat','het','🍺',4,'Een plastic doos met plaats voor flessen. Bijvoorbeeld 24 flesjes bier.','We kopen een krat bier voor het feest.',['kast','kaart']],
+ ['laten','','🙌',4,'Niet zelf doen: een ander doet het. Of: zeggen dat iets mag.','Ik laat de boodschappen bezorgen.',['lezen','lopen'],['laten','laat']],
+ ['lijst','de','📋',4,'Woorden onder elkaar. Bijvoorbeeld voor de boodschappen.','Ik maak een lijst voor de supermarkt.',['les','lied']],
+ ['mazzel','de','🍀',4,'Geluk. Iets leuks gebeurt zomaar.','Mazzel! De chips zijn in de aanbieding.',['maaltijd','meestal']],
+ ['nadenken (over)','','🤔',4,'Goed denken voordat je iets kiest.','Ik moet even nadenken.',['nemen','danken'],['nadenken']],
+ ['olijf','de','🫒',4,'Klein, groen of zwart en zout. Lekker bij de borrel.','Ik koop olijven en kaas.',['ui','pinda']],
+ ['overleggen (over)','','💭',4,'Samen praten en samen iets kiezen.','We overleggen over de boodschappen.',['overstappen','oversteken'],['overleggen']],
+ ['pak (koffie, appelsap)','het','🧃',4,'Koffie of sap koop je in een pak.','Neem twee pakken sap mee.',['zak','bak'],['pak','pakken'],'In Deel 1: pak = kleding (een man in pak). Nu: een pak koffie of een pak sap.'],
+ ['reclame','de','📢',4,'Zo laat een winkel zien wat je kunt kopen. Op tv, op straat of in de folder.','Ik zag reclame voor goedkope chips.',['rekening','regio']],
+ ['rijbewijs','het','🪪',4,'Een kaart. Die heb je nodig om auto te rijden.','Mijn zus heeft haar rijbewijs!',['rijden','reisgids']],
+ ['sinaasappel','de','🍊',4,'Oranje fruit. Je maakt er sap van.','Ik koop sinaasappels voor sap.',['appel','sap']],
+ ['slagen (voor een examen)','','🏆',4,'Je examen goed maken. Je hebt het gehaald.','Ik ben geslaagd voor mijn examen!',['slapen','slager'],['slagen','geslaagd']],
+ ['stuk (per stuk)','het','🔢',4,'Eén ding. Per stuk = voor één.','De sinaasappels kosten 50 cent per stuk.',['stoel','kilo'],['stuk','per stuk'],'In Deel 1: stuk = kapot. Nu: per stuk = voor één.'],
+ ['uitgeven','','💸',4,'Geld betalen voor dingen.','We geven niet te veel geld uit.',['uitgaan','teruggeven']],
+ ['wortel','de','🥕',4,'Lange, oranje groente.','Ik koop wortels en uien.',['woord','tomaat']],
+ ['zak','de','🛍️',4,'Een tas van plastic of papier. Ook chips zitten in een zak.','Een zak chips, graag.',['pak','tas']]
+];
+
+const IRR = new Set(['terughebben van','verkopen','wegen','afdingen','bieden','stelen (gestolen)','verzenden','opschrijven','wassen','laten','nadenken (over)','uitgeven']);
+const PLUR = new Set(['spullen','chips']);
+
+const W = RAW.map(r => {
+  const alt = r[7] && r[7].length ? r[7] : [r[0].replace(/\s*\(.*?\)\s*/g, '').trim()];
+  return { w: r[0], a: r[1], e: r[2], t: r[3], u: r[4], z: r[5], af: r[6] || [], alt, nb: r[8] || '', base: alt[0] };
+});
+
+/* Woorden die bijna hetzelfde betekenen: die komen niet samen voor als 'fout' antwoord. */
+const SYN = [
+  ['contant','kleingeld','passen (gepast)'], ['pinnen','(pin)pas','pinautomaat'], ['wegen','weegschaal'],
+  ['bieden','bod','afdingen','onderhandelen','aannemelijk'], ['aannemelijk','redelijk (in redelijke staat)'], ['dame','heer','meisje'],
+  ['beeld (scherm)','televisie'], ['aanbieding','koopje','folder','reclame'], ['zak','pak (koffie, appelsap)','krat','bak'],
+  ['afstuderen','slagen (voor een examen)','examen'], ['allebei','allemaal','ieder'], ['slechts','vooral'],
+  ['overleggen (over)','nadenken (over)','onderhandelen'], ['spullen','apparaat'], ['makkelijk','gewoon (koffie)'],
+  ['verkopen','verzenden'], ['koelkast','magnetron'], ['afrekenen','betaling','bedrag'], ['apart','allebei']
+];
+function synOf(w) { return SYN.filter(s => s.includes(w)).flat().concat([w]); }
+
+/* ---------- ZINNEN ----------
+   [zin, goed, [afleiders], [duidelijk fout], taak, h]
+   h = 0: gewone oefening (goed + 1 afleider + 2 duidelijk fout)
+   h = 1: alleen in de herhaling, andere zinnen (goed + 2 afleiders + 1 duidelijk fout) */
+const ZINNEN = [
+  // taak 1 – gewoon
+  ['Ik heb geen kleingeld. Kan ik ___?','pinnen',['passen','sparen'],['groeien','wegen'],1,0],
+  ['Betaalt u met de pas of ___?','contant',['kleingeld','gepast'],['stom','vroeger'],1,0],
+  ['Het ___ is € 12,50.','bedrag',['betaling','getal'],['apparaat','zegel'],1,0],
+  ['Het eten was lekker. We geven de ober een ___.','fooi',['korting','zegel'],['weegschaal','betaling'],1,0],
+  ['Uw code is ___. Probeer het nog een keer.','onjuist',['ongemakkelijk','onbeleefd'],['tweedehands','overal'],1,0],
+  ['Leg de appels op de ___. Dan zie je hoeveel kilo het is.','weegschaal',['pinautomaat','kassa'],['fooi','betaling'],1,0],
+  ['Je moet de bananen eerst ___.','wegen',['werken','wachten'],['kleingeld','contant'],1,0],
+  ['De automaat geeft geen geld terug. Betaal ___: precies het goede bedrag.','gepast',['gewoon','gezond'],['stom','vroeger'],1,0],
+  ['Ik haal geld bij de ___.','pinautomaat',['pinpas','kassa'],['fooi','zegel'],1,0],
+  ['Ik ben mijn ___ vergeten. Ik betaal contant.','pinpas',['pinautomaat','kassa'],['bedrag','fooi'],1,0],
+  ['Bij deze supermarkt ___ ik zegels. Met tien zegels krijg ik korting.','spaar',['sport','spreek'],['weeg','groei'],1,0],
+  ['___ betaalde iedereen contant. Nu pinnen we.','Vroeger',['Vroeg','Straks'],['Makkelijk','Stom'],1,0],
+  ['Pinnen is heel ___. Je hoeft geen kleingeld te zoeken.','makkelijk',['moeilijk','mogelijk'],['onjuist','tweedehands'],1,0],
+  ['Kan ik even pinnen? – Ja, ___.','gaat uw gang',['tot straks','goedemiddag'],['vroeger','overal'],1,0],
+  ['Mijn kinderen ___ snel. Ze hebben vaak nieuwe schoenen nodig.','groeien',['groeten','geven'],['wegen','sparen'],1,0],
+  // taak 1 – herhaling
+  ['Wilt u ___ betalen of met de pas?','contant',['kleingeld','pinnen'],['groeien'],1,1],
+  ['Ik verkoop mijn oude fiets. Hij is ___, maar nog goed.','tweedehands',['tweede','goedkoop'],['onjuist'],1,1],
+  ['Ik heb alleen 50 euro. Heeft u daar ___ van?','terug',['weer','tegen'],['stom'],1,1],
+  ['De ___ is gelukt. Dank u wel!','betaling',['bedrag','rekening'],['weegschaal'],1,1],
+  ['Toets uw code in op het ___.','apparaat',['appartement','automaat'],['zegel'],1,1],
+  ['Leg je tas in de ___ bij de kassa.','bak',['bakker','tas'],['fooi'],1,1],
+  ['Ik ___ mijn oude auto. Wil jij hem kopen?','verkoop',['koop','verkoper'],['spaar'],1,1],
+  ['Dat is ___! Ik heb mijn pinpas thuis laten liggen.','stom',['sterk','stoel'],['tweedehands'],1,1],
+  ['Je kunt bijna ___ pinnen: in de winkel, in de bus en op de markt.','overal',['over','allemaal'],['vroeger'],1,1],
+  ['Het pinnen lukt niet. – ___ het nog een keer.','Probeer',['Probleem','Praat'],['Weeg'],1,1],
+  ['Ik wil gaan ___. Mag ik de rekening?','afrekenen',['afkeuren','rekenen'],['groeien'],1,1],
+
+  // taak 2 – gewoon
+  ['Ik wil een lagere prijs. Ik ga ___.','afdingen',['afrekenen','afkeuren'],['groeien','lenen'],2,0],
+  ['Ik ___ 20 euro voor de gitaar.','bied',['bod','bel'],['steel','groei'],2,0],
+  ['Hij doet een ___ van 50 euro.','bod',['bieden','boot'],['dak','merk'],2,0],
+  ['De koelkast is in goede ___.','staat',['straat','stad'],['deur','gitaar'],2,0],
+  ['Mijn fiets is ___! Ik kan niet naar huis fietsen.','gestolen',['geschikt','gesloten'],['koud','grijs'],2,0],
+  ['Ik wil de stoel én de tafel. Ik koop ze ___.','allebei',['allemaal','alleen'],['slechts','koud'],2,0],
+  ['Wil je water of ___? – Cola, graag!','frisdrank',['drinken','fruit'],['hout','batterij'],2,0],
+  ['De ___ van de klok is leeg.','batterij',['bank','bak'],['dame','deur'],2,0],
+  ['De melk staat in de ___. Daar is het koud.','koelkast',['kast','keuken'],['magnetron','gitaar'],2,0],
+  ['Een fiets voor 10 euro? Dat is een ___!','koopje',['kopje','kop'],['bod','merk'],2,0],
+  ['Mag ik jouw auto ___? Ik breng hem morgen terug.','lenen',['leren','lezen'],['stelen','verzenden'],2,0],
+  ['Je kunt de kast zaterdag bij mij ___.','ophalen',['opstaan','opschieten'],['afdingen','groeien'],2,0],
+  ['Welk ___ is de koelkast? – Philips.','merk',['markt','melk'],['dak','deel'],2,0],
+  ['In deze winkel zijn de prijzen ___. Je kunt niet afdingen.','vast',['vaak','vies'],['koud','grijs'],2,0],
+  ['De fiets heeft zeven ___.','versnellingen',['verdiepingen','vertragingen'],['batterijen','deuren'],2,0],
+  ['Twee mensen praten ___. Ik begrijp niets.','tegelijk',['tegen','gelijk'],['apart','vooral'],2,0],
+  // taak 2 – herhaling
+  ['We ___ over de prijs. Eerst 50 euro, dan 40.','onderhandelen',['ontmoeten','onderweg'],['verzenden'],2,1],
+  ['Kunt u de spullen ___? Ik woon ver weg.','verzenden',['verhuizen','vertrekken'],['stelen'],2,1],
+  ['Ik heb een mooie tafel. Hij is van ___.','hout',['oud','houden'],['dak'],2,1],
+  ['De tafel is niet nieuw, maar wel ___. Hij is nog goed genoeg.','redelijk',['rustig','prettig'],['koud'],2,1],
+  ['De stoel kost ___ 5 euro. Dat is weinig!','slechts',['slecht','slapen'],['vooral'],2,1],
+  ['Ik koop ___ tweedehands spullen. Bijna nooit nieuw.','vooral',['voor','voordeel'],['apart'],2,1],
+  ['Een ___ en een heer kijken naar de fiets.','dame',['dak','dag'],['deur'],2,1],
+  ['Is deze fiets ___ voor een kind van acht?','geschikt',['gezellig','geslacht'],['grijs'],2,1],
+  ['De stoelen kun je ook ___ kopen. Niet samen met de tafel.','apart',['allebei','allemaal'],['koud'],2,1],
+  ['___ stoel kost 10 euro.','Ieder',['Iemand','Iets'],['Slechts'],2,1],
+  ['Ik heb morgen ___ op de universiteit.','college',['collega','kassa'],['geluid'],2,1],
+  ['Ik verkoop mijn oude ___. Ik maak geen muziek meer.','gitaar',['gast','gat'],['deur'],2,1],
+  ['De koelkast maakt veel ___. Ik kan niet slapen.','geluid',['geld','gelukkig'],['dak'],2,1],
+
+  // taak 3 – gewoon
+  ['Deze televisie is in de ___. Hij kost nu 100 euro minder.','aanbieding',['aanbieden','advertentie'],['opslag','garantie'],3,0],
+  ['Is de wasmachine snel kapot? U heeft twee jaar ___.','garantie',['gratis','kassa'],['beeld','televisie'],3,0],
+  ['Dit merk is heel ___. Iedereen kent het.','bekend',['bekijken','beneden'],['zelf','apart'],3,0],
+  ['Wil je de prijs ___? Dan vergeten we het niet.','opschrijven',['opschieten','beschrijven'],['wassen','zelf'],3,0],
+  ['Deze telefoon heeft veel ___ voor al je foto’s.','opslag',['opstaan','oplossen'],['garantie','televisie'],3,0],
+  ['Ik ___ mijn kleren in de wasmachine.','was',['wacht','water'],['schrijf','koop'],3,0],
+  ['Deze wasmachine heeft een kort ___ van 30 minuten.','programma',['probleem','rooster'],['beeld','merk'],3,0],
+  ['De televisie heeft een groot ___.','beeld',['bed','beetje'],['programma','garantie'],3,0],
+  ['Wij kijken ’s avonds ___.','televisie',['tafel','telefoon'],['garantie','opslag'],3,0],
+  ['Ik heb geen hulp nodig. Ik doe het ___.','zelf',['zelfs','zeker'],['bekend','apart'],3,0],
+  // taak 3 – herhaling
+  ['Nu in de ___: twee halen, één betalen!','aanbieding',['aanbieden','aantal'],['opslag'],3,1],
+  ['Is het apparaat snel kapot? Dan krijgt u een nieuwe. Dat is de ___.','garantie',['gratis','kassa'],['zelf'],3,1],
+  ['Dit is het snelle ___: wassen in 15 minuten.','programma',['probleem','rooster'],['beeld'],3,1],
+  ['Heb je een pen? Ik wil het adres ___.','opschrijven',['opschieten','beschrijven'],['wassen'],3,1],
+  ['Deze winkel is heel ___. Iedereen kent hem.','bekend',['bekijken','beneden'],['zelf'],3,1],
+  ['Het ___ van de televisie is kapot. Ik zie niets.','beeld',['bed','beetje'],['programma'],3,1],
+
+  // taak 4 – gewoon
+  ['Mijn broer gaat ___. Dan heeft hij zijn diploma.','afstuderen',['studeren','afrekenen'],['uitgeven','laten'],4,0],
+  ['Ik maak een ___ voor de supermarkt: chips, sap en olijven.','lijst',['les','lied'],['krat','folder'],4,0],
+  ['We kopen een ___ bier. Daar zitten 24 flesjes in.','krat',['kast','kaart'],['zak','olijf'],4,0],
+  ['Een ___ chips, graag.','zak',['pak','bak'],['krat','lijst'],4,0],
+  ['Neem ook twee ___ sap mee.','pakken',['zakken','bakken'],['wortels','lijsten'],4,0],
+  ['In de ___ van de supermarkt staan de aanbiedingen.','folder',['formulier','krant'],['wortel','chips'],4,0],
+  ['De chips van het ___ zijn goedkoper dan van een bekend merk.','huismerk',['huis','markt'],['examen','rijbewijs'],4,0],
+  ['Ik ben ___ voor mijn examen! We geven een feestje.','geslaagd',['geslapen','gestolen'],['gezond','eindelijk'],4,0],
+  ['De sinaasappels kosten 50 cent per ___.','stuk',['stoel','kilo'],['lijst','dienst'],4,0],
+  ['Hoeveel geld wil je ___ aan het feest?','uitgeven',['uitgaan','teruggeven'],['nadenken','slagen'],4,0],
+  ['Ik weet het nog niet. Ik moet even ___.','nadenken',['nemen','danken'],['slagen','afstuderen'],4,0],
+  ['Groente en fruit zijn ___.','gezond',['gezellig','gewoon'],['eindelijk','huismerk'],4,0],
+  ['___! De chips zijn vandaag in de aanbieding.','Mazzel',['Maaltijd','Meestal'],['Examen','Dienst'],4,0],
+  ['Na drie keer is hij ___ geslaagd voor zijn rijbewijs.','eindelijk',['eigenlijk','einde'],['gezond','huismerk'],4,0],
+  ['Zullen we samen ___ over het feest? Wat kopen we?','overleggen',['overstappen','oversteken'],['slagen','laten'],4,0],
+  // taak 4 – herhaling
+  ['Ik heb mijn ___! Nu mag ik auto rijden.','rijbewijs',['rijden','reisgids'],['olijf'],4,1],
+  ['Op tv is veel ___ voor chips en frisdrank.','reclame',['rekening','regio'],['wortel'],4,1],
+  ['Ik ___ de boodschappen bezorgen. Dan hoef ik niet naar de winkel.','laat',['lees','loop'],['slaag'],4,1],
+  ['Bij de borrel eten we kaas en ___.','olijven',['uien','pakken'],['examens'],4,1],
+  ['Bezorgen is een ___ van de supermarkt.','dienst',['dinsdag','dier'],['lijst'],4,1],
+  ['Ik koop oranje groente: ___.','wortels',['woorden','sinaasappels'],['chips'],4,1],
+  ['Wie komt er op het feest? – ___: de hele familie!','Allemaal',['Allebei','Alleen'],['Eindelijk'],4,1],
+  ['Morgen heb ik mijn ___. Ik heb veel geleerd.','examen',['excuus','cursus'],['chips'],4,1],
+  ['Een ___ is oranje fruit. Je kunt er sap van maken.','sinaasappel',['appel','wortel'],['krat'],4,1]
+];
+
+/* ---------- ANDER WOORD (vervangspel) ----------
+   [zin met [gewone woorden], goed, [afleiders], [duidelijk fout], taak] */
+const ANDER = [
+  ['Ik betaal [met geld in mijn hand, niet met de pas].','contant',['kleingeld','gepast'],['groeien','weegschaal'],1],
+  ['Uw code is [niet goed].','onjuist',['onbeleefd','ongemakkelijk'],['tweedehands','vroeger'],1],
+  ['Ik koop een [oude, niet nieuwe] fiets.','tweedehands',['tweede','goedkope'],['onjuiste','stomme'],1],
+  ['[Lang geleden] had ik geen pinpas.','Vroeger',['Vroeg','Straks'],['Overal','Makkelijk'],1],
+  ['Je kunt [op elke plaats] pinnen.','overal',['over','allemaal'],['vroeger','stom'],1],
+  ['Pinnen is [niet moeilijk].','makkelijk',['mogelijk','moeilijk'],['tweedehands','onjuist'],1],
+  ['Ik wil graag [aan het eind betalen].','afrekenen',['afkeuren','rekenen'],['groeien','sparen'],1],
+  ['Ik wil een [normale] koffie, geen cappuccino.','gewone',['gezonde','gezellige'],['onjuiste','stomme'],1],
+
+  ['De fiets kost [maar] 20 euro.','slechts',['slecht','vooral'],['koud','grijs'],2],
+  ['Ik verkoop mijn oude [dingen].','spullen',['spelen','spiegels'],['deuren','daken'],2],
+  ['Ik koop [het meest] tweedehands.','vooral',['voor','voordeel'],['koud','grijs'],2],
+  ['Twee mensen bellen [op hetzelfde moment].','tegelijk',['tegen','gelijk'],['koud','apart'],2],
+  ['Die [mevrouw] wil de gitaar kopen.','dame',['dak','dag'],['deur','batterij'],2],
+  ['Op de markt kun je [om een lagere prijs vragen].','afdingen',['afrekenen','afkeuren'],['groeien','lenen'],2],
+  ['Ik wil [de twee] stoelen.','allebei',['allemaal','alleen'],['slechts','koud'],2],
+  ['Twee euro voor deze stoel? Dat is [heel goedkoop]!','een koopje',['een kopje','een kop'],['een dak','een deur'],2],
+
+  ['Wil je het adres even [op papier zetten]?','opschrijven',['opschieten','beschrijven'],['wassen','groeien'],3],
+  ['Ik doe het [zonder hulp].','zelf',['zelfs','zeker'],['bekend','apart'],3],
+  ['Kijk je vaak [tv]?','televisie',['tafel','telefoon'],['garantie','opslag'],3],
+  ['De tv is [nu even goedkoper].','in de aanbieding',['in de advertentie','in het aanbod'],['in de garantie','in de opslag'],3],
+
+  ['Ik heb [geluk]!','mazzel',['een maaltijd','meestal'],['een examen','een dienst'],4],
+  ['Ik moet [even goed denken].','even nadenken',['even nemen','even danken'],['even slagen','even uitgeven'],4],
+  ['[Na lang wachten] is het weekend!','Eindelijk',['Eigenlijk','Einde'],['Gezond','Allemaal'],4],
+  ['We [praten samen en kiezen samen] wat we kopen.','overleggen',['overstappen','oversteken'],['slagen','afstuderen'],4],
+  ['De appels kosten 50 cent [voor één].','per stuk',['per stoel','per kilo'],['per lijst','per dienst'],4],
+  ['Ik koop chips van [het eigen merk van de supermarkt].','het huismerk',['het huis','de markt'],['het examen','het rijbewijs'],4]
+];
+
+/* ---------- WAT ZEG JE? ----------
+   [situatie, goed, [afleiders], [duidelijk fout], taak] */
+const SITU = [
+  ['Je wilt met je pas betalen. Wat vraag je?','Kan ik pinnen?',['Kan ik sparen?','Kan ik passen?'],['Hoe oud ben je?','Waar woon je?'],1],
+  ['Je werkt in een winkel. De klant vraagt: "Kan ik pinnen?" Wat zeg je?','Ja hoor, gaat uw gang.',['Ja hoor, tot straks.','Ja hoor, goedemiddag.'],['Ik heet Maria.','Het is acht uur.'],1],
+  ['Je hebt alleen 50 euro. Het kost 3 euro. Wat vraag je?','Heeft u terug van 50 euro?',['Heeft u een fooi van 50 euro?','Geeft u 50 euro terug?'],['Mag ik een koffie?','Waar is de wc?'],1],
+  ['Op het apparaat staat: "Code onjuist." Wat doe je?','Ik probeer het nog een keer.',['Ik spaar het nog een keer.','Ik weeg het nog een keer.'],['Ik ga slapen.','Ik koop een fiets.'],1],
+  ['Het eten was lekker. De ober was heel goed. Wat doe je?','Ik geef een fooi.',['Ik geef een zegel.','Ik geef kleingeld terug.'],['Ik verkoop de tafel.','Ik ga groeien.'],1],
+  ['De kassa vraagt: "Wilt u zegels sparen?" Je wilt dat niet. Wat zeg je?','Nee, dank u. Ik spaar niet.',['Nee, dank u. Ik sport niet.','Nee, dank u. Ik pin niet.'],['Ja, ik ben 30 jaar.','Ik woon in Hoorn.'],1],
+
+  ['In een advertentie staat: "Fiets, € 50." Jij wilt hem voor € 40.','Ik bied 40 euro. Is dat goed?',['Ik leen 40 euro. Is dat goed?','Ik bel 40 euro. Is dat goed?'],['Ik heb geen fiets.','Ik ga naar huis.'],2],
+  ['Je koopt een kast op Marktplaats. Hoe krijg je hem?','Kan ik de kast zaterdag ophalen?',['Kan ik de kast zaterdag lenen?','Kan ik de kast zaterdag opstaan?'],['Ik hou van kaas.','Mijn zus heet Sara.'],2],
+  ['De prijs is € 100. Dat vind je te veel.','Kunnen we onderhandelen? Ik bied € 80.',['Kunnen we ontmoeten? Ik bied € 80.','Kunnen we verzenden? Ik bied € 80.'],['Wat is je naam?','Het regent vandaag.'],2],
+  ['Je wilt weten of de koelkast nog goed is.','In welke staat is de koelkast?',['In welke straat is de koelkast?','In welke stad is de koelkast?'],['Hoe laat is het?','Hoe heet je?'],2],
+  ['De verkoper woont ver weg. Wat vraag je?','Kunt u de spullen verzenden?',['Kunt u de spullen verhuizen?','Kunt u de spullen stelen?'],['Ik heb honger.','Ik ben moe.'],2],
+
+  ['Je wilt weten: is de wasmachine snel kapot, wat dan?','Hoe lang heb ik garantie?',['Hoe lang heb ik gratis?','Hoe lang heb ik een programma?'],['Waar woon je?','Hoe oud ben je?'],3],
+  ['Je wilt een televisie voor een lage prijs.','Is deze televisie in de aanbieding?',['Is deze televisie in de advertentie?','Is deze televisie aanbieden?'],['Ik ben 30 jaar.','Ik kom uit Syrië.'],3],
+  ['De verkoper wil helpen. Jij hebt geen hulp nodig.','Nee, dank u. Ik kijk zelf even.',['Nee, dank u. Ik kijk zelfs even.','Nee, dank u. Ik kijk zeker even.'],['Ja, ik heb honger.','Ik ben jarig.'],3],
+
+  ['Je vriend is geslaagd voor zijn examen.','Gefeliciteerd! Goed gedaan!',['Eindelijk! Wat jammer!','Mazzel! Wat stom!'],['Ik heb een rijbewijs.','Hoe laat is het?'],4],
+  ['Je weet nog niet wat je wilt kopen.','Ik moet nog even nadenken.',['Ik moet nog even nemen.','Ik moet nog even danken.'],['Ik ben geslaagd.','Ik woon in Hoorn.'],4],
+  ['Je wilt samen met je zus kiezen: wat kopen we voor het feest?','Zullen we even overleggen?',['Zullen we even overstappen?','Zullen we even oversteken?'],['Mijn fiets is gestolen.','Ik heb geen tijd.'],4],
+  ['Je wilt weten hoeveel één sinaasappel kost.','Hoeveel kosten ze per stuk?',['Hoeveel kosten ze per zak?','Hoeveel kosten ze per krat?'],['Waar is het station?','Hoe heet je?'],4]
+];
+
+
+W.forEach(x => x.th = 1);
+return { nr: 1, titel: "Dat is een koopje!", W, ZINNEN, ANDER, SITU, synOf, PLUR };
+})();
+THEMES[2] = (function () {
+const THEMA = 2;
+const AFL = THEMA <= 3 ? 1 : 2;   // afleiders bij gewone oefeningen (t/m thema 3: 1, daarna 2)
+const AFL_H = 2;                  // afleiders bij de herhaling: altijd 2
+const HINT = THEMA <= 2;          // beginletter als hulp bij Typen (alleen thema 1-2, niet bij herhaling)
+const KEY = 'code2_t' + THEMA + '_moeilijk';
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4'],['moeilijk','⭐ Moeilijk']];
+const TITELS = {
+  all: 'Alle woorden van thema 2',
+  1: 'Intro + 2.1 · Een gesprek voeren bij een pakketpunt',
+  2: '2.2 · Informatie vragen in de openbare bibliotheek',
+  3: '2.3 · Een afspraak maken voor een reparatie',
+  4: '2.4 · Informatie vragen en geven op het gemeentehuis',
+  moeilijk: 'Jouw moeilijke woorden. Ze staan alleen op dit apparaat.'
+};
+
+/* [woord, lidwoord, emoji, taak, uitleg, voorbeeldzin, afleiders (lijken op het woord), goede antwoorden bij typen, nieuwe betekenis]
+   Intro en taak 1 zijn samen: taak 1. */
+const RAW = [
+ // ---------- INTRO (10) ----------
+ ['aanvragen','','📝',1,'Officieel om iets vragen. Bijvoorbeeld een paspoort of een visum.','Ik vraag een nieuw paspoort aan.',['aanmelden','aangeven']],
+ ['brief','de','✉️',1,'Een papier met een tekst. Je stuurt het met de post.','Ik schrijf een brief aan mijn moeder.',['bericht','brievenbus']],
+ ['monteur','de','🧑‍🔧',1,'Iemand die apparaten of auto’s maakt als ze kapot zijn.','De monteur maakt de wasmachine.',['meneer','moment']],
+ ['pasfoto','de','🖼️',1,'Een kleine foto van je gezicht. Voor je paspoort of je rijbewijs.','Voor een paspoort heb je een pasfoto nodig.',['paspoort','pinpas']],
+ ['paspoort','het','🛂',1,'Een boekje van de overheid. Daarin staat wie je bent. Je hebt het nodig voor een reis naar het buitenland.','Mijn paspoort is niet meer geldig.',['pasfoto','pinpas']],
+ ['spoed','de','🚨',1,'Het moet heel snel.','Het is spoed! Het water lekt.',['spoor','sporten']],
+ ['stroom','de','⚡',1,'Elektriciteit. Daarmee werken je lamp en je koelkast.','Er is geen stroom. De lamp doet het niet.',['straat','stoel']],
+ ['sturen','','📤',1,'Iets naar iemand laten gaan. Bijvoorbeeld een brief of een bericht.','Ik stuur je een bericht.',['studeren','sparen']],
+ ['uitvallen (de stroom is uitgevallen)','','🔌',1,'Plotseling stoppen. Valt de stroom uit? Dan is alles donker.','De stroom is uitgevallen.',['uitgaan','uitstappen'],['uitvallen','uitgevallen']],
+ ['zwaar','','🏋️',1,'Het weegt veel. Niet licht.','Het pakket is zwaar: 20 kilo.',['zwart','waar']],
+
+ // ---------- TAAK 1 (25) ----------
+ ['aantekenen (aangetekende post)','','📨',1,'Aangetekende post: je moet tekenen als je de brief krijgt. Zo weet je zeker dat hij is aangekomen.','Ik stuur de brief aangetekend.',['aantrekken','aanmelden'],['aangetekend','aangetekende','aantekenen']],
+ ['afhangen (van)','','🤷',1,'Het antwoord is niet altijd hetzelfde. Het is anders in een andere situatie.','Hoeveel kost het? – Dat hangt af van het gewicht.',['ophalen','afrekenen'],['afhangen','hangt af']],
+ ['ambassade','de','🏛️',1,'Het kantoor van een land in een ander land. Daar vraag je bijvoorbeeld een visum aan.','Ik ga naar de ambassade voor een visum.',['ambtenaar','advies']],
+ ['bedrijf','het','🏢',1,'Een firma. Mensen werken er samen en maken of verkopen iets.','Mijn broer werkt bij een groot bedrijf.',['bedrag','bewijs']],
+ ['bewijs','het','🧾',1,'Een papier. Daarmee laat je zien dat iets waar is.','Bewaar het bewijs van verzending.',['bewoner','bezoek']],
+ ['binnenland','het','🇳🇱',1,'Je eigen land. Hier: in Nederland.','Een pakket in het binnenland kost minder.',['buitenland','binnen']],
+ ['brievenbus','de','📮',1,'Daar doe je een brief in. Op straat, of in de deur van je huis.','Ik doe de brief in de brievenbus.',['brief','bus']],
+ ['buitenland','het','🌍',1,'Een ander land. Niet Nederland.','Ik stuur een pakket naar het buitenland.',['binnenland','buiten']],
+ ['definitief','','✅',1,'Het is zeker. Het verandert niet meer.','De datum is definitief.',['dagelijks','duidelijk']],
+ ['door','','➡️',1,'Van de ene kant naar de andere kant. Bijvoorbeeld: door de brievenbus.','Het pakket past niet door de brievenbus.',['deur','doos'],['door'],'In Deel 1: door de week = van maandag tot vrijdag. Nu: door de brievenbus = erin.'],
+ ['doos','de','📦',1,'Iets van karton. Je doet er dingen in.','Ik doe de boeken in een doos.',['door','deur']],
+ ['gewicht','het','⚖️',1,'Hoe zwaar iets is. In kilo of gram.','Wat is het gewicht van het pakket?',['gerecht','gewoon']],
+ ['kaart (ansichtkaart)','de','💌',1,'Een kaart met een foto. Je stuurt hem bijvoorbeeld uit de vakantie.','Ik stuur oma een kaart uit Spanje.',['krant','kaas'],['kaart','ansichtkaart'],'In Deel 1: kaart = plattegrond, toegangskaart of menukaart. Nu: een ansichtkaart.'],
+ ['maximaal','','🔝',1,'Niet meer dan.','Het pakket mag maximaal 20 kilo zijn.',['minstens','meestal']],
+ ['ontvangen','','📥',1,'Krijgen.','Heeft u mijn brief ontvangen?',['ontmoeten','vertrekken']],
+ ['pakket','het','📦',1,'Een doos die je met de post stuurt.','Er komt vandaag een pakket.',['pak','paspoort']],
+ ['pakketbezorger','de','🚚',1,'Iemand die pakketten naar je huis brengt.','De pakketbezorger belt aan.',['pakket','postzegel']],
+ ['plakken (postzegel op een brief)','','🩹',1,'Iets vastmaken met lijm. Bijvoorbeeld een postzegel op een brief.','Plak een postzegel op de brief.',['plaats','pakken'],['plakken','plak']],
+ ['post','de','📬',1,'Brieven en pakketten.','Is er post voor mij?',['postcode','postzegel']],
+ ['postzegel','de','🏷️',1,'Een klein plaatje. Je plakt het op een brief. Dan kan de brief met de post mee.','Ik koop tien postzegels.',['postcode','zegel']],
+ ['punt (plaats)','het','📍',1,'Een plek. Bij een pakketpunt haal je een pakket op of breng je een pakket weg.','Je kunt het pakket ophalen bij het punt in de supermarkt.',['pond','pak'],['punt','pakketpunt']],
+ ['tarief','het','💶',1,'De prijs. Bijvoorbeeld wat het kost om een pakket te sturen.','Het tarief voor het buitenland is hoger.',['tafel','tas']],
+ ['versturen','','📤',1,'Sturen. Een brief of pakket naar iemand laten gaan.','Ik wil dit pakket versturen.',['vervoeren','verhuizen']],
+ ['vervoeren','','🚛',1,'Iets of iemand van de ene plaats naar de andere plaats brengen.','De bus vervoert veel mensen.',['versturen','vertrekken']],
+ ['visum','het','🛂',1,'Een papier of stempel in je paspoort. Daarmee mag je een ander land in.','Ik heb een visum nodig voor Amerika.',['vis','vies']],
+
+ // ---------- TAAK 2 (18) ----------
+ ['activiteit','de','🎨',2,'Iets wat je doet. Bijvoorbeeld een cursus of een spelletjesmiddag.','De bibliotheek heeft veel activiteiten.',['advertentie','abonnement']],
+ ['allerlei','','🌈',2,'Veel verschillende soorten.','In de bibliotheek zijn allerlei boeken.',['allebei','allemaal']],
+ ['balie','de','🛎️',2,'Een soort tafel in een gebouw. Daar helpt een medewerker je.','Vraag het aan de balie.',['bank','bak']],
+ ['deelnemen (aan)','','🙋',2,'Meedoen.','Ik neem deel aan de cursus.',['deel','meenemen'],['deelnemen','neem deel']],
+ ['ergens (kan ik u verder nog ergens mee helpen?)','','❓',2,'Iets (in een vraag). Kan ik u ergens mee helpen? = Kan ik u met iets helpen?','Kan ik u verder nog ergens mee helpen?',['eerder','eigen'],['ergens']],
+ ['geldig','','✅',2,'Je kunt het nog gebruiken. Het is niet te oud.','Is uw paspoort nog geldig?',['geld','gelukkig']],
+ ['legitimatiebewijs','het','🪪',2,'Een paspoort, ID-kaart of rijbewijs. Daarmee laat je zien wie je bent.','Neem een legitimatiebewijs mee.',['lidmaatschap','vaardigheid']],
+ ['lid','het','👥',2,'Iemand die bij een club of bij de bibliotheek hoort.','Ik ben lid van de bibliotheek.',['lied','lijst']],
+ ['lidmaatschap','het','🎫',2,'Je bent lid. Je betaalt bijvoorbeeld elk jaar.','Het lidmaatschap kost 40 euro per jaar.',['lid','legitimatiebewijs']],
+ ['openbaar','','🏛️',2,'Voor iedereen.','De openbare bibliotheek is voor iedereen.',['open','onderweg'],['openbaar','openbare']],
+ ['organiseren','','📅',2,'Iets voorbereiden en regelen. Bijvoorbeeld een feest.','De bibliotheek organiseert een taalcafé.',['oefenen','overleggen']],
+ ['overdag','','☀️',2,'Als het licht is. Niet ’s avonds of ’s nachts.','Overdag werk ik. ’s Avonds ga ik naar de les.',['overal','vandaag']],
+ ['overheid','de','🏛️',2,'De officiële organisaties van een land. Bijvoorbeeld de regering en de gemeente.','Op de website van de overheid staat veel informatie.',['overdag','overal']],
+ ['regelmatig','','🔁',2,'Vaak, en steeds na dezelfde tijd.','Ik ga regelmatig naar de bibliotheek.',['regelen','redelijk']],
+ ['terugbrengen','','↩️',2,'Iets weer naar de goede plek of persoon brengen.','Ik breng de boeken terug.',['terughebben','meenemen']],
+ ['tijdschrift','het','📰',2,'Een blad met teksten en foto’s. Er komt elke week of maand een nieuw.','Ik lees een tijdschrift over koken.',['tijd','tafel']],
+ ['vaardigheid (vaardigheden)','de','🛠️',2,'Iets wat je kunt. Bijvoorbeeld werken met de computer.','In de bibliotheek kun je nieuwe vaardigheden leren.',['vakantie','voordeel'],['vaardigheid','vaardigheden']],
+ ['verstopt zijn (toilet)','','🚽',2,'Dicht. Het water kan er niet door.','Het toilet is verstopt.',['vergeten','verkeerd'],['verstopt']],
+
+ // ---------- TAAK 3 (16) ----------
+ ['barst','de','💥',3,'Een lijn in glas of steen. Het is bijna kapot.','Er zit een barst in het raam.',['bus','bank']],
+ ['binnen','','🏠',3,'In een huis of gebouw. Niet buiten.','Kom binnen! Het regent.',['buiten','binnenland']],
+ ['branden (het lampje brandt)','','💡',3,'Licht geven. Het lampje is aan.','Het rode lampje brandt.',['bellen','brengen'],['branden','brandt']],
+ ['druk','','🏃',3,'Veel werk of veel mensen. Je hebt weinig tijd.','Ik heb het druk vandaag.',['duur','dus']],
+ ['eerder','','⏪',3,'Vroeger. Niet zo laat.','Kan de monteur eerder komen?',['eerst','ergens']],
+ ['haast','de','⏩',3,'Je moet snel zijn. Je hebt weinig tijd.','Ik heb haast. Mijn bus gaat zo.',['haar','half']],
+ ['kosten','de','💶',3,'Het geld dat je moet betalen.','De kosten van de reparatie zijn 80 euro.',['koken','kopen'],['kosten'],'In Deel 1: kosten = het werkwoord (het kost 5 euro). Nu: de kosten = het geld dat je betaalt.'],
+ ['lamp','de','💡',3,'Een apparaat dat licht geeft.','De lamp is kapot.',['lang','land']],
+ ['lekken','','💧',3,'Er komt water uit, op een plek waar dat niet moet.','De wasmachine lekt.',['lekker','lenen'],['lekken','lekt']],
+ ['liggen','','🛏️',3,'Plat op iets zijn. Of: op een plek zijn.','Het pakket ligt bij de buren.',['lijken','lezen'],['liggen','ligt']],
+ ['meer (geen … meer)','','🚫',3,'Niet meer / geen … meer: vroeger wel, nu niet.','De wasmachine doet het niet meer.',['meestal','meneer'],['meer'],'In Deel 1: meer = een groter aantal. Nu: niet meer = het is gestopt.'],
+ ['oplossen','','🔧',3,'Zorgen dat een probleem weggaat. Dan is het weer goed.','De monteur lost het probleem op.',['ophalen','opstaan'],['oplossen','opgelost']],
+ ['plek','de','📍',3,'Een plaats.','Waar is een plek om te parkeren?',['plein','plan']],
+ ['reparatie','de','🔧',3,'Het maken van iets dat kapot is.','De reparatie duurt twee dagen.',['reclame','rekening']],
+ ['storing','de','⚠️',3,'Een apparaat of systeem werkt even niet goed.','Er is een storing. Het internet doet het niet.',['stroom','straat']],
+ ['stuk','','🛠️',3,'Kapot.','Mijn telefoon is stuk.',['stom','sterk'],['stuk'],'In Thema 1: per stuk = voor één. Nu: stuk = kapot.'],
+
+ // ---------- TAAK 4 (31) ----------
+ ['aangeven (de geboorte van een kind)','','👶',4,'Officieel vertellen aan de gemeente. Bijvoorbeeld: er is een baby geboren.','Ik geef de geboorte van mijn dochter aan.',['aanvragen','aantrekken'],['aangeven']],
+ ['aanmelden, zich','','🙋',4,'Zeggen dat je er bent. Of zeggen dat je mee wilt doen.','Meld u aan bij de balie.',['aanvragen','aantekenen'],['aanmelden','zich aanmelden','meld aan']],
+ ['afdeling','de','🏢',4,'Een deel van een groot bedrijf of gebouw.','De afdeling Burgerzaken is op de eerste verdieping.',['afval','afspraak']],
+ ['afval','het','🗑️',4,'Dingen die je weggooit.','Het afval gaat in de vuilnisbak.',['afdeling','apart']],
+ ['ambtenaar','de','🧑‍💼',4,'Iemand die werkt bij de gemeente of bij de overheid.','De ambtenaar helpt mij met mijn paspoort.',['ambassade','monteur']],
+ ['apotheek','de','💊',4,'Een winkel met medicijnen.','Ik haal mijn medicijnen bij de apotheek.',['afdeling','appartement']],
+ ['bewoner','de','🏘️',4,'Iemand die in een huis, straat of stad woont.','Alle bewoners van de straat komen naar het feest.',['bewijs','wonen']],
+ ['bezoek','het','🚪',4,'Mensen die bij je komen. Of: naar iemand toe gaan.','We krijgen vanavond bezoek.',['bezorgen','bewijs']],
+ ['burger','de','🧍',4,'Iemand die in een land of stad woont.','De gemeente helpt de burgers.',['burgerzaken','buurman']],
+ ['burgerzaken','de','🗂️',4,'De afdeling van de gemeente voor paspoorten, ID-kaarten en verhuizen.','Voor een nieuw paspoort ga je naar Burgerzaken.',['burger','boodschappen']],
+ ['doorgeven','','📞',4,'Een bericht of informatie aan iemand vertellen.','Geef je nieuwe adres door aan de gemeente.',['teruggeven','uitgeven'],['doorgeven','geef door']],
+ ['functie','de','💼',4,'Je werk of je taak. Bijvoorbeeld: zij heeft de functie van ambtenaar.','Wat is uw functie? – Ik ben monteur.',['fiets','folder']],
+ ['gang','de','🚶',4,'Een lange, smalle ruimte in een gebouw. Er zijn deuren naar de kamers.','Loop de gang door. De balie is aan het eind.',['gat','gast'],['gang'],'In Thema 1: gaat uw gang = u mag het doen. Nu: de gang = een ruimte in een gebouw.'],
+ ['gebeuren','','❗',4,'Er is iets. Er verandert iets.','Wat is er gebeurd?',['gebruiken','geboren'],['gebeuren','gebeurd']],
+ ['gemeente','de','🏙️',4,'De stad of het dorp, en de organisatie die daar alles regelt.','Je nieuwe adres geef je door aan de gemeente.',['gemeentehuis','gemiddeld']],
+ ['gemeentehuis','het','🏛️',4,'Het gebouw van de gemeente.','Het gemeentehuis is op vrijdag om 12 uur gesloten.',['gemeente','gezin']],
+ ['gesloten (sluiten)','','🔒',4,'Dicht. Niet open.','Op zondag is het gemeentehuis gesloten.',['gestolen','geslaagd'],['gesloten','sluiten']],
+ ['houden','','✋',4,'Iets niet weggeven. Het blijft van jou.','Mag ik deze folder houden?',['hout','halen'],['houden'],'In Deel 1: houden van = iets of iemand heel leuk vinden. Nu: houden = niet weggeven.'],
+ ['identiteitsbewijs (ID)','het','🪪',4,'Een officiële kaart of een boekje. Daarop staat wie je bent. Ook wel: ID.','Neem je identiteitsbewijs mee naar het gemeentehuis.',['nationaliteit','gemeentehuis'],['identiteitsbewijs','id']],
+ ['omdat','','🔗',4,'Je geeft een reden. Waarom? Omdat …','Ik bel de monteur, omdat de wasmachine lekt.',['ook','om']],
+ ['omwisselen','','🔄',4,'Iets geven en iets anders terugkrijgen.','Ik wil mijn buitenlandse rijbewijs omwisselen voor een Nederlands rijbewijs.',['overstappen','ophalen']],
+ ['ondergronds','','⬇️',4,'Onder de grond.','In mijn straat staat een ondergrondse container voor afval.',['onderweg','onder'],['ondergronds','ondergrondse']],
+ ['papier','het','📄',4,'Daar schrijf je op. Kranten en boeken zijn van papier.','Oud papier gaat in de blauwe container.',['paar','plein']],
+ ['regelen','','📋',4,'Zorgen dat iets goed gaat. Alles klaarmaken.','Ik regel alles voor de verhuizing.',['regenen','regelmatig'],['regelen','regel']],
+ ['schoonmaken','','🧽',4,'Zorgen dat iets niet meer vies is. Met water en zeep.','Ik maak de keuken schoon.',['schrijven','maken'],['schoonmaken','maak schoon']],
+ ['tegenwoordig','','📱',4,'Nu, in deze tijd. Niet vroeger.','Tegenwoordig doe je veel online.',['tegen','tegelijk']],
+ ['verblijfsvergunning','de','🪪',4,'Een kaart van de overheid. Daarmee mag je in Nederland wonen.','Mijn verblijfsvergunning is vijf jaar geldig.',['verjaardag','vervoersbewijs']],
+ ['verschil','het','↔️',4,'Wat bij twee dingen niet hetzelfde is.','Wat is het verschil tussen een paspoort en een ID-kaart?',['verschillend','vertraging']],
+ ['verzamelen','','🧺',4,'Dingen bij elkaar brengen. Bijvoorbeeld afval of postzegels.','Ik verzamel oud papier.',['vervelend','verhuizen']],
+ ['vuilnisbak','de','🗑️',4,'Een bak voor afval.','Gooi het in de vuilnisbak.',['bak','brievenbus']],
+ ['zorgen voor','','🤲',4,'Helpen en er zijn voor iemand. Of: maken dat iets gebeurt.','Ik zorg voor mijn moeder.',['zoeken','zeggen'],['zorgen voor','zorgen','zorg voor']]
+];
+
+const IRR = new Set(['aanvragen','uitvallen (de stroom is uitgevallen)','afhangen (van)','ontvangen','deelnemen (aan)','terugbrengen','liggen','aangeven (de geboorte van een kind)','doorgeven','gesloten (sluiten)','houden']);
+const PLUR = new Set(['kosten','burgerzaken']);
+
+const W = RAW.map(r => {
+  const alt = r[7] && r[7].length ? r[7] : [r[0].replace(/\s*\(.*?\)\s*/g, '').trim()];
+  return { w: r[0], a: r[1], e: r[2], t: r[3], u: r[4], z: r[5], af: r[6] || [], alt, nb: r[8] || '', base: alt[0] };
+});
+
+/* Woorden die (bijna) hetzelfde betekenen of goed bij elkaar passen: die komen niet samen voor als 'fout' antwoord. */
+const SYN = [
+  ['sturen','versturen','vervoeren'], ['legitimatiebewijs','identiteitsbewijs (ID)','paspoort','verblijfsvergunning','bewijs'],
+  ['punt (plaats)','plek'], ['haast','spoed','druk'], ['stuk','storing','uitvallen (de stroom is uitgevallen)','lekken','barst'],
+  ['lid','lidmaatschap','deelnemen (aan)','aanmelden, zich'], ['gemeente','gemeentehuis','burgerzaken','overheid','ambtenaar','afdeling'],
+  ['afval','vuilnisbak','papier','verzamelen'], ['pakket','doos','post','brief','kaart (ansichtkaart)','pakketbezorger','brievenbus'],
+  ['postzegel','tarief','plakken (postzegel op een brief)'], ['aangeven (de geboorte van een kind)','doorgeven','aanvragen','aanmelden, zich'],
+  ['bewoner','burger'], ['regelen','organiseren','zorgen voor'], ['binnen','binnenland'], ['geldig','definitief'],
+  ['reparatie','oplossen','monteur'], ['lamp','branden (het lampje brandt)','stroom'], ['gewicht','zwaar','maximaal'],
+  ['ontvangen','terugbrengen','houden'], ['eerder','tegenwoordig','regelmatig','overdag'], ['activiteit','vaardigheid (vaardigheden)']
+];
+function synOf(w) { return SYN.filter(s => s.includes(w)).flat().concat([w]); }
+
+/* ---------- ZINNEN ----------
+   [zin, goed, [afleiders], [duidelijk fout], taak, h]
+   h = 0: gewone oefening (goed + 1 afleider + 2 duidelijk fout)
+   h = 1: alleen in de herhaling, andere zinnen (goed + 2 afleiders + 1 duidelijk fout) */
+const ZINNEN = [
+  // intro + taak 1 – gewoon
+  ['Er is geen ___. De lamp en de koelkast doen het niet.','stroom',['straat','stoel'],['visum','brief'],1,0],
+  ['Mijn paspoort is oud. Ik moet een nieuw paspoort ___.','aanvragen',['aanmelden','aangeven'],['plakken','vervoeren'],1,0],
+  ['Voor een paspoort heb je een ___ nodig: een foto van je gezicht.','pasfoto',['paspoort','postzegel'],['doos','stroom'],1,0],
+  ['Het pakket weegt 25 kilo. Het is heel ___.','zwaar',['zwart','waar'],['definitief','maximaal'],1,0],
+  ['Ik doe de brief in de ___.','brievenbus',['brief','bus'],['ambassade','visum'],1,0],
+  ['Plak een ___ op de brief. Anders gaat hij niet mee met de post.','postzegel',['postcode','post'],['bedrijf','gewicht'],1,0],
+  ['Ik wil een pakket naar Turkije sturen. Turkije is ___.','buitenland',['binnenland','buiten'],['bedrijf','visum'],1,0],
+  ['Het pakket mag ___ 20 kilo zijn. Niet meer.','maximaal',['minstens','meestal'],['zwaar','definitief'],1,0],
+  ['Hoeveel kost het? – Dat ___ af van het gewicht.','hangt',['haalt','hoort'],['plakt','ontvangt'],1,0],
+  ['Ik stuur de brief ___. Dan moet de ontvanger tekenen.','aangetekend',['aangetrokken','aangemeld'],['zwaar','maximaal'],1,0],
+  ['Heeft u mijn brief al ___?','ontvangen',['ontmoet','vertrokken'],['visum','gewicht'],1,0],
+  ['Ik heb een ___ nodig om naar Amerika te reizen.','visum',['vis','vies'],['doos','stroom'],1,0],
+  ['Bewaar het ___ van verzending. Dan kun je laten zien dat je het pakket hebt verstuurd.','bewijs',['bewoner','bedrijf'],['spoed','zwaar'],1,0],
+  ['Het is ___! De wasmachine lekt en de keuken staat vol water.','spoed',['spoor','sport'],['doos','post'],1,0],
+  ['De ___ maakt de verwarming. Hij komt morgen.','monteur',['meneer','moment'],['pakket','visum'],1,0],
+  ['Het pakket is te groot. Het past niet ___ de brievenbus.','door',['deur','doos'],['zwaar','maximaal'],1,0],
+  // intro + taak 1 – herhaling
+  ['Ik stuur oma een ___ uit Spanje, met een mooie foto.','kaart',['krant','kaas'],['tarief'],1,1],
+  ['De ___ belt aan. Hij heeft een pakket voor mij.','pakketbezorger',['pakket','postzegel'],['visum'],1,1],
+  ['Wat is het ___ van het pakket? – 5 kilo.','gewicht',['gerecht','gewoon'],['spoed'],1,1],
+  ['Het ___ voor een brief naar het buitenland is hoger.','tarief',['tafel','tas'],['zwaar'],1,1],
+  ['De datum is ___. Hij verandert niet meer.','definitief',['dagelijks','duidelijk'],['zwaar'],1,1],
+  ['Mijn broer werkt bij een groot ___ in Amsterdam.','bedrijf',['bedrag','bewijs'],['stroom'],1,1],
+  ['Je kunt het pakket ophalen bij het ___ in de supermarkt.','punt',['pond','pak'],['visum'],1,1],
+  ['Ik doe de boeken in een ___ en ik stuur ze naar mijn zus.','doos',['door','deur'],['stroom'],1,1],
+  ['Voor een visum ga je naar de ___ van dat land.','ambassade',['ambtenaar','advies'],['postzegel'],1,1],
+  ['De stroom is ___. Alles is donker.','uitgevallen',['uitgegaan','uitgestapt'],['zwaar'],1,1],
+  ['Ik ___ je straks een bericht.','stuur',['studeer','spaar'],['plak'],1,1],
+  ['Een grote auto ___ de pakketten naar het buitenland.','vervoert',['verstuurt','vertrekt'],['plakt'],1,1],
+  ['Er is ___ voor je: twee brieven en een pakket.','post',['postcode','pas'],['spoed'],1,1],
+
+  // taak 2 – gewoon
+  ['Ik ben ___ van de bibliotheek. Ik mag boeken lenen.','lid',['lied','lijst'],['balie','overheid'],2,0],
+  ['Het ___ kost 40 euro per jaar.','lidmaatschap',['lid','legitimatiebewijs'],['overdag','balie'],2,0],
+  ['Heeft u een vraag? Ga dan naar de ___.','balie',['bank','bak'],['overheid','vaardigheid'],2,0],
+  ['Neem een ___ mee: je paspoort of je rijbewijs.','legitimatiebewijs',['lidmaatschap','vaardigheid'],['tijdschrift','balie'],2,0],
+  ['Is uw paspoort nog ___? – Nee, het is te oud.','geldig',['geld','gelukkig'],['overdag','openbaar'],2,0],
+  ['In de bibliotheek zijn ___ boeken: over koken, over sport, over Nederland.','allerlei',['allebei','allemaal'],['geldig','overdag'],2,0],
+  ['Ik ___ de boeken op tijd terug.','breng',['heb','bel'],['organiseer','regel'],2,0],
+  ['De bibliotheek ___ op woensdag een taalcafé.','organiseert',['oefent','overlegt'],['geldig','overdag'],2,0],
+  ['___ werk ik. ’s Avonds ga ik naar de les.','Overdag',['Overal','Vandaag'],['Geldig','Openbaar'],2,0],
+  ['Ik ga ___ naar de bibliotheek: elke dinsdag.','regelmatig',['redelijk','regelen'],['geldig','openbaar'],2,0],
+  ['Wil je ___ aan de cursus? Je kunt je aanmelden bij de balie.','deelnemen',['meenemen','delen'],['overheid','tijdschrift'],2,0],
+  ['De bibliotheek is ___: iedereen mag erin.','openbaar',['open','onderweg'],['geldig','regelmatig'],2,0],
+  ['Kan ik u verder nog ___ mee helpen?','ergens',['eerder','eigen'],['overdag','lid'],2,0],
+  // taak 2 – herhaling
+  ['Ik lees een ___ over koken. Er komt elke maand een nieuw.','tijdschrift',['tijd','tafel'],['balie'],2,1],
+  ['Het toilet is ___. Het water gaat niet weg.','verstopt',['vergeten','verkeerd'],['geldig'],2,1],
+  ['In de bibliotheek leer je nieuwe ___. Bijvoorbeeld werken met de computer.','vaardigheden',['vakanties','voordelen'],['balies'],2,1],
+  ['De bibliotheek heeft veel ___ voor kinderen: voorlezen en spelletjes.','activiteiten',['advertenties','abonnementen'],['overheden'],2,1],
+  ['De ___ betaalt een deel van de bibliotheek.','overheid',['overdag','overal'],['balie'],2,1],
+  ['Je moet een ___ legitimatiebewijs meenemen. Niet te oud!','geldig',['geld','gelukkig'],['lid'],2,1],
+  ['Ik neem ___ aan de taalcursus in de bibliotheek.','deel',['mee','door'],['lid'],2,1],
+  ['Breng de boeken op tijd ___. Anders moet je betalen.','terug',['tegen','door'],['lid'],2,1],
+  ['Ik ben al tien jaar ___ van de bibliotheek.','lid',['lied','lijst'],['balie'],2,1],
+
+  // taak 3 – gewoon
+  ['Er zit een ___ in het raam. Het glas is bijna kapot.','barst',['bus','bank'],['haast','plek'],3,0],
+  ['Het rode lampje ___. Er is iets mis met de wasmachine.','brandt',['belt','brengt'],['druk','eerder'],3,0],
+  ['De wasmachine ___. Er staat water op de vloer.','lekt',['lekker','leent'],['eerder','druk'],3,0],
+  ['Mijn telefoon is ___. Hij doet het niet.','stuk',['stom','sterk'],['binnen','eerder'],3,0],
+  ['De monteur ___ het probleem op.','lost',['laat','leest'],['brandt','lekt'],3,0],
+  ['Wat zijn de ___ van de reparatie? – 80 euro.','kosten',['koken','kopen'],['lampen','plekken'],3,0],
+  ['Kan de monteur ___ komen? Niet volgende week, maar morgen.','eerder',['eerst','ergens'],['druk','stuk'],3,0],
+  ['Ik heb ___. Mijn bus gaat over twee minuten.','haast',['haar','half'],['lamp','barst'],3,0],
+  ['Er is een ___. Het internet doet het niet.','storing',['stroom','straat'],['lamp','plek'],3,0],
+  ['De ___ in de keuken is kapot. Het is donker.','lamp',['land','lang'],['haast','barst'],3,0],
+  ['Het pakket ___ bij de buren.','ligt',['lijkt','leest'],['brandt','lekt'],3,0],
+  ['Ik heb het ___ vandaag. Ik heb geen tijd.','druk',['duur','dus'],['stuk','binnen'],3,0],
+  // taak 3 – herhaling
+  ['De ___ duurt twee dagen. Dan is de wasmachine weer goed.','reparatie',['reclame','rekening'],['barst'],3,1],
+  ['Kom ___! Het regent buiten.','binnen',['buiten','binnenland'],['stuk'],3,1],
+  ['Waar is een ___ om de auto te parkeren?','plek',['plein','plan'],['haast'],3,1],
+  ['De verwarming doet het niet ___. Het is koud in huis.','meer',['meest','mee'],['druk'],3,1],
+  ['Het probleem is ___. De monteur heeft het gemaakt.','opgelost',['opgehaald','opgestaan'],['druk'],3,1],
+  ['Het lampje ___ niet meer. Is de lamp stuk?','brandt',['belt','brengt'],['ligt'],3,1],
+  ['Het dak ___. Er komt water in huis.','lekt',['lekker','leent'],['eerder'],3,1],
+
+  // taak 4 – gewoon
+  ['Voor een nieuw paspoort ga je naar het ___.','gemeentehuis',['gemeente','gezin'],['afval','papier'],4,0],
+  ['De afdeling ___ regelt paspoorten en ID-kaarten.','Burgerzaken',['Burgers','Boodschappen'],['Afval','Papier'],4,0],
+  ['Je nieuwe adres geef je door aan de ___.','gemeente',['gemeentehuis','gemiddeld'],['afval','papier'],4,0],
+  ['Mijn dochter is geboren. Ik ga de geboorte ___ bij de gemeente.','aangeven',['aanvragen','aantrekken'],['schoonmaken','verzamelen'],4,0],
+  ['Neem je ___ mee: je paspoort of je ID-kaart.','identiteitsbewijs',['nationaliteit','gemeentehuis'],['afval','papier'],4,0],
+  ['Gooi het ___ in de vuilnisbak.','afval',['afdeling','apart'],['ambtenaar','burger'],4,0],
+  ['Ik haal mijn medicijnen bij de ___.','apotheek',['afdeling','appartement'],['vuilnisbak','gang'],4,0],
+  ['Ik bel de monteur, ___ de wasmachine lekt.','omdat',['ook','om'],['papier','gang'],4,0],
+  ['Op zondag is het gemeentehuis ___.','gesloten',['gestolen','geslaagd'],['ondergronds','tegenwoordig'],4,0],
+  ['Mag ik deze folder ___? – Ja hoor, hij is voor u.','houden',['hout','halen'],['regelen','verzamelen'],4,0],
+  ['Loop de ___ door. De balie is aan het eind.','gang',['gat','gast'],['burger','afval'],4,0],
+  ['Wat is er ___? – De stroom is uitgevallen.','gebeurd',['gebruikt','geboren'],['papier','gang'],4,0],
+  ['Met een ___ mag je in Nederland wonen.','verblijfsvergunning',['verjaardag','vervoersbewijs'],['vuilnisbak','apotheek'],4,0],
+  ['Wat is het ___ tussen een paspoort en een ID-kaart?','verschil',['verschillend','vertraging'],['afval','gang'],4,0],
+  ['___ doe je veel online. Vroeger ging je altijd naar het gemeentehuis.','Tegenwoordig',['Tegen','Tegelijk'],['Ondergronds','Gesloten'],4,0],
+  ['Ik ___ voor mijn moeder. Zij is oud en ziek.','zorg',['zoek','zeg'],['papier','gang'],4,0],
+  // taak 4 – herhaling
+  ['Meld je ___ bij de balie. Dan weten ze dat je er bent.','aan',['af','op'],['gang'],4,1],
+  ['De ___ helpt mij met mijn paspoort. Zij werkt bij de gemeente.','ambtenaar',['ambassade','monteur'],['afval'],4,1],
+  ['Geef je nieuwe telefoonnummer ___ aan de gemeente.','door',['terug','uit'],['papier'],4,1],
+  ['Oud ___ gaat in de blauwe container.','papier',['paar','plein'],['burger'],4,1],
+  ['In mijn straat staat een ___ container voor afval.','ondergrondse',['onderweg','onder'],['tegenwoordig'],4,1],
+  ['Ik maak de keuken ___.','schoon',['school','schoen'],['afval'],4,1],
+  ['Kan ik mijn buitenlandse rijbewijs ___ voor een Nederlands rijbewijs?','omwisselen',['overstappen','ophalen'],['gesloten'],4,1],
+  ['Alle ___ van de straat komen naar het feest.','bewoners',['bewijzen','bezoeken'],['papieren'],4,1],
+  ['Wij ___ oud papier voor de school.','verzamelen',['vervelen','verhuizen'],['gang'],4,1],
+  ['Ik ___ alles voor de verhuizing: de bus, de dozen en de hulp.','regel',['regen','reken'],['schoon'],4,1],
+  ['Wat is uw ___? – Ik ben ambtenaar.','functie',['fiets','folder'],['afval'],4,1],
+  ['We krijgen vanavond ___: mijn ouders komen eten.','bezoek',['bewijs','bezorgen'],['papier'],4,1],
+  ['Op welke ___ werkt u? – Bij Burgerzaken.','afdeling',['afval','afspraak'],['gang'],4,1],
+  ['De gemeente zorgt goed voor de ___: de mensen die in de stad wonen.','burgers',['buren','burgerzaken'],['papieren'],4,1]
+];
+
+/* ---------- ANDER WOORD (vervangspel) ----------
+   [zin met [gewone woorden], goed, [afleiders], [duidelijk fout], taak] */
+const ANDER = [
+  ['Het pakket is [niet licht]. Het weegt 25 kilo.','zwaar',['zwart','waar'],['definitief','maximaal'],1],
+  ['Ik wil een brief [sturen].','versturen',['vervoeren','verkopen'],['plakken','visum'],1],
+  ['Heeft u mijn brief [gekregen]?','ontvangen',['ontmoet','vertrokken'],['zwaar','definitief'],1],
+  ['Het pakket mag [niet meer dan] 20 kilo zijn.','maximaal',['minstens','meestal'],['zwaar','definitief'],1],
+  ['Kom snel! Het is [heel dringend]: de keuken staat vol water.','spoed',['spoor','sport'],['zwaar','doos'],1],
+  ['Ik stuur een pakket naar [een ander land].','het buitenland',['het binnenland','buiten'],['de brievenbus','het visum'],1],
+  ['De datum is [zeker, hij verandert niet meer].','definitief',['dagelijks','duidelijk'],['zwaar','maximaal'],1],
+  ['Er is geen [elektriciteit]. De lamp doet het niet.','stroom',['straat','storing'],['visum','post'],1],
+
+  ['Ik ga [vaak, elke week] naar de bibliotheek.','regelmatig',['redelijk','regelen'],['geldig','openbaar'],2],
+  ['Ik wil [meedoen] aan de cursus.','deelnemen',['meenemen','delen'],['geldig','overdag'],2],
+  ['Er zijn [veel verschillende] boeken.','allerlei',['allebei','allemaal'],['geldig','overdag'],2],
+  ['De bibliotheek is [voor iedereen].','openbaar',['open','onderweg'],['geldig','regelmatig'],2],
+  ['[Als het licht is] werk ik. ’s Avonds leer ik Nederlands.','Overdag',['Overal','Vandaag'],['Geldig','Openbaar'],2],
+  ['Breng de boeken op tijd [weer naar de bibliotheek].','terug',['tegen','door'],['lid','balie'],2],
+  ['Je paspoort is [niet te oud, je kunt het nog gebruiken].','geldig',['geld','gelukkig'],['overdag','lid'],2],
+
+  ['Mijn fiets is [kapot].','stuk',['stom','sterk'],['binnen','eerder'],3],
+  ['Kom [in huis]!','binnen',['buiten','binnenland'],['stuk','druk'],3],
+  ['Kan de monteur [vroeger] komen?','eerder',['eerst','ergens'],['druk','stuk'],3],
+  ['De monteur [maakt het probleem weer goed].','lost het probleem op',['haalt het probleem op','staat het probleem op'],['brandt het probleem','lekt het probleem'],3],
+  ['Waar is een [plaats] om te parkeren?','plek',['plein','plan'],['lamp','barst'],3],
+  ['De wasmachine doet het [nu niet, maar vroeger wel].','niet meer',['niet meest','niet mee'],['niet druk','niet binnen'],3],
+  ['Ik heb het [heel veel te doen].','druk',['duur','dus'],['stuk','binnen'],3],
+
+  ['Op zondag is het gemeentehuis [dicht].','gesloten',['gestolen','geslaagd'],['ondergronds','tegenwoordig'],4],
+  ['[Nu, in deze tijd] doe je veel online.','Tegenwoordig',['Tegen','Tegelijk'],['Gesloten','Ondergronds'],4],
+  ['Wat is er [aan de hand]?','gebeurd',['gebruikt','geboren'],['papier','tegenwoordig'],4],
+  ['Gooi [de dingen die je niet meer wilt] in de vuilnisbak.','het afval',['de afdeling','het bezoek'],['de ambtenaar','de burger'],4],
+  ['Ik wil mijn rijbewijs [ruilen] voor een Nederlands rijbewijs.','omwisselen',['overstappen','ophalen'],['gesloten','tegenwoordig'],4],
+  ['Mag ik deze folder [hebben en niet teruggeven]?','houden',['hout','halen'],['regelen','verzamelen'],4],
+  ['Ik [vertel] mijn nieuwe adres aan de gemeente.','geef … door',['geef … terug','geef … uit'],['maak … schoon','vraag … aan'],4]
+];
+
+/* ---------- WAT ZEG JE? ----------
+   [situatie, goed, [afleiders], [duidelijk fout], taak] */
+const SITU = [
+  ['Je wilt een pakket naar Marokko sturen. Wat vraag je?','Wat kost een pakket naar het buitenland?',['Wat kost een pakket naar het binnenland?','Wat kost een pakket naar buiten?'],['Hoe laat is het?','Waar woon je?'],1],
+  ['Je wilt zeker weten dat de brief aankomt. Wat zeg je?','Ik wil de brief aangetekend versturen.',['Ik wil de brief aangetrokken versturen.','Ik wil de brief aangemeld versturen.'],['Ik heb honger.','Ik ben jarig.'],1],
+  ['Je vraagt: "Hoeveel kost het?" De medewerker weet het nog niet. Wat zegt hij?','Dat hangt af van het gewicht.',['Dat hangt af van de stroom.','Dat haalt af van het gewicht.'],['Ik woon in Hoorn.','Mijn zus heet Sara.'],1],
+  ['De stroom is uitgevallen. Je belt de monteur. Wat zeg je?','Het is spoed: we hebben geen stroom.',['Het is spoor: we hebben geen stroom.','Het is spoed: we hebben geen straat.'],['Ik wil een postzegel.','Ik ben jarig.'],1],
+  ['Je paspoort is niet meer geldig. Wat doe je?','Ik vraag een nieuw paspoort aan.',['Ik meld een nieuw paspoort aan.','Ik geef een nieuw paspoort aan.'],['Ik koop een postzegel.','Ik ga slapen.'],1],
+
+  ['Je wilt boeken lenen in de bibliotheek. Wat vraag je?','Hoe word ik lid?',['Hoe word ik lied?','Hoe word ik balie?'],['Waar is het station?','Hoe oud ben je?'],2],
+  ['De medewerker vraagt: "Heeft u een legitimatiebewijs?" Wat zeg je?','Ja, hier is mijn paspoort.',['Ja, hier is mijn tijdschrift.','Ja, hier is mijn lidmaatschap.'],['Ik heb haast.','Het regent.'],2],
+  ['De medewerker vraagt: "Kan ik u verder nog ergens mee helpen?" Je bent klaar. Wat zeg je?','Nee, dank u wel. Dat was het.',['Nee, dank u. Ik ben ergens.','Ja, ik help u ergens mee.'],['Ik woon in Hoorn.','Hoe laat is het?'],2],
+  ['Je wilt meedoen aan het taalcafé. Wat vraag je?','Kan ik deelnemen aan het taalcafé?',['Kan ik meenemen aan het taalcafé?','Kan ik organiseren aan het taalcafé?'],['Waar is de wc?','Ik ben moe.'],2],
+  ['Het toilet in de bibliotheek doet het niet. Wat zeg je bij de balie?','Het toilet is verstopt.',['Het toilet is vergeten.','Het toilet is verkeerd.'],['Ik ben lid.','Ik lees een tijdschrift.'],2],
+
+  ['Je wasmachine lekt. Je belt de monteur. Wat zeg je?','Mijn wasmachine lekt. Kunt u komen?',['Mijn wasmachine is lekker. Kunt u komen?','Mijn wasmachine leent. Kunt u komen?'],['Ik heb een paspoort.','Het is maandag.'],3],
+  ['De monteur kan pas volgende week. Dat is te laat. Wat zeg je?','Kunt u niet eerder komen?',['Kunt u niet eerst komen?','Kunt u niet ergens komen?'],['Ik ben lid.','Waar woon je?'],3],
+  ['Je wilt weten hoeveel de reparatie kost. Wat vraag je?','Wat zijn de kosten van de reparatie?',['Wat zijn de koken van de reparatie?','Wat zijn de kopen van de reparatie?'],['Waar is de balie?','Ik heb haast.'],3],
+  ['Het internet doet het niet. Je belt de helpdesk. Wat zeg je?','Er is een storing. Het internet doet het niet meer.',['Er is een stroom. Het internet doet het niet mee.','Er is een straat. Het internet doet het niet meer.'],['Ik wil een postzegel.','Ik ben jarig.'],3],
+
+  ['Je bent verhuisd. Wat doe je?','Ik geef mijn nieuwe adres door aan de gemeente.',['Ik geef mijn nieuwe adres terug aan de gemeente.','Ik geef mijn nieuwe adres uit aan de gemeente.'],['Ik koop een lamp.','Ik ga slapen.'],4],
+  ['Je baby is geboren. Wat moet je doen?','Ik geef de geboorte aan bij de gemeente.',['Ik vraag de geboorte aan bij de gemeente.','Ik geef de geboorte door bij de apotheek.'],['Ik maak de keuken schoon.','Ik ben lid.'],4],
+  ['Je komt in het gemeentehuis. Je hebt een afspraak. Wat zeg je bij de balie?','Goedemorgen, ik wil me aanmelden. Ik heb een afspraak.',['Goedemorgen, ik wil me aangeven. Ik heb een afspraak.','Goedemorgen, ik wil me aanvragen. Ik heb een afspraak.'],['Mijn wasmachine lekt.','Ik heb honger.'],4],
+  ['Je zoekt Burgerzaken in het gemeentehuis. Wat vraag je?','Waar is de afdeling Burgerzaken?',['Waar is het afval van Burgerzaken?','Waar is de afspraak Burgerzaken?'],['Hoe oud ben je?','Ik ben moe.'],4],
+  ['Je bent te laat. Je vertelt waarom. Wat zeg je?','Ik ben te laat, omdat de bus niet reed.',['Ik ben te laat, ook de bus niet reed.','Ik ben te laat, om de bus niet reed.'],['Ik ben lid van de bibliotheek.','Het gemeentehuis is gesloten.'],4]
+];
+
+
+W.forEach(x => x.th = 2);
+return { nr: 2, titel: "Wat kan ik voor u doen?", W, ZINNEN, ANDER, SITU, synOf, PLUR };
+})();
+THEMES[3] = (function () {
+const THEMA = 3;
+const AFL = THEMA <= 3 ? 1 : 2;   // afleiders bij gewone oefeningen (t/m thema 3: 1, daarna 2)
+const AFL_H = 2;                  // afleiders bij de herhaling: altijd 2
+const HINT = THEMA <= 2;          // beginletter als hulp bij Typen (alleen thema 1-2, niet bij herhaling)
+const KEY = 'code2_t' + THEMA + '_moeilijk';
+
+const TAKEN = [['all','Alles'],[1,'Intro + taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4'],['moeilijk','⭐ Moeilijk']];
+const TITELS = {
+  all: 'Alle woorden van thema 3',
+  1: 'Intro + 3.1 · Een telefoongesprek voeren met de praktijk van de huisarts',
+  2: '3.2 · Klachten beschrijven bij de huisarts',
+  3: '3.3 · Informatie over medicijnen begrijpen',
+  4: '3.4 · Vragen stellen en beantwoorden over gezond leven',
+  moeilijk: 'Jouw moeilijke woorden. Ze staan alleen op dit apparaat.'
+};
+
+/* [woord, lidwoord, emoji, taak, uitleg, voorbeeldzin, afleiders (lijken op het woord), goede antwoorden bij typen, nieuwe betekenis]
+   Intro en taak 1 zijn samen: taak 1. */
+const RAW = [
+ // ---------- INTRO: het lichaam (18) ----------
+ ['arm','de','💪',1,'Het lichaamsdeel tussen je schouder en je hand.','Ik heb pijn in mijn arm.',['warm','raam']],
+ ['been','het','🦵',1,'Daarmee loop je. Je hebt er twee.','Mijn been doet zeer.',['bed','beneden']],
+ ['borst','de','🫁',1,'De voorkant van je lichaam, tussen je nek en je buik.','Ik heb pijn op mijn borst.',['brood','barst']],
+ ['buik','de','🍽️',1,'Het midden van je lichaam, aan de voorkant. Daar gaat je eten naartoe.','Mijn buik doet zeer.',['bruin','boek']],
+ ['hand','de','✋',1,'Aan het eind van je arm. Met vijf vingers.','Geef me je hand.',['land','hout']],
+ ['hoofd','het','🙂',1,'Het bovenste deel van je lichaam. Daar zitten je ogen, je neus en je mond.','Mijn hoofd doet pijn.',['hout','houden']],
+ ['keel','de','🗣️',1,'Binnen in je hals. Eten en drinken gaan erdoor naar binnen.','Ik heb pijn in mijn keel.',['kaal','keer']],
+ ['knie','de','🦵',1,'Het midden van je been. Daar kun je je been buigen.','Ik ben op mijn knie gevallen.',['knap','klein']],
+ ['lichaam','het','🧍',1,'Alles van jou: je hoofd, je armen, je buik en je benen.','Sporten is goed voor je lichaam.',['licht','leeftijd']],
+ ['mond','de','👄',1,'Daarmee eet en praat je.','Doe uw mond open.',['maand','mooi']],
+ ['nek','de','🧣',1,'De achterkant van je hals, onder je hoofd.','Mijn nek doet pijn.',['net','nieuw']],
+ ['neus','de','👃',1,'Daarmee ruik je. Hij zit midden in je gezicht.','Mijn neus is dicht.',['nee','nieuw']],
+ ['oor','het','👂',1,'Daarmee hoor je. Je hebt er twee.','Ik heb pijn in mijn oor.',['oog','door']],
+ ['rug','de','🔙',1,'De achterkant van je lichaam.','Ik kan niet zitten. Mijn rug doet pijn.',['brug','rood']],
+ ['schouder','de','🤷',1,'Tussen je nek en je arm.','Hij legt zijn hand op mijn schouder.',['schoen','school']],
+ ['teen','de','🦶',1,'Aan je voet. Je hebt tien tenen.','Mijn grote teen doet zeer.',['tien','tegen']],
+ ['vinger','de','☝️',1,'Aan je hand. Je hebt tien vingers.','Ik heb een ring om mijn vinger.',['vinden','vier']],
+ ['voet','de','🦶',1,'Onder aan je been. Daar zit je schoen om.','Mijn schoen is te klein voor mijn voet.',['voor','vaak']],
+
+ // ---------- TAAK 1 (20) ----------
+ ['assistent(e)','de','🧑‍⚕️',1,'Hij of zij helpt de dokter. De assistente neemt de telefoon op.','De assistente maakt een afspraak voor mij.',['afspraak','afdeling'],['assistente','assistent']],
+ ['contact opnemen met','','📞',1,'Bellen, mailen of langskomen. Je laat iets van je horen.','Neem contact op met de huisarts.',['contant','kantoor'],['contact opnemen','contact opnemen met','neem contact op']],
+ ['dik','','🫧',1,'Hier: groter dan normaal, omdat het pijn doet. Bijvoorbeeld een dikke knie.','Mijn knie is dik en rood.',['dicht','druk'],['dik','dikke']],
+ ['dokter','de','🩺',1,'Een arts. Hij of zij helpt als je ziek bent.','Ik ga naar de dokter.',['docent','dochter']],
+ ['dringend','','⏰',1,'Het moet snel. Het kan niet wachten.','Het is dringend. Kan de dokter vandaag komen?',['drinken','dragen']],
+ ['drukken','','👆',1,'Met je vinger op een knop duwen.','Druk op 1 voor de assistente.',['druk','drinken'],['drukken','druk'],'In Thema 2: druk = veel te doen. Nu: drukken = op een knop duwen.'],
+ ['gevaar','het','⚠️',1,'Er kan iets ergs gebeuren.','Is er gevaar? Bel dan 112.',['gevoel','gewicht']],
+ ['hulp','de','🆘',1,'Iemand helpt je.','Ik heb hulp nodig.',['hoofd','huis']],
+ ['keuze','de','🔢',1,'Je kiest iets. Bijvoorbeeld: kies 1, 2 of 3.','Maak een keuze uit het menu.',['keuken','keel']],
+ ['koorts','de','🌡️',1,'Je lichaam is te warm, omdat je ziek bent. Bijvoorbeeld 39 graden.','Mijn dochter heeft koorts.',['kort','koud']],
+ ['leven','het','❤️',1,'Je bent er. Je bent niet dood.','Bel 112 als iemands leven in gevaar is.',['lenen','les']],
+ ['pijn','de','🤕',1,'Het doet zeer.','Waar heeft u pijn?',['pijnstiller','plein']],
+ ['praktijk','de','🏥',1,'Het gebouw of kantoor van de huisarts.','De praktijk is open van 8 tot 5.',['praten','prettig']],
+ ['recept (van de dokter)','het','📝',1,'Een papier van de dokter. Daarmee haal je medicijnen bij de apotheek.','De dokter schrijft een recept voor u.',['reclame','rekening'],['recept'],'Een recept is ook: hoe je iets kookt. Nu: een recept van de dokter.'],
+ ['spoedgeval','het','🚑',1,'Iets heel ergs. Er moet meteen hulp komen.','Is het een spoedgeval? Bel dan meteen.',['spoed','spreekuur']],
+ ['spreekuur','het','🗓️',1,'De tijd dat je met de dokter kunt praten.','Het spreekuur is elke ochtend.',['spreken','spoedgeval']],
+ ['sterkte','','🍀',1,'Dat zeg je tegen iemand die ziek is of het moeilijk heeft.','Ben je ziek? Sterkte!',['sterk','straks']],
+ ['vallen','','🤸',1,'Plotseling naar beneden gaan.','Ik ben van de trap gevallen.',['varen','vragen'],['vallen','gevallen']],
+ ['ziek','','🤒',1,'Niet gezond. Je voelt je niet goed.','Ik ben ziek. Ik blijf thuis.',['zie','zeker']],
+ ['ziekenhuis','het','🏥',1,'Een groot gebouw met veel dokters en bedden. Daar ga je naartoe als je erg ziek bent.','Mijn opa ligt in het ziekenhuis.',['ziek','zielig']],
+
+ // ---------- TAAK 2 (34) ----------
+ ['beslissen','','🤔',2,'Kiezen wat je gaat doen.','De dokter beslist: u moet naar het ziekenhuis.',['bespreken','bestellen']],
+ ['bewegen','','🏃',2,'Niet stil zitten. Lopen, fietsen, sporten.','Beweeg elke dag een half uur.',['bewaren','bewijs'],['bewegen','beweeg']],
+ ['blijven','','🏠',2,'Niet weggaan. Op dezelfde plek zijn.','Ik ben ziek. Ik blijf thuis.',['blij','bellen'],['blijven','blijf']],
+ ['dood','','🥀',2,'Niet meer levend.','De plant is dood.',['doos','door']],
+ ['gauw','','⏩',2,'Snel. Binnenkort.','Word gauw beter!',['gaan','graag']],
+ ['gevoel','het','💭',2,'Wat je voelt. Bijvoorbeeld pijn, of blij zijn.','Ik heb een raar gevoel in mijn buik.',['gevaar','geval']],
+ ['gezondheid','de','💚',2,'Hoe gezond je bent.','Roken is slecht voor je gezondheid.',['gezond','gezin']],
+ ['hoesten','','😷',2,'Een geluid maken met je keel als je verkouden bent. Kuch, kuch!','Ik hoest al een week.',['hoeven','houden'],['hoesten','hoest']],
+ ['hoofdpijn','de','🤕',2,'Pijn in je hoofd.','Ik heb hoofdpijn.',['hoofd','pijnstiller']],
+ ['klacht','de','📋',2,'Een probleem met je gezondheid. Bijvoorbeeld pijn of koorts.','Wat zijn uw klachten?',['klant','klas'],['klacht','klachten']],
+ ['koffer','de','🧳',2,'Een grote tas voor je kleren als je op reis gaat.','Mijn koffer is heel zwaar.',['koffie','koorts']],
+ ['kuur (antibioticumkuur)','de','💊',2,'Je neemt een tijd lang elke dag een medicijn. Bijvoorbeeld een week.','Maak de kuur altijd af.',['kaart','keer'],['kuur']],
+ ['last hebben van','','😣',2,'Ergens pijn of problemen door hebben.','Ik heb last van mijn rug.',['lachen','lijken'],['last hebben van','last','last van']],
+ ['medicijn','het','💊',2,'Iets wat je inneemt om beter te worden. Bijvoorbeeld een pil.','Neem het medicijn drie keer per dag.',['mededeling','meisje']],
+ ['midden','','🎯',2,'Niet links, niet rechts, maar in het centrum.','De pijn zit in het midden van mijn rug.',['middag','mooi']],
+ ['moe','','😴',2,'Je wilt slapen. Je hebt geen energie.','Ik ben heel moe.',['mooi','moeder']],
+ ['onderzoeken','','🔍',2,'Goed kijken wat er is. De dokter kijkt goed naar je lichaam.','De dokter onderzoekt mijn knie.',['onderhandelen','ontvangen'],['onderzoeken','onderzoekt']],
+ ['optillen','','🏋️',2,'Iets omhoog doen met je handen.','Til geen zware dingen op.',['ophalen','opletten'],['optillen','til op']],
+ ['overgaan (pijn, ziekte)','','🌤️',2,'Weggaan. De pijn stopt.','De pijn gaat vanzelf over.',['overstappen','overleggen'],['overgaan','gaat over']],
+ ['pakken','','🧳',2,'Hier: je spullen in een koffer of tas doen.','Ik pak mijn koffer voor de vakantie.',['pakket','plakken'],['pakken','pak']],
+ ['pijnstiller','de','💊',2,'Een medicijn tegen pijn. Bijvoorbeeld paracetamol.','Neem een pijnstiller tegen de hoofdpijn.',['pijn','pinpas']],
+ ['sinds','','📅',2,'Vanaf een moment in het verleden tot nu.','Ik heb sinds maandag koorts.',['sinaasappel','soms']],
+ ['spier','de','💪',2,'Daarmee beweeg je. Je hebt spieren in je armen en benen.','Na het sporten doen mijn spieren pijn.',['spiegel','spoor'],['spier','spieren']],
+ ['vanzelf','','✨',2,'Zonder hulp. Zonder medicijn.','De pijn gaat vanzelf over.',['vandaag','zelf']],
+ ['vasthouden','','🤝',2,'Iets in je hand houden. Niet loslaten.','Houd mijn hand vast.',['vast','houden'],['vasthouden','houd vast']],
+ ['verkouden zijn','','🤧',2,'Je neus is dicht of loopt, en je hoest. Je bent een beetje ziek.','Ik ben verkouden.',['verhuizen','vervelend'],['verkouden','verkouden zijn']],
+ ['verwijzen','','➡️',2,'De dokter stuurt je naar een andere dokter of naar het ziekenhuis.','De huisarts verwijst mij naar het ziekenhuis.',['vervoeren','verschil'],['verwijzen','verwijst']],
+ ['voelen, zich','','🙂',2,'Hoe gaat het met je? Goed of niet goed.','Ik voel me niet lekker.',['volgen','vallen'],['voelen','zich voelen','voel']],
+ ['voorschrijven','','✍️',2,'De dokter schrijft een medicijn op. Dat haal je bij de apotheek.','De dokter schrijft een pijnstiller voor.',['voorstellen','beschrijven'],['voorschrijven','schrijft voor']],
+ ['voorzichtig','','🐢',2,'Goed opletten, zodat er niets gebeurt.','Wees voorzichtig met je rug.',['vooral','voordeel']],
+ ['waarschijnlijk','','🤷',2,'Bijna zeker. Maar niet 100 procent.','Het is waarschijnlijk griep.',['waarom','waar']],
+ ['zeer doen','','😖',2,'Pijn doen.','Mijn voet doet zeer.',['zeker','zien'],['zeer doen','zeer','doet zeer']],
+ ['zoiets','','〰️',2,'Iets wat erop lijkt.','Heeft u koorts of zoiets?',['zo','zelf']],
+ ['zuchten','','😮‍💨',2,'Hoorbaar en diep ademen. Bijvoorbeeld als je moe bent.','Zucht maar eens diep.',['zoeken','zetten'],['zuchten','zucht']],
+
+ // ---------- TAAK 3 (25) ----------
+ ['achter elkaar','','⏭️',3,'Het een direct na het ander.','Neem dit niet langer dan vijf dagen achter elkaar.',['achter','tegelijk'],['achter elkaar']],
+ ['ademen','','🌬️',3,'Lucht naar binnen en naar buiten laten gaan, door je neus of je mond.','Adem rustig in en uit.',['antwoorden','aanmelden'],['ademen','adem']],
+ ['bewaren','','🗄️',3,'Iets ergens leggen en houden voor later.','Bewaar het medicijn in de koelkast.',['bewegen','bewijs'],['bewaren','bewaar']],
+ ['bijsluiter','de','📄',3,'Een papier in de doos van een medicijn. Daarop staat hoe je het moet gebruiken.','Lees eerst de bijsluiter.',['bijwerking','bijna']],
+ ['bijwerking','de','⚠️',3,'Een slecht effect van een medicijn. Bijvoorbeeld: je wordt moe of misselijk.','Hoofdpijn kan een bijwerking zijn.',['bijsluiter','werken']],
+ ['blijven (werken)','','🔁',3,'Doorgaan. Niet stoppen.','Het medicijn blijft 8 uur werken.',['blij','bellen'],['blijven','blijft'],'In taak 2: blijven = niet weggaan. Nu: blijven werken = doorgaan.'],
+ ['borstvoeding','de','🤱',3,'Een moeder geeft haar baby melk uit haar borst.','Geeft u borstvoeding? Vraag het eerst aan de dokter.',['borst','boodschappen']],
+ ['dicht','','🚪',3,'Niet open. Je neus zit dicht: je kunt er niet door ademen.','Mijn neus zit dicht.',['dik','licht']],
+ ['dosering','de','🥄',3,'Hoeveel je van een medicijn moet nemen, en hoe vaak.','De dosering is twee tabletten per dag.',['doos','datum']],
+ ['drogist','de','🏪',3,'Een winkel voor zeep, shampoo en medicijnen zonder recept.','Pijnstillers koop je bij de drogist.',['dragen','droog']],
+ ['droog','','🏜️',3,'Niet nat.','Mijn keel is heel droog.',['drogist','dood']],
+ ['druppel','de','💧',3,'Een heel klein beetje water of medicijn.','Doe twee druppels in elk oor.',['drukken','drinken'],['druppel','druppels']],
+ ['enkele','','🔢',3,'Een paar. Niet veel.','Na enkele dagen gaat de pijn over.',['eigen','eerder']],
+ ['geneesmiddel','het','💊',3,'Een medicijn.','Lees de bijsluiter van het geneesmiddel.',['genezen','gemiddeld']],
+ ['genezen','','🌱',3,'Weer gezond worden.','Je arm is bijna genezen.',['geven','genoeg'],['genezen','geneest']],
+ ['griep','de','🤒',3,'Een ziekte met koorts, hoesten en pijn in je spieren.','Ik heb griep. Ik blijf in bed.',['grijs','groep']],
+ ['misselijkheid','de','🤢',3,'Je voelt je niet goed in je buik. Je wilt niet eten.','Misselijkheid is een bijwerking van dit medicijn.',['mogelijkheid','misschien']],
+ ['opletten','','👀',3,'Goed kijken en luisteren.','Let op! Dit medicijn maakt je moe.',['optillen','opstaan'],['opletten','let op']],
+ ['schade','de','💥',3,'Iets is kapot of slechter geworden.','Te veel medicijnen geven schade aan je lichaam.',['schat','school']],
+ ['sluiten','','🔒',3,'Dichtdoen.','Sluit de fles goed.',['slapen','luisteren'],['sluiten','sluit'],'In Thema 2: gesloten = dicht. Nu: sluiten = dichtdoen.'],
+ ['snuiten','','🤧',3,'Lucht hard door je neus blazen, in een zakdoek.','Snuit je neus.',['snijden','sluiten'],['snuiten','snuit']],
+ ['volwassene','de','🧑',3,'Iemand die geen kind meer is. Vanaf 18 jaar.','Volwassenen nemen twee tabletten.',['vol','volgend'],['volwassene','volwassenen']],
+ ['zorgverzekering','de','🏥',3,'Je betaalt elke maand geld. Dan betaalt de verzekering de dokter en de medicijnen.','Mijn zorgverzekering betaalt het medicijn.',['zorgen','verjaardag']],
+ ['zwanger','','🤰',3,'Een vrouw krijgt een baby. De baby zit nog in haar buik.','Mijn zus is zwanger.',['zwaar','zwart']],
+ ['zwangerschap','de','🤰',3,'De tijd dat een vrouw zwanger is. Ongeveer negen maanden.','Gebruik dit medicijn niet tijdens de zwangerschap.',['zwanger','zwaar']],
+
+ // ---------- TAAK 4 (11) ----------
+ ['aanzetten','','🔛',4,'Een apparaat laten werken. Bijvoorbeeld de tv.','Ik zet de tv aan.',['aantrekken','aanbieden'],['aanzetten','zet aan']],
+ ['conditie','de','🏃',4,'Hoe fit je bent. Hoe lang je kunt lopen of fietsen.','Door te fietsen krijg ik een goede conditie.',['contact','conducteur']],
+ ['heel (heel gezond)','','👍',4,'Erg. Heel gezond = erg gezond.','Groente is heel gezond.',['hier','heer'],['heel'],'In Deel 1: heel = de hele week (alle dagen). Nu: heel gezond = erg gezond.'],
+ ['merken','','👀',4,'Zien of voelen dat iets anders is.','Ik merk dat ik minder moe ben.',['merk','markt'],['merken','merk']],
+ ['omgaan met','','🤝',4,'Hoe je met iets of iemand bent, of hoe je iets gebruikt.','Hoe ga jij om met te veel werk?',['omdat','omwisselen'],['omgaan met','omgaan','ga om met']],
+ ['ongezond','','🍟',4,'Niet goed voor je. Niet gezond.','Patat is ongezond.',['onjuist','ongeveer']],
+ ['ontspannen','','🧘',4,'Rustig worden. Niet druk.','Na het werk ontspan ik met muziek.',['ontvangen','ontmoeten'],['ontspannen','ontspan']],
+ ['roken','','🚬',4,'Sigaretten gebruiken.','Roken is slecht voor je gezondheid.',['koken','rijden']],
+ ['snoep','het','🍬',4,'Iets kleins en zoets. Bijvoorbeeld drop.','Kinderen eten graag snoep.',['soep','snel']],
+ ['thuiskomen','','🏡',4,'Weer in je huis komen.','Als ik thuiskom, ga ik eerst zitten.',['thuis','binnenkomen'],['thuiskomen','thuiskom']],
+ ['vet','het','🧈',4,'Het zit in boter, olie en patat. Veel vet is ongezond.','Er zit veel vet in patat.',['vies','vol']]
+];
+
+const IRR = new Set(['contact opnemen met','vallen','bewegen','blijven','onderzoeken','overgaan (pijn, ziekte)','vasthouden','voorschrijven','zeer doen','blijven (werken)','genezen','sluiten','snuiten','omgaan met','ontspannen','thuiskomen']);
+const PLUR = new Set([]);
+
+/* Lichaamsdelen sorteren (alleen bij intro + taak 1) */
+const CATS = { hh: '🙂 Hoofd en hals', ro: '🫁 Romp', ar: '✋ Schouders, armen, handen', be: '🦶 Benen en voeten' };
+const BODY = { hoofd: 'hh', keel: 'hh', mond: 'hh', neus: 'hh', oor: 'hh', nek: 'hh', borst: 'ro', buik: 'ro', rug: 'ro',
+  schouder: 'ar', arm: 'ar', hand: 'ar', vinger: 'ar', been: 'be', knie: 'be', teen: 'be', voet: 'be' };
+
+const W = RAW.map(r => {
+  const alt = r[7] && r[7].length ? r[7] : [r[0].replace(/\s*\(.*?\)\s*/g, '').trim()];
+  return { w: r[0], a: r[1], e: r[2], t: r[3], u: r[4], z: r[5], af: r[6] || [], alt, nb: r[8] || '', base: alt[0] };
+});
+
+/* Woorden die (bijna) hetzelfde betekenen of goed bij elkaar passen: die komen niet samen voor als 'fout' antwoord. */
+const SYN = [
+  ['pijn','zeer doen','hoofdpijn','last hebben van','klacht','dik'], ['dringend','spoedgeval','gauw','gevaar'],
+  ['dokter','assistent(e)','praktijk','spreekuur','ziekenhuis','contact opnemen met'],
+  ['medicijn','geneesmiddel','pijnstiller','kuur (antibioticumkuur)','recept (van de dokter)','dosering','bijsluiter','drogist','druppel','voorschrijven'],
+  ['ziek','koorts','griep','verkouden zijn','hoesten','misselijkheid','bijwerking'], ['zwanger','zwangerschap','borstvoeding'],
+  ['genezen','overgaan (pijn, ziekte)','vanzelf'], ['gezondheid','conditie','lichaam'], ['ongezond','vet','snoep','roken','schade'],
+  ['dicht','sluiten'], ['bewegen','ontspannen'], ['optillen','vasthouden','pakken'], ['blijven','blijven (werken)','achter elkaar'],
+  ['leven','dood'], ['moe','voelen, zich','gevoel'], ['ademen','zuchten','snuiten'], ['onderzoeken','beslissen','verwijzen'],
+  ['waarschijnlijk','zoiets'], ['merken','voelen, zich','gevoel'], ['volwassene','zorgverzekering'], ['enkele','sinds'],
+  ['hoofd','hoofdpijn'], ['bewaren','vasthouden']
+];
+function synOf(w) { return SYN.filter(s => s.includes(w)).flat().concat([w]); }
+
+/* ---------- ZINNEN ----------
+   [zin, goed, [afleiders], [duidelijk fout], taak, h]
+   h = 0: gewone oefening (goed + 1 afleider + 2 duidelijk fout)
+   h = 1: alleen in de herhaling, andere zinnen (goed + 2 afleiders + 1 duidelijk fout) */
+const ZINNEN = [
+  // intro + taak 1 – gewoon
+  ['Ik heb ___. Mijn temperatuur is 39 graden.','koorts',['kort','koud'],['keuze','hulp'],1,0],
+  ['Ik kan niet lopen. Mijn ___ doet pijn.','voet',['voor','vaak'],['keel','oor'],1,0],
+  ['Ik hoor niet goed. Ik heb pijn in mijn ___.','oor',['oog','door'],['knie','rug'],1,0],
+  ['Ik ben van de trap ___.','gevallen',['gevaren','gehaald'],['dringend','ziek'],1,0],
+  ['Bel 112. Haar ___ is in gevaar!','leven',['lenen','les'],['keuze','praktijk'],1,0],
+  ['Is het ___? Kan het niet wachten tot morgen?','dringend',['drinken','dragen'],['keuze','praktijk'],1,0],
+  ['___ op 1 voor de assistente.','Druk',['Drink','Draag'],['Koorts','Ziek'],1,0],
+  ['De ___ maakt een afspraak voor mij bij de dokter.','assistente',['afspraak','afdeling'],['koorts','keel'],1,0],
+  ['Ik heb een ___ van de dokter. Ik haal de medicijnen bij de apotheek.','recept',['reclame','rekening'],['spreekuur','gevaar'],1,0],
+  ['Het ___ is elke ochtend van 8 tot 10 uur.','spreekuur',['spreken','spoedgeval'],['hulp','gevaar'],1,0],
+  ['Ik ben ___. Ik ga vandaag niet naar mijn werk.','ziek',['zie','zeker'],['hulp','keuze'],1,0],
+  ['Mijn opa ligt in het ___. Hij is erg ziek.','ziekenhuis',['ziek','zielig'],['keuze','leven'],1,0],
+  ['Mijn knie is ___ en rood. Ik ben gevallen.','dik',['dicht','druk'],['hulp','keuze'],1,0],
+  ['Ik heb pijn in mijn ___. Ik kan niet goed praten en eten.','keel',['kaal','keer'],['voet','knie'],1,0],
+  ['Je bent ziek? ___!','Sterkte',['Sterk','Straks'],['Gevaar','Keuze'],1,0],
+  ['Ik heb ___ nodig. Kunt u mij helpen?','hulp',['hoofd','huis'],['koorts','pijn'],1,0],
+  // intro + taak 1 – herhaling
+  ['Neem ___ op met de huisarts. Bel of mail.','contact',['contant','kantoor'],['koorts'],1,1],
+  ['Waar heeft u ___? – In mijn buik.','pijn',['pijnstiller','plein'],['keuze'],1,1],
+  ['De ___ is open van 8 tot 5. Daar werkt de huisarts.','praktijk',['praten','prettig'],['koorts'],1,1],
+  ['Bel 112 bij een ___. Bijvoorbeeld als iemand niet meer ademt.','spoedgeval',['spoed','spreekuur'],['recept'],1,1],
+  ['U heeft drie ___: druk op 1, 2 of 3.','keuzes',['keukens','keren'],['koortsen'],1,1],
+  ['Ik ga naar de ___. Ik ben ziek.','dokter',['docent','dochter'],['keel'],1,1],
+  ['Sporten is goed voor je ___.','lichaam',['licht','leeftijd'],['recept'],1,1],
+  ['Hij legt zijn hand op mijn ___.','schouder',['schoen','school'],['koorts'],1,1],
+  ['Aan mijn hand zitten vijf ___.','vingers',['tenen','voeten'],['oren'],1,1],
+  ['Mijn ___ is dicht. Ik kan niet goed ruiken.','neus',['nee','nek'],['knie'],1,1],
+  ['Is er ___? Bel dan meteen 112.','gevaar',['gevoel','gewicht'],['keuze'],1,1],
+
+  // taak 2 – gewoon
+  ['Ik heb ___. Mijn hoofd doet pijn.','hoofdpijn',['hoofd','pijnstiller'],['koffer','spier'],2,0],
+  ['Ik ben ___. Mijn neus is dicht en ik hoest.','verkouden',['verhuisd','vervelend'],['dood','midden'],2,0],
+  ['De dokter ___ mijn knie. Hij kijkt goed.','onderzoekt',['onderhandelt','ontvangt'],['zucht','pakt'],2,0],
+  ['Neem een ___ tegen de pijn.','pijnstiller',['pijn','pinpas'],['koffer','spier'],2,0],
+  ['Ik heb ___ van mijn rug. Ik kan niet goed zitten.','last',['lust','lijst'],['moe','dood'],2,0],
+  ['Ik ___ me niet lekker. Ik ga naar bed.','voel',['val','volg'],['zucht','pak'],2,0],
+  ['De pijn gaat ___ over. Je hoeft geen medicijn te nemen.','vanzelf',['vandaag','zelf'],['midden','moe'],2,0],
+  ['Ik ___ al een week. Kuch, kuch!','hoest',['hoef','houd'],['beslis','pak'],2,0],
+  ['Ik ben heel ___. Ik heb slecht geslapen.','moe',['mooi','moeder'],['midden','sinds'],2,0],
+  ['Ik heb ___ maandag koorts. Het is nu donderdag.','sinds',['soms','sinaasappel'],['moe','dood'],2,0],
+  ['De huisarts ___ mij naar het ziekenhuis.','verwijst',['vervoert','verschilt'],['zucht','hoest'],2,0],
+  ['Wees ___ met je rug. Til niets zwaars op.','voorzichtig',['vooral','voordeel'],['dood','moe'],2,0],
+  ['Het is ___ griep. Bijna zeker.','waarschijnlijk',['waarom','waar'],['midden','moe'],2,0],
+  ['Mijn voet ___ zeer.','doet',['dood','door'],['pakt','zucht'],2,0],
+  ['Zware dingen ___ is niet goed voor je rug.','optillen',['ophalen','opletten'],['hoesten','zuchten'],2,0],
+  // taak 2 – herhaling
+  ['Wat zijn uw ___? – Ik heb hoofdpijn en koorts.','klachten',['klanten','klassen'],['koffers'],2,1],
+  ['Neem de hele ___: elke dag één tablet, zeven dagen lang.','kuur',['kaart','keer'],['spier'],2,1],
+  ['Ik heb een raar ___ in mijn buik.','gevoel',['gevaar','geval'],['koffer'],2,1],
+  ['Ik moet nog mijn koffer ___ voor de vakantie.','pakken',['plakken','pakket'],['hoesten'],2,1],
+  ['Ik ben ziek. Ik ___ thuis.','blijf',['blij','bel'],['zucht'],2,1],
+  ['Na het sporten doen mijn ___ pijn.','spieren',['spiegels','sporen'],['koffers'],2,1],
+  ['De pijn zit in het ___ van mijn rug.','midden',['middag','mooi'],['sinds'],2,1],
+  ['Roken is slecht voor je ___.','gezondheid',['gezond','gezin'],['koffer'],2,1],
+  ['Word ___ beter!','gauw',['gaan','graag'],['dood'],2,1],
+  ['___ maar eens diep. Adem in en uit.','Zucht',['Zoek','Zet'],['Koffer'],2,1],
+  ['Houd mijn hand ___. Dan val je niet.','vast',['vaak','vies'],['moe'],2,1],
+  ['De dokter moet ___: naar het ziekenhuis of niet?','beslissen',['bespreken','bestellen'],['hoesten'],2,1],
+  ['Heeft u koorts of ___?','zoiets',['zo','zelf'],['moe'],2,1],
+  ['De dokter ___ een pijnstiller voor. U haalt hem bij de apotheek.','schrijft',['schijnt','schiet'],['hoest'],2,1],
+
+  // taak 3 – gewoon
+  ['Lees eerst de ___. Daar staat hoe je het medicijn gebruikt.','bijsluiter',['bijwerking','bijna'],['griep','druppel'],3,0],
+  ['Misselijkheid is een ___ van dit medicijn.','bijwerking',['bijsluiter','bijna'],['zwangerschap','drogist'],3,0],
+  ['Pijnstillers koop je bij de ___. Daar heb je geen recept nodig.','drogist',['droog','dragen'],['griep','schade'],3,0],
+  ['De ___ is twee tabletten per dag.','dosering',['doos','datum'],['griep','druppel'],3,0],
+  ['Doe twee ___ in elk oor.','druppels',['drankjes','dozen'],['zwangerschappen','drogisten'],3,0],
+  ['Mijn neus zit ___. Ik kan niet goed ademen.','dicht',['dik','licht'],['zwanger','enkele'],3,0],
+  ['___ je neus in een zakdoek.','Snuit',['Snijd','Sluit'],['Bewaar','Adem'],3,0],
+  ['___ het medicijn in de koelkast.','Bewaar',['Beweeg','Bewijs'],['Snuit','Adem'],3,0],
+  ['Ik heb ___: koorts, hoesten en pijn in mijn spieren.','griep',['grijs','groep'],['schade','dosering'],3,0],
+  ['Je arm is bijna ___. Over een week is hij weer goed.','genezen',['geven','genoeg'],['droog','dicht'],3,0],
+  ['Mijn zus is ___. In mei krijgt ze een baby.','zwanger',['zwaar','zwart'],['droog','dicht'],3,0],
+  ['Dit medicijn is alleen voor ___, niet voor kinderen.','volwassenen',['vol','volgend'],['druppels','bijwerkingen'],3,0],
+  ['___ op! Dit medicijn maakt je moe.','Let',['Leg','Lees'],['Snuit','Bewaar'],3,0],
+  // taak 3 – herhaling
+  ['Mijn ___ betaalt de medicijnen. Ik betaal elke maand.','zorgverzekering',['zorgen','verjaardag'],['druppel'],3,1],
+  ['Blijf rustig in en uit ___.','ademen',['antwoorden','aanmelden'],['droog'],3,1],
+  ['Gebruik dit medicijn niet tijdens de ___.','zwangerschap',['zwanger','zwaar'],['drogist'],3,1],
+  ['Neem dit niet langer dan vijf dagen ___.','achter elkaar',['achter','tegelijk'],['droog'],3,1],
+  ['Na ___ dagen gaat de griep over.','enkele',['eigen','eerder'],['dicht'],3,1],
+  ['Mijn keel is heel ___. Ik moet water drinken.','droog',['drogist','dood'],['zwanger'],3,1],
+  ['___ is een bijwerking. Je wilt niet eten.','Misselijkheid',['Mogelijkheid','Misschien'],['Druppel'],3,1],
+  ['Het medicijn ___ 8 uur werken.','blijft',['blij','belt'],['snuit'],3,1],
+  ['Te veel medicijnen geven ___ aan je lichaam.','schade',['schat','school'],['dosering'],3,1],
+  ['___ de fles goed. Dan blijft het medicijn goed.','Sluit',['Slaap','Luister'],['Adem'],3,1],
+  ['Geeft u ___? Vraag het eerst aan de dokter.','borstvoeding',['borst','boodschappen'],['griep'],3,1],
+
+  // taak 4 – gewoon
+  ['Ik ___ de tv aan.','zet',['zit','zeg'],['rook','snoep'],4,0],
+  ['Patat is ___. Er zit veel vet in.','ongezond',['onjuist','ongeveer'],['conditie','snoep'],4,0],
+  ['___ is slecht voor je gezondheid. Stop met sigaretten!','Roken',['Koken','Rijden'],['Conditie','Snoep'],4,0],
+  ['Ik fiets elke dag. Ik heb een goede ___.','conditie',['contact','conducteur'],['snoep','vet'],4,0],
+  ['Groente is ___ gezond.','heel',['hier','heer'],['vet','snoep'],4,0],
+  ['Kinderen eten graag ___. Maar het is niet goed voor hun tanden.','snoep',['soep','snel'],['conditie','roken'],4,0],
+  ['Na het werk luister ik muziek. Dan ___ ik.','ontspan',['ontvang','ontmoet'],['rook','zet'],4,0],
+  ['Als ik ___, ga ik eerst koffie drinken.','thuiskom',['thuis','binnenkom'],['conditie','vet'],4,0],
+  // taak 4 – herhaling
+  ['Ik ___ dat ik minder moe ben. Sporten helpt!','merk',['markt','melk'],['rook'],4,1],
+  ['Er zit veel ___ in patat en chips.','vet',['vies','vol'],['conditie'],4,1],
+  ['Hoe ga jij ___ met te veel werk?','om',['op','af'],['vet'],4,1],
+  ['Zet de computer ___ en begin.','aan',['af','op'],['vet'],4,1],
+  ['Snoep en chips zijn ___. Eet liever fruit.','ongezond',['onjuist','ongeveer'],['conditie'],4,1]
+];
+
+/* ---------- ANDER WOORD (vervangspel) ----------
+   [zin met [gewone woorden], goed, [afleiders], [duidelijk fout], taak] */
+const ANDER = [
+  ['Ik heb [een hoge temperatuur, 39 graden].','koorts',['kort','koud'],['keuze','hulp'],1],
+  ['Het is [heel snel nodig]. Kan de dokter vandaag komen?','dringend',['drinken','dragen'],['keel','hulp'],1],
+  ['Ik ga naar [de huisarts].','de dokter',['de docent','de dochter'],['de keuze','de koorts'],1],
+  ['Ik ben [niet gezond].','ziek',['zie','zeker'],['dringend','hulp'],1],
+  ['Mijn knie is [groter dan normaal, omdat het pijn doet].','dik',['dicht','druk'],['keel','hulp'],1],
+  ['Je bent ziek? [Ik hoop dat het snel beter gaat]!','Sterkte',['Sterk','Straks'],['Gevaar','Keuze'],1],
+  ['Waar doet het [zeer]?','pijn',['pijnstiller','plein'],['keuze','hulp'],1],
+
+  ['Ik ben heel [slaperig, ik wil naar bed].','moe',['mooi','moeder'],['midden','dood'],2],
+  ['De pijn gaat [zonder medicijn] over.','vanzelf',['vandaag','zelf'],['midden','sinds'],2],
+  ['Het is [bijna zeker] griep.','waarschijnlijk',['waarom','waar'],['moe','dood'],2],
+  ['Mijn voet [doet pijn].','doet zeer',['doet zeker','doet zien'],['doet moe','doet dood'],2],
+  ['De dokter [kijkt goed naar] mijn knie.','onderzoekt',['onderhandelt','ontvangt'],['zucht','pakt'],2],
+  ['Word [snel] beter!','gauw',['gaan','graag'],['dood','moe'],2],
+  ['Ik [heb pijn in] mijn rug.','heb last van',['heb lust van','heb lijst van'],['ben moe van','ben dood van'],2],
+  ['De pijn [gaat weg].','gaat over',['gaat overal','stapt over'],['zucht','hoest'],2],
+
+  ['Ik neem een [medicijn].','geneesmiddel',['gemiddeld','geneest'],['zwangerschap','drogist'],3],
+  ['Mijn neus is [niet open].','dicht',['dik','licht'],['zwanger','enkele'],3],
+  ['Na [een paar] dagen gaat het beter.','enkele',['eigen','eerder'],['droog','dicht'],3],
+  ['Je arm is weer [gezond geworden].','genezen',['geven','genoeg'],['zwanger','droog'],3],
+  ['[Kijk goed]! Dit medicijn maakt je moe.','Let op',['Leg op','Lees op'],['Snuit','Bewaar'],3],
+  ['Dit is voor [mensen van 18 jaar en ouder].','volwassenen',['vol','volgend'],['druppels','bijwerkingen'],3],
+
+  ['Patat is [niet gezond].','ongezond',['onjuist','ongeveer'],['conditie','snoep'],4],
+  ['Groente is [erg] gezond.','heel',['hier','heer'],['vet','snoep'],4],
+  ['Ik [zie en voel] dat ik minder moe ben.','merk',['markt','melk'],['rook','zet'],4],
+  ['Na het werk [word ik rustig].','ontspan ik',['ontvang ik','ontmoet ik'],['rook ik','zet ik'],4]
+];
+
+/* ---------- WAT ZEG JE? ----------
+   [situatie, goed, [afleiders], [duidelijk fout], taak] */
+const SITU = [
+  ['Je belt de huisarts. Je hoort: "Is het een spoedgeval? Druk op 1." Je kind heeft hoge koorts en ademt slecht. Wat doe je?','Ik druk op 1.',['Ik drink op 1.','Ik val op 1.'],['Ik ga slapen.','Ik koop snoep.'],1],
+  ['De assistente vraagt: "Wat is er aan de hand?" Je hebt pijn in je keel en koorts. Wat zeg je?','Ik heb pijn in mijn keel en ik heb koorts.',['Ik heb pijn in mijn kaal en ik heb koorts.','Ik heb pijn in mijn keel en ik heb kort.'],['Ik woon in Hoorn.','Ik ben 30 jaar.'],1],
+  ['Je vriendin is ziek. Wat zeg je?','Sterkte! Word gauw beter.',['Sterk! Word gauw beter.','Straks! Word gauw beter.'],['Gefeliciteerd!','Eet smakelijk!'],1],
+  ['Je wilt met de dokter praten. Wat vraag je?','Wanneer is het spreekuur?',['Wanneer is het spoedgeval?','Wanneer is het spreken?'],['Waar is de bibliotheek?','Hoe laat gaat de bus?'],1],
+  ['Iemand ligt op straat en beweegt niet. Wat doe je?','Ik bel 112. Het is een spoedgeval.',['Ik bel 112. Het is een spreekuur.','Ik bel de praktijk. Ik wil een recept.'],['Ik ga naar huis.','Ik koop een koffer.'],1],
+
+  ['De dokter vraagt: "Hoe voelt u zich?" Je bent moe en je hoest. Wat zeg je?','Ik voel me niet lekker. Ik ben moe en ik hoest.',['Ik val me niet lekker. Ik ben moe en ik hoest.','Ik voel me niet lekker. Ik ben mooi en ik hoest.'],['Ik woon in Hoorn.','Ik heb een koffer.'],2],
+  ['De dokter vraagt: "Sinds wanneer heeft u last?" Wat zeg je?','Sinds maandag.',['Soms maandag.','Sinaasappel maandag.'],['Ik heb een koffer.','In het midden.'],2],
+  ['De dokter zegt: "Het gaat vanzelf over." Wat betekent dat?','Het wordt zelf beter. Je hoeft geen medicijn te nemen.',['Je moet vandaag een medicijn nemen.','Je moet zelf naar het ziekenhuis.'],['Je moet je koffer pakken.','Je moet naar de bibliotheek.'],2],
+  ['Je hebt al drie weken pijn in je rug. Wat vraag je de dokter?','Kunt u mij verwijzen naar het ziekenhuis?',['Kunt u mij vervoeren naar het ziekenhuis?','Kunt u mij verzenden naar het ziekenhuis?'],['Mag ik een snoepje?','Hoe heet u?'],2],
+  ['Je moet tillen op je werk. Je rug doet zeer. Wat zegt de dokter?','Wees voorzichtig. Til geen zware dingen op.',['Wees vooral. Til geen zware dingen op.','Wees voorzichtig. Haal geen zware dingen op.'],['Eet meer snoep.','Ga naar de bibliotheek.'],2],
+
+  ['Je wilt weten hoeveel tabletten je moet nemen. Wat vraag je?','Wat is de dosering?',['Wat is de doos?','Wat is de datum?'],['Waar is de wc?','Hoe oud bent u?'],3],
+  ['Je bent zwanger. Je koopt een medicijn bij de drogist. Wat vraag je?','Mag ik dit gebruiken tijdens de zwangerschap?',['Mag ik dit gebruiken tijdens de zwanger?','Mag ik dit bewaren tijdens de zwangerschap?'],['Hoe laat gaat de bus?','Ik heb een koffer.'],3],
+  ['Je wordt misselijk van een medicijn. Wat zeg je tegen de dokter?','Ik heb last van een bijwerking: ik ben misselijk.',['Ik heb last van een bijsluiter: ik ben misselijk.','Ik heb last van een bijwerking: ik ben mogelijk.'],['Ik ben jarig.','Ik woon in Hoorn.'],3],
+  ['Je hebt een pijnstiller nodig. Je hebt geen recept. Waar ga je naartoe?','Naar de drogist.',['Naar de droog.','Naar de dosering.'],['Naar de bibliotheek.','Naar het station.'],3],
+
+  ['Je collega rookt veel. Wat zeg je?','Roken is ongezond. Wil je niet stoppen?',['Koken is ongezond. Wil je niet stoppen?','Roken is ongeveer. Wil je niet stoppen?'],['Ik heb een paspoort.','Het regent.'],4],
+  ['Je bent moe na je werk. Wat doe je?','Ik ga ontspannen met muziek.',['Ik ga ontvangen met muziek.','Ik ga ontmoeten met muziek.'],['Ik bel 112.','Ik ga naar de ambassade.'],4],
+  ['Je wilt fitter worden. Wat zeg je?','Ik ga meer bewegen voor mijn conditie.',['Ik ga meer bewaren voor mijn conditie.','Ik ga meer bewegen voor mijn contact.'],['Ik eet meer snoep.','Ik ga slapen.'],4]
+];
+
+
+W.forEach(x => x.th = 3);
+return { nr: 3, titel: "Lees eerst de bijsluiter", W, ZINNEN, ANDER, SITU, synOf, PLUR };
+})();
+
+const NRS = Object.keys(THEMES).map(Number).sort((a, b) => a - b);
+const LS = 'code2_herhaling_fouten';
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds op dezelfde plek staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function spoken(x) { return (x.a ? x.a + ' ' : '') + x.base; }
+function norm(s) {
+  return String(s).toLowerCase().trim().replace(/[.!?,]/g, '').replace(/^(de|het|een)\s+/, '').replace(/\s+/g, ' ');
+}
+function lev(a, b) {
+  const m = a.length, n = b.length, d = Array.from({ length: m + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+    d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+// eerlijk verdelen over de thema's: om de beurt een item uit elk thema
+function rr(lists, k) {
+  const L = lists.map(l => shuffle(l)), out = [];
+  let i = 0;
+  while (out.length < k && L.some(l => l.length)) { const l = L[i % L.length]; if (l.length) out.push(l.pop()); i++; }
+  return out;
+}
+// door elkaar, en liefst niet twee keer dezelfde soort vraag na elkaar
+function interleave(list) {
+  const all = shuffle(list);
+  for (let pass = 0; pass < 3; pass++) for (let i = 1; i < all.length; i++) if (all[i].mode === all[i-1].mode) {
+    const j = all.findIndex((q, k) => k !== i && q.mode !== all[i-1].mode && (k === 0 || all[k-1].mode !== all[i].mode) && (k + 1 >= all.length || all[k+1].mode !== all[i].mode));
+    if (j >= 0) [all[i], all[j]] = [all[j], all[i]];
+  }
+  return all;
+}
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(String(text).replace(/\s*\([^)]*\)/g, '').replace(/[–…]/g, ','));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+function checkVoice() {
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!document.body.contains(w)) return;
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet de spraak van je telefoon of computer op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- BEWAARDE FOUTEN (alleen op dit apparaat) ----------
+   W|thema|woord  = een woord
+   Z|thema|nr     = een zin,  A|thema|nr = ander woord,  S|thema|nr = wat zeg je? */
+function getF() { try { return JSON.parse(localStorage.getItem(LS) || '[]'); } catch (e) { return []; } }
+function setF(l) { try { localStorage.setItem(LS, JSON.stringify(l)); } catch (e) {} }
+function addF(k) { const f = getF(); if (!f.includes(k)) { f.push(k); setF(f); } }
+function remF(k) { setF(getF().filter(x => x !== k)); }
+function resolveF(k) {
+  const p = k.split('|'), T = THEMES[p[1]];
+  if (!T) return null;
+  if (p[0] === 'W') { const x = T.W.find(y => y.w === p.slice(2).join('|')); return x ? { x } : null; }
+  const arr = p[0] === 'Z' ? T.ZINNEN : p[0] === 'A' ? T.ANDER : T.SITU;
+  const z = arr && arr[+p[2]];
+  return z ? { z, a: p[0], th: +p[1], i: +p[2] } : null;
+}
+
+/* ---------- KEUZES MAKEN: altijd goed + 2 afleiders + 1 duidelijk fout ---------- */
+function wordOpts(x, P) {
+  const syn = THEMES[x.th].synOf(x.w);
+  const afl = shuffle(x.af).slice(0, 2);
+  const used = new Set([x.w, ...afl]);
+  const fill = shuffle(P).filter(y => !used.has(y.w) && !syn.includes(y.w) && !afl.includes(y.base) && !x.af.includes(y.w) && y.base !== x.base)
+    .slice(0, 3 - afl.length).map(y => y.w);
+  return shuffleOpts([x.w, ...afl, ...fill]);
+}
+function uitlegOpts(x, P) {
+  const syn = THEMES[x.th].synOf(x.w);
+  const look = shuffle(THEMES[x.th].W.filter(y => y.w !== x.w && !syn.includes(y.w) &&
+      (x.af.includes(y.w) || x.af.includes(y.base) || y.af.includes(x.w) || y.af.includes(x.base) || y.base.slice(0, 3) === x.base.slice(0, 3)))).slice(0, 2);
+  const used = new Set([x.w, ...look.map(y => y.w)]);
+  const fill = shuffle(P).filter(y => !used.has(y.w) && !syn.includes(y.w) && y.u !== x.u).slice(0, 3 - look.length);
+  return shuffleOpts([x, ...look, ...fill]).map(y => ({ text: y.u, ok: y === x }));
+}
+function sentQ(a, th, i) {
+  const T = THEMES[th], z = (a === 'Z' ? T.ZINNEN : a === 'A' ? T.ANDER : T.SITU)[i];
+  return { mode: a === 'Z' ? 'zinnen' : a === 'A' ? 'ander' : 'situ', s: z[0], ans: z[1], opts: shuffleOpts([z[1], ...z[2].slice(0, 2), ...z[3].slice(0, 1)]), th, fk: a + '|' + th + '|' + i };
+}
+function wordQ(mode, x, P) {
+  const q = { mode, x, th: x.th, fk: 'W|' + x.th + '|' + x.w };
+  if (mode === 'luister' || mode === 'betekenis') q.opts = wordOpts(x, P);
+  if (mode === 'omgekeerd') q.opts = uitlegOpts(x, P);
+  return q;
+}
+
+/* ---------- EEN HERHALING MAKEN ---------- */
+let sel = new Set(NRS), size = 20;
+let Q = [], qi = 0, score = 0, wrongs = [], perTh = {};
+
+function build() {
+  const f = size / 20, T = [...sel];
+  const P = T.flatMap(n => THEMES[n].W);
+  const items = (key) => T.map(n => THEMES[n][key].map((z, i) => [n, i]));
+  const zin = rr(items('ZINNEN'), 5 * f).map(([n, i]) => sentQ('Z', n, i));
+  const and = rr(items('ANDER'), 1 * f).map(([n, i]) => sentQ('A', n, i));
+  const sit = rr(items('SITU'), 1 * f).map(([n, i]) => sentQ('S', n, i));
+  const words = rr(T.map(n => THEMES[n].W), 12 * f);
+  const plan = [['omgekeerd', 3], ['luister', 3], ['betekenis', 2], ['typen', 2], ['dictee', 2]];
+  const wq = []; let k = 0;
+  plan.forEach(([m, c]) => { for (let j = 0; j < c * f; j++) { const x = words[k++]; if (x) wq.push(wordQ(m, x, P)); } });
+  const dh = rr(T.map(n => THEMES[n].W.filter(x => x.a && !words.includes(x))), 1 * f).map(x => wordQ('dehet', x, P));
+  return interleave([...zin, ...and, ...sit, ...wq, ...dh]);
+}
+// fouten oefenen: een woord krijg je twee keer, op een andere manier (kiezen én typen); een zin krijg je opnieuw
+function fromKeys(keys) {
+  const qs = [];
+  [...new Set(keys)].forEach(k => {
+    const r = resolveF(k);
+    if (!r) return;
+    if (r.x) {
+      const P = THEMES[r.x.th].W;
+      qs.push(wordQ(Math.random() < .5 ? 'betekenis' : 'omgekeerd', r.x, P));
+      qs.push(wordQ(Math.random() < .5 ? 'typen' : 'dictee', r.x, P));
+    } else qs.push(sentQ(r.a, r.th, r.i));
+  });
+  return interleave(qs);
+}
+
+/* ---------- STARTSCHERM ---------- */
+function renderStart() {
+  const p = document.getElementById('panel');
+  const total = [...sel].reduce((a, n) => a + THEMES[n].W.length, 0);
+  const saved = getF().filter(k => resolveF(k));
+  setF(saved);
+  p.innerHTML = '<h2>🔁 Herhaling</h2><p class="how">Vink de thema’s aan die je wilt oefenen. Kies hoeveel vragen.</p>' +
+    '<div class="row-label">Welke thema’s?</div><div class="checks" id="ths">' +
+    NRS.map(n => '<label class="chk' + (sel.has(n) ? ' on' : '') + '"><input type="checkbox" data-n="' + n + '"' + (sel.has(n) ? ' checked' : '') + '>' +
+      '<span><b>Thema ' + n + '</b> · ' + esc(THEMES[n].titel) + '</span><small>' + THEMES[n].W.length + ' woorden</small></label>').join('') + '</div>' +
+    '<div class="linkrow"><button class="linkbtn" id="all">✓ Alles aanvinken</button><button class="linkbtn" id="none">Alles uitvinken</button></div>' +
+    '<div class="row-label">Hoeveel vragen?</div><div class="pills" id="sz">' +
+    [20, 40].map(s => '<button class="pill' + (s === size ? ' active' : '') + '" data-s="' + s + '">' + s + ' vragen</button>').join('') + '</div>' +
+    '<p class="how">' + (sel.size ? total + ' woorden in je keuze.' : '<b style="color:#dc2626">Vink minstens één thema aan.</b>') + '</p><div class="warn" id="warn"></div>' +
+    '<div class="next-row"><button class="btn start" id="go"' + (sel.size ? '' : ' disabled') + '>▶ Start (' + size + ' vragen)</button></div>' +
+    (saved.length ? '<div class="herh-bar" style="margin-top:1.4rem"><span>📌 Je hebt nog <b>' + saved.length + ' ' + (saved.length === 1 ? 'fout' : 'fouten') + '</b> van vorige keren.</span>' +
+      '<span><button class="btn alt" id="sv">Oefen mijn fouten</button> <button class="btn ghost" id="clr">Wis</button></span></div>' : '');
+  p.querySelectorAll('#ths input').forEach(c => c.onchange = () => {
+    const n = +c.dataset.n;
+    if (c.checked) sel.add(n); else sel.delete(n);
+    renderStart();
+  });
+  document.getElementById('all').onclick = () => { sel = new Set(NRS); renderStart(); };
+  document.getElementById('none').onclick = () => { sel = new Set(); renderStart(); };
+  p.querySelectorAll('#sz .pill').forEach(b => b.onclick = () => { size = +b.dataset.s; renderStart(); });
+  document.getElementById('go').onclick = () => { if (sel.size) startQuiz(build()); };
+  if (saved.length) {
+    document.getElementById('sv').onclick = () => startQuiz(fromKeys(saved));
+    document.getElementById('clr').onclick = () => { setF([]); renderStart(); };
+  }
+  checkVoice();
+}
+
+/* ---------- QUIZ ---------- */
+const QTYPE = { luister: '🎧 Luisteren', betekenis: '💡 Betekenis', omgekeerd: '💡 Welke uitleg past?', dehet: '🔤 De of het', zinnen: '✏️ Zin', ander: '🔄 Ander woord', situ: '💬 Wat zeg je?', typen: '⌨️ Typen', dictee: '⌨️ Luister en typ' };
+
+function toPanel() { const el = document.getElementById('panel'); if (el.getBoundingClientRect().top < 0 || el.getBoundingClientRect().top > window.innerHeight * 0.5) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function startQuiz(list) { Q = list; qi = 0; score = 0; wrongs = []; perTh = {}; renderQ(); toPanel(); }
+
+function head() {
+  const q = Q[qi];
+  return '<div class="progress"><div>🔁 Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>' +
+    '<span class="qtype">' + QTYPE[q.mode] + '</span><span class="thtag">thema ' + q.th + '</span>';
+}
+function optBtns(opts, one) {
+  return '<div class="opts' + (one ? ' one' : '') + '">' + opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' + optBtns(q.opts);
+  } else if (q.mode === 'betekenis') {
+    html += '<div class="defn">' + esc(q.x.u) + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'omgekeerd') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+      '<div class="opts one">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '">' + esc(o.text) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+      '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'ander') {
+    html += '<p class="tip" style="margin:0 0 .3rem">Welk woord betekent hetzelfde als de gele woorden?</p><div class="sentence" id="zin">' + esc(q.s).replace(/\[(.*?)\]/g, '<span class="mark">$1</span>') + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'situ') {
+    html += '<div class="defn">' + esc(q.s) + '</div>' + optBtns(q.opts, true);
+  } else {
+    if (q.mode === 'typen') html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="defn">' + esc(q.x.u) + (q.x.a ? '<br><small>(' + q.x.a + ' …)</small>' : '') + '</div>';
+    else html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>';
+    html += '<div class="type-row"><input id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Typ het woord"><button class="btn" id="chk">Controleer</button></div>' +
+      '<div class="next-row"><button class="btn ghost" id="idk">Ik weet het niet</button></div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister' || q.mode === 'dictee') {
+    document.getElementById('sp').onclick = () => say(spoken(q.x));
+    document.getElementById('spS').onclick = () => say(spoken(q.x), true);
+    say(spoken(q.x));
+  }
+  if (q.mode === 'luister' || q.mode === 'betekenis') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.w, q.x.w));
+  } else if (q.mode === 'omgekeerd') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].ok, null));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (['zinnen', 'ander', 'situ'].includes(q.mode)) {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.ans, q.ans));
+  } else {
+    const inp = document.getElementById('inp');
+    setTimeout(() => inp.focus(), 50);
+    inp.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); checkTyped(); } };
+    document.getElementById('chk').onclick = () => checkTyped();
+    document.getElementById('idk').onclick = () => checkTyped(true);
+  }
+}
+
+function tally(q, ok) {
+  const t = perTh[q.th] || (perTh[q.th] = [0, 0]);
+  t[1]++; if (ok) t[0]++;
+  if (ok) { score++; remF(q.fk); } else { wrongs.push(q); addF(q.fk); }
+}
+
+function checkTyped(giveUp) {
+  const q = Q[qi], inp = document.getElementById('inp');
+  if (inp.disabled) return;
+  const v = norm(inp.value);
+  if (!v && !giveUp) { inp.focus(); return; }
+  const good = q.x.alt.map(norm);
+  let state = 'bad';
+  if (!giveUp) {
+    if (good.includes(v)) state = 'ok';
+    else if (good.some(g => g.length >= 5 && lev(v, g) === 1)) state = 'almost';
+  }
+  q.given = giveUp ? '(ik weet het niet)' : inp.value.trim();
+  inp.disabled = true; inp.classList.add(state);
+  document.getElementById('chk').disabled = true; document.getElementById('idk').style.display = 'none';
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + state;
+  tally(q, state !== 'bad');
+  if (state === 'ok') fb.textContent = '✓ Goed! ' + full(q.x);
+  else if (state === 'almost') fb.textContent = '≈ Bijna goed! Let op de spelling: ' + q.x.base;
+  else fb.textContent = '✗ Het goede woord is: ' + q.x.base;
+  if (q.mode === 'dictee' || state !== 'ok') tip.textContent = q.x.u;
+  say(spoken(q.x));
+  nextBtn();
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  p.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    const isGood = q.mode === 'omgekeerd' ? q.opts[+b.dataset.i].ok : b.dataset.v === correct;
+    if (isGood) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  q.given = q.mode === 'dehet' ? btn.dataset.v : btn.textContent;
+  tally(q, ok);
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+    tip.textContent = q.x.u;
+  } else if (q.mode === 'betekenis' || q.mode === 'omgekeerd') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het goede antwoord: ') + full(q.x);
+    tip.textContent = q.x.u + ' – „' + q.x.z + '”';
+    say(spoken(q.x));
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (THEMES[q.th].PLUR.has(q.x.w)) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(spoken(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans));
+  } else if (q.mode === 'ander') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    const m = q.s.match(/\[(.*?)\]/);
+    tip.textContent = (m ? m[1] + ' = ' : '') + q.ans;
+  } else if (q.mode === 'situ') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Beter is: ' + q.ans;
+    say(q.ans);
+  }
+  nextBtn();
+}
+
+function nextBtn() {
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  const nb = document.getElementById('nb');
+  nb.onclick = () => { qi++; renderQ(); };
+  nb.focus();
+}
+
+/* ---------- OVERZICHT VAN DE FOUTEN ---------- */
+function qText(q) {
+  if (q.mode === 'luister' || q.mode === 'dictee') return '🔊 Je hoorde een woord.';
+  if (q.mode === 'betekenis' || q.mode === 'typen') return esc(q.x.u);
+  if (q.mode === 'omgekeerd') return '<b>' + esc(full(q.x)) + '</b> – welke uitleg past?';
+  if (q.mode === 'dehet') return '… ' + esc(q.x.w);
+  if (q.mode === 'ander') return esc(q.s).replace(/\[(.*?)\]/g, '<span class="mark">$1</span>');
+  if (q.mode === 'zinnen') return esc(q.s).replace('___', '<span class="gap">&nbsp;</span>');
+  return esc(q.s);
+}
+function goodText(q) {
+  if (q.mode === 'omgekeerd') return q.x.u;
+  if (q.mode === 'dehet') return q.x.a + ' ' + q.x.w;
+  if (q.x) return full(q.x);
+  return q.ans;
+}
+function reviewHtml(list) {
+  if (!list.length) return '';
+  return '<div class="review"><h3>Dit had je fout (' + list.length + ')</h3><p class="how">Lees het goede antwoord. Zeg het hardop. Oefen daarna je fouten nog een keer.</p>' + list.map(q =>
+    '<div class="rv"><div class="rt">' + (QTYPE[q.mode] || '') + '</div><div class="rq">' + qText(q) + '</div>' +
+    '<div class="ry">✗ Jouw antwoord: ' + esc(q.given || '–') + '</div>' +
+    '<div class="rg">✓ Goed: ' + esc(goodText(q)) + '</div>' +
+    (q.x ? '<div class="ru">' + (q.mode === 'betekenis' || q.mode === 'typen' || q.mode === 'omgekeerd' ? '„' + esc(q.x.z) + '”' : esc(q.x.u)) + '</div>' : '') +
+    '</div>').join('') + '</div>';
+}
+
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Kijk hieronder wat je fout had. Oefen dat nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Kijk hieronder wat je fout had. Oefen je fouten nog eens.' :
+              'Kijk hieronder wat je fout had. Oefen ook nog eens op de pagina van het thema. Je kunt het!';
+  const ths = Object.keys(perTh).map(Number).sort((a, b) => a - b);
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🔁</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div>' +
+    (ths.length > 1 ? '<div class="tscore">' + ths.map(n => '<span>Thema ' + n + ': ' + perTh[n][0] + '/' + perTh[n][1] + '</span>').join('') + '</div>' : '') +
+    '<div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen deze fouten (' + wrongs.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Nieuwe herhaling</button></div>' + reviewHtml(wrongs) + '</div>';
+  setAvatar();
+  if (wrongs.length) document.getElementById('rw').onclick = () => startQuiz(fromKeys(wrongs.map(q => q.fk)));
+  document.getElementById('rn').onclick = () => { renderStart(); toPanel(); };
+}
+
+/* ---------- AVATAR ---------- */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code2.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' && document.activeElement.tagName !== 'INPUT') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+});
+
+const allW = NRS.reduce((a, n) => a + THEMES[n].W.length, 0);
+document.getElementById('sub').textContent = 'Code+ Deel 2 · ' + (NRS.length > 1 ? 'thema ' + NRS[0] + ' t/m ' + NRS[NRS.length - 1] : 'thema ' + NRS[0]) + ' · ' + allW + ' woorden';
+renderStart();
+</script>
+</body>
+</html>

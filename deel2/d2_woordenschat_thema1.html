@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woordenschat Thema 1 – Dat is een koopje! – Code+ Deel 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef7f6; --blue: #1a6b6b; --blue2: #13817d; --accent: #f5a623; --pink: #b5385a;
+    --ink: #1a1a2e; --muted: #6b7280;
+    --ok: #059669; --ok-bg: #d1fae5; --bad: #dc2626; --bad-bg: #fee2e2; --almost: #b45309; --almost-bg: #fef3c7;
+    --shadow: rgba(26,107,107,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif; color: var(--ink); background: var(--bg);
+    background-image: radial-gradient(circle at 20% 20%, rgba(26,107,107,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(245,166,35,0.08) 0%, transparent 50%);
+    min-height: 100vh; padding: 4rem 1rem 3rem;
+  }
+  .wrap { max-width: 740px; margin: 0 auto; }
+  .home { position: fixed; top: 1rem; left: 1rem; z-index: 9999; display: inline-flex; align-items: center; gap: .4rem; background: white; color: var(--blue); border: 2px solid var(--blue); border-radius: 50px; padding: .4rem 1rem; font-size: .82rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 8px var(--shadow); }
+
+  .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .avatar-box { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 4px 12px var(--shadow); background: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; overflow: hidden; }
+  .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+  .header h1 { font-size: 1.45rem; font-weight: 900; color: var(--blue); line-height: 1.2; }
+  .header p { font-size: .85rem; color: var(--muted); margin-top: .2rem; }
+
+  .uitleg { background: white; border-left: 5px solid var(--accent); border-radius: 12px; padding: .8rem 1rem; font-size: .9rem; line-height: 1.55; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 1.2rem; }
+  .uitleg b { color: var(--blue); }
+
+  .row-label { font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .2rem 0 .4rem; }
+  .pills { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
+  .pill { border: 2px solid var(--blue); background: white; color: var(--blue); border-radius: 20px; padding: .3rem .85rem; font-family: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: all .15s; }
+  .pill.active { background: var(--blue); color: white; }
+  .pill:hover { transform: scale(1.04); }
+  .taaktitel { font-size: .85rem; color: var(--muted); font-style: italic; margin-bottom: .8rem; min-height: 1.2em; }
+
+  .herh-bar { display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; background: #fff8eb; border: 2px dashed var(--accent); border-radius: 14px; padding: .6rem .9rem; margin-bottom: 1rem; font-size: .88rem; }
+  .herh-bar b { color: var(--blue); }
+
+  .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .45rem; margin-bottom: 1.2rem; }
+  .tab { background: white; border: 2px solid transparent; border-radius: 14px; padding: .55rem .3rem; font-family: inherit; cursor: pointer; box-shadow: 0 2px 8px var(--shadow); text-align: center; transition: all .15s; color: var(--ink); }
+  .tab .ic { font-size: 1.4rem; display: block; line-height: 1.2; }
+  .tab .lb { font-size: .72rem; font-weight: 800; }
+  .tab.active { border-color: var(--accent); background: #fff8eb; }
+  .tab:hover { transform: translateY(-2px); }
+  @media (max-width: 560px) { .tabs { grid-template-columns: repeat(3, 1fr); } }
+
+  .panel { background: white; border-radius: 20px; padding: 1.5rem 1.3rem; box-shadow: 0 8px 32px var(--shadow); }
+  .panel h2 { font-size: 1.1rem; font-weight: 900; color: var(--blue); margin-bottom: .3rem; }
+  .panel .how { font-size: .88rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+
+  .progress { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); font-weight: 700; margin-bottom: .5rem; }
+  .progress span { color: var(--blue); }
+  .bar { background: rgba(26,107,107,.1); border-radius: 10px; height: 6px; overflow: hidden; margin-bottom: 1.2rem; }
+  .bar div { height: 100%; background: linear-gradient(90deg, var(--blue), var(--accent)); border-radius: 10px; transition: width .3s; }
+  .qtype { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--pink); margin-bottom: .4rem; }
+
+  .big-emoji { font-size: 3.6rem; text-align: center; line-height: 1.1; min-height: 3.8rem; }
+  .big-word { font-family: 'Lora', serif; font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 600; text-align: center; color: var(--blue); margin: .3rem 0 1.2rem; }
+  .sentence { font-family: 'Lora', serif; font-size: clamp(1.1rem, 4.4vw, 1.4rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.3rem; }
+  .sentence .mark { background: #fff1d6; border-bottom: 3px solid var(--accent); padding: 0 .15em; border-radius: 4px; }
+  .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px solid var(--accent); color: var(--blue); font-weight: 600; }
+  .defn { font-size: clamp(1.05rem, 4.2vw, 1.25rem); text-align: center; line-height: 1.5; margin: .5rem 0 1.2rem; background: #f4fbfa; border-radius: 14px; padding: .9rem 1rem; }
+  .hint { text-align: center; font-family: monospace; font-size: 1.4rem; letter-spacing: .25em; color: var(--blue); margin-bottom: 1rem; }
+
+  .listen-row { display: flex; justify-content: center; gap: .6rem; margin: .5rem 0 1.3rem; flex-wrap: wrap; }
+  .speak { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .8rem 1.6rem; font-family: inherit; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .speak.slow { background: var(--accent); color: var(--ink); }
+
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .opts.one { grid-template-columns: 1fr; }
+  .opt { background: #f8fdfc; border: 2px solid #cfe9e6; border-radius: 14px; padding: .8rem .6rem; font-family: inherit; font-size: 1.02rem; font-weight: 700; color: var(--ink); cursor: pointer; transition: all .12s; display: flex; align-items: center; justify-content: center; gap: .45rem; min-height: 3.3rem; text-align: center; line-height: 1.3; }
+  .opts.one .opt { justify-content: flex-start; text-align: left; font-weight: 600; font-size: .98rem; }
+  .opt:hover:not(:disabled) { border-color: var(--blue); transform: translateY(-2px); }
+  .opt.big { font-size: 1.6rem; padding: 1rem; font-family: 'Lora', serif; }
+  .opt.ok { background: var(--ok-bg); border-color: var(--ok); color: #065f46; }
+  .opt.bad { background: var(--bad-bg); border-color: var(--bad); color: #991b1b; }
+  .opt:disabled { cursor: default; }
+
+  .type-row { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
+  .type-row input { flex: 1; min-width: 200px; max-width: 360px; font-family: inherit; font-size: 1.2rem; padding: .7rem 1rem; border: 2px solid #cfe9e6; border-radius: 14px; outline: none; }
+  .type-row input:focus { border-color: var(--blue); }
+  .type-row input.ok { border-color: var(--ok); background: var(--ok-bg); }
+  .type-row input.bad { border-color: var(--bad); background: var(--bad-bg); }
+  .type-row input.almost { border-color: var(--almost); background: var(--almost-bg); }
+
+  .fb { min-height: 1.6rem; text-align: center; font-weight: 800; margin-top: 1rem; font-size: 1rem; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); } .fb.almost { color: var(--almost); }
+  .tip { text-align: center; font-size: .88rem; color: var(--muted); margin-top: .35rem; font-style: italic; line-height: 1.45; }
+  .next-row { text-align: center; margin-top: 1rem; }
+  .btn { background: var(--blue); color: white; border: none; border-radius: 50px; padding: .65rem 1.5rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 0 3px 10px var(--shadow); }
+  .btn.alt { background: var(--bad-bg); color: #991b1b; }
+  .btn.start { font-size: 1.1rem; padding: .85rem 2rem; background: var(--accent); color: var(--ink); }
+  .btn.herh { background: #fff8eb; color: var(--blue); border: 2px solid var(--accent); }
+  .btn.ghost { background: white; color: var(--muted); border: 2px solid #ddd; box-shadow: none; }
+
+  .warn { background: #fef3c7; color: #92400e; border-radius: 10px; padding: .55rem .8rem; font-size: .82rem; margin-bottom: 1rem; display: none; }
+
+  .wl-head { font-size: .8rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--pink); margin: 1.3rem 0 .5rem; }
+  .wrow { display: grid; grid-template-columns: 2.2rem 1fr auto; gap: .2rem .7rem; align-items: start; border: 1px solid #dcefec; border-radius: 12px; padding: .6rem .7rem; margin-bottom: .45rem; background: #fbfefe; }
+  .wrow .we { font-size: 1.5rem; text-align: center; grid-row: span 3; }
+  .wrow .ww { font-weight: 800; font-size: 1rem; color: var(--blue); }
+  .wrow .ww small { color: var(--muted); font-weight: 700; }
+  .wrow .ww .irr { color: var(--pink); font-weight: 900; }
+  .wrow .wu { grid-column: 2 / 4; font-size: .9rem; line-height: 1.4; }
+  .wrow .wz { grid-column: 2 / 4; font-size: .88rem; color: var(--muted); font-style: italic; font-family: 'Lora', serif; }
+  .wrow .sp { background: #eef7f6; border: none; border-radius: 50px; padding: .25rem .6rem; cursor: pointer; font-size: .9rem; grid-row: 1; grid-column: 3; }
+  .nb { display: inline-block; font-size: .68rem; font-weight: 800; background: #fde8ee; color: var(--pink); border-radius: 20px; padding: .05rem .5rem; margin-left: .3rem; vertical-align: middle; }
+  .legend { font-size: .8rem; color: var(--muted); margin-bottom: .8rem; }
+
+  .fc-scene { height: 270px; perspective: 1000px; cursor: pointer; user-select: none; margin-bottom: 1rem; }
+  .fc-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+  .fc-inner.flipped { transform: rotateY(180deg); }
+  .fc-face { position: absolute; inset: 0; border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem 1.2rem; text-align: center; }
+  .fc-front { background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%); color: white; box-shadow: 0 8px 28px var(--shadow); }
+  .fc-back { background: white; border: 2px solid #cfe9e6; border-left: 8px solid var(--accent); transform: rotateY(180deg); color: var(--ink); }
+  .fc-tag { position: absolute; top: .9rem; left: 1rem; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+  .fc-em { font-size: 2.6rem; margin-bottom: .3rem; }
+  .fc-word { font-size: clamp(1.4rem, 6vw, 2.1rem); font-weight: 800; line-height: 1.3; }
+  .fc-def { font-size: clamp(1rem, 4.2vw, 1.2rem); line-height: 1.45; }
+  .fc-ex { font-family: 'Lora', serif; font-style: italic; opacity: .8; margin-top: .7rem; font-size: .95rem; }
+  .fc-hint { margin-top: .8rem; font-size: .8rem; opacity: .65; font-style: italic; }
+  .fc-say { margin-top: .8rem; background: rgba(255,255,255,.18); color: inherit; border: none; border-radius: 50px; padding: .35rem .9rem; font-family: inherit; font-weight: 800; cursor: pointer; }
+  .fc-back .fc-say { background: #eef7f6; color: var(--blue); }
+  .fb-row { display: flex; gap: .7rem; justify-content: center; }
+  .fb-btn { flex: 1; max-width: 220px; border: none; border-radius: 12px; padding: .7rem 1rem; font-family: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; }
+  .fb-btn.known { background: var(--ok-bg); color: #065f46; }
+  .fb-btn.unknown { background: var(--bad-bg); color: #991b1b; }
+  .fc-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .7rem; }
+
+  .result { text-align: center; padding: 1rem 0; }
+  .result .score { font-size: 3.2rem; font-weight: 900; color: var(--blue); }
+  .result .msg { color: var(--muted); font-style: italic; margin: .4rem 0 1.3rem; }
+  .result .btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; }
+  .result .avatar-box { margin: 0 auto 1rem; width: 86px; height: 86px; }
+
+  .review { text-align: left; margin-top: 1.6rem; }
+  .review h3 { font-size: 1rem; font-weight: 900; color: var(--bad); margin-bottom: .2rem; }
+  .rv { border: 1px solid #f3d0d0; border-left: 5px solid var(--bad); border-radius: 12px; padding: .7rem .9rem; margin-bottom: .6rem; background: #fffafa; font-size: .92rem; line-height: 1.45; }
+  .rv .rt { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--pink); }
+  .rv .rq { font-family: 'Lora', serif; margin: .25rem 0 .35rem; font-size: 1rem; }
+  .rv .rq .gap { min-width: 3em; }
+  .rv .rq .mark { background: #fff1d6; border-bottom: 2px solid var(--accent); padding: 0 .15em; border-radius: 4px; }
+  .rv .ry { color: #991b1b; }
+  .rv .rg { color: #065f46; font-weight: 800; }
+  .rv .ru { color: var(--muted); font-size: .85rem; margin-top: .2rem; font-style: italic; }
+
+  footer { text-align: center; font-size: .78rem; color: var(--muted); margin-top: 2.5rem; }
+</style>
+</head>
+<body>
+<a class="home" href="https://rachelbrigitta71-hoorn.github.io/Code-oefeningen/deel2/overzicht_code2.html">← Hoofdmenu</a>
+
+<div class="wrap">
+  <div class="header">
+    <div class="avatar-box av">🛒</div>
+    <div>
+      <h1>Thema 1 · Dat is een koopje!</h1>
+      <p>Code+ Deel 2 · woordenschat · 103 woorden</p>
+    </div>
+  </div>
+
+  <div class="uitleg">
+    <b>Zo werkt het:</b> kies eerst een <b>taak</b>. Kies dan een <b>oefening</b>.<br>
+    Begin met <b>📖 Woorden</b> en <b>🃏 Flitskaarten</b>. Lees de uitleg en luister.<br>
+    Oefen daarna van makkelijk naar moeilijk. Het moeilijkst is <b>⌨️ Typen</b>.<br>
+    Klaar met een taak? Doe dan de <b>🔁 Herhaling</b>. Daar oefen je alle woorden tot nu toe.
+  </div>
+
+  <div class="row-label">Taak</div>
+  <div class="pills" id="taken"></div>
+  <div class="taaktitel" id="taaktitel"></div>
+  <div id="herhbar"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="panel" id="panel"></div>
+
+  <footer>EdINOVA - Rachel</footer>
+</div>
+
+<script>
+/* ======================================================================
+   Code+ Deel 2 · Thema 1 · Dat is een koopje!
+   Woorden: letterlijk uit de woordenlijst van Code+ Deel 2 (ThiemeMeulenhoff).
+   * = onregelmatig werkwoord (volgens het boek).
+   ====================================================================== */
+const THEMA = 1;
+const AFL = THEMA <= 3 ? 1 : 2;   // afleiders bij gewone oefeningen (t/m thema 3: 1, daarna 2)
+const AFL_H = 2;                  // afleiders bij de herhaling: altijd 2
+const HINT = THEMA <= 2;          // beginletter als hulp bij Typen (alleen thema 1-2, niet bij herhaling)
+const KEY = 'code2_t' + THEMA + '_moeilijk';
+
+const TAKEN = [['all','Alles'],[1,'Taak 1'],[2,'Taak 2'],[3,'Taak 3'],[4,'Taak 4'],['moeilijk','⭐ Moeilijk']];
+const TITELS = {
+  all: 'Alle woorden van thema 1',
+  1: '1.1 · Een gesprek voeren tijdens het afrekenen in een winkel',
+  2: '1.2 · Advertenties lezen en begrijpen',
+  3: '1.3 · Een gesprek voeren over apparaten in een winkel',
+  4: '1.4 · Overleggen over boodschappen doen voor een feestje',
+  moeilijk: 'Jouw moeilijke woorden. Ze staan alleen op dit apparaat.'
+};
+
+/* [woord, lidwoord, emoji, taak, uitleg, voorbeeldzin, afleiders (lijken op het woord), goede antwoorden bij typen, nieuwe betekenis] */
+const RAW = [
+ // ---------- TAAK 1 (29) ----------
+ ['afrekenen','','🧾',1,'Betalen aan het eind. In de winkel of in het restaurant.','Ik ga afrekenen bij de kassa.',['afkeuren','rekening']],
+ ['apparaat','het','🔌',1,'Een machine. Bijvoorbeeld een koelkast of een wasmachine.','Dit apparaat is kapot.',['appartement','automaat']],
+ ['bak','de','🧺',1,'Een open doos. Je legt er dingen in.','Leg je tas in de bak bij de kassa.',['bakker','tas']],
+ ['bedrag','het','💶',1,'Hoeveel geld het is. Bijvoorbeeld: € 12,50.','Het bedrag is 25 euro.',['betaling','getal']],
+ ['betaling','de','💳',1,'Het betalen. Je geeft geld.','De betaling is gelukt.',['bedrag','rekening']],
+ ['contant','','💵',1,'Met geld in je hand. Niet met je pas.','Ik betaal contant.',['kleingeld','pinnen']],
+ ['fooi','de','🪙',1,'Extra geld voor de ober of de kapper. Omdat het goed was.','We geven de ober een fooi.',['korting','kleingeld']],
+ ['gaat uw gang / ga je gang','','👉',1,'Dat zeg je als iemand iets mag doen.','Kan ik pinnen? – Ja, gaat uw gang.',['tot straks','goedemiddag'],['gaat uw gang','ga je gang']],
+ ['gewoon (koffie)','','☕',1,'Normaal. Niet speciaal.','Ik wil graag een gewone koffie.',['gezond','gezellig'],['gewoon','gewone'],'In Deel 1: gewoon = zoals altijd. Nu: een gewone koffie = een normale koffie.'],
+ ['groeien','','🌱',1,'Groter worden.','Mijn zoon groeit snel.',['groeten','groen']],
+ ['intoetsen','','🔢',1,'Cijfers kiezen op een apparaat. Bijvoorbeeld je code bij het pinnen.','Toets uw code in.',['invullen','instappen']],
+ ['kleingeld','het','🪙',1,'Kleine munten. Bijvoorbeeld 10 of 50 cent.','Heb je kleingeld? Ik heb alleen 50 euro.',['contant','geld']],
+ ['makkelijk','','👌',1,'Niet moeilijk.','Pinnen is makkelijk.',['moeilijk','mogelijk']],
+ ['onjuist','','❌',1,'Niet goed. Fout.','Uw code is onjuist. Probeer het nog een keer.',['onbeleefd','ongemakkelijk']],
+ ['overal','','🌍',1,'Op elke plaats.','Je kunt bijna overal pinnen.',['over','allemaal']],
+ ['passen (gepast)','','🎯',1,'Precies het goede bedrag geven. Dan krijg je geen geld terug.','Kunt u gepast betalen? Ik heb geen kleingeld.',['pinnen','proberen'],['gepast','passen'],'In Deel 1: passen = kleren aandoen in de winkel. Nu: gepast betalen.'],
+ ['pinautomaat','de','🏧',1,'Een apparaat op straat of in de winkel. Je haalt er geld met je pas.','Ik haal geld bij de pinautomaat.',['automaat','pinpas']],
+ ['pinnen','','💳',1,'Betalen met je pas.','Kan ik hier pinnen?',['passen','contant']],
+ ['(pin)pas','de','💳',1,'Een kaart van de bank. Daarmee betaal je in de winkel.','Ik ben mijn pinpas vergeten.',['pinautomaat','kassa'],['pinpas','pas']],
+ ['proberen','','🤞',1,'Iets doen en kijken of het lukt.','Probeer het nog een keer.',['probleem','praten']],
+ ['sparen','','🐷',1,'Iets bewaren en steeds meer krijgen. Bijvoorbeeld zegels of geld.','Ik spaar zegels bij de supermarkt.',['sporten','spreken']],
+ ['stom','','🙄',1,'Niet slim. Of: niet leuk.','Stom! Ik ben mijn pas vergeten.',['sterk','stoel']],
+ ['terughebben van','','💱',1,'Genoeg kleingeld hebben om geld terug te geven.','Heeft u terug van 50 euro?',['teruggeven','meenemen'],['terughebben','terug hebben','terughebben van']],
+ ['tweedehands','','♻️',1,'Niet nieuw. Iemand anders had het eerst.','Ik koop een tweedehands fiets.',['tweede','goedkoop']],
+ ['verkopen','','🏷️',1,'Iets aan iemand geven, en daar geld voor krijgen.','Ik verkoop mijn oude fiets.',['kopen','verkoper']],
+ ['vroeger','','⏳',1,'Lang geleden. Niet nu.','Vroeger betaalde iedereen contant.',['vroeg','straks']],
+ ['weegschaal','de','⚖️',1,'Een apparaat. Je ziet hoeveel kilo of gram iets is.','Leg de appels op de weegschaal.',['wegen','kassa']],
+ ['wegen','','⚖️',1,'Kijken hoeveel kilo of gram iets is.','Je moet de bananen eerst wegen.',['weegschaal','wachten']],
+ ['zegel','de','🎟️',1,'Een klein plaatje. Je krijgt het bij de boodschappen. Je spaart het.','Met tien zegels krijg ik korting.',['bon','kaart']],
+
+ // ---------- TAAK 2 (39) ----------
+ ['aannemelijk','','👍',2,'Goed genoeg. Daar kun je ja op zeggen. Bijvoorbeeld: een aannemelijk bod.','Fiets te koop voor een aannemelijk bod.',['aanbieding','aantal']],
+ ['afdingen','','🤝',2,'Vragen om een lagere prijs.','Op de markt kun je afdingen.',['afkeuren','afrekenen']],
+ ['allebei','','✌️',2,'Alle twee.','Ik wil de stoel en de tafel. Ik koop ze allebei.',['allemaal','alleen']],
+ ['apart','','↔️',2,'Niet samen. Alleen.','De stoelen zijn ook apart te koop.',['alleen','allebei']],
+ ['batterij','de','🔋',2,'Die zit in een klok of een klein apparaat. Dan werkt het.','De batterij is leeg.',['bak','bank']],
+ ['bieden','','💬',2,'Zeggen hoeveel geld je wilt betalen.','Ik bied 20 euro voor de fiets.',['bod','kiezen']],
+ ['bod','het','💰',2,'Hoeveel geld je wilt betalen voor iets.','Hij doet een bod van 50 euro.',['bieden','boot']],
+ ['college','het','🎓',2,'Een les op de universiteit.','Ik heb morgen college.',['collega','cursus']],
+ ['dak','het','🏠',2,'Het bovenste deel van een huis.','Er zit een kat op het dak.',['dag','zolder']],
+ ['dame','de','👩',2,'Een vrouw (beleefd).','Die dame verkoopt haar spullen.',['dag','heer']],
+ ['deel','het','🍕',2,'Een stuk van iets.','Een deel van de spullen is tweedehands.',['delen','dag']],
+ ['deur','de','🚪',2,'Daar ga je door, het huis in of uit.','Doe de deur dicht.',['duur','raam']],
+ ['frisdrank','de','🥤',2,'Een koud drankje met suiker. Bijvoorbeeld cola.','Wil je water of frisdrank?',['drinken','fruit']],
+ ['geluid','het','🔊',2,'Wat je hoort.','De koelkast maakt veel geluid.',['geld','gelukkig']],
+ ['geschikt','','✅',2,'Goed voor iets. Het past.','Deze fiets is geschikt voor kinderen.',['gezellig','geslacht']],
+ ['gitaar','de','🎸',2,'Daarmee maak je muziek. Je speelt met je vingers.','Ik verkoop mijn oude gitaar.',['muziek','gast']],
+ ['grijs','','🩶',2,'Een kleur tussen wit en zwart.','Ik heb een grijze jas.',['groen','wit'],['grijs','grijze']],
+ ['heer','de','🎩',2,'Een man (beleefd).','Een heer wil de gitaar kopen.',['hier','dame']],
+ ['hout','het','🪵',2,'Dat komt van een boom. Een tafel is vaak van hout. Houten = van hout.','Ik heb een houten tafel.',['houden','oud'],['hout','houten']],
+ ['ieder','','👥',2,'Elk. Iedereen of alles, één voor één.','Ieder meubel kost 10 euro.',['iemand','iets']],
+ ['koelkast','de','🧊',2,'Een kast in de keuken. Het eten blijft daar koud.','De melk staat in de koelkast.',['kast','koud']],
+ ['koopje','het','🤑',2,'Iets voor een lage prijs.','Twee euro voor deze stoel? Dat is een koopje!',['kopen','kop']],
+ ['koud','','🥶',2,'Niet warm.','De frisdrank is lekker koud.',['oud','warm']],
+ ['lenen','','🔁',2,'Iets even krijgen en later teruggeven. Of iets even geven.','Mag ik jouw fiets lenen?',['leren','lezen']],
+ ['magnetron','de','♨️',2,'Een apparaat in de keuken. Je maakt eten snel warm.','Ik maak de melk warm in de magnetron.',['wasmachine','koelkast']],
+ ['meisje','het','👧',2,'Een jong kind. Geen jongen.','Het meisje is tien jaar.',['mevrouw','jongen']],
+ ['merk','het','🏷️',2,'De naam van de maker. Bijvoorbeeld Philips of Samsung.','Welk merk is de koelkast?',['markt','melk']],
+ ['onderhandelen','','🗣️',2,'Praten over de prijs. Samen kiezen jullie een prijs.','We onderhandelen over de prijs.',['onderweg','ontmoeten']],
+ ['ophalen','','🚗',2,'Iets of iemand gaan halen.','Je kunt de kast zaterdag ophalen.',['opstaan','opschieten']],
+ ['redelijk (in redelijke staat)','','👌',2,'Niet heel goed, maar ook niet slecht.','De fiets is in redelijke staat.',['rustig','prettig'],['redelijk','redelijke']],
+ ['slechts','','☝️',2,'Alleen maar. Niet meer.','De stoel kost slechts 5 euro.',['slecht','slapen']],
+ ['spullen','de','📦',2,'Dingen.','Ik verkoop mijn oude spullen.',['spelen','spiegel']],
+ ['staat','de','🔧',2,'Hoe goed of slecht iets nog is.','De tafel is in goede staat.',['straat','staan']],
+ ['stelen (gestolen)','','🦹',2,'Iets pakken dat niet van jou is.','Mijn fiets is gestolen!',['spelen','sterk'],['stelen','gestolen']],
+ ['tegelijk','','⏱️',2,'Op hetzelfde moment.','Twee mensen bellen tegelijk.',['tegen','gelijk']],
+ ['vast (vaste prijzen)','','📌',2,'Het verandert niet. Je kunt niet afdingen.','In de winkel zijn de prijzen vast.',['vaak','vies'],['vast','vaste']],
+ ['versnelling','de','🚲',2,'Op een fiets. Daarmee fiets je makkelijker, bijvoorbeeld op een brug.','De fiets heeft zeven versnellingen.',['vertraging','verdieping']],
+ ['verzenden','','📮',2,'Iets naar een ander adres laten brengen.','Kunt u de spullen verzenden?',['verhuizen','vertrekken']],
+ ['vooral','','⭐',2,'Het meest.','Ik koop vooral tweedehands spullen.',['voor','voordeel']],
+
+ // ---------- TAAK 3 (10) ----------
+ ['aanbieding','de','🏷️',3,'Een lagere prijs, maar maar een korte tijd.','De televisie is in de aanbieding.',['aanbieden','advertentie']],
+ ['beeld (scherm)','het','📺',3,'Het scherm van een televisie of een telefoon. Daar zie je de film.','De televisie heeft een groot beeld.',['bed','beetje'],['beeld']],
+ ['bekend','','🌟',3,'Veel mensen kennen het.','Dat merk is heel bekend.',['bekijken','beneden']],
+ ['garantie','de','🛡️',3,'Is het apparaat snel kapot? Dan maakt de winkel het gratis.','U krijgt twee jaar garantie.',['gratis','kassa']],
+ ['opschrijven','','✍️',3,'Iets schrijven, zodat je het niet vergeet.','Ik schrijf de prijs op.',['opschieten','beschrijven']],
+ ['opslag (data-opslag)','de','💾',3,'Hoeveel foto’s en filmpjes er op je telefoon passen.','Deze telefoon heeft veel opslag.',['opstaan','slapen'],['opslag']],
+ ['programma (wasmachine, airfryer)','het','🔘',3,'Een keuze op een apparaat. Bijvoorbeeld: kort of lang wassen.','Deze wasmachine heeft een snel programma.',['probleem','rooster'],['programma'],'In Deel 1: programma = wat er op een dag gebeurt. Nu: een programma op een apparaat.'],
+ ['televisie','de','📺',3,'Een apparaat. Je kijkt er films op.','We kijken samen televisie.',['tafel','beeld']],
+ ['wassen','','🧼',3,'Met water maken dat iets niet meer vies is.','Ik was mijn kleren in de wasmachine.',['wachten','water']],
+ ['zelf','','🙋',3,'Jij, en niet een ander.','Ik maak het zelf.',['zelfs','zeker']],
+
+ // ---------- TAAK 4 (25) ----------
+ ['afstuderen','','🎓',4,'Klaar zijn met studeren. Je hebt je diploma.','Mijn broer is afgestudeerd. We geven een feestje!',['studeren','afrekenen'],['afstuderen','afgestudeerd']],
+ ['allemaal','','👨‍👩‍👧',4,'Iedereen. Of: alles.','We gaan allemaal naar het feest.',['allebei','alleen']],
+ ['chips','de','🥔',4,'Zout borrelhapje van aardappel. In een zak.','We kopen chips en pinda’s.',['friet','pinda']],
+ ['dienst','de','🛎️',4,'Werk dat iemand voor jou doet. Bijvoorbeeld: de supermarkt bezorgt je boodschappen.','Bezorgen is een dienst van de supermarkt.',['dinsdag','dier']],
+ ['eindelijk','','😅',4,'Na lang wachten.','Eindelijk is het weekend!',['einde','eigenlijk']],
+ ['examen','het','📝',4,'Aan het eind van een cursus. Je laat zien wat je kunt.','Morgen heb ik mijn examen.',['excuus','cursus']],
+ ['folder','de','📰',4,'Een papier met reclame en aanbiedingen.','In de folder staan de aanbiedingen.',['formulier','krant']],
+ ['gezond','','🥦',4,'Goed voor je. Bijvoorbeeld groente en fruit.','Ik koop ook gezond eten.',['gezellig','gewoon']],
+ ['huismerk','het','🏪',4,'Het eigen merk van de supermarkt. Vaak goedkoper.','Ik koop de chips van het huismerk.',['huis','markt']],
+ ['krat','het','🍺',4,'Een plastic doos met plaats voor flessen. Bijvoorbeeld 24 flesjes bier.','We kopen een krat bier voor het feest.',['kast','kaart']],
+ ['laten','','🙌',4,'Niet zelf doen: een ander doet het. Of: zeggen dat iets mag.','Ik laat de boodschappen bezorgen.',['lezen','lopen'],['laten','laat']],
+ ['lijst','de','📋',4,'Woorden onder elkaar. Bijvoorbeeld voor de boodschappen.','Ik maak een lijst voor de supermarkt.',['les','lied']],
+ ['mazzel','de','🍀',4,'Geluk. Iets leuks gebeurt zomaar.','Mazzel! De chips zijn in de aanbieding.',['maaltijd','meestal']],
+ ['nadenken (over)','','🤔',4,'Goed denken voordat je iets kiest.','Ik moet even nadenken.',['nemen','danken'],['nadenken']],
+ ['olijf','de','🫒',4,'Klein, groen of zwart en zout. Lekker bij de borrel.','Ik koop olijven en kaas.',['ui','pinda']],
+ ['overleggen (over)','','💭',4,'Samen praten en samen iets kiezen.','We overleggen over de boodschappen.',['overstappen','oversteken'],['overleggen']],
+ ['pak (koffie, appelsap)','het','🧃',4,'Koffie of sap koop je in een pak.','Neem twee pakken sap mee.',['zak','bak'],['pak','pakken'],'In Deel 1: pak = kleding (een man in pak). Nu: een pak koffie of een pak sap.'],
+ ['reclame','de','📢',4,'Zo laat een winkel zien wat je kunt kopen. Op tv, op straat of in de folder.','Ik zag reclame voor goedkope chips.',['rekening','regio']],
+ ['rijbewijs','het','🪪',4,'Een kaart. Die heb je nodig om auto te rijden.','Mijn zus heeft haar rijbewijs!',['rijden','reisgids']],
+ ['sinaasappel','de','🍊',4,'Oranje fruit. Je maakt er sap van.','Ik koop sinaasappels voor sap.',['appel','sap']],
+ ['slagen (voor een examen)','','🏆',4,'Je examen goed maken. Je hebt het gehaald.','Ik ben geslaagd voor mijn examen!',['slapen','slager'],['slagen','geslaagd']],
+ ['stuk (per stuk)','het','🔢',4,'Eén ding. Per stuk = voor één.','De sinaasappels kosten 50 cent per stuk.',['stoel','kilo'],['stuk','per stuk'],'In Deel 1: stuk = kapot. Nu: per stuk = voor één.'],
+ ['uitgeven','','💸',4,'Geld betalen voor dingen.','We geven niet te veel geld uit.',['uitgaan','teruggeven']],
+ ['wortel','de','🥕',4,'Lange, oranje groente.','Ik koop wortels en uien.',['woord','tomaat']],
+ ['zak','de','🛍️',4,'Een tas van plastic of papier. Ook chips zitten in een zak.','Een zak chips, graag.',['pak','tas']]
+];
+
+const IRR = new Set(['terughebben van','verkopen','wegen','afdingen','bieden','stelen (gestolen)','verzenden','opschrijven','wassen','laten','nadenken (over)','uitgeven']);
+const PLUR = new Set(['spullen','chips']);
+
+const W = RAW.map(r => {
+  const alt = r[7] && r[7].length ? r[7] : [r[0].replace(/\s*\(.*?\)\s*/g, '').trim()];
+  return { w: r[0], a: r[1], e: r[2], t: r[3], u: r[4], z: r[5], af: r[6] || [], alt, nb: r[8] || '', base: alt[0] };
+});
+
+/* Woorden die bijna hetzelfde betekenen: die komen niet samen voor als 'fout' antwoord. */
+const SYN = [
+  ['contant','kleingeld','passen (gepast)'], ['pinnen','(pin)pas','pinautomaat'], ['wegen','weegschaal'],
+  ['bieden','bod','afdingen','onderhandelen','aannemelijk'], ['aannemelijk','redelijk (in redelijke staat)'], ['dame','heer','meisje'],
+  ['beeld (scherm)','televisie'], ['aanbieding','koopje','folder','reclame'], ['zak','pak (koffie, appelsap)','krat','bak'],
+  ['afstuderen','slagen (voor een examen)','examen'], ['allebei','allemaal','ieder'], ['slechts','vooral'],
+  ['overleggen (over)','nadenken (over)','onderhandelen'], ['spullen','apparaat'], ['makkelijk','gewoon (koffie)'],
+  ['verkopen','verzenden'], ['koelkast','magnetron'], ['afrekenen','betaling','bedrag'], ['apart','allebei']
+];
+function synOf(w) { return SYN.filter(s => s.includes(w)).flat().concat([w]); }
+
+/* ---------- ZINNEN ----------
+   [zin, goed, [afleiders], [duidelijk fout], taak, h]
+   h = 0: gewone oefening (goed + 1 afleider + 2 duidelijk fout)
+   h = 1: alleen in de herhaling, andere zinnen (goed + 2 afleiders + 1 duidelijk fout) */
+const ZINNEN = [
+  // taak 1 – gewoon
+  ['Ik heb geen kleingeld. Kan ik ___?','pinnen',['passen','sparen'],['groeien','wegen'],1,0],
+  ['Betaalt u met de pas of ___?','contant',['kleingeld','gepast'],['stom','vroeger'],1,0],
+  ['Het ___ is € 12,50.','bedrag',['betaling','getal'],['apparaat','zegel'],1,0],
+  ['Het eten was lekker. We geven de ober een ___.','fooi',['korting','zegel'],['weegschaal','betaling'],1,0],
+  ['Uw code is ___. Probeer het nog een keer.','onjuist',['ongemakkelijk','onbeleefd'],['tweedehands','overal'],1,0],
+  ['Leg de appels op de ___. Dan zie je hoeveel kilo het is.','weegschaal',['pinautomaat','kassa'],['fooi','betaling'],1,0],
+  ['Je moet de bananen eerst ___.','wegen',['werken','wachten'],['kleingeld','contant'],1,0],
+  ['De automaat geeft geen geld terug. Betaal ___: precies het goede bedrag.','gepast',['gewoon','gezond'],['stom','vroeger'],1,0],
+  ['Ik haal geld bij de ___.','pinautomaat',['pinpas','kassa'],['fooi','zegel'],1,0],
+  ['Ik ben mijn ___ vergeten. Ik betaal contant.','pinpas',['pinautomaat','kassa'],['bedrag','fooi'],1,0],
+  ['Bij deze supermarkt ___ ik zegels. Met tien zegels krijg ik korting.','spaar',['sport','spreek'],['weeg','groei'],1,0],
+  ['___ betaalde iedereen contant. Nu pinnen we.','Vroeger',['Vroeg','Straks'],['Makkelijk','Stom'],1,0],
+  ['Pinnen is heel ___. Je hoeft geen kleingeld te zoeken.','makkelijk',['moeilijk','mogelijk'],['onjuist','tweedehands'],1,0],
+  ['Kan ik even pinnen? – Ja, ___.','gaat uw gang',['tot straks','goedemiddag'],['vroeger','overal'],1,0],
+  ['Mijn kinderen ___ snel. Ze hebben vaak nieuwe schoenen nodig.','groeien',['groeten','geven'],['wegen','sparen'],1,0],
+  // taak 1 – herhaling
+  ['Wilt u ___ betalen of met de pas?','contant',['kleingeld','pinnen'],['groeien'],1,1],
+  ['Ik verkoop mijn oude fiets. Hij is ___, maar nog goed.','tweedehands',['tweede','goedkoop'],['onjuist'],1,1],
+  ['Ik heb alleen 50 euro. Heeft u daar ___ van?','terug',['weer','tegen'],['stom'],1,1],
+  ['De ___ is gelukt. Dank u wel!','betaling',['bedrag','rekening'],['weegschaal'],1,1],
+  ['Toets uw code in op het ___.','apparaat',['appartement','automaat'],['zegel'],1,1],
+  ['Leg je tas in de ___ bij de kassa.','bak',['bakker','tas'],['fooi'],1,1],
+  ['Ik ___ mijn oude auto. Wil jij hem kopen?','verkoop',['koop','verkoper'],['spaar'],1,1],
+  ['Dat is ___! Ik heb mijn pinpas thuis laten liggen.','stom',['sterk','stoel'],['tweedehands'],1,1],
+  ['Je kunt bijna ___ pinnen: in de winkel, in de bus en op de markt.','overal',['over','allemaal'],['vroeger'],1,1],
+  ['Het pinnen lukt niet. – ___ het nog een keer.','Probeer',['Probleem','Praat'],['Weeg'],1,1],
+  ['Ik wil gaan ___. Mag ik de rekening?','afrekenen',['afkeuren','rekenen'],['groeien'],1,1],
+
+  // taak 2 – gewoon
+  ['Ik wil een lagere prijs. Ik ga ___.','afdingen',['afrekenen','afkeuren'],['groeien','lenen'],2,0],
+  ['Ik ___ 20 euro voor de gitaar.','bied',['bod','bel'],['steel','groei'],2,0],
+  ['Hij doet een ___ van 50 euro.','bod',['bieden','boot'],['dak','merk'],2,0],
+  ['De koelkast is in goede ___.','staat',['straat','stad'],['deur','gitaar'],2,0],
+  ['Mijn fiets is ___! Ik kan niet naar huis fietsen.','gestolen',['geschikt','gesloten'],['koud','grijs'],2,0],
+  ['Ik wil de stoel én de tafel. Ik koop ze ___.','allebei',['allemaal','alleen'],['slechts','koud'],2,0],
+  ['Wil je water of ___? – Cola, graag!','frisdrank',['drinken','fruit'],['hout','batterij'],2,0],
+  ['De ___ van de klok is leeg.','batterij',['bank','bak'],['dame','deur'],2,0],
+  ['De melk staat in de ___. Daar is het koud.','koelkast',['kast','keuken'],['magnetron','gitaar'],2,0],
+  ['Een fiets voor 10 euro? Dat is een ___!','koopje',['kopje','kop'],['bod','merk'],2,0],
+  ['Mag ik jouw auto ___? Ik breng hem morgen terug.','lenen',['leren','lezen'],['stelen','verzenden'],2,0],
+  ['Je kunt de kast zaterdag bij mij ___.','ophalen',['opstaan','opschieten'],['afdingen','groeien'],2,0],
+  ['Welk ___ is de koelkast? – Philips.','merk',['markt','melk'],['dak','deel'],2,0],
+  ['In deze winkel zijn de prijzen ___. Je kunt niet afdingen.','vast',['vaak','vies'],['koud','grijs'],2,0],
+  ['De fiets heeft zeven ___.','versnellingen',['verdiepingen','vertragingen'],['batterijen','deuren'],2,0],
+  ['Twee mensen praten ___. Ik begrijp niets.','tegelijk',['tegen','gelijk'],['apart','vooral'],2,0],
+  // taak 2 – herhaling
+  ['We ___ over de prijs. Eerst 50 euro, dan 40.','onderhandelen',['ontmoeten','onderweg'],['verzenden'],2,1],
+  ['Kunt u de spullen ___? Ik woon ver weg.','verzenden',['verhuizen','vertrekken'],['stelen'],2,1],
+  ['Ik heb een mooie tafel. Hij is van ___.','hout',['oud','houden'],['dak'],2,1],
+  ['De tafel is niet nieuw, maar wel ___. Hij is nog goed genoeg.','redelijk',['rustig','prettig'],['koud'],2,1],
+  ['De stoel kost ___ 5 euro. Dat is weinig!','slechts',['slecht','slapen'],['vooral'],2,1],
+  ['Ik koop ___ tweedehands spullen. Bijna nooit nieuw.','vooral',['voor','voordeel'],['apart'],2,1],
+  ['Een ___ en een heer kijken naar de fiets.','dame',['dak','dag'],['deur'],2,1],
+  ['Is deze fiets ___ voor een kind van acht?','geschikt',['gezellig','geslacht'],['grijs'],2,1],
+  ['De stoelen kun je ook ___ kopen. Niet samen met de tafel.','apart',['allebei','allemaal'],['koud'],2,1],
+  ['___ stoel kost 10 euro.','Ieder',['Iemand','Iets'],['Slechts'],2,1],
+  ['Ik heb morgen ___ op de universiteit.','college',['collega','kassa'],['geluid'],2,1],
+  ['Ik verkoop mijn oude ___. Ik maak geen muziek meer.','gitaar',['gast','gat'],['deur'],2,1],
+  ['De koelkast maakt veel ___. Ik kan niet slapen.','geluid',['geld','gelukkig'],['dak'],2,1],
+
+  // taak 3 – gewoon
+  ['Deze televisie is in de ___. Hij kost nu 100 euro minder.','aanbieding',['aanbieden','advertentie'],['opslag','garantie'],3,0],
+  ['Is de wasmachine snel kapot? U heeft twee jaar ___.','garantie',['gratis','kassa'],['beeld','televisie'],3,0],
+  ['Dit merk is heel ___. Iedereen kent het.','bekend',['bekijken','beneden'],['zelf','apart'],3,0],
+  ['Wil je de prijs ___? Dan vergeten we het niet.','opschrijven',['opschieten','beschrijven'],['wassen','zelf'],3,0],
+  ['Deze telefoon heeft veel ___ voor al je foto’s.','opslag',['opstaan','oplossen'],['garantie','televisie'],3,0],
+  ['Ik ___ mijn kleren in de wasmachine.','was',['wacht','water'],['schrijf','koop'],3,0],
+  ['Deze wasmachine heeft een kort ___ van 30 minuten.','programma',['probleem','rooster'],['beeld','merk'],3,0],
+  ['De televisie heeft een groot ___.','beeld',['bed','beetje'],['programma','garantie'],3,0],
+  ['Wij kijken ’s avonds ___.','televisie',['tafel','telefoon'],['garantie','opslag'],3,0],
+  ['Ik heb geen hulp nodig. Ik doe het ___.','zelf',['zelfs','zeker'],['bekend','apart'],3,0],
+  // taak 3 – herhaling
+  ['Nu in de ___: twee halen, één betalen!','aanbieding',['aanbieden','aantal'],['opslag'],3,1],
+  ['Is het apparaat snel kapot? Dan krijgt u een nieuwe. Dat is de ___.','garantie',['gratis','kassa'],['zelf'],3,1],
+  ['Dit is het snelle ___: wassen in 15 minuten.','programma',['probleem','rooster'],['beeld'],3,1],
+  ['Heb je een pen? Ik wil het adres ___.','opschrijven',['opschieten','beschrijven'],['wassen'],3,1],
+  ['Deze winkel is heel ___. Iedereen kent hem.','bekend',['bekijken','beneden'],['zelf'],3,1],
+  ['Het ___ van de televisie is kapot. Ik zie niets.','beeld',['bed','beetje'],['programma'],3,1],
+
+  // taak 4 – gewoon
+  ['Mijn broer gaat ___. Dan heeft hij zijn diploma.','afstuderen',['studeren','afrekenen'],['uitgeven','laten'],4,0],
+  ['Ik maak een ___ voor de supermarkt: chips, sap en olijven.','lijst',['les','lied'],['krat','folder'],4,0],
+  ['We kopen een ___ bier. Daar zitten 24 flesjes in.','krat',['kast','kaart'],['zak','olijf'],4,0],
+  ['Een ___ chips, graag.','zak',['pak','bak'],['krat','lijst'],4,0],
+  ['Neem ook twee ___ sap mee.','pakken',['zakken','bakken'],['wortels','lijsten'],4,0],
+  ['In de ___ van de supermarkt staan de aanbiedingen.','folder',['formulier','krant'],['wortel','chips'],4,0],
+  ['De chips van het ___ zijn goedkoper dan van een bekend merk.','huismerk',['huis','markt'],['examen','rijbewijs'],4,0],
+  ['Ik ben ___ voor mijn examen! We geven een feestje.','geslaagd',['geslapen','gestolen'],['gezond','eindelijk'],4,0],
+  ['De sinaasappels kosten 50 cent per ___.','stuk',['stoel','kilo'],['lijst','dienst'],4,0],
+  ['Hoeveel geld wil je ___ aan het feest?','uitgeven',['uitgaan','teruggeven'],['nadenken','slagen'],4,0],
+  ['Ik weet het nog niet. Ik moet even ___.','nadenken',['nemen','danken'],['slagen','afstuderen'],4,0],
+  ['Groente en fruit zijn ___.','gezond',['gezellig','gewoon'],['eindelijk','huismerk'],4,0],
+  ['___! De chips zijn vandaag in de aanbieding.','Mazzel',['Maaltijd','Meestal'],['Examen','Dienst'],4,0],
+  ['Na drie keer is hij ___ geslaagd voor zijn rijbewijs.','eindelijk',['eigenlijk','einde'],['gezond','huismerk'],4,0],
+  ['Zullen we samen ___ over het feest? Wat kopen we?','overleggen',['overstappen','oversteken'],['slagen','laten'],4,0],
+  // taak 4 – herhaling
+  ['Ik heb mijn ___! Nu mag ik auto rijden.','rijbewijs',['rijden','reisgids'],['olijf'],4,1],
+  ['Op tv is veel ___ voor chips en frisdrank.','reclame',['rekening','regio'],['wortel'],4,1],
+  ['Ik ___ de boodschappen bezorgen. Dan hoef ik niet naar de winkel.','laat',['lees','loop'],['slaag'],4,1],
+  ['Bij de borrel eten we kaas en ___.','olijven',['uien','pakken'],['examens'],4,1],
+  ['Bezorgen is een ___ van de supermarkt.','dienst',['dinsdag','dier'],['lijst'],4,1],
+  ['Ik koop oranje groente: ___.','wortels',['woorden','sinaasappels'],['chips'],4,1],
+  ['Wie komt er op het feest? – ___: de hele familie!','Allemaal',['Allebei','Alleen'],['Eindelijk'],4,1],
+  ['Morgen heb ik mijn ___. Ik heb veel geleerd.','examen',['excuus','cursus'],['chips'],4,1],
+  ['Een ___ is oranje fruit. Je kunt er sap van maken.','sinaasappel',['appel','wortel'],['krat'],4,1]
+];
+
+/* ---------- ANDER WOORD (vervangspel) ----------
+   [zin met [gewone woorden], goed, [afleiders], [duidelijk fout], taak] */
+const ANDER = [
+  ['Ik betaal [met geld in mijn hand, niet met de pas].','contant',['kleingeld','gepast'],['groeien','weegschaal'],1],
+  ['Uw code is [niet goed].','onjuist',['onbeleefd','ongemakkelijk'],['tweedehands','vroeger'],1],
+  ['Ik koop een [oude, niet nieuwe] fiets.','tweedehands',['tweede','goedkope'],['onjuiste','stomme'],1],
+  ['[Lang geleden] had ik geen pinpas.','Vroeger',['Vroeg','Straks'],['Overal','Makkelijk'],1],
+  ['Je kunt [op elke plaats] pinnen.','overal',['over','allemaal'],['vroeger','stom'],1],
+  ['Pinnen is [niet moeilijk].','makkelijk',['mogelijk','moeilijk'],['tweedehands','onjuist'],1],
+  ['Ik wil graag [aan het eind betalen].','afrekenen',['afkeuren','rekenen'],['groeien','sparen'],1],
+  ['Ik wil een [normale] koffie, geen cappuccino.','gewone',['gezonde','gezellige'],['onjuiste','stomme'],1],
+
+  ['De fiets kost [maar] 20 euro.','slechts',['slecht','vooral'],['koud','grijs'],2],
+  ['Ik verkoop mijn oude [dingen].','spullen',['spelen','spiegels'],['deuren','daken'],2],
+  ['Ik koop [het meest] tweedehands.','vooral',['voor','voordeel'],['koud','grijs'],2],
+  ['Twee mensen bellen [op hetzelfde moment].','tegelijk',['tegen','gelijk'],['koud','apart'],2],
+  ['Die [mevrouw] wil de gitaar kopen.','dame',['dak','dag'],['deur','batterij'],2],
+  ['Op de markt kun je [om een lagere prijs vragen].','afdingen',['afrekenen','afkeuren'],['groeien','lenen'],2],
+  ['Ik wil [de twee] stoelen.','allebei',['allemaal','alleen'],['slechts','koud'],2],
+  ['Twee euro voor deze stoel? Dat is [heel goedkoop]!','een koopje',['een kopje','een kop'],['een dak','een deur'],2],
+
+  ['Wil je het adres even [op papier zetten]?','opschrijven',['opschieten','beschrijven'],['wassen','groeien'],3],
+  ['Ik doe het [zonder hulp].','zelf',['zelfs','zeker'],['bekend','apart'],3],
+  ['Kijk je vaak [tv]?','televisie',['tafel','telefoon'],['garantie','opslag'],3],
+  ['De tv is [nu even goedkoper].','in de aanbieding',['in de advertentie','in het aanbod'],['in de garantie','in de opslag'],3],
+
+  ['Ik heb [geluk]!','mazzel',['een maaltijd','meestal'],['een examen','een dienst'],4],
+  ['Ik moet [even goed denken].','even nadenken',['even nemen','even danken'],['even slagen','even uitgeven'],4],
+  ['[Na lang wachten] is het weekend!','Eindelijk',['Eigenlijk','Einde'],['Gezond','Allemaal'],4],
+  ['We [praten samen en kiezen samen] wat we kopen.','overleggen',['overstappen','oversteken'],['slagen','afstuderen'],4],
+  ['De appels kosten 50 cent [voor één].','per stuk',['per stoel','per kilo'],['per lijst','per dienst'],4],
+  ['Ik koop chips van [het eigen merk van de supermarkt].','het huismerk',['het huis','de markt'],['het examen','het rijbewijs'],4]
+];
+
+/* ---------- WAT ZEG JE? ----------
+   [situatie, goed, [afleiders], [duidelijk fout], taak] */
+const SITU = [
+  ['Je wilt met je pas betalen. Wat vraag je?','Kan ik pinnen?',['Kan ik sparen?','Kan ik passen?'],['Hoe oud ben je?','Waar woon je?'],1],
+  ['Je werkt in een winkel. De klant vraagt: "Kan ik pinnen?" Wat zeg je?','Ja hoor, gaat uw gang.',['Ja hoor, tot straks.','Ja hoor, goedemiddag.'],['Ik heet Maria.','Het is acht uur.'],1],
+  ['Je hebt alleen 50 euro. Het kost 3 euro. Wat vraag je?','Heeft u terug van 50 euro?',['Heeft u een fooi van 50 euro?','Geeft u 50 euro terug?'],['Mag ik een koffie?','Waar is de wc?'],1],
+  ['Op het apparaat staat: "Code onjuist." Wat doe je?','Ik probeer het nog een keer.',['Ik spaar het nog een keer.','Ik weeg het nog een keer.'],['Ik ga slapen.','Ik koop een fiets.'],1],
+  ['Het eten was lekker. De ober was heel goed. Wat doe je?','Ik geef een fooi.',['Ik geef een zegel.','Ik geef kleingeld terug.'],['Ik verkoop de tafel.','Ik ga groeien.'],1],
+  ['De kassa vraagt: "Wilt u zegels sparen?" Je wilt dat niet. Wat zeg je?','Nee, dank u. Ik spaar niet.',['Nee, dank u. Ik sport niet.','Nee, dank u. Ik pin niet.'],['Ja, ik ben 30 jaar.','Ik woon in Hoorn.'],1],
+
+  ['In een advertentie staat: "Fiets, € 50." Jij wilt hem voor € 40.','Ik bied 40 euro. Is dat goed?',['Ik leen 40 euro. Is dat goed?','Ik bel 40 euro. Is dat goed?'],['Ik heb geen fiets.','Ik ga naar huis.'],2],
+  ['Je koopt een kast op Marktplaats. Hoe krijg je hem?','Kan ik de kast zaterdag ophalen?',['Kan ik de kast zaterdag lenen?','Kan ik de kast zaterdag opstaan?'],['Ik hou van kaas.','Mijn zus heet Sara.'],2],
+  ['De prijs is € 100. Dat vind je te veel.','Kunnen we onderhandelen? Ik bied € 80.',['Kunnen we ontmoeten? Ik bied € 80.','Kunnen we verzenden? Ik bied € 80.'],['Wat is je naam?','Het regent vandaag.'],2],
+  ['Je wilt weten of de koelkast nog goed is.','In welke staat is de koelkast?',['In welke straat is de koelkast?','In welke stad is de koelkast?'],['Hoe laat is het?','Hoe heet je?'],2],
+  ['De verkoper woont ver weg. Wat vraag je?','Kunt u de spullen verzenden?',['Kunt u de spullen verhuizen?','Kunt u de spullen stelen?'],['Ik heb honger.','Ik ben moe.'],2],
+
+  ['Je wilt weten: is de wasmachine snel kapot, wat dan?','Hoe lang heb ik garantie?',['Hoe lang heb ik gratis?','Hoe lang heb ik een programma?'],['Waar woon je?','Hoe oud ben je?'],3],
+  ['Je wilt een televisie voor een lage prijs.','Is deze televisie in de aanbieding?',['Is deze televisie in de advertentie?','Is deze televisie aanbieden?'],['Ik ben 30 jaar.','Ik kom uit Syrië.'],3],
+  ['De verkoper wil helpen. Jij hebt geen hulp nodig.','Nee, dank u. Ik kijk zelf even.',['Nee, dank u. Ik kijk zelfs even.','Nee, dank u. Ik kijk zeker even.'],['Ja, ik heb honger.','Ik ben jarig.'],3],
+
+  ['Je vriend is geslaagd voor zijn examen.','Gefeliciteerd! Goed gedaan!',['Eindelijk! Wat jammer!','Mazzel! Wat stom!'],['Ik heb een rijbewijs.','Hoe laat is het?'],4],
+  ['Je weet nog niet wat je wilt kopen.','Ik moet nog even nadenken.',['Ik moet nog even nemen.','Ik moet nog even danken.'],['Ik ben geslaagd.','Ik woon in Hoorn.'],4],
+  ['Je wilt samen met je zus kiezen: wat kopen we voor het feest?','Zullen we even overleggen?',['Zullen we even overstappen?','Zullen we even oversteken?'],['Mijn fiets is gestolen.','Ik heb geen tijd.'],4],
+  ['Je wilt weten hoeveel één sinaasappel kost.','Hoeveel kosten ze per stuk?',['Hoeveel kosten ze per zak?','Hoeveel kosten ze per krat?'],['Waar is het station?','Hoe heet je?'],4]
+];
+
+const TABS = [
+  ['woorden','📖','Woorden'], ['flits','🃏','Flitskaarten'], ['luister','🎧','Luisteren'],
+  ['betekenis','💡','Betekenis'], ['dehet','🔤','De of het'], ['zinnen','✏️','Zinnen'],
+  ['ander','🔄','Ander woord'], ['situ','💬','Wat zeg je?'], ['typen','⌨️','Typen'],
+  ['herh','🔁','Herhaling']
+];
+
+/* ---------- HULP ---------- */
+// Fisher-Yates
+function shuffle(a) {
+  const arr = [...a];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+// antwoordopties door elkaar, zodat het goede antwoord niet steeds op dezelfde plek staat
+function shuffleOpts(opts) { return shuffle(opts); }
+function full(x) { return (x.a ? x.a + ' ' : '') + x.w; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+function spoken(x) { return (x.a ? x.a + ' ' : '') + x.base; }
+function norm(s) {
+  return String(s).toLowerCase().trim().replace(/[.!?,]/g, '').replace(/^(de|het|een)\s+/, '').replace(/\s+/g, ' ');
+}
+function lev(a, b) {
+  const m = a.length, n = b.length, d = Array.from({ length: m + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+    d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+// voorbeeldzin met het woord weggelaten (voor de flitskaart 'uitleg → woord')
+const BLANK = { 'intoetsen': ['Toets','in.'], 'sparen': ['spaar'], 'stelen (gestolen)': ['gestolen!'], 'opschrijven': ['schrijf','op.'],
+  'wassen': ['was'], 'afstuderen': ['afgestudeerd.'], 'laten': ['laat'], 'slagen (voor een examen)': ['geslaagd'], 'uitgeven': ['geven','uit.'] };
+function blankEx(x) {
+  if (BLANK[x.w]) return x.z.split(' ').map(t => BLANK[x.w].includes(t) ? t.replace(/[a-zA-Z]+/, '…') : t).join(' ');
+  const stem = x.base.toLowerCase().slice(0, Math.min(4, x.base.length));
+  let done = false;
+  return x.z.split(' ').map(t => {
+    const clean = t.toLowerCase().replace(/[^a-zà-ÿ]/g, '');
+    if (!done && clean.length >= 2 && (clean.startsWith(stem) || (x.base.length <= 4 && clean === x.base.toLowerCase()))) {
+      done = true; return t.replace(/[a-zà-ÿA-Z]+/, '…');
+    }
+    return t;
+  }).join(' ');
+}
+
+/* ---------- SPRAAK ---------- */
+let nlVoice = null;
+const canSpeak = 'speechSynthesis' in window;
+function pickVoice() {
+  if (!canSpeak) return;
+  const v = speechSynthesis.getVoices();
+  nlVoice = v.find(x => /^nl[-_]NL/i.test(x.lang)) || v.find(x => /^nl/i.test(x.lang)) || null;
+}
+if (canSpeak) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function say(text, slow) {
+  if (!canSpeak) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(String(text).replace(/\s*\([^)]*\)/g, '').replace(/[–…]/g, ','));
+  u.lang = 'nl-NL';
+  if (nlVoice) u.voice = nlVoice;
+  u.rate = slow ? 0.6 : 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* ---------- MOEILIJKE WOORDEN (alleen op dit apparaat) ---------- */
+function getHard() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+function setHard(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
+function addHard(w) { const h = getHard(); if (!h.includes(w)) { h.push(w); setHard(h); } }
+function removeHard(w) { setHard(getHard().filter(x => x !== w)); }
+
+/* ---------- STATUS ---------- */
+let taak = 1, tab = 'woorden';
+let Q = [], qi = 0, score = 0, wrongs = [], isHerh = false, herhN = 1;
+
+function pool() {
+  if (taak === 'moeilijk') { const h = getHard(); return W.filter(x => h.includes(x.w)); }
+  return W.filter(x => taak === 'all' || x.t === taak);
+}
+function herhUpTo() { return taak === 'all' || taak === 'moeilijk' ? 4 : taak; }
+function herhLabel(n) { return n === 1 ? 'taak 1' : n === 4 ? 'het hele thema (taak 1 t/m 4)' : 'taak 1 t/m ' + n; }
+
+function buildControls() {
+  const tk = document.getElementById('taken');
+  tk.innerHTML = '';
+  TAKEN.forEach(([v, lbl]) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (v === taak ? ' active' : '');
+    b.dataset.t = v;
+    b.textContent = lbl + (v === 'moeilijk' ? ' (' + getHard().length + ')' : '');
+    b.onclick = () => { taak = v; buildControls(); if (tab === 'herh') tab = 'woorden'; openTab(tab); };
+    tk.appendChild(b);
+  });
+  document.getElementById('taaktitel').textContent = TITELS[taak];
+  const n = herhUpTo();
+  document.getElementById('herhbar').innerHTML = '<div class="herh-bar"><span>🔁 Klaar met deze taak? Oefen <b>' + herhLabel(n) + '</b> door elkaar.</span><button class="btn herh" id="hbgo">Start herhaling</button></div>';
+  document.getElementById('hbgo').onclick = () => startHerhaling(n);
+  const tb = document.getElementById('tabs');
+  if (!tb.children.length) {
+    TABS.forEach(([id, ic, lb]) => {
+      const b = document.createElement('button');
+      b.className = 'tab';
+      b.dataset.id = id;
+      b.innerHTML = '<span class="ic">' + ic + '</span><span class="lb">' + lb + '</span>';
+      b.onclick = () => openTab(id);
+      tb.appendChild(b);
+    });
+  }
+}
+
+const INTRO = {
+  luister:   ['🎧 Luisteren', 'Klik op 🔊. Luister goed. Welk woord hoor je?'],
+  betekenis: ['💡 Wat betekent het?', 'Lees de uitleg. Welk woord past bij de uitleg?'],
+  dehet:     ['🔤 De of het?', 'Is het <b>de</b> of <b>het</b>?'],
+  zinnen:    ['✏️ Zinnen', 'Welk woord past in de zin? Let op: sommige woorden lijken op elkaar!'],
+  ander:     ['🔄 Ander woord', 'De <span style="background:#fff1d6;padding:0 .2em">gele woorden</span> zijn gewone woorden. Welk woord uit de lijst betekent hetzelfde?'],
+  situ:      ['💬 Wat zeg je?', 'Lees de situatie. Wat zeg je? Kies het beste antwoord.'],
+  typen:     ['⌨️ Typen', 'Lees de uitleg. Typ het woord zelf.' + (HINT ? ' Je ziet de eerste letter als hulp.' : '')]
+};
+
+function setActiveTab() { document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.dataset.id === tab)); }
+
+function openTab(id) {
+  tab = id; setActiveTab();
+  if (canSpeak) speechSynthesis.cancel();
+  if (id === 'woorden') return renderWoorden();
+  if (id === 'flits') return renderFlitsStart();
+  if (id === 'herh') return renderHerhStart();
+  const p = document.getElementById('panel');
+  if (taak === 'moeilijk' && !pool().length) {
+    p.innerHTML = '<h2>⭐ Moeilijke woorden</h2><p class="how">Je hebt nog geen moeilijke woorden. Maak je een fout? Dan komt het woord hier. Kies eerst een taak.</p>';
+    return;
+  }
+  const [t, how] = INTRO[id];
+  const n = buildQuestions(id).length;
+  p.innerHTML = '<h2>' + t + '</h2><p class="how">' + how + '</p><div class="warn" id="warn"></div>' +
+    (n ? '<div class="next-row"><button class="btn start" id="go">▶ Start (' + n + ' vragen)</button></div>'
+       : '<p class="how">Bij deze keuze zijn er geen vragen voor deze oefening. Kies een andere taak.</p>');
+  checkVoice();
+  const go = document.getElementById('go');
+  if (go) go.onclick = () => { isHerh = false; startQuiz(buildQuestions(id)); };
+}
+
+function checkVoice() {
+  const w = document.getElementById('warn');
+  if (!w) return;
+  setTimeout(() => {
+    pickVoice();
+    if (!document.body.contains(w)) return;
+    if (!canSpeak) { w.textContent = 'Deze browser kan niet voorlezen. Probeer Chrome, Edge of Safari.'; w.style.display = 'block'; }
+    else if (!nlVoice) { w.textContent = 'Tip: er is geen Nederlandse stem gevonden. Zet de spraak van je telefoon of computer op Nederlands. Of gebruik Chrome.'; w.style.display = 'block'; }
+  }, 800);
+}
+
+/* ---------- WOORDENLIJST ---------- */
+function rowHtml(x) {
+  return '<div class="wrow"><span class="we">' + (x.e || '') + '</span>' +
+    '<span class="ww">' + (x.a ? '<small>' + x.a + '</small> ' : '') + esc(x.w) + (IRR.has(x.w) ? ' <span class="irr" title="onregelmatig werkwoord">*</span>' : '') +
+    (x.nb ? '<span class="nb">nieuwe betekenis</span>' : '') + '</span>' +
+    '<button class="sp" data-say="' + esc(spoken(x)) + '">🔊</button>' +
+    '<span class="wu">' + esc(x.u) + (x.nb ? '<br><small style="color:#b5385a">' + esc(x.nb) + '</small>' : '') + '</span>' +
+    '<span class="wz" data-say="' + esc(x.z) + '">„' + esc(x.z) + '”</span></div>';
+}
+function renderWoorden() {
+  const p = document.getElementById('panel');
+  const P = pool();
+  let html = '<h2>📖 Woorden</h2><p class="how">Lees de uitleg en de zin. Klik op 🔊 of op de zin. Zeg het hardop na.</p>' +
+    '<p class="legend">* = onregelmatig werkwoord · <span class="nb" style="margin:0">nieuwe betekenis</span> = je kent dit woord uit Deel 1, maar hier betekent het iets anders.</p><div class="warn" id="warn"></div>';
+  if (!P.length) html += '<p class="how">Je hebt nog geen moeilijke woorden. Kies een taak.</p>';
+  if (taak === 'all') {
+    [1,2,3,4].forEach(g => {
+      const list = W.filter(x => x.t === g);
+      html += '<div class="wl-head">' + TITELS[g] + ' · ' + list.length + ' woorden</div>' + list.map(rowHtml).join('');
+    });
+  } else html += P.map(rowHtml).join('');
+  p.innerHTML = html;
+  p.querySelectorAll('[data-say]').forEach(c => { c.style.cursor = 'pointer'; c.onclick = () => say(c.dataset.say); });
+  checkVoice();
+}
+
+/* ---------- FLITSKAARTEN ---------- */
+let deck = [], di = 0, fcFlipped = false, fcWrong = [], fcDir = 'woord';
+function renderFlitsStart() {
+  const p = document.getElementById('panel'), P = pool();
+  if (!P.length) { p.innerHTML = '<h2>🃏 Flitskaarten</h2><p class="how">Je hebt nog geen moeilijke woorden. Kies een taak.</p>'; return; }
+  const dirs = [['woord','Woord → uitleg'], ['uitleg','Uitleg → woord'], ['mix','Door elkaar']];
+  p.innerHTML = '<h2>🃏 Flitskaarten</h2><p class="how">Kijk naar de kaart. Weet je wat het is? Zeg het hardop. Draai dan de kaart.</p>' +
+    '<div class="row-label">Welke kant op?</div><div class="pills" id="dirs">' +
+    dirs.map(d => '<button class="pill' + (d[0] === fcDir ? ' active' : '') + '" data-d="' + d[0] + '">' + d[1] + '</button>').join('') + '</div>' +
+    '<div class="next-row"><button class="btn start" id="go">▶ Start (' + P.length + ' kaarten)</button></div>';
+  p.querySelectorAll('#dirs .pill').forEach(b => b.onclick = () => { fcDir = b.dataset.d; renderFlitsStart(); });
+  document.getElementById('go').onclick = () => startDeck(P);
+}
+function startDeck(list) {
+  deck = shuffle(list).map(x => ({ x, side: fcDir === 'mix' ? (Math.random() < .5 ? 'woord' : 'uitleg') : fcDir }));
+  di = 0; fcWrong = []; renderCard(); toPanel();
+}
+function wordFace(x, tag) {
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-em">' + (x.e || '') + '</div><div class="fc-word">' + esc(full(x)) + '</div><button class="fc-say" data-say="1">🔊 Luister</button>';
+}
+function defFace(x, tag, blank) {
+  return '<span class="fc-tag">' + tag + '</span><div class="fc-def">' + esc(x.u) + '</div><div class="fc-ex">„' + esc(blank ? blankEx(x) : x.z) + '”</div>';
+}
+function renderCard() {
+  if (di >= deck.length) return deckResult();
+  const p = document.getElementById('panel'), c = deck[di], x = c.x;
+  const frontWord = c.side === 'woord';
+  p.innerHTML = '<div class="progress"><div>Kaart <span>' + (di + 1) + '</span> / ' + deck.length + '</div><div>Nog oefenen: <span>' + fcWrong.length + '</span></div></div>' +
+    '<div class="bar"><div style="width:' + (di / deck.length * 100) + '%"></div></div>' +
+    '<div class="fc-scene" id="fcs"><div class="fc-inner" id="fci">' +
+      '<div class="fc-face fc-front">' + (frontWord ? wordFace(x, 'Woord') : defFace(x, 'Uitleg', true)) + '<div class="fc-hint">Klik om te draaien</div></div>' +
+      '<div class="fc-face fc-back">' + (frontWord ? defFace(x, 'Uitleg', false) : wordFace(x, 'Woord')) + '</div>' +
+    '</div></div>' +
+    '<div class="fb-row" id="fbr" style="visibility:hidden"><button class="fb-btn unknown" id="nk">✗ Nog oefenen</button><button class="fb-btn known" id="kk">✓ Ken ik!</button></div>' +
+    '<p class="fc-note">Zeg het eerst hardop. Draai dan de kaart.</p>';
+  fcFlipped = false;
+  if (frontWord) say(spoken(x));
+  document.getElementById('fcs').onclick = ev => {
+    if (ev.target.closest('.fc-say')) { say(spoken(x)); return; }
+    fcFlipped = !fcFlipped;
+    document.getElementById('fci').classList.toggle('flipped', fcFlipped);
+    document.getElementById('fbr').style.visibility = 'visible';
+    if (fcFlipped && !frontWord) say(spoken(x));
+  };
+  document.getElementById('kk').onclick = () => { if (taak === 'moeilijk') removeHard(x.w); di++; renderCard(); };
+  document.getElementById('nk').onclick = () => { fcWrong.push(x); addHard(x.w); di++; renderCard(); };
+}
+function deckResult() {
+  const p = document.getElementById('panel'), known = deck.length - fcWrong.length;
+  const pct = deck.length ? known / deck.length : 0;
+  const msg = pct === 1 ? 'Super! Je kent alle kaarten! 🎉' : pct >= .8 ? 'Heel goed! Oefen de laatste kaarten nog één keer.' : pct >= .5 ? 'Goed bezig! Oefen de moeilijke kaarten nog eens.' : 'Oefen nog een keer. Je kunt het!';
+  p.innerHTML = '<div class="result"><div class="avatar-box av">🃏</div><div class="score">' + known + '/' + deck.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (fcWrong.length ? '<button class="btn alt" id="rw">✗ Oefen de moeilijke kaarten (' + fcWrong.length + ')</button>' : '') +
+    '<button class="btn" id="rn">↺ Opnieuw</button></div></div>';
+  setAvatar(); buildControls();
+  if (fcWrong.length) document.getElementById('rw').onclick = () => startDeck(fcWrong.slice());
+  document.getElementById('rn').onclick = () => renderFlitsStart();
+}
+
+/* ---------- KEUZES MAKEN ----------
+   goed + afleiders (lijken op het woord) + duidelijk foute woorden uit de lijst */
+function wordOpts(x, nAfl, P) {
+  const syn = synOf(x.w);
+  const afl = shuffle(x.af).slice(0, nAfl);
+  const used = new Set([x.w, ...afl]);
+  const src = P.length >= 8 ? P : W;
+  const fill = shuffle(src).filter(y => !used.has(y.w) && !syn.includes(y.w) && !afl.includes(y.base) && !x.af.includes(y.w))
+    .slice(0, 3 - afl.length).map(y => y.w);
+  return shuffleOpts([x.w, ...afl, ...fill]);
+}
+
+function buildQuestions(mode, P) {
+  P = P || pool();
+  const inT = t => taak === 'all' || taak === 'moeilijk' || t === taak;
+  const mc = z => ({ s: z[0], ans: z[1], opts: shuffleOpts([z[1], ...z[2].slice(0, AFL), ...z[3].slice(0, 3 - AFL)]) });
+  if (mode === 'luister' || mode === 'betekenis') return shuffle(P).slice(0, 10).map(x => ({ mode, x, opts: wordOpts(x, AFL, P) }));
+  if (mode === 'dehet') return shuffle(P.filter(x => x.a)).slice(0, 12).map(x => ({ mode, x }));
+  if (mode === 'typen') return shuffle(P).slice(0, 10).map(x => ({ mode, x, hint: HINT }));
+  if (mode === 'zinnen') return shuffle(ZINNEN.filter(z => !z[5] && inT(z[4]))).slice(0, 12).map(z => ({ mode, ...mc(z) }));
+  if (mode === 'ander') return shuffle(ANDER.filter(z => inT(z[4]))).slice(0, 10).map(z => ({ mode, ...mc(z) }));
+  if (mode === 'situ') return shuffle(SITU.filter(z => inT(z[4]))).slice(0, 10).map(z => ({ mode, ...mc(z) }));
+  return [];
+}
+
+/* ---------- HERHALING ----------
+   Alle woorden van taak 1 t/m n, door elkaar. Andere vragen dan bij de gewone oefeningen:
+   - nieuwe zinnen (2 afleiders + 1 duidelijk fout)
+   - omgekeerd: je ziet het woord en kiest de goede uitleg (2 uitleggen van woorden die erop lijken)
+   - luisteren met 2 afleiders
+   - luister en typ, zonder beginletter */
+function renderHerhStart() {
+  const n = herhUpTo();
+  const P = W.filter(x => x.t <= n);
+  document.getElementById('panel').innerHTML = '<h2>🔁 Herhaling · ' + herhLabel(n) + '</h2>' +
+    '<p class="how">Je oefent alle ' + P.length + ' woorden van ' + herhLabel(n) + ' door elkaar. ' +
+    'De vragen zijn anders dan bij de gewone oefeningen. En ze zijn moeilijker: twee antwoorden lijken op het goede antwoord. Bij typen krijg je geen hulp.</p>' +
+    '<div class="warn" id="warn"></div><div class="next-row"><button class="btn start" id="go">▶ Start herhaling (16 vragen)</button></div>';
+  checkVoice();
+  document.getElementById('go').onclick = () => startHerhaling(n);
+}
+function uitlegOpts(x, P) {
+  const syn = synOf(x.w);
+  const look = shuffle(P.filter(y => y.w !== x.w && !syn.includes(y.w) &&
+      (x.af.includes(y.w) || x.af.includes(y.base) || y.af.includes(x.w) || y.af.includes(x.base) || y.base.slice(0, 3) === x.base.slice(0, 3)))).slice(0, AFL_H);
+  const used = new Set([x.w, ...look.map(y => y.w)]);
+  const fill = shuffle(P.length >= 8 ? P : W).filter(y => !used.has(y.w) && !syn.includes(y.w)).slice(0, 3 - look.length);
+  return shuffleOpts([x, ...look, ...fill]).map(y => ({ text: y.u, ok: y.w === x.w }));
+}
+function startHerhaling(n) {
+  herhN = n; isHerh = true; tab = 'herh'; setActiveTab();
+  const P = W.filter(x => x.t <= n);
+  const zin = shuffle(ZINNEN.filter(z => z[5] && z[4] <= n)).slice(0, 5)
+    .map(z => ({ mode: 'zinnen', s: z[0], ans: z[1], opts: shuffleOpts([z[1], ...z[2].slice(0, AFL_H), ...z[3].slice(0, 1)]) }));
+  const words = shuffle(P);
+  const omg = words.slice(0, 4).map(x => ({ mode: 'omgekeerd', x, opts: uitlegOpts(x, P) }));
+  const lst = words.slice(4, 7).map(x => ({ mode: 'luister', x, opts: wordOpts(x, AFL_H, P) }));
+  const dic = words.slice(7, 10).map(x => ({ mode: 'dictee', x }));
+  const dh = shuffle(P.filter(x => x.a && !words.slice(0, 10).includes(x))).slice(0, 16 - zin.length - 10).map(x => ({ mode: 'dehet', x }));
+  // door elkaar, en liefst niet twee keer dezelfde soort vraag na elkaar
+  let all = shuffle([...zin, ...omg, ...lst, ...dic, ...dh]);
+  for (let pass = 0; pass < 3; pass++) for (let i = 1; i < all.length; i++) if (all[i].mode === all[i-1].mode) {
+    const j = all.findIndex((q, k) => k !== i && q.mode !== all[i-1].mode && (k === 0 || all[k-1].mode !== all[i].mode) && (k + 1 >= all.length || all[k+1].mode !== all[i].mode));
+    if (j >= 0) [all[i], all[j]] = [all[j], all[i]];
+  }
+  startQuiz(all);
+}
+
+/* ---------- QUIZ ---------- */
+function toPanel() { const el = document.getElementById('panel'); if (el.getBoundingClientRect().top > window.innerHeight * 0.5) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function startQuiz(list) { Q = list; qi = 0; score = 0; wrongs = []; renderQ(); toPanel(); }
+
+const QTYPE = { luister: '🎧 Luisteren', betekenis: '💡 Betekenis', omgekeerd: '💡 Welke uitleg past?', dehet: '🔤 De of het', zinnen: '✏️ Zin', ander: '🔄 Ander woord', situ: '💬 Wat zeg je?', typen: '⌨️ Typen', dictee: '⌨️ Luister en typ' };
+
+function head() {
+  return '<div class="progress"><div>' + (isHerh ? '🔁 ' : '') + 'Vraag <span>' + (qi + 1) + '</span> / ' + Q.length + '</div><div>Goed: <span>' + score + '</span></div></div>' +
+         '<div class="bar"><div style="width:' + (qi / Q.length * 100) + '%"></div></div>' +
+         (isHerh ? '<span class="qtype">' + QTYPE[Q[qi].mode] + '</span>' : '');
+}
+function optBtns(opts, one) {
+  return '<div class="opts' + (one ? ' one' : '') + '">' + opts.map(o => '<button class="opt" data-v="' + esc(o) + '">' + esc(o) + '</button>').join('') + '</div>';
+}
+
+function renderQ() {
+  if (qi >= Q.length) return showResult();
+  const q = Q[qi], p = document.getElementById('panel');
+  let html = head();
+  if (q.mode === 'luister') {
+    html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>' + optBtns(q.opts);
+  } else if (q.mode === 'betekenis') {
+    html += '<div class="defn">' + esc(q.x.u) + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'omgekeerd') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">' + esc(full(q.x)) + '</div>' +
+      '<div class="opts one">' + q.opts.map((o, i) => '<button class="opt" data-i="' + i + '">' + esc(o.text) + '</button>').join('') + '</div>';
+  } else if (q.mode === 'dehet') {
+    html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="big-word">… ' + esc(q.x.w) + '</div>' +
+      '<div class="opts"><button class="opt big" data-v="de">de</button><button class="opt big" data-v="het">het</button></div>';
+  } else if (q.mode === 'zinnen') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace('___', '<span class="gap">&nbsp;</span>') + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'ander') {
+    html += '<div class="sentence" id="zin">' + esc(q.s).replace(/\[(.*?)\]/g, '<span class="mark">$1</span>') + '</div>' + optBtns(q.opts);
+  } else if (q.mode === 'situ') {
+    html += '<div class="defn">' + esc(q.s) + '</div>' + optBtns(q.opts, true);
+  } else if (q.mode === 'typen' || q.mode === 'dictee') {
+    if (q.mode === 'typen') {
+      html += '<div class="big-emoji">' + (q.x.e || '') + '</div><div class="defn">' + esc(q.x.u) + (q.x.a ? '<br><small>(' + q.x.a + ' …)</small>' : '') + '</div>';
+      if (q.hint) html += '<div class="hint">' + q.x.base.split('').map((c, i) => i === 0 ? c : c === ' ' ? '&nbsp;' : '_').join(' ') + '</div>';
+    } else {
+      html += '<div class="listen-row"><button class="speak" id="sp">🔊 Luister</button><button class="speak slow" id="spS">🐢 Langzaam</button></div>';
+    }
+    html += '<div class="type-row"><input id="inp" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Typ het woord"><button class="btn" id="chk">Controleer</button></div>' +
+      '<div class="next-row"><button class="btn ghost" id="idk">Ik weet het niet</button></div>';
+  }
+  html += '<div class="fb" id="fb"></div><div class="tip" id="tip"></div><div class="next-row" id="nx"></div>';
+  p.innerHTML = html;
+
+  if (q.mode === 'luister' || q.mode === 'dictee') {
+    document.getElementById('sp').onclick = () => say(spoken(q.x));
+    document.getElementById('spS').onclick = () => say(spoken(q.x), true);
+    say(spoken(q.x));
+  }
+  if (q.mode === 'luister' || q.mode === 'betekenis') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.w, q.x.w));
+  } else if (q.mode === 'omgekeerd') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, q.opts[+b.dataset.i].ok, null));
+  } else if (q.mode === 'dehet') {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.x.a, q.x.a));
+  } else if (['zinnen','ander','situ'].includes(q.mode)) {
+    p.querySelectorAll('.opt').forEach(b => b.onclick = () => answer(b, b.dataset.v === q.ans, q.ans));
+  } else {
+    const inp = document.getElementById('inp');
+    setTimeout(() => inp.focus(), 50);
+    inp.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); checkTyped(); } };
+    document.getElementById('chk').onclick = () => checkTyped();
+    document.getElementById('idk').onclick = () => checkTyped(true);
+  }
+}
+
+function checkTyped(giveUp) {
+  const q = Q[qi], inp = document.getElementById('inp');
+  if (inp.disabled) return;
+  const v = norm(inp.value);
+  if (!v && !giveUp) { inp.focus(); return; }
+  const good = q.x.alt.map(norm);
+  let state = 'bad';
+  if (!giveUp) {
+    if (good.includes(v)) state = 'ok';
+    else if (good.some(g => g.length >= 5 && lev(v, g) === 1)) state = 'almost';
+  }
+  q.given = giveUp ? '(ik weet het niet)' : inp.value.trim();
+  inp.disabled = true; inp.classList.add(state);
+  document.getElementById('chk').disabled = true; document.getElementById('idk').style.display = 'none';
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + state;
+  if (state === 'ok') { score++; fb.textContent = '✓ Goed! ' + full(q.x); if (taak === 'moeilijk') removeHard(q.x.w); }
+  else if (state === 'almost') { score++; fb.textContent = '≈ Bijna goed! Let op de spelling: ' + q.x.base; }
+  else { wrongs.push(q); addHard(q.x.w); fb.textContent = '✗ Het goede woord is: ' + q.x.base; }
+  if (q.mode === 'dictee' || state !== 'ok') tip.textContent = q.x.u;
+  say(spoken(q.x));
+  nextBtn();
+}
+
+function answer(btn, ok, correct) {
+  const q = Q[qi], p = document.getElementById('panel');
+  p.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    const isGood = q.mode === 'omgekeerd' ? q.opts[+b.dataset.i].ok : b.dataset.v === correct;
+    if (isGood) b.classList.add('ok');
+  });
+  if (!ok) btn.classList.add('bad');
+  q.given = q.mode === 'dehet' ? btn.dataset.v : btn.textContent;
+  if (ok) { score++; if (q.x && taak === 'moeilijk') removeHard(q.x.w); }
+  else { wrongs.push(q); if (q.x) addHard(q.x.w); }
+
+  const fb = document.getElementById('fb'), tip = document.getElementById('tip');
+  fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+  if (q.mode === 'luister') {
+    fb.textContent = ok ? '✓ Goed! ' + full(q.x) : '✗ Je hoorde: ' + full(q.x);
+    tip.textContent = q.x.u;
+  } else if (q.mode === 'betekenis' || q.mode === 'omgekeerd') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het goede antwoord: ') + full(q.x);
+    tip.textContent = q.x.u + ' – „' + q.x.z + '”';
+    say(spoken(q.x));
+  } else if (q.mode === 'dehet') {
+    fb.textContent = (ok ? '✓ Goed! ' : '✗ Het is: ') + full(q.x);
+    if (PLUR.has(q.x.w)) tip.textContent = 'Tip: dit woord is meervoud. Meervoud is altijd de.';
+    say(spoken(q.x));
+  } else if (q.mode === 'zinnen') {
+    document.querySelector('#zin .gap').textContent = q.ans;
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    say(q.s.replace('___', q.ans));
+  } else if (q.mode === 'ander') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Het goede woord is: ' + q.ans;
+    const m = q.s.match(/\[(.*?)\]/);
+    tip.textContent = (m ? m[1] + ' = ' : '') + q.ans;
+  } else if (q.mode === 'situ') {
+    fb.textContent = ok ? '✓ Goed!' : '✗ Beter is: ' + q.ans;
+    say(q.ans);
+  }
+  nextBtn();
+}
+
+function nextBtn() {
+  document.getElementById('nx').innerHTML = '<button class="btn" id="nb">' + (qi < Q.length - 1 ? 'Volgende →' : 'Klaar ✓') + '</button>';
+  const nb = document.getElementById('nb');
+  nb.onclick = () => { qi++; renderQ(); };
+  nb.focus();
+}
+
+/* ---------- OVERZICHT VAN DE FOUTEN ---------- */
+function qText(q) {
+  if (q.mode === 'luister' || q.mode === 'dictee') return '🔊 Je hoorde een woord.';
+  if (q.mode === 'betekenis' || q.mode === 'typen') return esc(q.x.u);
+  if (q.mode === 'omgekeerd') return '<b>' + esc(full(q.x)) + '</b> – welke uitleg past?';
+  if (q.mode === 'dehet') return '… ' + esc(q.x.w);
+  if (q.mode === 'ander') return esc(q.s).replace(/\[(.*?)\]/g, '<span class="mark">$1</span>');
+  if (q.mode === 'zinnen') return esc(q.s).replace('___', '<span class="gap">&nbsp;</span>');
+  return esc(q.s);
+}
+function goodText(q) {
+  if (q.mode === 'omgekeerd') return q.x.u;
+  if (q.mode === 'dehet') return q.x.a + ' ' + q.x.w;
+  if (q.x) return full(q.x);
+  return q.ans;
+}
+function reviewHtml(list) {
+  if (!list.length) return '';
+  return '<div class="review"><h3>Dit had je fout (' + list.length + ')</h3><p class="how">Lees het goede antwoord. Zeg het hardop. Oefen daarna je fouten nog een keer.</p>' + list.map(q =>
+    '<div class="rv"><div class="rt">' + (QTYPE[q.mode] || '') + '</div><div class="rq">' + qText(q) + '</div>' +
+    '<div class="ry">✗ Jouw antwoord: ' + esc(q.given || '–') + '</div>' +
+    '<div class="rg">✓ Goed: ' + esc(goodText(q)) + '</div>' +
+    (q.x ? '<div class="ru">' + (q.mode === 'betekenis' || q.mode === 'typen' || q.mode === 'omgekeerd' ? '„' + esc(q.x.z) + '”' : esc(q.x.u)) + '</div>' : '') +
+    '</div>').join('') + '</div>';
+}
+
+function showResult() {
+  const p = document.getElementById('panel');
+  const pct = Q.length ? score / Q.length : 0;
+  const msg = pct === 1 ? 'Super! Alles goed! 🎉' :
+              pct >= 0.8 ? 'Heel goed! Oefen de fouten nog één keer.' :
+              pct >= 0.5 ? 'Goed bezig! Oefen de fouten nog eens.' :
+              'Kijk nog eens bij 📖 Woorden en 🃏 Flitskaarten. Probeer het dan opnieuw. Je kunt het!';
+  const n = isHerh ? herhN : herhUpTo();
+  p.innerHTML = '<div class="result"><div class="avatar-box av">' + (isHerh ? '🔁' : '🛒') + '</div>' +
+    '<div class="score">' + score + '/' + Q.length + '</div><div class="msg">' + msg + '</div><div class="btns">' +
+    (wrongs.length ? '<button class="btn alt" id="rw">✗ Oefen de fouten (' + wrongs.length + ')</button>' : '') +
+    (isHerh ? '<button class="btn" id="rn">↺ Nieuwe herhaling</button>'
+            : '<button class="btn" id="rn">↺ Nieuwe ronde</button><button class="btn herh" id="rh">🔁 Herhaling: ' + herhLabel(n) + '</button>') +
+    '</div>' + reviewHtml(wrongs) + '</div>';
+  setAvatar(); buildControls();
+  if (wrongs.length) document.getElementById('rw').onclick = () =>
+    startQuiz(shuffle(wrongs).map(q => q.opts ? { ...q, opts: shuffleOpts(q.opts) } : q));
+  if (isHerh) document.getElementById('rn').onclick = () => startHerhaling(herhN);
+  else {
+    const t = tab;
+    document.getElementById('rn').onclick = () => startQuiz(buildQuestions(t));
+    document.getElementById('rh').onclick = () => startHerhaling(n);
+  }
+}
+
+/* ---------- AVATAR ----------
+   De foto komt uit overzicht_code2.html (zelfde map op GitHub). Lokaal geopend? Dan zie je een emoji. */
+let avatarSrc = null;
+function setAvatar() {
+  if (!avatarSrc) return;
+  document.querySelectorAll('.av').forEach(el => { if (!el.querySelector('img')) el.innerHTML = '<img src="' + avatarSrc + '" alt="docent">'; });
+}
+fetch('overzicht_code2.html')
+  .then(r => r.ok ? r.text() : Promise.reject())
+  .then(h => { const m = h.match(/data:image\/[a-z]+;base64,[A-Za-z0-9+\/=]+/); if (m) { avatarSrc = m[0]; setAvatar(); } })
+  .catch(() => {});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' && document.activeElement.tagName !== 'INPUT') { const nb = document.getElementById('nb'); if (nb) { e.preventDefault(); nb.click(); } }
+  if (tab === 'flits' && document.getElementById('fcs') && e.key === ' ') { e.preventDefault(); document.getElementById('fcs').click(); }
+});
+
+buildControls();
+openTab('woorden');
+</script>
+</body>
+</html>
